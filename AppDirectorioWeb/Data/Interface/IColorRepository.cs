@@ -1,4 +1,5 @@
-﻿using Models.Models;
+﻿using Models.Dto;
+using Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Data.Interface
     {
         Task<IEnumerable<Colors>> GetAllColor();
         Task<Colors> GetColor(int id);
-        Task<bool> InsertColor();
-        Task<bool> UpdateColor();
-        Task<bool> DeleteColor();
+        Task<bool> InsertColor(ColorsCreateDto model);
+        Task<bool> UpdateColor(ColorsUpdateDto model);
+        Task<bool> DeleteColor(ColorsDeleteDto model);
     }
 }
