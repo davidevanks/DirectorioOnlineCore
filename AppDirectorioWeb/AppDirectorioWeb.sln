@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Dapper", "Identity
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity.Dapper.PostgreSQL", "Identity.Dapper.PostgreSQL\Identity.Dapper.PostgreSQL.csproj", "{F144BBED-7F6E-4BD0-A5EB-CEE017242287}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataBase", "DataBase", "{94CE4CFA-4D82-4B1C-9753-CA340C990569}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DirectorioCoreDataBase", "DirectorioCoreDataBase\DirectorioCoreDataBase.sqlproj", "{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,12 @@ Global
 		{F144BBED-7F6E-4BD0-A5EB-CEE017242287}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F144BBED-7F6E-4BD0-A5EB-CEE017242287}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F144BBED-7F6E-4BD0-A5EB-CEE017242287}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +70,7 @@ Global
 		{749C5506-C84F-410A-986D-451407F65DD8} = {908D2537-82D9-43B4-B890-8BD4AB8CA450}
 		{179B37E2-148D-42A0-BF0F-3D24279CDF73} = {908D2537-82D9-43B4-B890-8BD4AB8CA450}
 		{F144BBED-7F6E-4BD0-A5EB-CEE017242287} = {908D2537-82D9-43B4-B890-8BD4AB8CA450}
+		{32CE5278-FBE5-47F9-AFF6-7750DC79B6E9} = {94CE4CFA-4D82-4B1C-9753-CA340C990569}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {950892FB-CEDE-4EBF-9C77-D9E98EF4F38B}
