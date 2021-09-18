@@ -1,12 +1,11 @@
-﻿
---
+﻿--
 -- PostgreSQL database dump
 --
 
 -- Dumped from database version 13.4
 -- Dumped by pg_dump version 13.4
 
--- Started on 2021-09-18 16:32:52
+-- Started on 2021-09-18 17:35:44
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -93,7 +92,7 @@ CREATE SEQUENCE dbo."IdentityRoleClaim_Id_seq"
 ALTER TABLE dbo."IdentityRoleClaim_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3086 (class 0 OID 0)
+-- TOC entry 3088 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: IdentityRoleClaim_Id_seq; Type: SEQUENCE OWNED BY; Schema: dbo; Owner: postgres
 --
@@ -118,7 +117,7 @@ CREATE SEQUENCE dbo."IdentityRole_Id_seq"
 ALTER TABLE dbo."IdentityRole_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3087 (class 0 OID 0)
+-- TOC entry 3089 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: IdentityRole_Id_seq; Type: SEQUENCE OWNED BY; Schema: dbo; Owner: postgres
 --
@@ -182,7 +181,7 @@ CREATE SEQUENCE dbo."IdentityUserClaim_Id_seq"
 ALTER TABLE dbo."IdentityUserClaim_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3088 (class 0 OID 0)
+-- TOC entry 3090 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: IdentityUserClaim_Id_seq; Type: SEQUENCE OWNED BY; Schema: dbo; Owner: postgres
 --
@@ -220,7 +219,7 @@ CREATE SEQUENCE dbo."IdentityUser_Id_seq"
 ALTER TABLE dbo."IdentityUser_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 3089 (class 0 OID 0)
+-- TOC entry 3091 (class 0 OID 0)
 -- Dependencies: 211
 -- Name: IdentityUser_Id_seq; Type: SEQUENCE OWNED BY; Schema: dbo; Owner: postgres
 --
@@ -261,7 +260,8 @@ CREATE TABLE public."AnuncioInfo" (
     "HabilitarHorarioFeriado" bit(1),
     "Activo" bit(1),
     "Calificacion" integer,
-    "LogoNegocio" character varying
+    "LogoNegocio" character varying,
+    "Idusuario" bigint
 );
 
 
@@ -453,7 +453,7 @@ ALTER TABLE ONLY dbo."IdentityUserClaim" ALTER COLUMN "Id" SET DEFAULT nextval('
 
 
 --
--- TOC entry 2933 (class 2606 OID 16831)
+-- TOC entry 2934 (class 2606 OID 16831)
 -- Name: IdentityLogin IdentityLogin_pkey; Type: CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -462,7 +462,7 @@ ALTER TABLE ONLY dbo."IdentityLogin"
 
 
 --
--- TOC entry 2939 (class 2606 OID 16878)
+-- TOC entry 2940 (class 2606 OID 16878)
 -- Name: IdentityRoleClaim IdentityRoleClaim_pkey; Type: CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -471,7 +471,7 @@ ALTER TABLE ONLY dbo."IdentityRoleClaim"
 
 
 --
--- TOC entry 2931 (class 2606 OID 16823)
+-- TOC entry 2932 (class 2606 OID 16823)
 -- Name: IdentityRole IdentityRole_pkey; Type: CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -480,7 +480,7 @@ ALTER TABLE ONLY dbo."IdentityRole"
 
 
 --
--- TOC entry 2935 (class 2606 OID 16847)
+-- TOC entry 2936 (class 2606 OID 16847)
 -- Name: IdentityUserClaim IdentityUserClaim_pkey; Type: CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -489,7 +489,7 @@ ALTER TABLE ONLY dbo."IdentityUserClaim"
 
 
 --
--- TOC entry 2937 (class 2606 OID 16857)
+-- TOC entry 2938 (class 2606 OID 16857)
 -- Name: IdentityUserRole IdentityUserRole_pkey; Type: CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -498,7 +498,7 @@ ALTER TABLE ONLY dbo."IdentityUserRole"
 
 
 --
--- TOC entry 2929 (class 2606 OID 16815)
+-- TOC entry 2930 (class 2606 OID 16815)
 -- Name: IdentityUser PK_IdentityUser; Type: CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -516,7 +516,7 @@ ALTER TABLE ONLY public."AnuncioInfo"
 
 
 --
--- TOC entry 2921 (class 2606 OID 16749)
+-- TOC entry 2922 (class 2606 OID 16749)
 -- Name: CatCatalogos CatCatalogos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -525,7 +525,7 @@ ALTER TABLE ONLY public."CatCatalogos"
 
 
 --
--- TOC entry 2923 (class 2606 OID 16756)
+-- TOC entry 2924 (class 2606 OID 16756)
 -- Name: FotosAnuncio FotosAnuncio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -534,7 +534,7 @@ ALTER TABLE ONLY public."FotosAnuncio"
 
 
 --
--- TOC entry 2925 (class 2606 OID 16763)
+-- TOC entry 2926 (class 2606 OID 16763)
 -- Name: HorarioAtencionNegocio HorarioAtencionNegocio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -543,7 +543,7 @@ ALTER TABLE ONLY public."HorarioAtencionNegocio"
 
 
 --
--- TOC entry 2927 (class 2606 OID 16773)
+-- TOC entry 2928 (class 2606 OID 16773)
 -- Name: ReviewsNegocio ReviewsNegocio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -552,7 +552,15 @@ ALTER TABLE ONLY public."ReviewsNegocio"
 
 
 --
--- TOC entry 2946 (class 2606 OID 16832)
+-- TOC entry 2920 (class 1259 OID 16896)
+-- Name: fki_AnuncioInfo_IdUser_fkey; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_AnuncioInfo_IdUser_fkey" ON public."AnuncioInfo" USING btree ("Idusuario");
+
+
+--
+-- TOC entry 2948 (class 2606 OID 16832)
 -- Name: IdentityLogin IdentityLogin_UserId_fkey; Type: FK CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -561,7 +569,7 @@ ALTER TABLE ONLY dbo."IdentityLogin"
 
 
 --
--- TOC entry 2950 (class 2606 OID 16879)
+-- TOC entry 2952 (class 2606 OID 16879)
 -- Name: IdentityRoleClaim IdentityRoleClaim_RoleId_fkey; Type: FK CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -570,7 +578,7 @@ ALTER TABLE ONLY dbo."IdentityRoleClaim"
 
 
 --
--- TOC entry 2947 (class 2606 OID 16848)
+-- TOC entry 2949 (class 2606 OID 16848)
 -- Name: IdentityUserClaim IdentityUserClaim_UserId_fkey; Type: FK CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -579,7 +587,7 @@ ALTER TABLE ONLY dbo."IdentityUserClaim"
 
 
 --
--- TOC entry 2948 (class 2606 OID 16858)
+-- TOC entry 2950 (class 2606 OID 16858)
 -- Name: IdentityUserRole IdentityUserRole_RoleId_fkey; Type: FK CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -588,7 +596,7 @@ ALTER TABLE ONLY dbo."IdentityUserRole"
 
 
 --
--- TOC entry 2949 (class 2606 OID 16863)
+-- TOC entry 2951 (class 2606 OID 16863)
 -- Name: IdentityUserRole IdentityUserRole_UserId_fkey; Type: FK CONSTRAINT; Schema: dbo; Owner: postgres
 --
 
@@ -597,7 +605,7 @@ ALTER TABLE ONLY dbo."IdentityUserRole"
 
 
 --
--- TOC entry 2940 (class 2606 OID 16774)
+-- TOC entry 2941 (class 2606 OID 16774)
 -- Name: AnuncioInfo AnuncioInfo_IdCategoria_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -606,7 +614,7 @@ ALTER TABLE ONLY public."AnuncioInfo"
 
 
 --
--- TOC entry 2942 (class 2606 OID 16784)
+-- TOC entry 2943 (class 2606 OID 16784)
 -- Name: AnuncioInfo AnuncioInfo_IdDepartamento_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -615,7 +623,7 @@ ALTER TABLE ONLY public."AnuncioInfo"
 
 
 --
--- TOC entry 2941 (class 2606 OID 16779)
+-- TOC entry 2942 (class 2606 OID 16779)
 -- Name: AnuncioInfo AnuncioInfo_IdPais_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -624,7 +632,16 @@ ALTER TABLE ONLY public."AnuncioInfo"
 
 
 --
--- TOC entry 2943 (class 2606 OID 16789)
+-- TOC entry 2944 (class 2606 OID 16891)
+-- Name: AnuncioInfo AnuncioInfo_IdUser_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."AnuncioInfo"
+    ADD CONSTRAINT "AnuncioInfo_IdUser_fkey" FOREIGN KEY ("Idusuario") REFERENCES dbo."IdentityUser"("Id") NOT VALID;
+
+
+--
+-- TOC entry 2945 (class 2606 OID 16789)
 -- Name: FotosAnuncio FotosAnuncio_IdNegocio_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -633,7 +650,7 @@ ALTER TABLE ONLY public."FotosAnuncio"
 
 
 --
--- TOC entry 2944 (class 2606 OID 16794)
+-- TOC entry 2946 (class 2606 OID 16794)
 -- Name: HorarioAtencionNegocio HorarioAtencionNegocio_IdNegocio_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -642,7 +659,7 @@ ALTER TABLE ONLY public."HorarioAtencionNegocio"
 
 
 --
--- TOC entry 2945 (class 2606 OID 16799)
+-- TOC entry 2947 (class 2606 OID 16799)
 -- Name: ReviewsNegocio ReviewsNegocio_IdNegocio_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -650,12 +667,9 @@ ALTER TABLE ONLY public."ReviewsNegocio"
     ADD CONSTRAINT "ReviewsNegocio_IdNegocio_fkey" FOREIGN KEY ("IdNegocio") REFERENCES public."AnuncioInfo"("Id") NOT VALID;
 
 
--- Completed on 2021-09-18 16:32:53
+-- Completed on 2021-09-18 17:35:44
 
 --
 -- PostgreSQL database dump complete
 --
 
-
-
-GO
