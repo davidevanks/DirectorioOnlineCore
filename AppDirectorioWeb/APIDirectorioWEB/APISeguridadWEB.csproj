@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\Identity.Dapper.PostgreSQL\Identity.Dapper.PostgreSQL.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>

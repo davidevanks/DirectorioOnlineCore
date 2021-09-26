@@ -1,9 +1,12 @@
-﻿using Data.Interface;
+﻿using DataApp.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Models.Dto;
+using ModelsApp.Dto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace APIDirectorioWEB.Controllers
+namespace APIDirectorio.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

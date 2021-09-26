@@ -1,6 +1,4 @@
-using Data;
-using Data.Implementation;
-using Data.Interface;
+
 using Identity.Dapper;
 using Identity.Dapper.Entities;
 using Identity.Dapper.Models;
@@ -37,7 +35,7 @@ namespace APIDirectorioWEB
         #region Public Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -65,8 +63,7 @@ namespace APIDirectorioWEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var psqlConConfig = new PsqlConfiguration(Configuration.GetConnectionString("PsqlConnectionStrings"));
-            services.AddSingleton(psqlConConfig);
+           
 
             var identityConnectionString = Configuration.GetSection("DapperIdentity");
 
@@ -91,7 +88,7 @@ namespace APIDirectorioWEB
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddScoped<IColorRepository, ColorRepository>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

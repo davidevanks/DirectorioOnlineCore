@@ -1,12 +1,12 @@
-﻿using Models.Dto;
-using Models.Models;
+﻿using ModelsApp.Dto;
+using ModelsApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Interface
+namespace DataApp.Interface
 {
     public interface IColorRepository
     {

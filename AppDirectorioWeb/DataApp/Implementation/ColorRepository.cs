@@ -1,15 +1,13 @@
 ﻿using Dapper;
-using Data.Interface;
-using Models.Dto;
-using Models.Models;
+using DataApp;
+using DataApp.Interface;
+using ModelsApp.Dto;
+using ModelsApp.Models;
 using Npgsql;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Implementation
+namespace DataApp.Implementation
 {
     public class ColorRepository : IColorRepository
     {

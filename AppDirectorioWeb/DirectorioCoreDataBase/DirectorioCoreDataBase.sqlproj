@@ -58,4 +58,7 @@
     <Folder Include="Properties" />
     <Folder Include="Scripts\" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="Scripts\ScriptsIgnoredOnImport.sql" />
+  </ItemGroup>
 </Project>
