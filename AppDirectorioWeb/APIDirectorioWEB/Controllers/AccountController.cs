@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.Models.Identity.AccountViewModels;
 using System.Threading.Tasks;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
-namespace APIDirectorioWEB.Controllers
+namespace APISeguridadWEB.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,38 +15,74 @@ namespace APIDirectorioWEB.Controllers
 
         private readonly SignInManager<DapperIdentityUser> _signInManager;
         private readonly UserManager<DapperIdentityUser> _userManager;
-
+        private readonly RoleManager<DapperIdentityRole> _roleManager;
         #endregion Private Fields
 
         #region Public Constructors
 
         public AccountController(
             UserManager<DapperIdentityUser> userManager,
-            SignInManager<DapperIdentityUser> signInManager
+            SignInManager<DapperIdentityUser> signInManager,
+            RoleManager<DapperIdentityRole> roleManager
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
+        }
+        /// <summary>
+        /// Metodo para la hacer login desde formulario login normal.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Login")]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            var result = new SignInResult();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (ModelState.IsValid)
+            {
+                // por defecto mientras tanto , el lockout de password esta deshabilitado, desarrollar lógica posterior.
+               result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                
+            }
+           
+
+            return Ok(result);
+
         }
 
+        /// <summary>
+        /// Metodo para la creación de un usuario por primera vez, metodo normal, sin usar proveedores de externos. Se manda nombre de rol a asignar
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Route("api/RegisterUser")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
-            //Metodo inicial, solo es prueba, despues hay que completar lógica.
+            IdentityResult result = null;
             if (model == null)
                 return BadRequest();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var user = new DapperIdentityUser { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            
+            var user = new DapperIdentityUser {FirstName = model.FirstName, UserName = model.Email, Email = model.Email };
+            var resultCreate = await _userManager.CreateAsync(user, model.Password);
+            
+            //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL
+            if (resultCreate.Succeeded)
             {
+                result = await _userManager.AddToRoleAsync(user, model.RoleName);
             }
 
-            return Created("result", result);
+            return Ok(result);
+         
         }
 
         #endregion Public Constructors

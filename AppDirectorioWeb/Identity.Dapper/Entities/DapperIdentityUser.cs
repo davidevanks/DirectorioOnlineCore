@@ -48,7 +48,7 @@ namespace Identity.Dapper.Entities
         public virtual ICollection<TUserRole> Roles { get; } = new List<TUserRole>();
         public virtual ICollection<TUserClaim> Claims { get; } = new List<TUserClaim>();
         public virtual ICollection<TUserLogin> Logins { get; } = new List<TUserLogin>();
-
+        public virtual string FirstName { get; set; }
         public override string ToString()
         {
             return UserName;

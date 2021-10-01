@@ -30,5 +30,9 @@ namespace Models.Models.Identity.AccountViewModels
         [DataType(DataType.Text)]
         [Display(Name = "Address")]
         public string Address { get; set; }
+
+        public string RoleName { get; set; }
+
+        public string FirstName { get; set; }
     }
 }
