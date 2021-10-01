@@ -49,6 +49,10 @@ namespace Identity.Dapper.Entities
         public virtual ICollection<TUserClaim> Claims { get; } = new List<TUserClaim>();
         public virtual ICollection<TUserLogin> Logins { get; } = new List<TUserLogin>();
         public virtual string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool AllowMarketing { get; set; }
+
+    
         public override string ToString()
         {
             return UserName;

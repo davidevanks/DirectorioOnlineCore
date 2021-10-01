@@ -72,15 +72,24 @@ namespace APISeguridadWEB.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
-            var user = new DapperIdentityUser {FirstName = model.FirstName, UserName = model.Email, Email = model.Email };
+            var user = new DapperIdentityUser {FirstName = model.FirstName, UserName = model.Email,
+                Email = model.Email,LastName = model.LastName,PhoneNumber = model.PhoneNumber
+                ,AllowMarketing = model.AllowMarketing,TwoFactorEnabled = model.TwoFactorEnabled};
             var resultCreate = await _userManager.CreateAsync(user, model.Password);
             
-            //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL
+            //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL (el rol es el plan de membresia)
             if (resultCreate.Succeeded)
             {
                 result = await _userManager.AddToRoleAsync(user, model.RoleName);
+
+                //validamos el tipo de rol(membresia a asignar, ya que el consumidor )
+            }
+            else
+            {
+                result = resultCreate;
             }
 
+           
             return Ok(result);
          
         }

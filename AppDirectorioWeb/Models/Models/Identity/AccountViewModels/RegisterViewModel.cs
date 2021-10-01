@@ -34,5 +34,11 @@ namespace Models.Models.Identity.AccountViewModels
         public string RoleName { get; set; }
 
         public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool AllowMarketing { get; set; }
+
+        public string PhoneNumber { get; set; }
+  
+        public  bool TwoFactorEnabled { get; set; }
     }
 }

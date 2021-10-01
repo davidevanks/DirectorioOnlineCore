@@ -80,6 +80,7 @@ namespace APIDirectorioWEB
                  x.Password.RequireLowercase = false;
                  x.Password.RequireNonAlphanumeric = false;
                  x.Password.RequireUppercase = false;
+                 x.SignIn.RequireConfirmedEmail = true;
              })
              .AddDapperIdentityFor<PostgreSqlConfiguration>()
              .AddDefaultTokenProviders();
