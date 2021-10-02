@@ -76,11 +76,12 @@ namespace APIDirectorioWEB
             services.AddIdentity<DapperIdentityUser, DapperIdentityRole>(x =>
              {
                  x.Password.RequireDigit = false;
-                 x.Password.RequiredLength = 1;
+                 x.Password.RequiredLength = 8;
                  x.Password.RequireLowercase = false;
                  x.Password.RequireNonAlphanumeric = false;
                  x.Password.RequireUppercase = false;
                  x.SignIn.RequireConfirmedEmail = true;
+                 
              })
              .AddDapperIdentityFor<PostgreSqlConfiguration>()
              .AddDefaultTokenProviders();

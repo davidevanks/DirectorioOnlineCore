@@ -1,9 +1,10 @@
 ﻿using Identity.Dapper.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Models.Models;
 using Models.Models.Identity.AccountViewModels;
+using System;
 using System.Threading.Tasks;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace APISeguridadWEB.Controllers
 {
@@ -13,9 +14,12 @@ namespace APISeguridadWEB.Controllers
     {
         #region Private Fields
 
+        private readonly RoleManager<DapperIdentityRole> _roleManager;
         private readonly SignInManager<DapperIdentityUser> _signInManager;
         private readonly UserManager<DapperIdentityUser> _userManager;
-        private readonly RoleManager<DapperIdentityRole> _roleManager;
+        private ResponseViewModel response = new ResponseViewModel();
+        private DapperIdentityUser user = new DapperIdentityUser();
+
         #endregion Private Fields
 
         #region Public Constructors
@@ -30,6 +34,7 @@ namespace APISeguridadWEB.Controllers
             _signInManager = signInManager;
             _roleManager = roleManager;
         }
+
         /// <summary>
         /// Metodo para la hacer login desde formulario login normal.
         /// </summary>
@@ -39,21 +44,53 @@ namespace APISeguridadWEB.Controllers
         [Route("api/Login")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = new SignInResult();
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (ModelState.IsValid)
+            try
             {
-                // por defecto mientras tanto , el lockout de password esta deshabilitado, desarrollar lógica posterior.
-               result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                if (ModelState.IsValid)
+                {
+                    user = await _userManager.FindByEmailAsync(model.Email);
+                    if (user != null)
+                    {
+                        var checkPassword = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                        if (checkPassword.IsNotAllowed)
+                        {
+                            response.SignInResult = checkPassword;
+                            response.MessageResponse = "Email no confirmado aún!";
+                            response.MessageResponseCode = ResponseViewModel.MessageCode.EmailNotConfirmed;
+                        }
+                        else if (checkPassword.Succeeded)
+                        {
+                            response.SignInResult = checkPassword;
+                            response.MessageResponse = "Login exitoso!";
+                            response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+                        }
+                        else
+                        {
+                            response.SignInResult = checkPassword;
+                            response.MessageResponse = "Password Incorrecto!";
+                            response.MessageResponseCode= ResponseViewModel.MessageCode.IncorrectPassword;
+                        }
+                    }
+                    else
+                    {
+                        response.MessageResponse = "Usuario no esta registrado!";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.UserNotExist;
+                    }
+                }
             }
-           
+            catch (Exception e)
+            {
+                response.MessageResponse = e.Message;
+                response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                throw;
+            }
 
-            return Ok(result);
+            // por defecto mientras tanto , el lockout de password esta deshabilitado, desarrollar lógica posterior.
 
+            return Ok(response);
         }
 
         /// <summary>
@@ -71,12 +108,20 @@ namespace APISeguridadWEB.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
-            var user = new DapperIdentityUser {FirstName = model.FirstName, UserName = model.Email,
-                Email = model.Email,LastName = model.LastName,PhoneNumber = model.PhoneNumber
-                ,AllowMarketing = model.AllowMarketing,TwoFactorEnabled = model.TwoFactorEnabled};
+
+            var user = new DapperIdentityUser
+            {
+                FirstName = model.FirstName,
+                UserName = model.Email,
+                Email = model.Email,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber
+                ,
+                AllowMarketing = model.AllowMarketing,
+                TwoFactorEnabled = model.TwoFactorEnabled
+            };
             var resultCreate = await _userManager.CreateAsync(user, model.Password);
-            
+
             //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL (el rol es el plan de membresia)
             if (resultCreate.Succeeded)
             {
@@ -89,9 +134,7 @@ namespace APISeguridadWEB.Controllers
                 result = resultCreate;
             }
 
-           
             return Ok(result);
-         
         }
 
         #endregion Public Constructors
