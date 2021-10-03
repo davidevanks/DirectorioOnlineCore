@@ -17,7 +17,10 @@ namespace APISeguridadWEB.Controllers
         private readonly RoleManager<DapperIdentityRole> _roleManager;
         private readonly SignInManager<DapperIdentityUser> _signInManager;
         private readonly UserManager<DapperIdentityUser> _userManager;
+
+        // private readonly EmailSender _emailSender;
         private ResponseViewModel response = new ResponseViewModel();
+
         private DapperIdentityUser user = new DapperIdentityUser();
 
         #endregion Private Fields
@@ -33,6 +36,43 @@ namespace APISeguridadWEB.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+        }
+
+        // GET: /Account/ConfirmEmail
+        [HttpGet]
+        [Route("api/ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                response.MessageResponse = "Usuario/codigo inválidos!";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.InvalidInformation;
+            }
+            else
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    response.MessageResponse = "Usuario no existe!";
+                    response.MessageResponseCode = ResponseViewModel.MessageCode.UserNotExist;
+                }
+                else
+                {
+                    response.IdentityResult = await _userManager.ConfirmEmailAsync(user, code);
+                    if (response.IdentityResult.Succeeded)
+                    {
+                        response.MessageResponse = "El correo se confirmó con éxito, puede hacer login";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.EmailConfirmedSuccess;
+                    }
+                    else
+                    {
+                        response.MessageResponse = "El correo no se confirmó";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                    }
+                }
+            }
+
+            return Ok(response);
         }
 
         /// <summary>
@@ -71,7 +111,7 @@ namespace APISeguridadWEB.Controllers
                         {
                             response.SignInResult = checkPassword;
                             response.MessageResponse = "Password Incorrecto!";
-                            response.MessageResponseCode= ResponseViewModel.MessageCode.IncorrectPassword;
+                            response.MessageResponseCode = ResponseViewModel.MessageCode.IncorrectPassword;
                         }
                     }
                     else
@@ -85,7 +125,6 @@ namespace APISeguridadWEB.Controllers
             {
                 response.MessageResponse = e.Message;
                 response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
-                throw;
             }
 
             // por defecto mientras tanto , el lockout de password esta deshabilitado, desarrollar lógica posterior.
@@ -102,39 +141,67 @@ namespace APISeguridadWEB.Controllers
         [Route("api/RegisterUser")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
-            IdentityResult result = null;
+            IdentityResult resultRol = null;
             if (model == null)
                 return BadRequest();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var user = new DapperIdentityUser
+            try
             {
-                FirstName = model.FirstName,
-                UserName = model.Email,
-                Email = model.Email,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber
-                ,
-                AllowMarketing = model.AllowMarketing,
-                TwoFactorEnabled = model.TwoFactorEnabled
-            };
-            var resultCreate = await _userManager.CreateAsync(user, model.Password);
+                var user = new DapperIdentityUser
+                {
+                    FirstName = model.FirstName,
+                    UserName = model.Email,
+                    Email = model.Email,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber
+                    ,
+                    AllowMarketing = model.AllowMarketing,
+                    TwoFactorEnabled = model.TwoFactorEnabled
+                };
+                var resultCreate = await _userManager.CreateAsync(user, model.Password);
 
-            //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL (el rol es el plan de membresia)
-            if (resultCreate.Succeeded)
-            {
-                result = await _userManager.AddToRoleAsync(user, model.RoleName);
+                //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL (el rol es el plan de membresia)
+                if (resultCreate.Succeeded)
+                {
+                    resultRol = await _userManager.AddToRoleAsync(user, model.RoleName);
+                    if (resultRol.Succeeded)
+                    {
+                        //logica para confirmar cuenta
 
-                //validamos el tipo de rol(membresia a asignar, ya que el consumidor )
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: HttpContext.Request.Scheme);
+
+
+                        response.IdentityResult = resultRol;
+                        response.MessageResponse = "Usuario creado con éxito, se le envio un correo con el link para confirmar cuenta";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+                        //falta implementar ennvio de correo con link
+                        //var resulemail = await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+                        //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                    }
+                    else
+                    {
+                        response.IdentityResult = resultRol;
+                        response.MessageResponse = "Usuario creado con éxito, pero no se logro asignar rol";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                    }
+                }
+                else
+                {
+                    response.IdentityResult = resultCreate;
+                    response.MessageResponse = "Error al crear usuario!";
+                    response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                }
             }
-            else
+            catch (Exception e)
             {
-                result = resultCreate;
+                response.MessageResponse = e.Message;
+                response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
             }
 
-            return Ok(result);
+            return Ok(response);
         }
 
         #endregion Public Constructors

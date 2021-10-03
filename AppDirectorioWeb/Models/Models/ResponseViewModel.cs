@@ -21,7 +21,9 @@ namespace Models.Models
            EmailNotConfirmed,
            IncorrectPassword,
            UserNotExist,
-           Failed
+           Failed,
+           InvalidInformation,
+           EmailConfirmedSuccess
        }
     }
 }
