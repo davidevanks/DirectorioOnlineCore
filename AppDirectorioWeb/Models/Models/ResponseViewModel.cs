@@ -24,6 +24,7 @@ namespace Models.Models
            Failed,
            InvalidInformation,
            EmailConfirmedSuccess
+           
        }
     }
 }

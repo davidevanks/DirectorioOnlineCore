@@ -5,6 +5,7 @@ using Models.Models;
 using Models.Models.Identity.AccountViewModels;
 using System;
 using System.Threading.Tasks;
+using APISeguridadWEB.ExtraServices.EmailService;
 
 namespace APISeguridadWEB.Controllers
 {
@@ -18,7 +19,7 @@ namespace APISeguridadWEB.Controllers
         private readonly SignInManager<DapperIdentityUser> _signInManager;
         private readonly UserManager<DapperIdentityUser> _userManager;
 
-        // private readonly EmailSender _emailSender;
+        private readonly IEmailService _emailService;
         private ResponseViewModel response = new ResponseViewModel();
 
         private DapperIdentityUser user = new DapperIdentityUser();
@@ -30,12 +31,14 @@ namespace APISeguridadWEB.Controllers
         public AccountController(
             UserManager<DapperIdentityUser> userManager,
             SignInManager<DapperIdentityUser> signInManager,
-            RoleManager<DapperIdentityRole> roleManager
+            RoleManager<DapperIdentityRole> roleManager,
+            IEmailService emailService
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _emailService = emailService;
         }
 
         // GET: /Account/ConfirmEmail
@@ -141,6 +144,8 @@ namespace APISeguridadWEB.Controllers
         [Route("api/RegisterUser")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
+
+
             IdentityResult resultRol = null;
             if (model == null)
                 return BadRequest();
@@ -174,12 +179,23 @@ namespace APISeguridadWEB.Controllers
                         var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: HttpContext.Request.Scheme);
 
 
-                        response.IdentityResult = resultRol;
-                        response.MessageResponse = "Usuario creado con éxito, se le envio un correo con el link para confirmar cuenta";
-                        response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+
                         //falta implementar ennvio de correo con link
-                        //var resulemail = await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        var resulemail = _emailService.Send(model.Email, "Confirm your account",
+                            $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+                        if (resulemail.MessageResponseCode == ResponseViewModel.MessageCode.Success)
+                        {
+                            response.IdentityResult = resultRol;
+                            response.MessageResponse = "Registro éxitoso, se le envio un correo con el link para confirmar cuenta";
+                            response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+                        }
+                        else
+                        {
+                            response.IdentityResult = resultRol;
+                            response.MessageResponse = "Registro éxitoso, pero hubo un error en el envio de correo";
+                            response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                        }
+
                     }
                     else
                     {

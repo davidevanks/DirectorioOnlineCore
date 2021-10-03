@@ -1,4 +1,5 @@
 
+using APISeguridadWEB.ExtraServices.EmailService;
 using Identity.Dapper;
 using Identity.Dapper.Entities;
 using Identity.Dapper.Models;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Models.Models.EmailService;
 
 namespace APIDirectorioWEB
 {
@@ -98,6 +100,9 @@ namespace APIDirectorioWEB
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIDirectorioWEB", Version = "v1" });
             });
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         #endregion Public Methods
