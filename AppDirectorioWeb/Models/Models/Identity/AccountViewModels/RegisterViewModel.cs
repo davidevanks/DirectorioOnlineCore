@@ -41,10 +41,9 @@ namespace Models.Models.Identity.AccountViewModels
         public string RoleName { get; set; }
         public bool TwoFactorEnabled { get; set; }
         public bool Active { get; set; }
-
-       
+        
         public DateTime DateEdit { get; set; }
-       
+        public string UrlContext { get; set; }
         #endregion Public Properties
     }
 }

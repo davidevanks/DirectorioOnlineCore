@@ -12,5 +12,6 @@ namespace Models.Models.Identity.AccountViewModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        public string UrlContext { get; set; }
     }
 }

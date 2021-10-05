@@ -15,8 +15,11 @@ namespace APISeguridadWEB.ExtraServices.EmailService
     {
         #region Public Methods
 
-        ResponseViewModel SendAccountConfirmationEmail(string to, string subject, int typeEmail,
+        ResponseViewModel SendAccountConfirmationEmail(string to, string subject, 
             RegisterViewModel model, string urlAccountConfirmation);
+
+        ResponseViewModel SendResetPasswordEmail(string to, string subject,
+            ForgotPasswordViewModel model, string urlAccountConfirmation);
 
         #endregion Public Methods
     }
@@ -43,7 +46,7 @@ namespace APISeguridadWEB.ExtraServices.EmailService
 
         #region Public Methods
 
-        public ResponseViewModel SendAccountConfirmationEmail(string to, string subject, int typeEmail, RegisterViewModel model, string urlAccountConfirmation)
+        public ResponseViewModel SendAccountConfirmationEmail(string to, string subject, RegisterViewModel model, string urlAccountConfirmation)
         {
             try
             {
@@ -55,10 +58,6 @@ namespace APISeguridadWEB.ExtraServices.EmailService
                 var builder = new BodyBuilder();
                 string messageBody = "";
 
-                //Se realiza validación para verificar tipo de correo y plantilla a usar (typeEmail 1=AccountConfirmation)
-                switch (typeEmail)
-                {
-                    case 1:
                         var pathToFile = _env.ContentRootPath
                                          + Path.DirectorySeparatorChar.ToString()
                                          + "EmailTemplates"
@@ -72,11 +71,56 @@ namespace APISeguridadWEB.ExtraServices.EmailService
 
                         messageBody = builder.HtmlBody.Replace("%UserName%", model.Email).Replace("%urlAccountConfirmation%", urlAccountConfirmation);
 
-                        break;
+            
 
-                    default:
-                        throw new Exception("Unexpected Case");
+                email.Body = new TextPart(TextFormat.Html) { Text = messageBody };
+                // send email
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
+                using var smtp = new SmtpClient();
+                smtp.Connect(_appSettings.SmtpHost, _appSettings.SmtpPort, false);
+                smtp.Authenticate(_appSettings.SmtpUser, _appSettings.SmtpPass);
+                smtp.Send(email);
+                smtp.Disconnect(true);
+                response.MessageResponse = "Correo enviado exitosamente";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+            }
+            catch (Exception e)
+            {
+                response.MessageResponse = "Error al enviar correo";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                throw;
+            }
+
+            return response;
+        }
+
+        public ResponseViewModel SendResetPasswordEmail(string to, string subject,
+            ForgotPasswordViewModel model, string urlAccountConfirmation)
+        {
+            try
+            {
+                // create message
+                var email = new MimeMessage();
+                email.From.Add(MailboxAddress.Parse(_appSettings.EmailFrom));
+                email.To.Add(MailboxAddress.Parse(to));
+                email.Subject = subject;
+                var builder = new BodyBuilder();
+                string messageBody = "";
+
+                var pathToFile = _env.ContentRootPath
+                                 + Path.DirectorySeparatorChar.ToString()
+                                 + "EmailTemplates"
+                                 + Path.DirectorySeparatorChar.ToString()
+                                 + "ResetPasswordEmailTemplate.html";
+
+                using (StreamReader sourceReader = System.IO.File.OpenText(pathToFile))
+                {
+                    builder.HtmlBody = sourceReader.ReadToEnd();
                 }
+
+                messageBody = builder.HtmlBody.Replace("%UserName%", model.Email).Replace("%urlAccountConfirmation%", urlAccountConfirmation);
+
+
 
                 email.Body = new TextPart(TextFormat.Html) { Text = messageBody };
                 // send email

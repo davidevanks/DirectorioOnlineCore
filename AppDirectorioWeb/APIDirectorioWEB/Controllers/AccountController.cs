@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using APISeguridadWEB.ExtraServices.EmailService;
 using Microsoft.AspNetCore.Hosting;
+using Models.Models.Identity.ManageViewModels;
 
 namespace APISeguridadWEB.Controllers
 {
@@ -148,7 +149,8 @@ namespace APISeguridadWEB.Controllers
         [Route("api/RegisterUser")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
         {
-            
+            if (model.UrlContext == "") model.UrlContext = HttpContext.Request.Scheme;
+           
             IdentityResult resultRol = null;
             if (model == null)
                 return BadRequest();
@@ -181,12 +183,12 @@ namespace APISeguridadWEB.Controllers
                         //logica para confirmar cuenta
 
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: HttpContext.Request.Scheme);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: model.UrlContext);
 
-
+                        
 
                         //falta implementar ennvio de correo con link
-                        var resulemail = _emailService.SendAccountConfirmationEmail(model.Email, "Confirmación de cuenta - Listy", 1, model, callbackUrl);
+                        var resulemail = _emailService.SendAccountConfirmationEmail(model.Email, "Confirmación de cuenta - Listy", model, callbackUrl);
 
 
                         if (resulemail.MessageResponseCode == ResponseViewModel.MessageCode.Success)
@@ -226,6 +228,121 @@ namespace APISeguridadWEB.Controllers
             return Ok(response);
         }
 
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [Route("api/ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.UrlContext == "") model.UrlContext = HttpContext.Request.Scheme;
+
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    response.MessageResponse = "Invalid Information!";
+                    response.MessageResponseCode = ResponseViewModel.MessageCode.InvalidInformation;
+                }
+                else
+                {
+                    
+                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userEmail = user.Email, code = code }, protocol: model.UrlContext);
+                    var resulemail=   _emailService.SendResetPasswordEmail(model.Email, "Restablecer contraseña - Listy",model,
+                        callbackUrl);
+
+                    if (resulemail.MessageResponseCode == ResponseViewModel.MessageCode.Success)
+                    {
+                        response.MessageResponse = "Se envio con exito un correo para restablecer la contraseña";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+                    }
+                    else
+                    {
+                        response.MessageResponse = "Error en envio de correo de restablecer contraseña";
+                        response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                    }
+                }
+                
+            }
+
+          
+            return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("api/ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+              
+                response.MessageResponse = "Invalid Information!";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.InvalidInformation;
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                response.MessageResponse = "La contraseña se cambio correctamente, intente hacer login usando la contraseña nueva";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+            }
+            else
+            {
+                response.MessageResponse = "Error al cambiar la contraseña";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+            }
+            return Ok(response);
+        }
+
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [Route("api/ChangePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    response.MessageResponse = "La contraseña se cambio correctamente";
+                    response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+                }
+                else
+                {
+                    response.MessageResponse = "Error al cambiar contraseña";
+                    response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+                }
+              
+            }
+            else
+            {
+                response.MessageResponse = "Invalid Information!";
+                response.MessageResponseCode = ResponseViewModel.MessageCode.InvalidInformation;
+            }
+            return Ok(response);
+        }
+
+        // POST: /Account/LogOff
+        [HttpPost]
+        [Route("api/LogOff")]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            response.MessageResponse = "Log Off exitoso!";
+            response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+            return Ok(response);
+        }
         #endregion Public Constructors
     }
 }
