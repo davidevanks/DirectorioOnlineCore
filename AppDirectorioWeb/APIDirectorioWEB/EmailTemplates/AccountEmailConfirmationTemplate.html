@@ -3,44 +3,174 @@
 <head>
     <meta charset="utf-8" />
     <title>Email confirmation Account Template</title>
-    <!-- GOOGLE FONT --><!-- font-family: 'Mulish', sans-serif; --><!-- font-family: 'Poppins', sans-serif; -->
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- PLUGINS CSS STYLE -->
-    <link href="assets/css/all.min.css" rel="stylesheet">
-    <link href="assets/css/fontawesome.min.css" rel="stylesheet">
-    <link href="assets/css/stylee.css" rel="stylesheet">
-    <link href="assets/css/menuzord.css" rel="stylesheet">
+    <style type="text/css">
 
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
 
-    <!-- CUSTOM CSS -->
-    <link href="assets/css/style.css" rel="stylesheet" id="option_style">
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Mulish", sans-serif;
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #848484;
+            text-align: left;
+            background-color: #fff;
+        }
+
+        .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        .p-6 {
+            padding: 0.5rem !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            margin-bottom: 0.5rem;
+            font-family: "Poppins", sans-serif;
+            font-weight: 500;
+            line-height: 1.2;
+            color: #222;
+        }
+
+        h3, .h3 {
+            font-size: 1.53125rem;
+        }
+
+        .mb-0, .my-0 {
+            margin-bottom: 0 !important;
+        }
+
+        .font-weight-normal {
+            font-weight: 400 !important;
+        }
+
+        .mb-4, .my-4 {
+            margin-bottom: 1.25rem !important;
+        }
+
+        p {
+            line-height: 26px;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: #2196f3;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .btn-primary {
+            color: #fff !important;
+            background-color: #2196f3 !important;
+            border-color: #2196f3 !important;
+        }
+
+        .text-capitalize {
+            text-transform: capitalize !important;
+        }
+
+        .btn {
+            text-transform: uppercase;
+            font-family: "Poppins", sans-serif !important;
+            letter-spacing: 1px !important;
+        }
+
+            .btn:not(:disabled):not(.disabled) {
+                cursor: pointer;
+            }
+
+        .btn {
+            display: inline-block !important;
+            font-family: "Poppins", sans-serif !important;
+            font-weight: bold !important;
+            color: #848484;
+            text-align: center !important;
+            vertical-align: middle !important;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .fa, .fab, .fad, .fal, .far, .fas {
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            display: inline-block;
+            font-style: normal;
+            font-variant: normal;
+            text-rendering: auto;
+            line-height: 1;
+        }
+
+        .fa, .fas {
+            font-weight: 900 !important;
+        }
+
+        .fa, .far, .fas {
+            font-family: "Font Awesome 5 Free " !important;
+            content: "\f00c" !important;
+        }
+    </style>
 </head>
 <body>
     <div class="row">
+        
+            
+     
         <div class="col-sm-8">
-            <div class="p-6"> <img src="assets/images/logo-blue.png" /></div>
-           
-
-        </div>
-        <div class="col-sm-8">
+            <div class="p-6"><img src="https://i.ibb.co/FsSxZ6m/logo-blue.png" /> </div>
+            
             <div class="p-6">
                 <h3 class="font-weight-normal mb-0">Hola %UserName%,</h3>
 
-                <p class="mb-4">Estamos muy felices de que te hayas unido a la familia Listy!</p>
                 <p class="mb-4">
-                    Para empezar a usar Listy y explorar sus funcionalidades, por favor confirma tu cuenta de correo electronico
-                    a continuación:
+                    Estamos muy felices de que te hayas unido a la familia Listy!
+                    <br />
+
+                    Para empezar a usar Listy y explorar sus funcionalidades,
+                    por favor confirma tu cuenta de correo electrónico
+                    <br/>
+                    dando click en el siguiente botón:
                 </p>
-                <!--<a class="btn btn-primary text-capitalize" target="_blank" href="{1}">
-        <i class="fas fa-check" aria-hidden="true"></i> Verificar Cuenta
-    </a>-->
+                <p class="mb-4">
+                </p>
+             
                 <a class="btn btn-primary text-capitalize" target="_blank" href="%urlAccountConfirmation%">
                     <i class="fas fa-check" aria-hidden="true"></i> Verificar Cuenta
                 </a>
             </div>
         </div>
-
     </div>
 </body>
 </html>

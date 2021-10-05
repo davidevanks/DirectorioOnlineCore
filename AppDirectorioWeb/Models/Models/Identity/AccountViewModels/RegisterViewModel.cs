@@ -42,7 +42,7 @@ namespace Models.Models.Identity.AccountViewModels
         public bool TwoFactorEnabled { get; set; }
         public bool Active { get; set; }
 
-        public DateTime DateCreate { get; set; }
+       
         public DateTime DateEdit { get; set; }
        
         #endregion Public Properties
