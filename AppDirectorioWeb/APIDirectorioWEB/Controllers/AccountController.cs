@@ -6,6 +6,7 @@ using Models.Models.Identity.AccountViewModels;
 using System;
 using System.Threading.Tasks;
 using APISeguridadWEB.ExtraServices.EmailService;
+using Microsoft.AspNetCore.Hosting;
 
 namespace APISeguridadWEB.Controllers
 {
@@ -18,7 +19,7 @@ namespace APISeguridadWEB.Controllers
         private readonly RoleManager<DapperIdentityRole> _roleManager;
         private readonly SignInManager<DapperIdentityUser> _signInManager;
         private readonly UserManager<DapperIdentityUser> _userManager;
-
+      
         private readonly IEmailService _emailService;
         private ResponseViewModel response = new ResponseViewModel();
 
@@ -33,12 +34,14 @@ namespace APISeguridadWEB.Controllers
             SignInManager<DapperIdentityUser> signInManager,
             RoleManager<DapperIdentityRole> roleManager,
             IEmailService emailService
+           
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _emailService = emailService;
+           
         }
 
         // GET: /Account/ConfirmEmail
@@ -46,6 +49,7 @@ namespace APISeguridadWEB.Controllers
         [Route("api/ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
+            
             if (userId == null || code == null)
             {
                 response.MessageResponse = "Usuario/codigo inválidos!";
@@ -146,76 +150,82 @@ namespace APISeguridadWEB.Controllers
         {
 
 
-            IdentityResult resultRol = null;
-            if (model == null)
-                return BadRequest();
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            try
-            {
-                var user = new DapperIdentityUser
-                {
-                    FirstName = model.FirstName,
-                    UserName = model.Email,
-                    Email = model.Email,
-                    LastName = model.LastName,
-                    PhoneNumber = model.PhoneNumber
-                    ,
-                    AllowMarketing = model.AllowMarketing,
-                    TwoFactorEnabled = model.TwoFactorEnabled
-                };
-                var resultCreate = await _userManager.CreateAsync(user, model.Password);
+            var resulemail = _emailService.SendAccountConfirmationEmail(model.Email, "Confirmación de cuenta - Listy", 1, model, "google.com.ni");
 
-                //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL (el rol es el plan de membresia)
-                if (resultCreate.Succeeded)
-                {
-                    resultRol = await _userManager.AddToRoleAsync(user, model.RoleName);
-                    if (resultRol.Succeeded)
-                    {
-                        //logica para confirmar cuenta
+            //IdentityResult resultRol = null;
+            //if (model == null)
+            //    return BadRequest();
 
-                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: HttpContext.Request.Scheme);
+            //if (!ModelState.IsValid)
+            //    return BadRequest(ModelState);
+            //try
+            //{
+            //    var user = new DapperIdentityUser
+            //    {
+            //        FirstName = model.FirstName,
+            //        UserName = model.Email,
+            //        Email = model.Email,
+            //        LastName = model.LastName,
+            //        PhoneNumber = model.PhoneNumber,
+            //        AllowMarketing = model.AllowMarketing,
+            //        TwoFactorEnabled = model.TwoFactorEnabled,
+            //        AcceptTerms = model.AcceptTerms,
+            //        Active = true,
+            //        DateCreate = DateTime.Now
+            //    };
+            //    var resultCreate = await _userManager.CreateAsync(user, model.Password);
+
+            //    //VERIFICAMOS SI SE CREO USUARIO PARA ASIGNAR ROL (el rol es el plan de membresia)
+            //    if (resultCreate.Succeeded)
+            //    {
+            //        resultRol = await _userManager.AddToRoleAsync(user, model.RoleName);
+            //        if (resultRol.Succeeded)
+            //        {
+            //            //logica para confirmar cuenta
+
+            //            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: HttpContext.Request.Scheme);
 
 
 
-                        //falta implementar ennvio de correo con link
-                        var resulemail = _emailService.Send(model.Email, "Confirm your account",
-                            $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                        if (resulemail.MessageResponseCode == ResponseViewModel.MessageCode.Success)
-                        {
-                            response.IdentityResult = resultRol;
-                            response.MessageResponse = "Registro éxitoso, se le envio un correo con el link para confirmar cuenta";
-                            response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
-                        }
-                        else
-                        {
-                            response.IdentityResult = resultRol;
-                            response.MessageResponse = "Registro éxitoso, pero hubo un error en el envio de correo";
-                            response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
-                        }
+            //            //falta implementar ennvio de correo con link
+            //            var resulemail = _emailService.SendAccountConfirmationEmail(model.Email, "Confirmación de cuenta - Listy",1,model, callbackUrl);
 
-                    }
-                    else
-                    {
-                        response.IdentityResult = resultRol;
-                        response.MessageResponse = "Usuario creado con éxito, pero no se logro asignar rol";
-                        response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
-                    }
-                }
-                else
-                {
-                    response.IdentityResult = resultCreate;
-                    response.MessageResponse = "Error al crear usuario!";
-                    response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
-                }
-            }
-            catch (Exception e)
-            {
-                response.MessageResponse = e.Message;
-                response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
-            }
+
+            //            if (resulemail.MessageResponseCode == ResponseViewModel.MessageCode.Success)
+            //            {
+            //                response.IdentityResult = resultRol;
+            //                response.MessageResponse = "Registro éxitoso, se le envio un correo con el link para confirmar cuenta";
+            //                response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
+            //            }
+            //            else
+            //            {
+            //                response.IdentityResult = resultRol;
+            //                response.MessageResponse = "Registro éxitoso, pero hubo un error en el envio de correo";
+            //                response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+            //            }
+
+            //        }
+            //        else
+            //        {
+            //            response.IdentityResult = resultRol;
+            //            response.MessageResponse = "Usuario creado con éxito, pero no se logro asignar rol";
+            //            response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        response.IdentityResult = resultCreate;
+            //        response.MessageResponse = "Error al crear usuario!";
+            //        response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    response.MessageResponse = e.Message;
+            //    response.MessageResponseCode = ResponseViewModel.MessageCode.Failed;
+            //}
 
             return Ok(response);
         }

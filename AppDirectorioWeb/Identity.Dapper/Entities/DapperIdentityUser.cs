@@ -51,8 +51,12 @@ namespace Identity.Dapper.Entities
         public virtual string FirstName { get; set; }
         public string LastName { get; set; }
         public bool AllowMarketing { get; set; }
+        public bool AcceptTerms { get; set; }
+        public bool Active { get; set; }
 
-    
+        public DateTime DateCreate { get; set; }
+        public DateTime DateEdit { get; set; }
+
         public override string ToString()
         {
             return UserName;
