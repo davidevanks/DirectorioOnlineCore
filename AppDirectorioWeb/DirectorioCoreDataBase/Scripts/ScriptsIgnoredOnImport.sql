@@ -5,7 +5,7 @@
 -- Dumped from database version 13.4
 -- Dumped by pg_dump version 13.4
 
--- Started on 2021-10-01 16:51:28
+-- Started on 2021-10-06 17:35:13
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -146,7 +146,11 @@ CREATE TABLE dbo."IdentityUser" (
     "Id" integer NOT NULL,
     "FirstName" character varying(500),
     "LastName" character varying(500),
-    "AllowMarketing" boolean
+    "AllowMarketing" boolean,
+    "AcceptTerms" boolean,
+    "DateCreate" date,
+    "DateEdit" date,
+    "Active" boolean
 );
 
 
@@ -261,10 +265,10 @@ CREATE TABLE public."AnuncioInfo" (
     "IdUsuarioModificacion" bigint,
     "Id" bigint NOT NULL,
     "HabilitarHorarioFeriado" bit(1),
-    "Activo" bit(1),
     "Calificacion" integer,
     "LogoNegocio" character varying,
-    "Idusuario" bigint
+    "Idusuario" bigint,
+    "Activo" boolean
 );
 
 
@@ -294,11 +298,11 @@ CREATE TABLE public."CatCatalogos" (
     "Id" integer NOT NULL,
     "IdPadre" integer NOT NULL,
     "Nombre" character varying(500) NOT NULL,
-    "Activo" bit(1),
     "FechaCreacion" date,
     "FechaModificacion" date,
     "IdUsuarioCreacion" bigint,
-    "IdUsuarioModificacion" bigint
+    "IdUsuarioModificacion" bigint,
+    "Activo" boolean
 );
 
 
@@ -402,7 +406,7 @@ CREATE TABLE public."ReviewsNegocio" (
     "IdUsuarioEdicion" bigint,
     "FechaCreacion" date,
     "FechaModificacion" date,
-    "Activo" bit(1)
+    "Activo" boolean
 );
 
 
@@ -670,7 +674,7 @@ ALTER TABLE ONLY public."ReviewsNegocio"
     ADD CONSTRAINT "ReviewsNegocio_IdNegocio_fkey" FOREIGN KEY ("IdNegocio") REFERENCES public."AnuncioInfo"("Id") NOT VALID;
 
 
--- Completed on 2021-10-01 16:51:28
+-- Completed on 2021-10-06 17:35:13
 
 --
 -- PostgreSQL database dump complete

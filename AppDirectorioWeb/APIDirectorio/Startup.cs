@@ -13,7 +13,10 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace APIDirectorio
 {
@@ -32,11 +35,53 @@ namespace APIDirectorio
             var psqlConConfig = new PsqlConfiguration(Configuration.GetConnectionString("PsqlConnectionStrings"));
             services.AddSingleton(psqlConConfig);
             services.AddScoped<IColorRepository, ColorRepository>();
+            services.AddScoped<ICatCatalogoRepository, CatCatalogoRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIDirectorio", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "APIDirectorio", Version = "v1"});
+
+                // Include 'SecurityScheme' to use JWT Authentication
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "JWT Authentication",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {jwtSecurityScheme, Array.Empty<string>()}
+                });
+
+              
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "yourdomain.com",
+                        ValidAudience = "yourdomain.com",
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["LlaveToken"])),
+                        ClockSkew = TimeSpan.Zero
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +99,8 @@ namespace APIDirectorio
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
