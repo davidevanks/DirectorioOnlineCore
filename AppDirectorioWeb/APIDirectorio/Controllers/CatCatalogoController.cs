@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataApp.Interface;
+﻿using DataApp.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace APIDirectorio.Controllers
 {
@@ -15,12 +11,22 @@ namespace APIDirectorio.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CatCatalogoController : Controller
     {
+        #region Private Fields
+
         private readonly ICatCatalogoRepository _catCatalogoRepository;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public CatCatalogoController(ICatCatalogoRepository catCatalogoRepository)
         {
             _catCatalogoRepository = catCatalogoRepository;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         [HttpGet]
         [Route("api/GetAllCatalogo")]
@@ -28,5 +34,7 @@ namespace APIDirectorio.Controllers
         {
             return Ok(await _catCatalogoRepository.GetAllCatalogos());
         }
+
+        #endregion Public Methods
     }
 }
