@@ -10,6 +10,9 @@ namespace Models.Models.Identity.ManageViewModels
     public class ChangePasswordViewModel
     {
         [Required]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current password")]
         public string OldPassword { get; set; }

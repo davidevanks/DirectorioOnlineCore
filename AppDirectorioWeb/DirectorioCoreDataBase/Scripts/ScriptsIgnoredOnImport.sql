@@ -5,7 +5,7 @@
 -- Dumped from database version 13.4
 -- Dumped by pg_dump version 13.4
 
--- Started on 2021-09-18 17:35:44
+-- Started on 2021-10-06 17:35:13
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -54,7 +54,8 @@ ALTER TABLE dbo."IdentityLogin" OWNER TO postgres;
 
 CREATE TABLE dbo."IdentityRole" (
     "Id" integer NOT NULL,
-    "Name" character varying(50) NOT NULL
+    "Name" character varying(50) NOT NULL,
+    "Active" bit(1)
 );
 
 
@@ -134,7 +135,6 @@ CREATE TABLE dbo."IdentityUser" (
     "UserName" character varying(256) NOT NULL,
     "Email" character varying(256) NOT NULL,
     "EmailConfirmed" boolean NOT NULL,
-    "IdPlan" integer,
     "PasswordHash" text,
     "SecurityStamp" character varying(38),
     "PhoneNumber" character varying(50),
@@ -143,7 +143,14 @@ CREATE TABLE dbo."IdentityUser" (
     "LockoutEnd" timestamp without time zone,
     "LockoutEnabled" boolean NOT NULL,
     "AccessFailedCount" integer NOT NULL,
-    "Id" integer NOT NULL
+    "Id" integer NOT NULL,
+    "FirstName" character varying(500),
+    "LastName" character varying(500),
+    "AllowMarketing" boolean,
+    "AcceptTerms" boolean,
+    "DateCreate" date,
+    "DateEdit" date,
+    "Active" boolean
 );
 
 
@@ -258,10 +265,10 @@ CREATE TABLE public."AnuncioInfo" (
     "IdUsuarioModificacion" bigint,
     "Id" bigint NOT NULL,
     "HabilitarHorarioFeriado" bit(1),
-    "Activo" bit(1),
     "Calificacion" integer,
     "LogoNegocio" character varying,
-    "Idusuario" bigint
+    "Idusuario" bigint,
+    "Activo" boolean
 );
 
 
@@ -291,11 +298,11 @@ CREATE TABLE public."CatCatalogos" (
     "Id" integer NOT NULL,
     "IdPadre" integer NOT NULL,
     "Nombre" character varying(500) NOT NULL,
-    "Activo" bit(1),
     "FechaCreacion" date,
     "FechaModificacion" date,
     "IdUsuarioCreacion" bigint,
-    "IdUsuarioModificacion" bigint
+    "IdUsuarioModificacion" bigint,
+    "Activo" boolean
 );
 
 
@@ -399,7 +406,7 @@ CREATE TABLE public."ReviewsNegocio" (
     "IdUsuarioEdicion" bigint,
     "FechaCreacion" date,
     "FechaModificacion" date,
-    "Activo" bit(1)
+    "Activo" boolean
 );
 
 
@@ -667,7 +674,7 @@ ALTER TABLE ONLY public."ReviewsNegocio"
     ADD CONSTRAINT "ReviewsNegocio_IdNegocio_fkey" FOREIGN KEY ("IdNegocio") REFERENCES public."AnuncioInfo"("Id") NOT VALID;
 
 
--- Completed on 2021-09-18 17:35:44
+-- Completed on 2021-10-06 17:35:13
 
 --
 -- PostgreSQL database dump complete

@@ -1,4 +1,5 @@
 
+using APISeguridadWEB.ExtraServices.EmailService;
 using Identity.Dapper;
 using Identity.Dapper.Entities;
 using Identity.Dapper.Models;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Models.Models.EmailService;
 
 namespace APIDirectorioWEB
 {
@@ -58,6 +60,8 @@ namespace APIDirectorioWEB
             {
                 endpoints.MapControllers();
             });
+
+          
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -74,10 +78,12 @@ namespace APIDirectorioWEB
             services.AddIdentity<DapperIdentityUser, DapperIdentityRole>(x =>
              {
                  x.Password.RequireDigit = false;
-                 x.Password.RequiredLength = 1;
+                 x.Password.RequiredLength = 8;
                  x.Password.RequireLowercase = false;
                  x.Password.RequireNonAlphanumeric = false;
                  x.Password.RequireUppercase = false;
+                 x.SignIn.RequireConfirmedEmail = true;
+                 
              })
              .AddDapperIdentityFor<PostgreSqlConfiguration>()
              .AddDefaultTokenProviders();
@@ -94,6 +100,9 @@ namespace APIDirectorioWEB
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIDirectorioWEB", Version = "v1" });
             });
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         #endregion Public Methods
