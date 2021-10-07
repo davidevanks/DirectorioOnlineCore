@@ -1,4 +1,3 @@
-
 using APISeguridadWEB.ExtraServices.EmailService;
 using Identity.Dapper;
 using Identity.Dapper.Entities;
@@ -60,15 +59,11 @@ namespace APIDirectorioWEB
             {
                 endpoints.MapControllers();
             });
-
-          
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
-
             var identityConnectionString = Configuration.GetSection("DapperIdentity");
 
             services.ConfigureDapperConnectionProvider<PostgreSqlConnectionProvider>(identityConnectionString)
@@ -83,18 +78,15 @@ namespace APIDirectorioWEB
                  x.Password.RequireNonAlphanumeric = false;
                  x.Password.RequireUppercase = false;
                  x.SignIn.RequireConfirmedEmail = true;
-                 
              })
              .AddDapperIdentityFor<PostgreSqlConfiguration>()
              .AddDefaultTokenProviders();
             services.Configure<CookiePolicyOptions>(options =>
             {
-             
-             options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

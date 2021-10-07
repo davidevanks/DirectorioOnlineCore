@@ -15,6 +15,7 @@ namespace Models.Models
        public SignInResult SignInResult { get; set; }
        public string MessageResponse { get; set; }
        public MessageCode MessageResponseCode { get; set; }
+       public TokenViewModel Token { get; set; }
        public enum MessageCode
        {
            Success,
