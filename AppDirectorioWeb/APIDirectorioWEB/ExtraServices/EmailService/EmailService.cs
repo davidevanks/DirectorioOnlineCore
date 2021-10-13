@@ -75,6 +75,7 @@ namespace APISeguridadWEB.ExtraServices.EmailService
 
                 email.Body = new TextPart(TextFormat.Html) { Text = messageBody };
                 // send email
+                //quitar en produccion
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
                 using var smtp = new SmtpClient();
                 smtp.Connect(_appSettings.SmtpHost, _appSettings.SmtpPort, false);

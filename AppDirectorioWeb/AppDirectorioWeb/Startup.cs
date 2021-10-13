@@ -1,5 +1,3 @@
-using AppDirectorioWeb.Helper.RequestProvider.Implementation;
-using AppDirectorioWeb.Helper.RequestProvider.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppDirectorioWeb.RequestProvider.Implementation;
+using AppDirectorioWeb.RequestProvider.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace AppDirectorioWeb
 {
@@ -30,6 +31,7 @@ namespace AppDirectorioWeb
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
             services.AddScoped<IBackendHelper, BackendHelper>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

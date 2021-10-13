@@ -191,6 +191,7 @@ namespace APISeguridadWEB.Controllers
                             _response.Token = BuildToken(_user);
                             _response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
                             _response.MessageResponse = "Login éxitoso!";
+                            _response.UserInfo = _user;
                         }
                         else
                         {
@@ -362,6 +363,7 @@ namespace APISeguridadWEB.Controllers
                 signingCredentials: creds);
 
             return new TokenViewModel { Token = new JwtSecurityTokenHandler().WriteToken(token), ExpirationDate = expiration };
+            
         }
 
         #endregion Public Constructors
