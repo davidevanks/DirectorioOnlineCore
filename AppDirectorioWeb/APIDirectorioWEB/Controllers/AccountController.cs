@@ -13,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace APISeguridadWEB.Controllers
 {
@@ -28,7 +29,7 @@ namespace APISeguridadWEB.Controllers
         private readonly SignInManager<DapperIdentityUser> _signInManager;
         private readonly UserManager<DapperIdentityUser> _userManager;
         private ResponseViewModel _response = new ResponseViewModel();
-
+        
         private DapperIdentityUser _user = new DapperIdentityUser();
 
         #endregion Private Fields
@@ -188,6 +189,8 @@ namespace APISeguridadWEB.Controllers
                         }
                         else if (checkPassword.Succeeded)
                         {
+                            var roles= await _userManager.GetRolesAsync(_user);
+                            _user.RolesNames = roles.ToList();
                             _response.Token = BuildToken(_user);
                             _response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
                             _response.MessageResponse = "Login éxitoso!";
@@ -361,6 +364,18 @@ namespace APISeguridadWEB.Controllers
                 claims: claims,
                 expires: expiration,
                 signingCredentials: creds);
+
+
+            var claimsIdentity =
+                new ClaimsIdentity(
+                    new Claim[]
+                    {
+                        new Claim("Id", userInfo.UserName),
+                        new Claim("UserName", userInfo.UserName),
+                        new Claim("Rol", userInfo.Roles.FirstOrDefault()?.RoleId.ToString()),
+                    }
+                );
+            HttpContext.User = new ClaimsPrincipal(new[] { claimsIdentity });
 
             return new TokenViewModel { Token = new JwtSecurityTokenHandler().WriteToken(token), ExpirationDate = expiration };
             

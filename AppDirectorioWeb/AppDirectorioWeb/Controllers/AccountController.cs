@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using AppDirectorioWeb.Models.Identity.AccountViewModels;
+
 using AppDirectorioWeb.RequestProvider.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Models.Models;
+using Models.Models.Identity.AccountViewModels;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -42,16 +45,13 @@ namespace AppDirectorioWeb.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-              
-                //only for dev enviroment
+                
                
                 var response = await _backendHelper.PostAsync<ResponseViewModel>("/api/Account/api/Login", model);
                 
                 if (response.MessageResponseCode == ResponseViewModel.MessageCode.Success && !String.IsNullOrEmpty(response.Token.Token) )
                 {
-                   
+                    var test = HttpContext.User;
                     return LocalRedirect(returnUrl);
                 }
                 else
