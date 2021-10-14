@@ -7,11 +7,15 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AppDirectorioWeb.RequestProvider.Implementation;
 using AppDirectorioWeb.RequestProvider.Interfaces;
 using AppDirectorioWeb.Utiles.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AppDirectorioWeb
 {
@@ -34,6 +38,30 @@ namespace AppDirectorioWeb
             services.AddScoped<IBackendHelper, BackendHelper>();
             services.AddScoped<IDecode, Decode>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromDays(30);//You can set Time   
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //Configure JWT Token Authentication 
+     
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "yourdomain.com",
+                        ValidAudience = "yourdomain.com",
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["LlaveToken"])),
+                        ClockSkew = TimeSpan.Zero
+                    });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,16 +79,30 @@ namespace AppDirectorioWeb
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
             app.UseRouting();
 
-            app.UseAuthorization();
+            
+            app.UseSession();
+
+            //Add JWToken to all incoming HTTP Request Header - JRozario
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("Token");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
+            //Add JWToken Authentication service - JRozario
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

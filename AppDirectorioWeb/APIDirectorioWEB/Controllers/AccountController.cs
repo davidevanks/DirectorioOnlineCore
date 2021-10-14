@@ -191,7 +191,7 @@ namespace APISeguridadWEB.Controllers
                         else if (checkPassword.Succeeded)
                         {
                             var roles= await _userManager.GetRolesAsync(_user);
-                            _user.RolesNames = roles.ToList();
+                            _user.RoleName = roles.FirstOrDefault();
                             _response.Token = BuildToken(_user);
                             _response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
                             _response.MessageResponse = "Login éxitoso!";
@@ -350,7 +350,7 @@ namespace APISeguridadWEB.Controllers
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.UserName),
-                new Claim("Rol", userInfo.Roles.FirstOrDefault()?.RoleId.ToString()),
+                new Claim(userInfo.RoleName, userInfo.RoleName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("DurationToken", "30") //valor en días
             };
@@ -359,8 +359,8 @@ namespace APISeguridadWEB.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expiration = DateTime.UtcNow.AddMonths(1);
-            var roleClaims = userInfo.RolesNames.Select(r => new Claim("RoleName", r));
-            claims.AddRange(roleClaims);
+     
+         
 
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: "yourdomain.com",

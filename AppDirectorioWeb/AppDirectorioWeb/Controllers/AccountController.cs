@@ -19,7 +19,7 @@ using Models.Models.Identity.AccountViewModels;
 namespace AppDirectorioWeb.Controllers
 {
     
-   
+  
     public class AccountController : Controller
     {
 
@@ -56,14 +56,10 @@ namespace AppDirectorioWeb.Controllers
                 {
                     var token = _decode.DecodeToken(response.Token.Token);
                     int expiration =Convert.ToInt32(token.Claims.First(c => c.Type == "DurationToken").Value);
-                    CookieOptions option = new CookieOptions();
-                    option.Expires = DateTime.Now.AddDays(expiration);
-                    option.HttpOnly = true;
-                    Response.Cookies.Append("Token", response.Token.Token, option);
+                    HttpContext.Session.SetString("Token", response.Token.Token);
                     return LocalRedirect(returnUrl);
                 }
            
-
 
             }
 
