@@ -1,4 +1,5 @@
 using System;
+using System.Security.AccessControl;
 
 namespace AppDirectorioWeb.Models
 {
@@ -7,5 +8,7 @@ namespace AppDirectorioWeb.Models
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public string MessageError { get; set; }
     }
 }

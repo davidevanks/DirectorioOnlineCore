@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AppDirectorioWeb.RequestProvider.Implementation;
 using AppDirectorioWeb.RequestProvider.Interfaces;
+using AppDirectorioWeb.Utiles.Jwt;
 using Microsoft.AspNetCore.Http;
 
 namespace AppDirectorioWeb
@@ -31,6 +32,7 @@ namespace AppDirectorioWeb
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
             services.AddScoped<IBackendHelper, BackendHelper>();
+            services.AddScoped<IDecode, Decode>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 

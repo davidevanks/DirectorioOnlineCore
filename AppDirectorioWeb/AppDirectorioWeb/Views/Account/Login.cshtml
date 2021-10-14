@@ -16,7 +16,7 @@
                         <h2 class="text-white mb-0 h4">Inicia sesión</h2>
                     </div>
                     <div class="card-body px-7 pt-7 pb-0">
-                        <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@Context.Request.Path" method="post" class="form-horizontal">
+                        <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
                             <div class="form-group mb-7">
                                 <label for="exampleInputText">Email*</label>
                                 <input asp-for="Email" type="text" class="form-control" aria-describedby="emailHelp" required>

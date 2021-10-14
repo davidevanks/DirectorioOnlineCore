@@ -8,6 +8,7 @@ using Models.Models;
 using Models.Models.Identity.AccountViewModels;
 using Models.Models.Identity.ManageViewModels;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -194,7 +195,7 @@ namespace APISeguridadWEB.Controllers
                             _response.Token = BuildToken(_user);
                             _response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
                             _response.MessageResponse = "Login éxitoso!";
-                            _response.UserInfo = _user;
+                       
                         }
                         else
                         {
@@ -346,17 +347,20 @@ namespace APISeguridadWEB.Controllers
 
         private TokenViewModel BuildToken(DapperIdentityUser userInfo)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.UserName),
                 new Claim("Rol", userInfo.Roles.FirstOrDefault()?.RoleId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("DurationToken", "30") //valor en días
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["LlaveToken"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expiration = DateTime.UtcNow.AddMonths(1);
+            var roleClaims = userInfo.RolesNames.Select(r => new Claim("RoleName", r));
+            claims.AddRange(roleClaims);
 
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: "yourdomain.com",
@@ -366,16 +370,8 @@ namespace APISeguridadWEB.Controllers
                 signingCredentials: creds);
 
 
-            var claimsIdentity =
-                new ClaimsIdentity(
-                    new Claim[]
-                    {
-                        new Claim("Id", userInfo.UserName),
-                        new Claim("UserName", userInfo.UserName),
-                        new Claim("Rol", userInfo.Roles.FirstOrDefault()?.RoleId.ToString()),
-                    }
-                );
-            HttpContext.User = new ClaimsPrincipal(new[] { claimsIdentity });
+          
+          
 
             return new TokenViewModel { Token = new JwtSecurityTokenHandler().WriteToken(token), ExpirationDate = expiration };
             
