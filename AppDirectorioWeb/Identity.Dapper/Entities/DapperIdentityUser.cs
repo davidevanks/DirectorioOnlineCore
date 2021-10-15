@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Identity.Dapper.Entities
 {
@@ -53,7 +54,7 @@ namespace Identity.Dapper.Entities
         public bool AllowMarketing { get; set; }
         public bool AcceptTerms { get; set; }
         public bool Active { get; set; }
-
+        public string RoleName { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime DateEdit { get; set; }
 
