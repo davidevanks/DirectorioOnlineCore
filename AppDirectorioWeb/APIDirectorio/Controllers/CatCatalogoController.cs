@@ -29,10 +29,17 @@ namespace APIDirectorio.Controllers
         #region Public Methods
 
         [HttpGet]
-        [Route("api/GetAllCatalogo")]
+        
         public async Task<IActionResult> GetAllCatalogo()
         {
             return Ok(await _catCatalogoRepository.GetAllCatalogos());
+        }
+
+        [HttpGet("NombrePadre")]
+       
+        public async Task<IActionResult> GetCatalogosxNombrePadre(string NombrePadre)
+        {
+            return Ok(await _catCatalogoRepository.GetCatalogosxNombrePadre(NombrePadre));
         }
 
         #endregion Public Methods

@@ -10,5 +10,6 @@ namespace DataApp.Interface
     public interface ICatCatalogoRepository
     {
         Task<IEnumerable<CatCatalogosViewModel>> GetAllCatalogos();
+        Task<IEnumerable<CatCatalogosViewModel>> GetCatalogosxNombrePadre(string NombrePadre);
     }
 }

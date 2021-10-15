@@ -1,3 +1,4 @@
+using APIDirectorio.Controllers;
 using DataApp;
 using DataApp.Implementation;
 using DataApp.Interface;
@@ -63,6 +64,7 @@ namespace APIDirectorio
             var psqlConConfig = new PsqlConfiguration(Configuration.GetConnectionString("PsqlConnectionStrings"));
             services.AddSingleton(psqlConConfig);
             services.AddScoped<ICatCatalogoRepository, CatCatalogoRepository>();
+            services.AddScoped<IAnuncioInfoRepository, AnuncioInfoRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
