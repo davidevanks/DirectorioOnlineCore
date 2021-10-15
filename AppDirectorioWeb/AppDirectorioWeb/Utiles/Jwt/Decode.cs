@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens.Jwt;
 
 namespace AppDirectorioWeb.Utiles.Jwt
 {
-    public class Decode:IDecode
+    public class Decode : IDecode
     {
+        #region Public Methods
+
         public JwtSecurityToken DecodeToken(string token)
         {
             var tokenResult = new JwtSecurityToken(jwtEncodedString: token);
             return tokenResult;
-
         }
+
+        #endregion Public Methods
     }
 }

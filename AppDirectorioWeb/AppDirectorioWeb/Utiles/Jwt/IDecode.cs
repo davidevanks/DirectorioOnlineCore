@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens.Jwt;
 
 namespace AppDirectorioWeb.Utiles.Jwt
 {
     public interface IDecode
     {
+        #region Public Methods
+
         JwtSecurityToken DecodeToken(string token);
+
+        #endregion Public Methods
     }
 }

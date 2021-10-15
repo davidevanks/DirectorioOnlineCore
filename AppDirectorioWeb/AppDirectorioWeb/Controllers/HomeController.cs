@@ -35,7 +35,8 @@ namespace AppDirectorioWeb.Controllers
         [Authorize(Roles.Admin)]
         public IActionResult Privacy()
         {
-
+          
+            ViewData["ReturnUrl"] = HttpContext.Request.Path;
             string Role = GetRole();
             return View();
         }

@@ -352,7 +352,8 @@ namespace APISeguridadWEB.Controllers
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.UserName),
                 new Claim(userInfo.RoleName, userInfo.RoleName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("DurationToken", "30") //valor en días
+                new Claim("DurationToken", "30"), //valor en días
+                new Claim("UserId", userInfo.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["LlaveToken"]));

@@ -1,68 +1,38 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AppDirectorioWeb.RequestProvider.Implementation;
 using AppDirectorioWeb.RequestProvider.Interfaces;
 using AppDirectorioWeb.Utiles.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace AppDirectorioWeb
 {
     public class Startup
     {
+        #region Public Constructors
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        #endregion Public Properties
 
-            //para permitir refrescar cambios en naveador html
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddControllersWithViews();
-            services.AddScoped<IBackendHelper, BackendHelper>();
-            services.AddScoped<IDecode, Decode>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSession(options => {
-                options.IdleTimeout = TimeSpan.FromDays(30);//You can set Time   
-            });
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            //Configure JWT Token Authentication 
-     
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = "yourdomain.com",
-                        ValidAudience = "yourdomain.com",
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration["LlaveToken"])),
-                        ClockSkew = TimeSpan.Zero
-                    });
-
-        }
+        #region Public Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -82,7 +52,6 @@ namespace AppDirectorioWeb
             app.UseCookiePolicy();
             app.UseRouting();
 
-            
             app.UseSession();
 
             //Add JWToken to all incoming HTTP Request Header - JRozario
@@ -102,8 +71,44 @@ namespace AppDirectorioWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //para permitir refrescar cambios en naveador html
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews();
+            services.AddScoped<IBackendHelper, BackendHelper>();
+            services.AddScoped<IDecode, Decode>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromDays(30);//You can set Time
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //Configure JWT Token Authentication
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "yourdomain.com",
+                        ValidAudience = "yourdomain.com",
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["LlaveToken"])),
+                        ClockSkew = TimeSpan.Zero
+                    });
+        }
+
+        #endregion Public Methods
     }
 }
