@@ -1,3 +1,6 @@
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using APISeguridadWEB.ExtraServices.EmailService;
 using Identity.Dapper;
 using Identity.Dapper.Entities;
@@ -13,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Models.Models.EmailService;
+using Org.BouncyCastle.Crypto.Tls;
 
 namespace APIDirectorioWEB
 {
@@ -44,6 +48,7 @@ namespace APIDirectorioWEB
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "APIDirectorioWEB v1"));
             }
+       
 
             app.UseHttpsRedirection();
 
@@ -54,7 +59,7 @@ namespace APIDirectorioWEB
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+      
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

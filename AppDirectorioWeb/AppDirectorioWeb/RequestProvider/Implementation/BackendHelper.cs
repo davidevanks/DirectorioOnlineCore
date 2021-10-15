@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using AppDirectorioWeb.Helper.RequestProvider.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using AppDirectorioWeb.RequestProvider.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
-namespace AppDirectorioWeb.Helper.RequestProvider.Implementation
+namespace AppDirectorioWeb.RequestProvider.Implementation
 {
     /// <summary>
     /// Proporciona métodos para realizar las peticiones al backend
@@ -43,11 +44,19 @@ namespace AppDirectorioWeb.Helper.RequestProvider.Implementation
         {
             uri = _backendApiUrl + uri;
 
-            HttpClient httpClient = new HttpClient();
+            //HttpClient httpClient = new HttpClient();
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            HttpClient httpClient = new HttpClient(clientHandler);
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+
+  
+
             HttpResponseMessage response = await httpClient.PostAsync(uri, content);
 
             TResult result = await ManejarRespuesta<TResult>(response);

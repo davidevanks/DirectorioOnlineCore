@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AppDirectorioWeb.Helper.RequestProvider.Interfaces
+namespace AppDirectorioWeb.RequestProvider.Interfaces
 {
     /// <summary>
     /// Interfaz de Helper de proveedor de solicitudes
