@@ -1,8 +1,8 @@
-using AppDirectorioWeb.Helper.RequestProvider.Implementation;
-using AppDirectorioWeb.Helper.RequestProvider.Interfaces;
+using AppDirectorioWeb.RequestProvider.Implementation;
+using AppDirectorioWeb.RequestProvider.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
