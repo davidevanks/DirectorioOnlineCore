@@ -88,7 +88,7 @@
                 
                             <div class="avatar">
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
-                                    <img class="avatar-img" src="img/user/avatar-01.png"  alt="Image">
+                                    <img class="avatar-img" src="~/img/user/avatar-01.png"  alt="Image">
                                     <span class="avatar-name">@User.Identity.Name
                                         <span class="small">@roleName</span>
                                     </span>
@@ -125,10 +125,10 @@
                         @if (isAdmin)
                         {
                             <li>
-                                <a asp-controller="Home" asp-action="Privacy">Inicio</a>
+                                <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
                             <li>
-                                <a asp-controller="Home" asp-action="Privacy">DashBoard</a>
+                                <a >DashBoard</a>
                             </li>
                             <li class="">
                                 <a href="javascript:0">Administración</a>
@@ -184,7 +184,7 @@
                         else
                         {
                             <li>
-                                <a asp-controller="Home" asp-action="Privacy">Inicio</a>
+                                <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
                             <li class="">
                                 <a href="javascript:0">¿Qué es Listty?</a>
@@ -325,19 +325,13 @@
         </div>
 
     </footer>
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/site.js"></script>
-    <script src="~/js/map.js"></script>
-   
-    <script src="~/js/chart.js"></script>*@
+
 
     <!-- JAVASCRIPTS -->
     <script src='~/plugins/jquery/jquery-3.4.1.min.js'></script>
     <script src='~/plugins/bootstrap/js/bootstrap.bundle.js'></script>
     
-    <script src="plugins/menuzord/js/menuzord.js"></script>
+    <script src="~/plugins/menuzord/js/menuzord.js"></script>
     <script src='~/plugins/selectric/jquery.selectric.min.js'></script>
     <script src='~/plugins/dzsparallaxer/dzsparallaxer.js'></script>
 
