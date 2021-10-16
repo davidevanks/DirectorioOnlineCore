@@ -8,8 +8,6 @@
 
   /*======== 1. MENUZORD ========*/
     var menuzord = $('#menuzord');
-    console.log('menun');
-    console.log(menuzord);
   if (menuzord.length != 0){
     menuzord.menuzord({
       indicatorFirstLevel: '',
@@ -65,7 +63,9 @@
 
   /*======== 3. SELECTRIC ========*/
   var selectLocation = $('.select-location');
-  if (selectLocation.length !== 0){
+    if (selectLocation.length !== 0) {
+        console.log('entre');
+        
     selectLocation.selectric({
       arrowButtonMarkup: '<div class="arrow-button"><i class="fa fa-angle-down" aria-hidden="true"></i></div>',
     });

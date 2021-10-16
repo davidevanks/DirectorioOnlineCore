@@ -8,7 +8,6 @@ using Models.Models.Identity.AccountViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -46,9 +45,9 @@ namespace AppDirectorioWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl = null)
         {
-
             //returnUrl = context.Result;
             ReturnUrl ??= Url.Content("~/");
+            ViewData["MessageErrorLogin"] = "";
             ViewData["ReturnUrl"] = ReturnUrl;
             if (ModelState.IsValid)
             {
@@ -62,13 +61,36 @@ namespace AppDirectorioWeb.Controllers
 
                     if (String.IsNullOrEmpty(ReturnUrl))
                     {
-                        return RedirectToAction("Index", "Home", model);
+                        return RedirectToAction("Index", "Home");
                     }
                     return LocalRedirect(ReturnUrl);
+                }
+
+                if (response.MessageResponseCode == ResponseViewModel.MessageCode.IncorrectPassword || response.MessageResponseCode == ResponseViewModel.MessageCode.UserNotExist || response.MessageResponseCode == ResponseViewModel.MessageCode.InvalidInformation)
+                {
+                    ViewData["MessageErrorLogin"] = "Email o password inválidos";
+                }
+
+                if (response.MessageResponseCode == ResponseViewModel.MessageCode.EmailNotConfirmed)
+                {
+                    ViewData["MessageErrorLogin"] = "Por favor revise su correo y confirme su cuenta para poder ingresar";
+                }
+                if (response.MessageResponseCode == ResponseViewModel.MessageCode.Failed)
+                {
+                    ViewData["MessageErrorLogin"] = "Ha ocurrido un error.";
                 }
             }
 
             return View(model);
+        }
+
+        // GET: /Account/Register
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register()
+        {
+           
+            return View();
         }
 
         public async Task<IActionResult> Logout()
