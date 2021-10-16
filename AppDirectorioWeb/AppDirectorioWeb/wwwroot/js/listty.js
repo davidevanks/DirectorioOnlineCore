@@ -7,7 +7,9 @@
   });
 
   /*======== 1. MENUZORD ========*/
-  var menuzord = $('#menuzord');
+    var menuzord = $('#menuzord');
+    console.log('menun');
+    console.log(menuzord);
   if (menuzord.length != 0){
     menuzord.menuzord({
       indicatorFirstLevel: '',

@@ -8,6 +8,7 @@ using Models.Models.Identity.AccountViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -43,10 +44,12 @@ namespace AppDirectorioWeb.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
-            ViewData["ReturnUrl"] = returnUrl;
+
+            //returnUrl = context.Result;
+            ReturnUrl ??= Url.Content("~/");
+            ViewData["ReturnUrl"] = ReturnUrl;
             if (ModelState.IsValid)
             {
                 var response = await _backendHelper.PostAsync<ResponseViewModel>("/api/Account/api/Login", model);
@@ -56,11 +59,22 @@ namespace AppDirectorioWeb.Controllers
                     var token = _decode.DecodeToken(response.Token.Token);
                     int expiration = Convert.ToInt32(token.Claims.First(c => c.Type == "DurationToken").Value);
                     HttpContext.Session.SetString("Token", response.Token.Token);
-                    return LocalRedirect(returnUrl);
+
+                    if (String.IsNullOrEmpty(ReturnUrl))
+                    {
+                        return RedirectToAction("Index", "Home", model);
+                    }
+                    return LocalRedirect(ReturnUrl);
                 }
             }
 
             return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("~/Home/Index");
         }
 
         #endregion Public Methods

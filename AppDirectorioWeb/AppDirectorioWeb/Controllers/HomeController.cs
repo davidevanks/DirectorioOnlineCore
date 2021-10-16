@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using AppDirectorioWeb.Utiles.CustomAttributes;
 using AppDirectorioWeb.Utiles.Jwt;
 using Microsoft.AspNetCore.Http;
+using Models.Models.Identity.AccountViewModels;
 
 namespace AppDirectorioWeb.Controllers
 {
