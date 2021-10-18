@@ -4,29 +4,33 @@
 @{
     var isAuthenticated = Context.User.Identity.IsAuthenticated;
     var isAdmin = User.Identity.HavePermission(Roles.Admin);
-    var isPlanMiPyme= User.Identity.HavePermission(Roles.PlanMiPyme);
-    var isPlanTrabajadorAutonomo = User.Identity.HavePermission(Roles.PlanTrabajadorAutonomo);
+    var isBrujulaBasica = User.Identity.HavePermission(Roles.BrujulaBasica);
+    var isBrujulaInicial = User.Identity.HavePermission(Roles.BrujulaInicial);
+    var isBrujulaPremium = User.Identity.HavePermission(Roles.BrujulaPremium);
     var isConsumidor = User.Identity.HavePermission(Roles.Consumidor);
-
     string roleName="";
 
     if(isAdmin)
     {
         roleName = Roles.Admin;
     }
-    if(isPlanMiPyme)
+    if(isBrujulaBasica)
     {
-        roleName = Roles.PlanMiPyme;
+        roleName = Roles.BrujulaBasica;
     }
-    if(isPlanTrabajadorAutonomo)
+    if(isBrujulaInicial)
     {
-        roleName = Roles.PlanTrabajadorAutonomo;
+        roleName = Roles.BrujulaInicial;
     }
     if(isConsumidor)
     {
         roleName = Roles.Consumidor;
     }
-   
+    if(isBrujulaPremium)
+    {
+        roleName = Roles.BrujulaPremium;
+    }
+
 
 }
 <!DOCTYPE html>
@@ -114,7 +118,7 @@
                             </div>
                         </div>
                     }
-                    @if (isAdmin || isPlanMiPyme || isPlanTrabajadorAutonomo || !isAuthenticated)
+                    @if (isAdmin || isBrujulaBasica || isBrujulaInicial|| isBrujulaPremium || !isAuthenticated)
                     {
                         <div class="float-right btn-wrapper">
                             <a  class="btn btn-outline-primary" href="add-listings.html">+ <span>Agrega tu negocio</span></a>
@@ -129,7 +133,7 @@
                                 <a asp-controller="Home" asp-action="Privacy">Inicio</a>
                             </li>
                             <li>
-                                <a >DashBoard</a>
+                                <a href="javascript:0">DashBoard</a>
                             </li>
                             <li class="">
                                 <a href="javascript:0">Administración</a>
@@ -148,9 +152,9 @@
                                     </li>
                                 </ul>
                             </li>
-                      
+
                         }
-                        else if (isPlanMiPyme || isPlanTrabajadorAutonomo)
+                        else if (isBrujulaBasica || isBrujulaInicial || isBrujulaPremium)
                         {
                             <li>
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
@@ -169,7 +173,7 @@
                                 <a href="javascript:0">¿Qué es Listty?</a>
                             </li>
                           
-                            <li class="">
+                            @*<li class="">
                                 <a href="javascript:0">Mi Panel</a>
                                 <ul class="dropdown">
                                     <li class="">
@@ -180,7 +184,7 @@
                                     </li>
 
                                 </ul>
-                            </li>
+                            </li>*@
                         }
                         else
                         {

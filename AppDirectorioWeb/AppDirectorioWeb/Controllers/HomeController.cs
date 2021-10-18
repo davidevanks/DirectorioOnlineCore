@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using ModelApp.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Models.Models;
+using Models.Models.Identity.AccountViewModels;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -21,7 +23,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly IDecode _decode;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<HomeController> _logger;
-
+        private readonly string _backendApiUrlSeguridad;
         #endregion Private Fields
 
         #region Public Constructors
@@ -33,6 +35,7 @@ namespace AppDirectorioWeb.Controllers
             _decode = decode;
             _backendHelper = backendHelper;
             _backendApiUrlNegocio = configuration["BackendApiUrlNegocio"];
+            _backendApiUrlSeguridad = configuration["BackendApiUrlSeguridad"];
         }
 
         #endregion Public Constructors
@@ -46,9 +49,24 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //remover en produccion
+            var JWToken = HttpContext.Session.GetString("Token");
+            if (string.IsNullOrEmpty(JWToken))
+            {
+                LoginViewModel model = new LoginViewModel();
+                model.Email = "davidevanks@gmail.com";
+                model.Password = "12345678";
+                var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad + "/api/Account/api/Login", model);
+                HttpContext.Session.SetString("Token", response.Token.Token);
+                return RedirectToAction("Index", "Home");
+            }
+           
+            
+            //-----------remover en prod
             return View();
+           
         }
 
         //[Authorize(Roles.Admin)]
@@ -56,7 +74,7 @@ namespace AppDirectorioWeb.Controllers
         {
             string url = _backendApiUrlNegocio + "/api/CatCatalogo/api/GetAllCatalogo";
 
-            string Role = GetRole();
+         
             var JWToken = HttpContext.Session.GetString("Token");
             var test = await _backendHelper.GetAsync<IEnumerable<CatCatalogosViewModel>>(url, JWToken);
             return View();
@@ -66,18 +84,7 @@ namespace AppDirectorioWeb.Controllers
 
         #region Private Methods
 
-        private string GetRole()
-        {
-            if (this.HavePermission(Roles.Admin))
-                return Roles.Admin;
-            if (this.HavePermission(Roles.PlanMiPyme))
-                return Roles.PlanMiPyme;
-            if (this.HavePermission(Roles.PlanEmpresarial))
-                return Roles.PlanEmpresarial;
-            if (this.HavePermission(Roles.PlanTrabajadorAutonomo))
-                return Roles.PlanTrabajadorAutonomo;
-            return null;
-        }
+       
 
         #endregion Private Methods
     }
