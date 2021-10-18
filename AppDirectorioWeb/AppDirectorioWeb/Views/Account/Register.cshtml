@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var isBussines = Convert.ToInt32(ViewData["IsBussines"]);
 }
 <section class="py-7 py-md-10 bg-light height100vh">
     <div class="container">
@@ -17,26 +18,29 @@
                     </p>
 
                     <form class="py-7" action="#">
-
-                        <div class="bg-light p-5 mb-8 rounded">
-                            <h3 class="h4 font-weight-normal mb-4">suscripción</h3>
-                            <div class="row justify-content-between">
-                                <div class="col-md-6">
-                                    <div class="select-bg-transparent select-border w-100">
-                                        <select class="select-location">
-                                            <option>Free</option>
-                                            <option>Premium-119 USD/YEAR</option>
-                                            <option>Lifetime 299 USD/YEAR</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="d-flex justify-content-md-end">
-                                        <a class="btn btn-link pl-0" href="pricing-table.html">Ver detalle de los planes y precios</a>
-                                    </div>
-                                </div>
-                            </div>
+                        @if (isBussines==1)
+                        {
+                            <div class="bg-light p-5 mb-8 rounded">
+                <h3 class="h4 font-weight-normal mb-4">suscripción</h3>
+                <div class="row justify-content-between">
+                    <div class="col-md-6">
+                        <div class="select-bg-transparent select-border w-100">
+                            <select class="select-location">
+                                <option>Free</option>
+                                <option>Premium-119 USD/YEAR</option>
+                                <option>Lifetime 299 USD/YEAR</option>
+                            </select>
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-md-end">
+                            <a class="btn btn-link pl-0" href="pricing-table.html">Ver detalle de los planes y precios</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        }
+
 
                         <h3 class="h4 font-weight-normal mb-4">Información de cuenta</h3>
                         <div class="row">
@@ -44,7 +48,7 @@
                                 <label for="inputtext">Nombre*</label>
                                 <input type="text" class="form-control" placeholder="Ej: Peter Pevensie" required>
                             </div>
-                           
+
                         </div>
                         <div class="form-group mb-8">
                             <label for="inputAddress">Dirección Email*</label>
@@ -55,28 +59,38 @@
                                 <label for="inputPassword">Contraseña*</label>
                                 <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>
                             </div>
-                          
+
                         </div>
 
-                   
+
 
                         @*<h3 class="h4 font-weight-normal mb-4 mt-7">Security Control</h3>*@
                         @*<div class="form-group mb-7">
-                            <label for="usernames" class="control-label">
-                                Confirm that you are human*
-                            </label> <br>
-                            <img src="assets/img/business/recaptcha.jpg" data-src="assets/img/business/recaptcha.jpg" alt="Image captcha" class="img-fluid lazyestload">
-                        </div>*@
+            <label for="usernames" class="control-label">
+                Confirm that you are human*
+            </label> <br>
+            <img src="assets/img/business/recaptcha.jpg" data-src="assets/img/business/recaptcha.jpg" alt="Image captcha" class="img-fluid lazyestload">
+        </div>*@
 
                         <div class="form-group mb-6">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox">
-                                    Estoy de acuerdo con los <a href="terms-of-services.html">Terminos de uso</a> &amp; <a href="#">Política de privacidad</a>. 
+                                    Estoy de acuerdo con los <a href="terms-of-services.html">Terminos de uso</a> &amp; <a href="#">Política de privacidad</a>.
                                 </label>
                             </div>
                         </div>
-
+                    @if (isBussines==0)
+                    {
+                        <div class="form-group mb-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                    Acepto recibir mensajes sobre promociones y servicios, puedes desuscribirte cuando quieras.
+                                </label>
+                            </div>
+                        </div>
+                    }
                         <button type="submit" class="btn btn-primary"> Crear cuenta </button>
 
                     </form>

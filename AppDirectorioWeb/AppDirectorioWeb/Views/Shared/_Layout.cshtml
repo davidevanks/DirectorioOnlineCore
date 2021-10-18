@@ -117,16 +117,16 @@
                     @if (isAdmin || isPlanMiPyme || isPlanTrabajadorAutonomo || !isAuthenticated)
                     {
                         <div class="float-right btn-wrapper">
-                            <a class="btn btn-outline-primary" href="add-listings.html">+ <span>Agrega tu negocio</span></a>
+                            <a  class="btn btn-outline-primary" href="add-listings.html">+ <span>Agrega tu negocio</span></a>
                         </div>
                     }
                    
                     <ul class="menuzord-menu menuzord-right">
-
+                       
                         @if (isAdmin)
                         {
                             <li>
-                                <a asp-controller="Home" asp-action="Index">Inicio</a>
+                                <a asp-controller="Home" asp-action="Privacy">Inicio</a>
                             </li>
                             <li>
                                 <a >DashBoard</a>
@@ -185,7 +185,7 @@
                         else
                         {
                             <li>
-                                <a asp-controller="Home" asp-action="Index">Inicio</a>
+                                <a asp-controller="Home" asp-action="Privacy">Inicio</a>
                             </li>
                             <li class="">
                                 <a href="javascript:0">¿Qué es Listty?</a>
@@ -196,7 +196,7 @@
                         @if (!isAuthenticated)
                         {
                             <li class="">
-                                <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                                <a  asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
 
                             </li>
                         }

@@ -48,8 +48,16 @@
                         </form>
                     </div>
                     <div class="card-footer bg-transparent text-center py-3">
-                        <p class="mb-0">No te has registrado aún? <a asp-controller="Account" asp-action="Register" class="link"><strong>Registrate</strong></a></p>
-                    </div>
+                        <p class="mb-0">No te has registrado aún? <strong>Registrate</strong></p>
+                      
+                          
+                            <a asp-route-IsBussines="0" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Consumidores</a>
+                            <p style="margin-bottom: -0.1em;">Ó</p>
+
+                   
+                        <a asp-route-IsBussines="1" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Pymes/Negocios</a>
+
+                        </div>
                 </div>
         
             </div>
