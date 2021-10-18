@@ -18,7 +18,7 @@
                         <h2 class="text-white mb-0 h4">Inicia sesión</h2>
                     </div>
                     <div class="card-body px-7 pt-7 pb-0">
-                        <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@returnUrl" method="post" class="form-horizontal">
+                        <form asp-controller="Account" asp-action="Login" asp-route-ReturnUrl="@returnUrl" method="post" class="form-horizontal">
                             <div class="form-group mb-7">
                                 <label for="exampleInputText">Email*</label>
                                 <input asp-for="Email" type="text" class="form-control" aria-describedby="emailHelp" required>
@@ -28,18 +28,36 @@
                                 <label for="exampleInputPassword1">Contraseña*</label>
                                 <input asp-for="Password" type="password" class="form-control" required>
                                 <em>Ingresa tu contraseña.</em>
+                                @if (ViewData["MessageErrorLogin"]!=null)
+                                {
+                                    if (!String.IsNullOrEmpty(ViewData["MessageErrorLogin"].ToString()))
+                                    {
+                                        <br />
+                                        <span class="text-red">@ViewData["MessageErrorLogin"].ToString()</span>
+                                    }
+                                }
+                                
                             </div>
                             <div class="form-group d-flex justify-content-between align-items-center mb-7">
                                 <button type="submit" class="btn btn-outline-primary text-uppercase">
                                     Ingresar
                                 </button>
                                 <a href="#FogotPassword">Olvidaste tu contraseña?</a>
+                             
                             </div>
                         </form>
                     </div>
                     <div class="card-footer bg-transparent text-center py-3">
-                        <p class="mb-0">No te has registrado aún? <a href="sign-up.html" class="link">Registrate</a></p>
-                    </div>
+                        <p class="mb-0">No te has registrado aún? <strong>Registrate</strong></p>
+                      
+                          
+                            <a asp-route-IsBussines="0" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Consumidores</a>
+                            <p style="margin-bottom: -0.1em;">Ó</p>
+
+                   
+                        <a asp-route-IsBussines="1" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Pymes/Negocios</a>
+
+                        </div>
                 </div>
         
             </div>

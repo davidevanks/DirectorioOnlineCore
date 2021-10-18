@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 
 namespace AppDirectorioWeb.Utiles.CustomAttributes
@@ -46,7 +47,9 @@ namespace AppDirectorioWeb.Utiles.CustomAttributes
                 foreach (var item in _claim)
                 {
                     if (context.HttpContext.User.HasClaim(item, item))
+                    {
                         flagClaim = true;
+                    }
                 }
                 if (!flagClaim)
                 {
@@ -55,7 +58,15 @@ namespace AppDirectorioWeb.Utiles.CustomAttributes
             }
             else
             {
-                context.Result = new RedirectResult("~/Account/Login");
+                context.Result = new RedirectToRouteResult(
+                    new RouteValueDictionary(
+                        new
+                        {
+                            controller = "Account",
+                            action = "Login",
+                            area = "",
+                            ReturnUrl = context.HttpContext.Request.Path
+                        }));
             }
             return;
         }

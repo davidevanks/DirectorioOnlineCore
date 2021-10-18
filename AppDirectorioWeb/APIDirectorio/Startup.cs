@@ -63,6 +63,7 @@ namespace APIDirectorio
             var psqlConConfig = new PsqlConfiguration(Configuration.GetConnectionString("PsqlConnectionStrings"));
             services.AddSingleton(psqlConConfig);
             services.AddScoped<ICatCatalogoRepository, CatCatalogoRepository>();
+            services.AddScoped<IManageRolRepository, ManageRolRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

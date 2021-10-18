@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using AppDirectorioWeb.RequestProvider.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using AppDirectorioWeb.RequestProvider.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace AppDirectorioWeb.RequestProvider.Implementation
 {
@@ -16,8 +15,13 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
     /// </summary>
     public class BackendHelper : IBackendHelper
     {
-        private readonly string _backendApiUrl;
+        #region Private Fields
+
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         /// <summary>
         /// Crea una instancia del objeto
@@ -25,25 +29,26 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
         /// <param name="configuration">Servicio de configuracion (appsettings)</param>
         /// <param name="httpContextAccessor">Servicio httpContext</param>
         public BackendHelper(
-            IConfiguration configuration,
+
             IHttpContextAccessor httpContextAccessor)
         {
-            _backendApiUrl = configuration["BackendApiUrl"];
             _httpContextAccessor = httpContextAccessor;
         }
 
+        #endregion Public Constructors
+
         #region Post
+
         /// <summary>
-        /// Permite realizar una Peticion tipo POST 
+        /// Permite realizar una Peticion tipo POST
         /// </summary>
         /// <typeparam name="TResult">El tipo a deserealizar</typeparam>
         /// <param name="uri">Url a donde enviar la peticion</param>
         /// <param name="data">Data necesaria para peticion</param>
+        ///    <param name="JWToken">Token opcional autorización</param>
         /// <returns>La respuesta deseralizada segun el tipo indicado</returns>
-        public async Task<TResult> PostAsync<TResult>(string uri, object data)
+        public async Task<TResult> PostAsync<TResult>(string uri, object data, string JWToken = null)
         {
-            uri = _backendApiUrl + uri;
-
             //HttpClient httpClient = new HttpClient();
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
@@ -53,10 +58,10 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
 
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-
-  
-
+            if (!String.IsNullOrEmpty(JWToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWToken);
+            }
             HttpResponseMessage response = await httpClient.PostAsync(uri, content);
 
             TResult result = await ManejarRespuesta<TResult>(response);
@@ -70,10 +75,10 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
         /// <typeparam name="TResult">El tipo a deserealizar</typeparam>
         /// <param name="uri">Url a donde enviar la peticion</param>
         /// <param name="data">Data necesaria para peticion</param>
+        ///  /// <param name="JWToken">Token opcional autorización</param>
         /// <returns>La respuesta deseralizada segun el tipo indicado</returns>
-        public async Task<TResult> PostTokenAsync<TResult>(string uri, object data)
+        public async Task<TResult> PostTokenAsync<TResult>(string uri, object data, string JWToken = null)
         {
-            uri = _backendApiUrl + uri;
             var clientToken = ObtenerAuthToken();
 
             HttpClient httpClient = new HttpClient();
@@ -82,26 +87,39 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
 
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            if (!String.IsNullOrEmpty(JWToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWToken);
+            }
             HttpResponseMessage response = await httpClient.PostAsync(uri, content);
 
             TResult result = await ManejarRespuesta<TResult>(response);
 
             return result;
         }
-        #endregion POST
+
+        #endregion Post
 
         #region GET
+
         /// <summary>
         /// Permite realizar una Peticion tipo Get
         /// </summary>
         /// <typeparam name="TResult">El tipo a deserealizar</typeparam>
         /// <param name="uri">Url a donde enviar la peticion</param>
-        public async Task<TResult> GetAsync<TResult>(string uri)
+        ///  <param name="JWToken">token autorización</param>
+        public async Task<TResult> GetAsync<TResult>(string uri, string JWToken = null)
         {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
-            uri = _backendApiUrl + uri;
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient = new HttpClient(clientHandler);
+
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            if (!String.IsNullOrEmpty(JWToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWToken);
+            }
 
             HttpResponseMessage response = await httpClient.GetAsync(uri);
             TResult result = await ManejarRespuesta<TResult>(response);
@@ -116,10 +134,10 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
         /// <param name="uri">Url a donde enviar la peticion</param>
         public async Task<TResult> GetTokenAsync<TResult>(string uri)
         {
-            uri = _backendApiUrl + uri;
             var clientToken = ObtenerAuthToken();
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", clientToken);
 
             HttpResponseMessage response = await httpClient.GetAsync(uri);
@@ -127,6 +145,7 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
 
             return result;
         }
+
         #endregion GET
 
         #region Put
@@ -137,16 +156,19 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
         /// <typeparam name="TResult">El tipo a deserealizar</typeparam>
         /// <param name="uri">Url a donde enviar la peticion</param>
         /// <param name="data">Data necesaria para peticion</param>
+        ///   <param name="JWToken">Data necesaria para peticion</param>
         /// <returns>La respuesta deseralizada segun el tipo indicado</returns>
-        public async Task<TResult> PutAsync<TResult>(string uri, object data)
+        public async Task<TResult> PutAsync<TResult>(string uri, object data, string JWToken = null)
         {
-            uri = _backendApiUrl + uri;
-
             HttpClient httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             var content = new StringContent(JsonConvert.SerializeObject(data));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            if (!String.IsNullOrEmpty(JWToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWToken);
+            }
             HttpResponseMessage response = await httpClient.PutAsync(uri, content);
 
             TResult result = await ManejarRespuesta<TResult>(response);
@@ -160,20 +182,22 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
         /// <typeparam name="TResult">El tipo a deserealizar</typeparam>
         /// <param name="uri">Url a donde enviar la peticion</param>
         /// <param name="data">Data necesaria para peticion</param>
+        ///   <param name="JWToken">Data necesaria para peticion</param>
         /// <returns>La respuesta deseralizada segun el tipo indicado</returns>
-        public async Task<TResult> PutTokenAsync<TResult>(string uri, object data)
+        public async Task<TResult> PutTokenAsync<TResult>(string uri, object data, string JWToken = null)
         {
             try
             {
-                uri = _backendApiUrl + uri;
-
                 var clientToken = ObtenerAuthToken();
                 var httpClient = new HttpClient();
                 var content = new StringContent(JsonConvert.SerializeObject(data));
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", clientToken);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
+                if (!String.IsNullOrEmpty(JWToken))
+                {
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JWToken);
+                }
                 HttpResponseMessage response = await httpClient.PutAsync(uri, content);
 
                 TResult result = await ManejarRespuesta<TResult>(response);
@@ -182,14 +206,13 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
             }
             catch (System.Exception ex)
             {
-
                 throw ex;
             }
-
         }
+
         #endregion Put
 
-        #region Privados   
+        #region Privados
 
         /// <summary>
         /// Metodo que deserealiza el contenido
@@ -230,7 +253,7 @@ namespace AppDirectorioWeb.RequestProvider.Implementation
 
             return null;
         }
-        #endregion Privados
 
+        #endregion Privados
     }
 }
