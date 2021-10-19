@@ -278,6 +278,7 @@ namespace APISeguridadWEB.Controllers
                         //logica para confirmar cuenta
 
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //queda pendiente arreglar problema de toeken
                         var callbackUrl = model.UrlContext + $"?userId={user.Id.ToString()}&code={token}";
                         var testtt = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: model.UrlContext);
                         //falta implementar ennvio de correo con link
