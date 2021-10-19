@@ -122,7 +122,7 @@
                     @if (isAdmin || isBrujulaBasica || isBrujulaInicial|| isBrujulaPremium || !isAuthenticated)
                     {
                         <div class="float-right btn-wrapper">
-                            <a  class="btn btn-outline-primary" href="add-listings.html">+ <span>Agrega tu negocio</span></a>
+                            <a  class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
                         </div>
                     }
                    
