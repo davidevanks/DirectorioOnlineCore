@@ -24,6 +24,15 @@ namespace DataApp.Implementation
 
         #endregion Public Constructors
 
+        #region Protected Methods
+
+        protected NpgsqlConnection dbcon()
+        {
+            return new NpgsqlConnection(_conString.ConString);
+        }
+
+        #endregion Protected Methods
+
         #region Public Methods
 
         public async Task<IEnumerable<CatCatalogosViewModel>> GetAllCatalogos()
@@ -35,15 +44,24 @@ namespace DataApp.Implementation
             return await db.QueryAsync<CatCatalogosViewModel>(sql, new { });
         }
 
-        #endregion Public Methods
-
-        #region Protected Methods
-
-        protected NpgsqlConnection dbcon()
+        public async Task<IEnumerable<CatCatalogosViewModel>> GetCatalogosxNombrePadre(string NombrePadre)
         {
-            return new NpgsqlConnection(_conString.ConString);
+            var db = dbcon();
+            var sql = "select * from public.\"CatCatalogos\" where \"IdPadre\" = (select \"Id\" from public.\"CatCatalogos\" where \"Nombre\" = '"+NombrePadre+"')";
+            var a =  await db.QueryAsync<CatCatalogosViewModel>(sql, new {  });
+            return a;
         }
 
-        #endregion Protected Methods
+        public async Task<IEnumerable<CatCatalogosViewModel>> GetCatalogosxId(int id)
+        {
+            var db = dbcon();
+            var sql = "select * from public.\"CatCatalogos\" where \"IdPadre\" = " + id + "";
+            var a = await db.QueryAsync<CatCatalogosViewModel>(sql, new { });
+            return a;
+        }
+
+        #endregion Public Methods
+
+
     }
 }
