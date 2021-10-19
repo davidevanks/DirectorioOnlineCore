@@ -8,7 +8,7 @@ namespace APIDirectorio.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+   
     public class CatCatalogoController : Controller
     {
         #region Private Fields
@@ -35,11 +35,18 @@ namespace APIDirectorio.Controllers
             return Ok(await _catCatalogoRepository.GetAllCatalogos());
         }
 
-        [HttpGet("NombrePadre")]
+        [HttpGet("GetCatalogosxNombrePadre/{NombrePadre}")]
        
         public async Task<IActionResult> GetCatalogosxNombrePadre(string NombrePadre)
         {
             return Ok(await _catCatalogoRepository.GetCatalogosxNombrePadre(NombrePadre));
+        }
+
+        [HttpGet("GetCatalogosxId/{id}")]
+
+        public async Task<IActionResult> GetCatalogosxId(int id)
+        {
+            return Ok(await _catCatalogoRepository.GetCatalogosxId(id));
         }
 
         #endregion Public Methods

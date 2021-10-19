@@ -52,6 +52,14 @@ namespace DataApp.Implementation
             return a;
         }
 
+        public async Task<IEnumerable<CatCatalogosViewModel>> GetCatalogosxId(int id)
+        {
+            var db = dbcon();
+            var sql = "select * from public.\"CatCatalogos\" where \"IdPadre\" = " + id + "";
+            var a = await db.QueryAsync<CatCatalogosViewModel>(sql, new { });
+            return a;
+        }
+
         #endregion Public Methods
 
 

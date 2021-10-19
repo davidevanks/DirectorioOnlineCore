@@ -11,5 +11,6 @@ namespace DataApp.Interface
     {
         Task<IEnumerable<CatCatalogosViewModel>> GetAllCatalogos();
         Task<IEnumerable<CatCatalogosViewModel>> GetCatalogosxNombrePadre(string NombrePadre);
+        Task<IEnumerable<CatCatalogosViewModel>> GetCatalogosxId(int id);
     }
 }

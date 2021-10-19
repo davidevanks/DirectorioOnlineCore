@@ -82,6 +82,7 @@ namespace AppDirectorioWeb
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
             services.AddScoped<IBackendHelper, BackendHelper>();
+            services.AddScoped<IBackendHelperApp, BackendHelperApp>();
             services.AddScoped<IDecode, Decode>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options =>
