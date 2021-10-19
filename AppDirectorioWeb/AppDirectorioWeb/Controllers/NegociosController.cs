@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using AppDirectorioWeb.Models;
 using AppDirectorioWeb.RequestProvider.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using ModelApp.Dto;
 using ModelApp.Dto.AnuncioInfo;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace AppDirectorioWeb.Controllers
 {
+    [Utiles.CustomAttributes.Authorize(Roles.Admin,Roles.BrujulaBasica,Roles.BrujulaInicial,Roles.BrujulaPremium)]
     public class NegociosController : Controller
     {
         /*private readonly ILogger<HomeController> _logger;*/
@@ -38,7 +40,7 @@ namespace AppDirectorioWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AllowAnonymous]
+  
         public async Task<JsonResult> NegociosNuevo([FromForm] AnuncioInfoCrearDto AnuncioInfoCrearDto)
         {
             AnuncioInfoCrearDto.Activo = true;
