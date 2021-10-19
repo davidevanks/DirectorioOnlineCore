@@ -9,7 +9,7 @@ namespace Models.Models.Identity.AccountViewModels
 
         public bool AcceptTerms { get; set; }
 
-        [Required]
+        
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Text)]
         [Display(Name = "Address")]
@@ -17,10 +17,10 @@ namespace Models.Models.Identity.AccountViewModels
 
         public bool AllowMarketing { get; set; }
 
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare(nameof(Password), ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
+        //[DataType(DataType.Password)]
+        //[Display(Name = "Confirm password")]
+        //[Compare(nameof(Password), ErrorMessage = "The password and confirmation password do not match.")]
+        //public string ConfirmPassword { get; set; }
 
         [Required]
         [EmailAddress]

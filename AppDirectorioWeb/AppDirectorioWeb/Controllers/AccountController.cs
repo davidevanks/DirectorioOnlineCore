@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.Extensions.Configuration;
 using ModelApp.Models;
 
@@ -21,7 +22,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly IBackendHelper _backendHelper;
         private readonly IDecode _decode;
         private readonly string _backendApiUrlSeguridad;
-
+        private readonly string _backendApiUrlNegocio;
         #endregion Private Fields
 
         #region Public Constructors
@@ -31,6 +32,8 @@ namespace AppDirectorioWeb.Controllers
             _backendHelper = backendHelper;
             _decode = decode;
             _backendApiUrlSeguridad= configuration["BackendApiUrlSeguridad"];
+         
+            _backendApiUrlNegocio= configuration["BackendApiUrlNegocio"];
         }
 
         #endregion Public Constructors
@@ -96,12 +99,61 @@ namespace AppDirectorioWeb.Controllers
         {
             List<PlanViewModel> lstPlanes = new List<PlanViewModel>();
             ViewData["IsBussines"] = IsBussines;
+
             if (IsBussines=="1")
             {
-                lstPlanes= await _backendHelper.GetAsync<List<PlanViewModel>>("/api/Account/api/GetPlans");
+                lstPlanes= await _backendHelper.GetAsync<List<PlanViewModel>>(_backendApiUrlNegocio+"/api/Rol/api/GetPlans");
             }
-      
+
             //hacemos request para mandar a traer los planes disponibles.
+            ViewData["lstPlanes"] = lstPlanes;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model,string isBussines="0")
+        {
+            //falta aplicar validaciones a nivel backend y nivel frontend. solo se implementa funcionalidad básica
+            List<PlanViewModel> lstPlanes = new List<PlanViewModel>();
+            ViewData["IsBussines"] = isBussines;
+     
+            model.UrlContext = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + "/Account/ConfirmEmail";
+            if (ModelState.IsValid)
+            {
+                var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad + "/api/Account/api/RegisterUser", model);
+                
+                if (response.MessageResponseCode==ResponseViewModel.MessageCode.Success)
+                {
+                    return RedirectToAction("RegisterSuccess", "Account");
+                }
+            }
+            if (isBussines == "1")
+            {
+                lstPlanes = await _backendHelper.GetAsync<List<PlanViewModel>>(_backendApiUrlNegocio + "/api/Rol/api/GetPlans");
+            }
+
+            ViewData["lstPlanes"] = lstPlanes;
+            ViewData["MessageError"] = "Ocurrio un error, intentelo de nuevo";
+            return View(model);
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult RegisterSuccess()
+        {
+           
+            return View();
+        }
+
+        // GET: /Account/Register
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+
+            var response = await _backendHelper.GetAsync<ResponseViewModel>(_backendApiUrlSeguridad + $"/api/Account/api/ConfirmEmail?userId={userId}&code={HttpUtility.UrlEncode(code)}");
+            ViewData["MessageResponse"] = response.MessageResponse;
             return View();
         }
 

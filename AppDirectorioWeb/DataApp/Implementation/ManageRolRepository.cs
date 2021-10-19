@@ -22,7 +22,7 @@ namespace DataApp.Implementation
         {
             var db = dbcon();
             var sql = @"
-                        select * from public.""IdentityRole"" where showweb =true;
+                        select * from dbo.""IdentityRole"" where showweb =true;
                         ";
 
             var listPlan= await db.QueryAsync<PlanViewModel>(sql, new { });

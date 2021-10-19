@@ -49,19 +49,20 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             //remover en produccion
-            var JWToken = HttpContext.Session.GetString("Token");
-            if (string.IsNullOrEmpty(JWToken))
-            {
-                LoginViewModel model = new LoginViewModel();
-                model.Email = "davidevanks@gmail.com";
-                model.Password = "12345678";
-                var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad + "/api/Account/api/Login", model);
-                HttpContext.Session.SetString("Token", response.Token.Token);
-                return RedirectToAction("Index", "Home");
-            }
+            //var JWToken = HttpContext.Session.GetString("Token");
+            //if (string.IsNullOrEmpty(JWToken))
+            //{
+            //    LoginViewModel model = new LoginViewModel();
+            //    model.Email = "davidevanks@gmail.com";
+            //    model.Password = "12345678";
+            //    var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad + "/api/Account/api/Login", model);
+            //    HttpContext.Session.SetString("Token", response.Token.Token);
+            //    return RedirectToAction("Index", "Home");
+            //}
            
             
             //-----------remover en prod

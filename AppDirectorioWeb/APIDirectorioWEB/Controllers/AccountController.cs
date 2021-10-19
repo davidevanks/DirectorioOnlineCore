@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Http;
 
 namespace APISeguridadWEB.Controllers
@@ -91,6 +92,7 @@ namespace APISeguridadWEB.Controllers
         [Route("api/ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
+            
             if (userId == null || code == null)
             {
                 _response.MessageResponse = "Usuario/codigo inválidos!";
@@ -106,10 +108,10 @@ namespace APISeguridadWEB.Controllers
                 }
                 else
                 {
-                    _response.IdentityResult = await _userManager.ConfirmEmailAsync(user, code);
+                    _response.IdentityResult = await _userManager.ConfirmEmailAsync(user, HttpUtility.UrlEncode(code) );
                     if (_response.IdentityResult.Succeeded)
                     {
-                        _response.MessageResponse = "El correo se confirmó con éxito, puede hacer login";
+                        _response.MessageResponse = "El correo se confirmó con éxito, puede hacer login!";
                         _response.MessageResponseCode = ResponseViewModel.MessageCode.EmailConfirmedSuccess;
                     }
                     else
@@ -191,8 +193,8 @@ namespace APISeguridadWEB.Controllers
                         else if (checkPassword.Succeeded)
                         {
                             var roles= await _userManager.GetRolesAsync(_user);
-                            _user.RoleName = roles.FirstOrDefault();
-                            _response.Token = BuildToken(_user);
+                            string PlanName = roles.FirstOrDefault();
+                            _response.Token = BuildToken(_user, PlanName);
                             _response.MessageResponseCode = ResponseViewModel.MessageCode.Success;
                             _response.MessageResponse = "Login éxitoso!";
                        
@@ -257,7 +259,7 @@ namespace APISeguridadWEB.Controllers
                     FirstName = model.FirstName,
                     UserName = model.Email,
                     Email = model.Email,
-                    LastName = model.LastName,
+                    LastName = model.FirstName,
                     PhoneNumber = model.PhoneNumber,
                     AllowMarketing = model.AllowMarketing,
                     TwoFactorEnabled = model.TwoFactorEnabled,
@@ -276,11 +278,11 @@ namespace APISeguridadWEB.Controllers
                         //logica para confirmar cuenta
 
                         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: model.UrlContext);
-
+                        var callbackUrl = model.UrlContext + $"?userId={user.Id.ToString()}&code={token}";
+                        var testtt = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = token }, protocol: model.UrlContext);
                         //falta implementar ennvio de correo con link
-                        var resulemail = _emailService.SendAccountConfirmationEmail(model.Email, "Confirmación de cuenta - Listy", model, callbackUrl);
-
+                        //var resulemail = _emailService.SendAccountConfirmationEmail(model.Email, "Confirmación de cuenta - Listy", model, callbackUrl);
+                        var resulemail = _emailService.SendAccountConfirmationEmail("davidevanks@gmail.com", "Confirmación de cuenta - Listy", model, callbackUrl);
                         if (resulemail.MessageResponseCode == ResponseViewModel.MessageCode.Success)
                         {
                             _response.IdentityResult = resultRol;
@@ -345,12 +347,12 @@ namespace APISeguridadWEB.Controllers
             return Ok(_response);
         }
 
-        private TokenViewModel BuildToken(DapperIdentityUser userInfo)
+        private TokenViewModel BuildToken(DapperIdentityUser userInfo,string PlanName)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.UniqueName, userInfo.UserName),
-                new Claim(userInfo.RoleName, userInfo.RoleName),
+                new Claim(PlanName, PlanName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("DurationToken", "30"), //valor en días
                 new Claim("UserId", userInfo.Id.ToString())
