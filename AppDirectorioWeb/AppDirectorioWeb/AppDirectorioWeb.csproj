@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataApp\DataApp.csproj" />
+    <ProjectReference Include="..\ModelApp\ModelApp.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 

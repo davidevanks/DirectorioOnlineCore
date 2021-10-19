@@ -5,10 +5,11 @@
         #region Public Fields
 
         public const string Admin = "Admin";
-        public const string PlanEmpresarial = "Plan Empresarial";
-        public const string PlanMiPyme = "PlanMiPyme";
-        public const string PlanTrabajadorAutonomo = "Plan Trabajador Autonomo";
-
+        public const string BrujulaInicial = "Brújula Inicial";
+        public const string BrujulaBasica = "Brújula Básica";
+        public const string BrujulaPremium = "Brújula Premium";
+        public const string Consumidor = "Consumidor";
+      
         #endregion Public Fields
     }
 }

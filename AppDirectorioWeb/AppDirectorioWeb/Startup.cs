@@ -40,6 +40,7 @@ namespace AppDirectorioWeb
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+   
             }
             else
             {
@@ -54,7 +55,7 @@ namespace AppDirectorioWeb
 
             app.UseSession();
 
-            //Add JWToken to all incoming HTTP Request Header - JRozario
+            //Add JWToken to all incoming HTTP Request Header - 
             app.Use(async (context, next) =>
             {
                 var JWToken = context.Session.GetString("Token");
