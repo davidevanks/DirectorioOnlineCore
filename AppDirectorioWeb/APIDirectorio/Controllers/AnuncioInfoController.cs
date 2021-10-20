@@ -60,6 +60,13 @@ namespace APIDirectorio.Controllers
             return Ok(await _AnuncioInfoRepository.DeleteAnuncioInfo(id));
         }
 
+        [HttpPost]
+        [Route("api/GetAllAnuncioBySearch")]
+        public async Task<IActionResult> GetAllAnuncioBySearch(SearchBussinesRequest model)
+        {
+            return Ok(await _AnuncioInfoRepository.GetAllAnuncioBySearch(model));
+        }
+
         #endregion Public Methods
     }
 }

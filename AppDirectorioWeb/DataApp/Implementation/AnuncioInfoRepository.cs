@@ -129,6 +129,14 @@ namespace DataApp.Implementation
             var sql = "UPDATE public.\"AnuncioInfo\" SET \"Activo\" = '0'  where \"Id\" = " + ID;
             return await db.ExecuteAsync(sql, new { });
         }
+
+        public async Task<IEnumerable<AnuncioInfoConsultarDto>> GetAllAnuncioBySearch(SearchBussinesRequest search)
+        {
+            var db = dbcon();
+            var sql = "SELECT * FROM public.\"AnuncioInfo\"  WHERE ST_DWithin(geog, ST_MakePoint("+search.Longitud.ToString()+","+search.Latitud.ToString()+ "), 5000) and \"NombreNegocio\" like '%"+search.Search+ "%' ORDER BY geog <-> ST_MakePoint(" + search.Longitud.ToString() + "," + search.Latitud.ToString() + ")";
+            return await db.QueryAsync<AnuncioInfoConsultarDto>(sql, new { });
+        }
+
         #endregion Public Methods
 
 

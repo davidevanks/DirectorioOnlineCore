@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using ModelApp.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ModelApp.Dto.AnuncioInfo;
 using Models.Models;
 using Models.Models.Identity.AccountViewModels;
 
@@ -85,7 +86,12 @@ namespace AppDirectorioWeb.Controllers
 
         #region Private Methods
 
+        public IActionResult SeachBussines(SearchBussinesRequest model)
+        {
        
+            return View();
+
+        }
 
         #endregion Private Methods
     }

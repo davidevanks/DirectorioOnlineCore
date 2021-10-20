@@ -14,5 +14,7 @@ namespace DataApp.Interface
         Task<int> InsertAnuncioInfo(AnuncioInfoCrearDto AnuncioInfoCrearDto);
         Task<int> UpdateAnuncioInfo(AnuncioInfoModificarDto AnuncioInfoCrearDto);
         Task<int> DeleteAnuncioInfo(int ID);
+
+        Task<IEnumerable<AnuncioInfoConsultarDto>> GetAllAnuncioBySearch( SearchBussinesRequest search);
     }
 }
