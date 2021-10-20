@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ModelApp.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ModelApp.Dto.AnuncioInfo;
 using Models.Models;
@@ -86,10 +87,13 @@ namespace AppDirectorioWeb.Controllers
 
         #region Private Methods
 
-        public IActionResult SeachBussines(SearchBussinesRequest model)
+        public async Task<IActionResult> SeachBussines(SearchBussinesRequest model)
         {
-       
-            return View();
+            string url = _backendApiUrlNegocio + "/api/AnuncioInfo/api/GetAllAnuncioBySearch";
+            var response = await _backendHelper.PostAsync<IEnumerable<AnuncioInfoConsultarDto>>(url, model);
+            ViewData["Bussines"] = response.ToList();
+      
+            return View(model);
 
         }
 

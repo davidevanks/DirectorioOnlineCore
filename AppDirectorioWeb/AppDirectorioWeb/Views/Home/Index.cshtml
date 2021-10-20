@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model ModelApp.Dto.AnuncioInfo.SearchBussinesRequest;
 <section class="banner" style="        background-image: url(../img/background/tiendas_comercio_ventas_1.jpg);">
     <div class="container">
         <div class="row text-center align-items-center justify-content-center" style="height:440px;">
@@ -17,22 +18,22 @@
 
                 <!-- Search Box -->
                 <div class="search-box-2">
-                    <form class="row g-2 justify-content-center" asp-controller="Home" asp-action="SeachBussines" method="GET" >
+                    <form class="row g-2 justify-content-center" asp-controller="Home" asp-action="SeachBussines" method="GET">
 
                         <div class="form-group col-md-5 col-lg-4 mb-0">
                             <div class="input-group mb-2">
                                 <div class="input-group-text">Buscar</div>
-                                <input type="text" class="form-control" placeholder="Que estas buscando?">
+                                <input asp-for="Search" type="text" class="form-control" placeholder="Que estas buscando?">
                             </div>
                         </div>
 
                         <div class="form-group prepend-append col-md-5 col-lg-4 mb-0">
                             <div class="input-group mb-2">
                                 <div class="input-group-text">Cerca de</div>
-                                <input type="text" id="txtplaces" class="form-control" placeholder="Ubicación">
+                                <input asp-for="Address" type="text" id="txtplaces" class="form-control" placeholder="Ubicación">
                                 @*<span  class="input-group-text bg-white ps-1" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Usar mi ubicación">
-                                    <i class="icon-listy icon-target" aria-hidden="true"></i>
-                                </span>*@
+                                        <i class="icon-listy icon-target" aria-hidden="true"></i>
+                                    </span>*@
                                 <button onclick="geolocate()" type="button" class="input-group-text bg-white ps-1" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Usar mi ubicación">
 
                                     <i class="icon-listy icon-target" aria-hidden="true"></i>
@@ -41,17 +42,19 @@
                         </div>
 
                         <div class="form-group col-md-3 col-lg-2 mb-0">
-                            <button  type="submit" class="btn btn-primary w-100">
+                            <button type="submit" class="btn btn-primary w-100">
                                 Buscar
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </button>
                         </div>
-
+                        <input asp-for="Longitud" type="hidden" id="lonF" />
+                        <input asp-for="Latitud" type="hidden" id="latF" />
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 </section>
 
 
@@ -70,7 +73,9 @@
             var msg = "Address: " + address;
             msg += "\nLatitude: " + latitude;
             msg += "\nLongitude: " + longitude;
-      
+
+            document.getElementById('lonF').value = longitude;
+            document.getElementById('latF').value = latitude;
         });
     });
 
@@ -79,16 +84,18 @@
             navigator.geolocation.getCurrentPosition(function (position) {
                 var geolocation = new google.maps.LatLng(
                     position.coords.latitude, position.coords.longitude);
-                console.log(position);
-              
+                document.getElementById('lonF').value = position.coords.longitude;
+                document.getElementById('latF').value = position.coords.latitude;
+
                 $.ajax({
                     url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&key=AIzaSyDpu1uIOHN3nx3y6dzStDmtSZD83-Jebx0&sensor=true',
-                    success: function(data) {
-                        document.getElementById('txtplaces').value = data.results[1].formatted_address;
-                       
+                    success: function (data) {
+                        document.getElementById('txtplaces').value = data.results[2].formatted_address;
+                   
+
                     }
                 });
-                
+
             });
         }
     }
