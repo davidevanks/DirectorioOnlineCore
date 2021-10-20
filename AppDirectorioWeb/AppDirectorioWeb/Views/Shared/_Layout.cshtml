@@ -91,43 +91,44 @@
                     @if (isAuthenticated)
                     {
                         <div class="menu-right">
-                
+
                             <div class="avatar">
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
-                                    <img class="avatar-img" src="~/img/user/avatar-01.png"  alt="Image">
-                                    <span class="avatar-name">@User.Identity.Name
+                                    <img class="avatar-img" src="~/img/user/avatar-01.png" alt="Image">
+                                    <span class="avatar-name">
+                                        @User.Identity.Name
                                         <span class="small">@roleName</span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a  class="d-flex flex-wrap align-items-center" >
+                                        <a class="d-flex flex-wrap align-items-center">
                                             <i class="fa fa-user mr-2" aria-hidden="true"></i>
                                             <span>Mi perfil</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a asp-controller="Account" asp-action="Logout" class="d-flex flex-wrap align-items-center" >
+                                        <a asp-controller="Account" asp-action="Logout" class="d-flex flex-wrap align-items-center">
                                             <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i>
                                             <span>Cerrar Sesión</span>
                                         </a>
                                     </li>
-                    
-                    
+
+
                                 </ul>
 
                             </div>
                         </div>
                     }
-                    @if (isAdmin || isBrujulaBasica || isBrujulaInicial|| isBrujulaPremium || !isAuthenticated)
+                    @if (isAdmin || isBrujulaBasica || isBrujulaInicial || isBrujulaPremium || !isAuthenticated)
                     {
                         <div class="float-right btn-wrapper">
-                            <a  class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
+                            <a class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
                         </div>
                     }
-                   
+
                     <ul class="menuzord-menu menuzord-right">
-                       
+
                         @if (isAdmin)
                         {
                             <li>
@@ -173,19 +174,19 @@
                             <li class="">
                                 <a href="javascript:0">¿Qué es Listty?</a>
                             </li>
-                          
-                            @*<li class="">
-                                <a href="javascript:0">Mi Panel</a>
-                                <ul class="dropdown">
-                                    <li class="">
-                                        <a href="javascript:0">Mis favoritos</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="javascript:0">Categorías</a>
-                                    </li>
 
-                                </ul>
-                            </li>*@
+                            @*<li class="">
+                                    <a href="javascript:0">Mi Panel</a>
+                                    <ul class="dropdown">
+                                        <li class="">
+                                            <a href="javascript:0">Mis favoritos</a>
+                                        </li>
+                                        <li class="">
+                                            <a href="javascript:0">Categorías</a>
+                                        </li>
+
+                                    </ul>
+                                </li>*@
                         }
                         else
                         {
@@ -201,7 +202,7 @@
                         @if (!isAuthenticated)
                         {
                             <li class="">
-                                <a  asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                                <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
 
                             </li>
                         }
@@ -336,7 +337,7 @@
     <!-- JAVASCRIPTS -->
     <script src='~/plugins/jquery/jquery-3.4.1.min.js'></script>
     <script src='~/plugins/bootstrap/js/bootstrap.bundle.js'></script>
-    
+
     <script src="~/plugins/menuzord/js/menuzord.js"></script>
 
     <script src="~/js/backend.js"></script>
@@ -362,9 +363,11 @@
     <script src='~/plugins/map/js/rich-marker.js'></script>
     <script src='~/plugins/map/js/infobox_packed.js'></script>
     <script src='~/js/map.js'></script>
-
-
-
+  
+    <script src="~/js/Regexp.min.js"></script>
+    <script src="~/js/format.min.js"></script>
+    <script src="~/js/alerts.min.js"></script>
+    <script src="~/js/form.min.js"></script>
     <script>
         var d = new Date();
         var year = d.getFullYear();

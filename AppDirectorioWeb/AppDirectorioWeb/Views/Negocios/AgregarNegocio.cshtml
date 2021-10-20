@@ -28,13 +28,13 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="listingTitle">Nombre del negocio</label>
-                            <input asp-for="NombreNegocio" type="text" class="form-control" placeholder="Nombre del negocio">
+                            <input asp-for="NombreNegocio" type="text" class="form-control" placeholder="Nombre del negocio" required>
                         </div>
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="exampleFormControlSelect1">Categoria</label>
                             <div class="select-default bg-white">
-                                <select asp-for="IdCategoria" class="form-control" id="IdCategoria">
+                                <select asp-for="IdCategoria" class="form-control" id="IdCategoria" required>
                                     <option value="">Eliga una opción</option>
                                 </select>
                             </div>
@@ -42,7 +42,7 @@
 
                         <div class="form-group col-md-12 mb-6">
                             <label for="discribeTheListing">Descripción del negocio</label>
-                            <textarea asp-for="DescripcionNegocio" class="form-control" rows="6" placeholder="Describa el negocio"></textarea>
+                            <textarea asp-for="DescripcionNegocio" class="form-control" rows="6" placeholder="Describa el negocio" required></textarea>
                         </div>
 
 
@@ -64,7 +64,7 @@
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Pais</label>
                                 <div class="select-default bg-white">
-                                    <select asp-for="IdPais" class="form-control" id="IdPais">
+                                    <select asp-for="IdPais" class="form-control" id="IdPais" required>
                                         <option value="">Eliga una opción</option>
                                     </select>
                                 </div>
@@ -73,7 +73,7 @@
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Departamento</label>
                                 <div class="select-default bg-white">
-                                    <select asp-for="IdDepartamento" class="form-control" id="IdDepartamento">
+                                    <select asp-for="IdDepartamento" class="form-control" id="IdDepartamento" required>
                                         <option value="">Eliga una opción</option>
                                     </select>
                                 </div>
@@ -81,17 +81,17 @@
 
                             <div class="form-group mb-6">
                                 <label for="discribeTheListing">Dirección del negocio</label>
-                                <textarea asp-for="DireccionNegocio" class="form-control" rows="3" placeholder="Dirección del negocio"></textarea>
+                                <textarea asp-for="DireccionNegocio" class="form-control" rows="3" placeholder="Dirección del negocio" required></textarea>
                             </div>
 
                             <div class="form-group mb-6">
                                 <label for="listingPhone">Telefono</label>
-                                <input type="number" asp-for="TelefonoNegocio" class="form-control" placeholder="8888-8888">
+                                <input type="number" asp-for="TelefonoNegocio" class="form-control" maxlength="8" placeholder="88888888" required>
                             </div>
 
                             <div class="form-group mb-6">
                                 <label for="listingPhone">Correo electronico</label>
-                                <input type="email" asp-for="EmailNegocio" class="form-control" placeholder="tucorreo@mail.com">
+                                <input type="email" asp-for="EmailNegocio" class="form-control" placeholder="tucorreo@mail.com" required>
                             </div>
 
 
@@ -101,12 +101,23 @@
 
                         <div class="col-md-6 map-place-search-wrapper">
                             <div class="form-group mb-0 ">
-                                <label for="listingAddress">Selecciona la ubicación de tu negocio</label>
+                                <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
 
                             </div>
+                            <div style=" height: 90%; " class="map-container" id="mapholder"></div>
+                            <div>
 
-                            <div class="map-place-search">
-                                <div id="map-add-edit"></div>
+                                <div class="form-group col-md-6">
+
+                                    <input id="inputlat"  style="visibility:hidden;" type="text" class="form-control" asp-for="Latitud" />
+
+                                </div>
+                                <div class="form-group col-md-6">
+
+                                    <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" asp-for="Longitud" />
+
+                                </div>
+
                             </div>
 
                         </div>
@@ -139,7 +150,7 @@
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="youtubeUrl">WhatsApp</label>
-                            <input type="text" asp-for="WhatsApp" class="form-control" placeholder="8888-8888">
+                            <input type="text" asp-for="WhatsApp" class="form-control" placeholder="88888888" maxlength="8">
                         </div>
                         <div class="form-group col-md-12 mb-12">
                             <label for="youtubeUrl">Pagina web</label>
@@ -326,32 +337,23 @@
 
             <!-- Contact -->
             <!--<div class="card">
-        <div class="card-body p-6">
-            <h3 class="h4 mb-4">Contact</h3>
-            <p class="mb-5">We are not responsible for any damages caused by the use of this website, or by posting business listings here. Please use our site at your own discretion and exercise good judgement as well as common sense when advertising business here.</p>
-        </div>
-    </div>-->
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Contact</h3>
+                    <p class="mb-5">We are not responsible for any damages caused by the use of this website, or by posting business listings here. Please use our site at your own discretion and exercise good judgement as well as common sense when advertising business here.</p>
+                </div>
+            </div>-->
             <!-- Gallery -->
             <div class="card">
                 <div class="card-body p-6">
-                    <h3 class="h4 mb-4">Gallery</h3>
-                    <p class="mb-5">
-                        We are not responsible for any damages caused by the use of this website, or by posting business listings here.
-                        Please use our site at your own discretion and exercise good judgement as well as common sense when advertising
-                        business here.
-                    </p>
+                    <h3 class="h4 mb-4">Galeria de productos</h3>
 
-                    <div class="form-group position-relative mb-6 form-group-dragable">
-                        <input type="file" class="custom-file-input">
-                        <label class="custom-file-label mb-0" for="customFile">
-                            Click or Drag images here
-                        </label>
+                    <div class="form-group col-md-4">
+
+                        <input type="file" name="files" required multiple />
+
                     </div>
 
-                    <div class="form-group">
-                        <label for="videoUrl">Video URL</label>
-                        <input type="text" class="form-control" id="videoUrl" placeholder="http://">
-                    </div>
+
                 </div>
             </div>
 
@@ -369,5 +371,6 @@
 
     </div>
 </section>
-<script src="~/plugins/jquery/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery"></script>
 <script src="~/js/Negocios/AgregarNegocio.js"></script>
+<script src="~/js/geografia.js"></script>

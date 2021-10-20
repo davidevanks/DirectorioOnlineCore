@@ -12,6 +12,8 @@ using AppDirectorioWeb.RequestProvider.Interfaces;
 using ModelApp.Dto;
 using ModelApp.Dto.AnuncioInfo;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using AppDirectorioWeb.DATA;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -21,14 +23,15 @@ namespace AppDirectorioWeb.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IDecode _decode;
         private readonly IBackendHelperApp _backend;
-   
+        private readonly ApplicationDbContext context;
 
-        public NegociosController(/*ILogger<NegociosController> logger,*/ IHttpContextAccessor httpContextAccessor, IDecode decode, IBackendHelperApp backend)
+        public NegociosController(ApplicationDbContext context,/*ILogger<NegociosController> logger,*/ IHttpContextAccessor httpContextAccessor, IDecode decode, IBackendHelperApp backend)
         {
             //_logger = logger;
             _httpContextAccessor = httpContextAccessor;
             _decode = decode;
             _backend = backend;
+            this.context = context;
         }
 
         public async Task<IActionResult> AgregarNegocioAsync()
@@ -39,14 +42,56 @@ namespace AppDirectorioWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<JsonResult> NegociosNuevo([FromForm] AnuncioInfoCrearDto AnuncioInfoCrearDto)
+        public async Task<JsonResult> NegociosNuevo([FromForm] AnuncioInfoCrearDto AnuncioInfoCrearDto, List<IFormFile> files)
         {
             AnuncioInfoCrearDto.Activo = true;
             var url = $"AnuncioInfo";
-            var mod = await _backend.PostAsync<AnuncioInfoCrearDto>(url, AnuncioInfoCrearDto).ConfigureAwait(false);
+            var mod = await _backend.PostAsync<int>(url, AnuncioInfoCrearDto).ConfigureAwait(false);
+            // TO DO SUBIDA DE FOTOS
+            //........................
+            // var mod = await _backend.PostAsync<int>(url, AnuncioInfoCrearDto).ConfigureAwait(false);
+            //foreach (var file in files)
+            //{
+            //    try
+            //    {
+            //        var basePath = Path.Combine(Directory.GetCurrentDirectory() + "\\Files\\");
+            //        string fecha = DateTime.Now.ToString();
+            //        bool basePathExists = System.IO.Directory.Exists(basePath);
+            //        if (!basePathExists) Directory.CreateDirectory(basePath);
+            //        var fileName = Path.GetFileNameWithoutExtension(file.FileName) + fecha;
+            //        var extension = Path.GetExtension(file.FileName);
+            //        var filePath = Path.Combine(basePath, fileName + fecha + extension);
 
-            var list = new { lista = mod };
-            return Json(list);
+
+            //        //AfiliacionCrearDto.IdentificacionByte = filePath + ";" + file.ContentType + ";" + file.FileName + ";" + extension;
+            //        if (!System.IO.File.Exists(filePath))
+            //        {
+            //            using (var stream = new FileStream(filePath, FileMode.Create))
+            //            {
+            //                await file.CopyToAsync(stream);
+            //            }
+            //            var fileModel = new FileOnFileSystemModel
+            //            {
+            //                CreatedOn = DateTime.UtcNow,
+            //                FileType = file.ContentType,
+            //                Extension = extension,
+            //                Name = fileName + fecha,
+            //                //Description = description,
+            //                FilePath = filePath
+            //            };
+            //            context.FilesOnFileSystem.Add(fileModel);
+            //            //context.SaveChanges();
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+
+            //    }
+            //}
+
+            //var list = new { lista = mod };
+            return Json("");
         }
     }
 }
