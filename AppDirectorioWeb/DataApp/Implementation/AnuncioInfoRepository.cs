@@ -83,8 +83,10 @@ namespace DataApp.Implementation
                            + AnuncioInfoCrearDto.Calificacion + ",  '" 
                            + AnuncioInfoCrearDto.LogoNegocio + "'," 
                            + AnuncioInfoCrearDto.Idusuario + ", '" 
-                           + AnuncioInfoCrearDto.Activo + "');";
-            return await db.ExecuteAsync(sql, new { });
+                           + AnuncioInfoCrearDto.Activo + "');"
+                           + "update public.\"AnuncioInfo\" set geog = cast( (select 'SRID=4326;POINT(' || CAST (\"Longitud\"AS varchar(20) )|| ' ' || cast(\"Latitud\" AS varchar(20) ) || ')' from  public.\"AnuncioInfo\" where \"Id\" = (select max(\"Id\") from public.\"AnuncioInfo\")) as geography) where \"Id\" = (select max(\"Id\") from public.\"AnuncioInfo\");"
+                           + " select max(\"Id\") from public.\"AnuncioInfo\"";
+            return await db.QueryFirstOrDefaultAsync<int>(sql, new { });
         }
 
         public async Task<int> UpdateAnuncioInfo(AnuncioInfoModificarDto AnuncioInfoCrearDto)

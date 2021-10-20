@@ -1,3 +1,4 @@
+using AppDirectorioWeb.DATA;
 using AppDirectorioWeb.RequestProvider.Implementation;
 using AppDirectorioWeb.RequestProvider.Interfaces;
 using AppDirectorioWeb.Utiles.Jwt;
@@ -79,6 +80,14 @@ namespace AppDirectorioWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                // Si hay problemas con transacciones, consultar este link
+                // https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+
+                options.EnableDetailedErrors(true);
+                options.EnableSensitiveDataLogging(true);
+            });
             //para permitir refrescar cambios en naveador html
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();

@@ -65,6 +65,7 @@ namespace APIDirectorio
             services.AddSingleton(psqlConConfig);
             services.AddScoped<ICatCatalogoRepository, CatCatalogoRepository>();
             services.AddScoped<IAnuncioInfoRepository, AnuncioInfoRepository>();
+            services.AddScoped<IFotosAnuncioRepository, FotosAnuncioRepository>();
             services.AddScoped<IManageRolRepository, ManageRolRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
