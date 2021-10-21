@@ -48,6 +48,9 @@
     <link href='~/plugins/menuzord/css/menuzord.css' rel='stylesheet'>
 
     <link href='~/plugins/selectric/selectric.css' rel='stylesheet'>
+    <link href='~/plugins/fancybox/jquery.fancybox.min.css' rel='stylesheet'>
+    <link href='~/plugins/owl-carousel/assets/owl.carousel.min.css' rel='stylesheet'>
+    <link href='~/plugins/owl-carousel/assets/owl.theme.default.min.css' rel='stylesheet'>
     <link href='~/plugins/dzsparallaxer/dzsparallaxer.css' rel='stylesheet'>
     <!-- GOOGLE FONT --><!-- font-family: 'Mulish', sans-serif; --><!-- font-family: 'Poppins', sans-serif; -->
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -60,10 +63,10 @@
     <link href="~/img/favicon.png" rel="shortcut icon">
 
 
-
-
+  
+    <link href='~/plugins/rateyo/jquery.rateyo.min.css' rel='stylesheet'>
     <link href='~/plugins/map/css/map.css' rel='stylesheet'>
-
+    <link href='~/plugins/daterangepicker/daterangepicker.css' rel='stylesheet'>
 
     <link href="~/plugins/fontawesome-5.15.2/css/all.css" rel="stylesheet" />
     <link href="~/css/color1.css" rel="stylesheet" />
@@ -169,7 +172,7 @@
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
                             <li class="">
-                                <a href="javascript:0">¿Qué es Listty?</a>
+                                <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                             </li>
 
                             @*<li class="">
@@ -191,7 +194,7 @@
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
                             <li class="">
-                                <a href="javascript:0">¿Qué es Listty?</a>
+                                <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                             </li>
                         }
 
@@ -255,42 +258,38 @@
                     </div>
                     <ul class="list-unstyled list-gray">
                         <li class="mb-3">
-                            <a href="index.html">Home</a>
+                            <a href="index.html">Inicio</a>
                         </li>
                         <li class="mb-3">
-                            <a href="sign-up.html">Create Account</a>
+                            <a href="sign-up.html">Crear cuenta</a>
                         </li>
                         <li class="mb-3">
-                            <a href="login.html">Login</a>
+                            <a href="login.html">Iniciar sesión</a>
                         </li>
                         <li class="mb-3">
-                            <a href="add-listings.html">Add Listing</a>
+                            <a href="add-listings.html">Agregar negocio</a>
                         </li>
-                        <li class="mb-3">
-                            <a href="edit-listings.html">Edit Listing</a>
-                        </li>
+                    
                     </ul>
                 </div>
 
                 <div class="col-sm-2 col-xs-12">
                     <div class="mb-4 mt-4 mt-md-0">
-                        <h2 class="h4 text-white">Company</h2>
+                        <h2 class="h4 text-white">Compañia</h2>
                     </div>
                     <ul class="list-unstyled list-gray">
                         <li class="mb-3">
-                            <a href="contact-us.html">Contact Us</a>
+                            <a href="contact-us.html">Contactenos</a>
                         </li>
                         <li class="mb-3">
-                            <a href="terms-of-services.html">Terms and Conditions</a>
+                            <a href="terms-of-services.html">Terminos y condiciones</a>
                         </li>
                         <li class="mb-3">
-                            <a href="how-it-works.html">How It Works</a>
+                            <a href="how-it-works.html">¿Que es Brújula digital?</a>
                         </li>
+                        
                         <li class="mb-3">
-                            <a href="payment-process.html">Payment</a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="pricing-table.html">Pricing</a>
+                            <a href="pricing-table.html">Precios planes</a>
                         </li>
                     </ul>
                 </div>
@@ -303,7 +302,7 @@
 
                 <div class="col-sm-7 col-xs-12 align-self-center order-3 order-md-0">
                     <p class="copy-right mb-0 pb-4 pb-md-0  text-md-start">
-                        Copyright © <span id="copy-year"></span>. All Rights Reserved
+                        Copyright © <span id="copy-year"></span>. Todos los derechos reservados
 
                     </p>
                 </div>
@@ -340,8 +339,8 @@
     <script src="~/js/backend.js"></script>
     <script src='~/plugins/selectric/jquery.selectric.min.js'></script>
     <script src='~/plugins/dzsparallaxer/dzsparallaxer.js'></script>
-
-
+<script src='~/plugins/owl-carousel/owl.carousel.min.js'></script>
+<script src='~/plugins/rateyo/jquery.rateyo.min.js'></script>
 
 
 
@@ -357,8 +356,8 @@
 
     @*<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyD-Se2RqbUwbhKkVYpUqkAtdiH3yOvE25g'></script>*@
     <script src='~/plugins/map/js/markerclusterer.js'></script>
-    <script src='~/plugins/map/js/rich-marker.js'></script>
-    <script src='~/plugins/map/js/infobox_packed.js'></script>
+    @*<script src='~/plugins/map/js/rich-marker.js'></script>*@
+    @*<script src='~/plugins/map/js/infobox_packed.js'></script>*@
     <script src='~/js/map.js'></script>
   
     <script src="~/js/Regexp.min.js"></script>
@@ -372,7 +371,21 @@
     </script>
     <script src='~/js/listty.js'></script>
 
+    
+    
+<script src='~/plugins/fancybox/jquery.fancybox.min.js'></script>
+<script src='~/plugins/daterangepicker/moment.min.js'></script>
+<script src='~/plugins/daterangepicker/daterangepicker.js'></script>
+    
+    
+<script src='~/plugins/smoothscroll/SmoothScroll.js'></script>
+<script src='~/plugins/lazyestload/lazyestload.js'></script>
 
+<script src='~/plugins/rateyo/jquery.rateyo.min.js'></script>
+    
+    
+    
+<script src='~/plugins/velocity/velocity.min.js'></script>
 
 
     @RenderSection("Scripts", required: false)

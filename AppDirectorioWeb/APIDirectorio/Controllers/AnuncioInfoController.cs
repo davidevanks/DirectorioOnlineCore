@@ -36,11 +36,11 @@ namespace APIDirectorio.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllCatalogo(int id)
-        {
-            return Ok(await _AnuncioInfoRepository.GetByIdAnuncioInfo(id));
-        }
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetAllCatalogo(int id)
+        //{
+        //    return Ok(await _AnuncioInfoRepository.get(id));
+        //}
 
         [HttpPost]
         public async Task<IActionResult> InsertAnuncioInfo(AnuncioInfoCrearDto model)
@@ -65,6 +65,13 @@ namespace APIDirectorio.Controllers
         public async Task<IActionResult> GetAllAnuncioBySearch(SearchBussinesRequest model)
         {
             return Ok(await _AnuncioInfoRepository.GetAllAnuncioBySearch(model));
+        }
+
+        [HttpPost]
+        [Route("api/GetAnuncioById")]
+        public async Task<IActionResult> GetAnuncioById(AnuncioInfoModificarDto model)
+        {
+            return Ok(await _AnuncioInfoRepository.GetByIdAnuncioInfo(model));
         }
 
         #endregion Public Methods

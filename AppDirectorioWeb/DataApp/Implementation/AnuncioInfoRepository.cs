@@ -44,10 +44,10 @@ namespace DataApp.Implementation
             return await db.QueryAsync<AnuncioInfoConsultarDto>(sql, new { });
         }
 
-        public async Task<AnuncioInfoConsultarDto> GetByIdAnuncioInfo(int ID)
+        public async Task<AnuncioInfoConsultarDto> GetByIdAnuncioInfo(AnuncioInfoModificarDto model)
         {
             var db = dbcon();
-            var sql = "SELECT * FROM public.\"AnuncioInfo\" where \"Activo\" = '1' and \"Id\" = " + ID;
+            var sql = "SELECT * FROM public.\"AnuncioInfo\" where \"Activo\" = '1' and \"Id\" = " + model.Id;
             return await db.QueryFirstOrDefaultAsync<AnuncioInfoConsultarDto>(sql, new { });
         }
         public async Task<int> InsertAnuncioInfo(AnuncioInfoCrearDto AnuncioInfoCrearDto)
@@ -135,7 +135,7 @@ namespace DataApp.Implementation
         public async Task<IEnumerable<AnuncioInfoConsultarDto>> GetAllAnuncioBySearch(SearchBussinesRequest search)
         {
             var db = dbcon();
-            var sql = "SELECT * FROM public.\"AnuncioInfo\"  WHERE ST_DWithin(geog, ST_MakePoint("+search.Longitud.ToString()+","+search.Latitud.ToString()+ "), 5000) and \"NombreNegocio\" like '%"+search.Search+ "%' ORDER BY geog <-> ST_MakePoint(" + search.Longitud.ToString() + "," + search.Latitud.ToString() + ")";
+            var sql = "SELECT * FROM public.\"AnuncioInfo\"  WHERE ST_DWithin(geog, ST_MakePoint("+search.Longitud.ToString()+","+search.Latitud.ToString()+ "), 10000) and lower(\"NombreNegocio\") like '%"+search.Search.ToLower()+ "%' ORDER BY geog <-> ST_MakePoint(" + search.Longitud.ToString() + "," + search.Latitud.ToString() + ")";
             return await db.QueryAsync<AnuncioInfoConsultarDto>(sql, new { });
         }
 

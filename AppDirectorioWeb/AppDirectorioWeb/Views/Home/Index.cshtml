@@ -12,7 +12,7 @@
                         Explora. Descubre. Comparte
                     </h1>
                     <p class="lead text-white">
-                        Listty te ayuda a encontrar increibles negocios a tu alrededor
+                        Brújula Pyme te ayuda a encontrar increibles negocios a tu alrededor
                     </p>
                 </div>
 
@@ -91,7 +91,7 @@
                     url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&key=AIzaSyDpu1uIOHN3nx3y6dzStDmtSZD83-Jebx0&sensor=true',
                     success: function (data) {
                         document.getElementById('txtplaces').value = data.results[2].formatted_address;
-                   
+                        console.log(data);
 
                     }
                 });

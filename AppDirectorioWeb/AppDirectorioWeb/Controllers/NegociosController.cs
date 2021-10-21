@@ -19,7 +19,7 @@ using AppDirectorioWeb.DATA;
 
 namespace AppDirectorioWeb.Controllers
 {
-    [Utiles.CustomAttributes.Authorize(Roles.Admin,Roles.BrujulaBasica,Roles.BrujulaInicial,Roles.BrujulaPremium)]
+   
     public class NegociosController : Controller
     {
         /*private readonly ILogger<HomeController> _logger;*/
@@ -36,12 +36,12 @@ namespace AppDirectorioWeb.Controllers
             _backend = backend;
             this.context = context;
         }
-
+        [Utiles.CustomAttributes.Authorize(Roles.Admin, Roles.BrujulaBasica, Roles.BrujulaInicial, Roles.BrujulaPremium)]
         public async Task<IActionResult> AgregarNegocioAsync()
         {
             return View();
         }
-
+        [Utiles.CustomAttributes.Authorize(Roles.Admin, Roles.BrujulaBasica, Roles.BrujulaInicial, Roles.BrujulaPremium)]
         [HttpPost]
         [ValidateAntiForgeryToken]
   
@@ -95,6 +95,15 @@ namespace AppDirectorioWeb.Controllers
 
             //var list = new { lista = mod };
             return Json("");
+        }
+        [AllowAnonymous]
+        public async Task<IActionResult> GetDetailByBussinesId(int id)
+        {
+            string url = "AnuncioInfo/api/GetAnuncioById";
+            AnuncioInfoModificarDto model= new AnuncioInfoModificarDto();
+            model.Id = id;
+            var response =  await _backend.PostAsync<AnuncioInfoConsultarDto>(url, model);
+            return View(response);
         }
     }
 }

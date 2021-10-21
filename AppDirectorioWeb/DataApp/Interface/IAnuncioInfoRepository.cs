@@ -10,7 +10,7 @@ namespace DataApp.Interface
     public interface IAnuncioInfoRepository
     {
         Task<IEnumerable<AnuncioInfoConsultarDto>> GetAllAnuncioInfo();
-        Task<AnuncioInfoConsultarDto> GetByIdAnuncioInfo(int ID);
+        Task<AnuncioInfoConsultarDto> GetByIdAnuncioInfo(AnuncioInfoModificarDto model);
         Task<int> InsertAnuncioInfo(AnuncioInfoCrearDto AnuncioInfoCrearDto);
         Task<int> UpdateAnuncioInfo(AnuncioInfoModificarDto AnuncioInfoCrearDto);
         Task<int> DeleteAnuncioInfo(int ID);
