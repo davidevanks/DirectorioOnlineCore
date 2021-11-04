@@ -1,0 +1,376 @@
+﻿@model ModelApp.Dto.AnuncioInfo.AnuncioInfoCrearDto
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<section class="bg-light py-5 height100vh">
+    <div class="container">
+        <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
+            <h2 class="font-weight-normal mb-4 mb-md-0">Agregar un negocio</h2>
+            @*<ul class="list-unstyled d-flex p-0 m-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
+                </ul>*@
+        </nav>
+
+        <form id="form_atencion" asp-action="NegociosNuevo" asp-controller="Negocios" asp-antiforgery="true" method="post">
+            <!-- About -->
+            <div class="card">
+                <div class="card-body px-6 pt-6 pb-1">
+                    <h3 class="h4 mb-4">Información del negocio</h3>
+                    <p class="mb-5">No somos responsables de ningún daño causado por el uso de este sitio web o por publicar listados de negocios aquí. Utilice nuestro sitio a su propia discreción y ejerza el buen juicio, así como el sentido común al anunciar negocios aquí.</p>
+
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-6">
+                            <label for="listingTitle">Nombre del negocio</label>
+                            <input asp-for="NombreNegocio" type="text" class="form-control" placeholder="Nombre del negocio" required>
+                        </div>
+
+                        <div class="form-group col-md-6 mb-6">
+                            <label for="exampleFormControlSelect1">Categoria</label>
+                            <div class="select-default bg-white">
+                                <select asp-for="IdCategoria" class="form-control" id="IdCategoria" required>
+                                    <option value="">Eliga una opción</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-12 mb-6">
+                            <label for="discribeTheListing">Descripción del negocio</label>
+                            <textarea asp-for="DescripcionNegocio" class="form-control" rows="6" placeholder="Describa el negocio" required></textarea>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="card">
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Contacto</h3>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <div class="form-group mb-6">
+                                <label for="exampleFormControlSelect1">Pais</label>
+                                <div class="select-default bg-white">
+                                    <select asp-for="IdPais" class="form-control" id="IdPais" required>
+                                        <option value="">Eliga una opción</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-6">
+                                <label for="exampleFormControlSelect1">Departamento</label>
+                                <div class="select-default bg-white">
+                                    <select asp-for="IdDepartamento" class="form-control" id="IdDepartamento" required>
+                                        <option value="">Eliga una opción</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-6">
+                                <label for="discribeTheListing">Dirección del negocio</label>
+                                <textarea asp-for="DireccionNegocio" class="form-control" rows="3" placeholder="Dirección del negocio" required></textarea>
+                            </div>
+
+                            <div class="form-group mb-6">
+                                <label for="listingPhone">Telefono</label>
+                                <input type="number" asp-for="TelefonoNegocio" class="form-control" maxlength="8" placeholder="88888888" required>
+                            </div>
+
+                            <div class="form-group mb-6">
+                                <label for="listingPhone">Correo electronico</label>
+                                <input type="email" asp-for="EmailNegocio" class="form-control" placeholder="tucorreo@mail.com" required>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="col-md-6 map-place-search-wrapper">
+                            <div class="form-group mb-0 ">
+                                <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
+
+                            </div>
+                            <div style=" height: 90%; " class="map-container" id="mapholder"></div>
+                            <div>
+
+                                <div class="form-group col-md-6">
+
+                                    <input id="inputlat"  style="visibility:hidden;" type="text" class="form-control" asp-for="Latitud" />
+
+                                </div>
+                                <div class="form-group col-md-6">
+
+                                    <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" asp-for="Longitud" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social -->
+            <div class="card">
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Social</h3>
+
+
+                    <div class="row">
+                        <div class="form-group col-md-6 mb-6">
+                            <label for="linkedUrl">Facebook</label>
+                            <input type="text" asp-for="FacebookNegocio" class="form-control" placeholder="http://instagram.com/">
+                        </div>
+
+                        <div class="form-group col-md-6 mb-6">
+                            <label for="facebookUrl">Instagram</label>
+                            <input type="text" asp-for="InstagramNegocio" class="form-control" placeholder="http://facebook.com/">
+                        </div>
+
+                        <div class="form-group col-md-6 mb-6">
+                            <label for="twitterUrl">Twitter</label>
+                            <input type="text" asp-for="TwitterNegocio" class="form-control" placeholder="http://twitter.com/">
+                        </div>
+
+                        <div class="form-group col-md-6 mb-6">
+                            <label for="youtubeUrl">WhatsApp</label>
+                            <input type="text" asp-for="WhatsApp" class="form-control" placeholder="88888888" maxlength="8">
+                        </div>
+                        <div class="form-group col-md-12 mb-12">
+                            <label for="youtubeUrl">Pagina web</label>
+                            <input type="text" asp-for="PaginaWebNegocio" class="form-control" placeholder="http://tupagina.com/">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Opening Hours</h3>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 ">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="TieneDelivery" class="form-check-input" id="monday">
+                                        <label class="form-check-label" for="monday">Tiene delivery</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="Hugo" class="form-check-input" id="monday">
+                                        <label class="form-check-label" for="monday">Hugo</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="PedidosYa" class="form-check-input" id="monday">
+                                        <label class="form-check-label" for="monday">Pedidos Ya</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="Piki" class="form-check-input" id="monday">
+                                        <label class="form-check-label" for="monday">Piki</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Opening Hours -->
+            <div class="card">
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Opening Hours</h3>
+                    <p class="mb-5">Example: 10.00am - 5.00pm or 10.00 - 17.00</p>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 ">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="AbLunes" class="form-check-input" id="monday">
+                                        <label class="form-check-label" for="monday">Lunes</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="ILunes" class="form-control form-control-sm" placeholder="10:00am">
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FLunes" class="form-control form-control-sm" placeholder="05:00pm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 ">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="AbMartes" class="form-check-input" id="Tuesday">
+                                        <label class="form-check-label" for="Tuesday">Martes</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="IMartes" class="form-control form-control-sm" placeholder="10:00am">
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FMartes" class="form-control form-control-sm" placeholder="05:00pm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 form-check-readonly">
+                                <div class="row align-items-center">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="AbMiercoles" class="form-check-input" id="Wednesday">
+                                        <label class="form-check-label" for="Wednesday">Miercoles</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="IMiercoles" class="form-control form-control-sm" placeholder="10:00am">
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FMiercoles" class="form-control form-control-sm" placeholder="05:00pm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 ">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="AbJueves" class="form-check-input" id="Thrusday">
+                                        <label class="form-check-label" for="Thrusday">Jueves</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="IJueves" class="form-control form-control-sm" placeholder="10:00am">
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FJueves" class="form-control form-control-sm" placeholder="05:00pm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" class="form-check-input" id="Friday" chcked>
+                                        <label class="form-check-label" asp-for="AbViernes" for="Friday">Viernes</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="IViernes" class="form-control form-control-sm" placeholder="10:00am">
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FViernes" class="form-control form-control-sm" placeholder="05:00pm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 ">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="AbSabado" class="form-check-input" id="Staurday">
+                                        <label class="form-check-label" for="Staurday">Sabado</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="ISabado" class="form-control form-control-sm" placeholder="10:00am">
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FSabado" class="form-control form-control-sm" placeholder="05:00pm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input type="checkbox" asp-for="AbDomingo" class="form-check-input" id="Sunday">
+                                        <label class="form-check-label" for="Sunday">Domingo</label>
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input type="text" asp-for="IDomingo" class="form-control form-control-sm" placeholder="10:00am" readonly>
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input type="text" asp-for="FDomingo" class="form-control form-control-sm" placeholder="05:00pm" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <!--<div class="card">
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Contact</h3>
+                    <p class="mb-5">We are not responsible for any damages caused by the use of this website, or by posting business listings here. Please use our site at your own discretion and exercise good judgement as well as common sense when advertising business here.</p>
+                </div>
+            </div>-->
+            <!-- Gallery -->
+            <div class="card">
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Galeria de productos</h3>
+
+                    <div class="form-group col-md-4">
+
+                        <input type="file" name="files" required multiple />
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-6 col-xl-5">
+                    <div class="mb-6">
+                        <button type="submit" class="btn btn-lg btn-primary btn-block">submit</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+<script src="~/js/Negocios/AgregarNegocio.js"></script>
+<script src="~/js/geografia.js"></script>
