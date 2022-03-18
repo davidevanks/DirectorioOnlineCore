@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ModelApp.Dto;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,6 @@ namespace AppDirectorioWeb.DATA
 
         }
 
-        public DbSet<FileOnFileSystemModel> FilesOnFileSystem { get; set; }
+       
     }
 }

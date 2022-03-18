@@ -1,4 +1,4 @@
-﻿@model ModelApp.Dto.AnuncioInfo.AnuncioInfoCrearDto
+﻿
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -28,13 +28,13 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="listingTitle">Nombre del negocio</label>
-                            <input asp-for="NombreNegocio" type="text" class="form-control" placeholder="Nombre del negocio" required>
+                            <input  type="text" class="form-control" placeholder="Nombre del negocio" required>
                         </div>
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="exampleFormControlSelect1">Categoria</label>
                             <div class="select-default bg-white">
-                                <select asp-for="IdCategoria" class="form-control" id="IdCategoria" required>
+                                <select  class="form-control" id="IdCategoria" required>
                                     <option value="">Eliga una opción</option>
                                 </select>
                             </div>
@@ -42,7 +42,7 @@
 
                         <div class="form-group col-md-12 mb-6">
                             <label for="discribeTheListing">Descripción del negocio</label>
-                            <textarea asp-for="DescripcionNegocio" class="form-control" rows="6" placeholder="Describa el negocio" required></textarea>
+                            <textarea  class="form-control" rows="6" placeholder="Describa el negocio" required></textarea>
                         </div>
 
 
@@ -64,7 +64,7 @@
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Pais</label>
                                 <div class="select-default bg-white">
-                                    <select asp-for="IdPais" class="form-control" id="IdPais" required>
+                                    <select  class="form-control" id="IdPais" required>
                                         <option value="">Eliga una opción</option>
                                     </select>
                                 </div>
@@ -73,7 +73,7 @@
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Departamento</label>
                                 <div class="select-default bg-white">
-                                    <select asp-for="IdDepartamento" class="form-control" id="IdDepartamento" required>
+                                    <select  class="form-control" id="IdDepartamento" required>
                                         <option value="">Eliga una opción</option>
                                     </select>
                                 </div>
@@ -81,17 +81,17 @@
 
                             <div class="form-group mb-6">
                                 <label for="discribeTheListing">Dirección del negocio</label>
-                                <textarea asp-for="DireccionNegocio" class="form-control" rows="3" placeholder="Dirección del negocio" required></textarea>
+                                <textarea class="form-control" rows="3" placeholder="Dirección del negocio" required></textarea>
                             </div>
 
                             <div class="form-group mb-6">
                                 <label for="listingPhone">Telefono</label>
-                                <input type="number" asp-for="TelefonoNegocio" class="form-control" maxlength="8" placeholder="88888888" required>
+                                <input type="number"  class="form-control" maxlength="8" placeholder="88888888" required>
                             </div>
 
                             <div class="form-group mb-6">
                                 <label for="listingPhone">Correo electronico</label>
-                                <input type="email" asp-for="EmailNegocio" class="form-control" placeholder="tucorreo@mail.com" required>
+                                <input type="email"  class="form-control" placeholder="tucorreo@mail.com" required>
                             </div>
 
 
@@ -109,12 +109,12 @@
 
                                 <div class="form-group col-md-6">
 
-                                    <input id="inputlat"  style="visibility:hidden;" type="text" class="form-control" asp-for="Latitud" />
+                                    <input id="inputlat"  style="visibility:hidden;" type="text" class="form-control"  />
 
                                 </div>
                                 <div class="form-group col-md-6">
 
-                                    <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" asp-for="Longitud" />
+                                    <input id="inputlon" style="visibility:hidden;" type="text" class="form-control"  />
 
                                 </div>
 
@@ -135,26 +135,26 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="linkedUrl">Facebook</label>
-                            <input type="text" asp-for="FacebookNegocio" class="form-control" placeholder="http://instagram.com/">
+                            <input type="text"  class="form-control" placeholder="http://instagram.com/">
                         </div>
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="facebookUrl">Instagram</label>
-                            <input type="text" asp-for="InstagramNegocio" class="form-control" placeholder="http://facebook.com/">
+                            <input type="text"  class="form-control" placeholder="http://facebook.com/">
                         </div>
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="twitterUrl">Twitter</label>
-                            <input type="text" asp-for="TwitterNegocio" class="form-control" placeholder="http://twitter.com/">
+                            <input type="text"  class="form-control" placeholder="http://twitter.com/">
                         </div>
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="youtubeUrl">WhatsApp</label>
-                            <input type="text" asp-for="WhatsApp" class="form-control" placeholder="88888888" maxlength="8">
+                            <input type="text"  class="form-control" placeholder="88888888" maxlength="8">
                         </div>
                         <div class="form-group col-md-12 mb-12">
                             <label for="youtubeUrl">Pagina web</label>
-                            <input type="text" asp-for="PaginaWebNegocio" class="form-control" placeholder="http://tupagina.com/">
+                            <input type="text"  class="form-control" placeholder="http://tupagina.com/">
                         </div>
                     </div>
                 </div>
@@ -171,19 +171,19 @@
                             <div class="form-group form-check mb-6 ">
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="TieneDelivery" class="form-check-input" id="monday">
+                                        <input type="checkbox"  class="form-check-input" id="monday">
                                         <label class="form-check-label" for="monday">Tiene delivery</label>
                                     </div>
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="Hugo" class="form-check-input" id="monday">
+                                        <input type="checkbox"  class="form-check-input" id="monday">
                                         <label class="form-check-label" for="monday">Hugo</label>
                                     </div>
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="PedidosYa" class="form-check-input" id="monday">
+                                        <input type="checkbox"  class="form-check-input" id="monday">
                                         <label class="form-check-label" for="monday">Pedidos Ya</label>
                                     </div>
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="Piki" class="form-check-input" id="monday">
+                                        <input type="checkbox"  class="form-check-input" id="monday">
                                         <label class="form-check-label" for="monday">Piki</label>
                                     </div>
                                 </div>
@@ -209,15 +209,15 @@
                             <div class="form-group form-check mb-6 ">
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="AbLunes" class="form-check-input" id="monday">
+                                        <input type="checkbox"  class="form-check-input" id="monday">
                                         <label class="form-check-label" for="monday">Lunes</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="ILunes" class="form-control form-control-sm" placeholder="10:00am">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am">
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FLunes" class="form-control form-control-sm" placeholder="05:00pm">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm">
                                     </div>
                                 </div>
                             </div>
@@ -227,15 +227,15 @@
                             <div class="form-group form-check mb-6 ">
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="AbMartes" class="form-check-input" id="Tuesday">
+                                        <input type="checkbox"  class="form-check-input" id="Tuesday">
                                         <label class="form-check-label" for="Tuesday">Martes</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="IMartes" class="form-control form-control-sm" placeholder="10:00am">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am">
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FMartes" class="form-control form-control-sm" placeholder="05:00pm">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm">
                                     </div>
                                 </div>
                             </div>
@@ -245,15 +245,15 @@
                             <div class="form-group form-check mb-6 form-check-readonly">
                                 <div class="row align-items-center">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="AbMiercoles" class="form-check-input" id="Wednesday">
+                                        <input type="checkbox"  class="form-check-input" id="Wednesday">
                                         <label class="form-check-label" for="Wednesday">Miercoles</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="IMiercoles" class="form-control form-control-sm" placeholder="10:00am">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am">
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FMiercoles" class="form-control form-control-sm" placeholder="05:00pm">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm">
                                     </div>
                                 </div>
                             </div>
@@ -263,15 +263,15 @@
                             <div class="form-group form-check mb-6 ">
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="AbJueves" class="form-check-input" id="Thrusday">
+                                        <input type="checkbox"  class="form-check-input" id="Thrusday">
                                         <label class="form-check-label" for="Thrusday">Jueves</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="IJueves" class="form-control form-control-sm" placeholder="10:00am">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am">
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FJueves" class="form-control form-control-sm" placeholder="05:00pm">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm">
                                     </div>
                                 </div>
                             </div>
@@ -282,14 +282,14 @@
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
                                         <input type="checkbox" class="form-check-input" id="Friday" chcked>
-                                        <label class="form-check-label" asp-for="AbViernes" for="Friday">Viernes</label>
+                                        <label class="form-check-label"  for="Friday">Viernes</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="IViernes" class="form-control form-control-sm" placeholder="10:00am">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am">
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FViernes" class="form-control form-control-sm" placeholder="05:00pm">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm">
                                     </div>
                                 </div>
                             </div>
@@ -299,15 +299,15 @@
                             <div class="form-group form-check mb-6 ">
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="AbSabado" class="form-check-input" id="Staurday">
+                                        <input type="checkbox"  class="form-check-input" id="Staurday">
                                         <label class="form-check-label" for="Staurday">Sabado</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="ISabado" class="form-control form-control-sm" placeholder="10:00am">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am">
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FSabado" class="form-control form-control-sm" placeholder="05:00pm">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm">
                                     </div>
                                 </div>
                             </div>
@@ -317,15 +317,15 @@
                             <div class="form-group form-check mb-6">
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-3">
-                                        <input type="checkbox" asp-for="AbDomingo" class="form-check-input" id="Sunday">
+                                        <input type="checkbox"  class="form-check-input" id="Sunday">
                                         <label class="form-check-label" for="Sunday">Domingo</label>
                                     </div>
                                     <div class="col-3 pr-0">
-                                        <input type="text" asp-for="IDomingo" class="form-control form-control-sm" placeholder="10:00am" readonly>
+                                        <input type="text"  class="form-control form-control-sm" placeholder="10:00am" readonly>
                                     </div>
                                     <div class="col-1 text-center px-0">-</div>
                                     <div class="col-3 pl-0">
-                                        <input type="text" asp-for="FDomingo" class="form-control form-control-sm" placeholder="05:00pm" readonly>
+                                        <input type="text"  class="form-control form-control-sm" placeholder="05:00pm" readonly>
                                     </div>
                                 </div>
                             </div>

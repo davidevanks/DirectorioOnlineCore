@@ -1,10 +1,9 @@
-﻿@using ModelApp.Models
-@model Models.Models.Identity.AccountViewModels.RegisterViewModel;
+﻿
  
 
 @{
-    var lstPlans = (List<PlanViewModel>)ViewData["lstPlanes"];
-    var isBussines = Convert.ToInt32(ViewData["IsBussines"]);
+//var lstPlans = (List<PlanViewModel>)ViewData["lstPlanes"];
+//var isBussines = Convert.ToInt32(ViewData["IsBussines"]);
 
 }
 <section class="py-7 py-md-10 bg-light height100vh">
@@ -20,19 +19,19 @@
                         <a asp-controller="Account" asp-action="Login">ingrese aquí</a>.
                     </p>
 
-                    <form asp-controller="Account" asp-action="Register" asp-route-isBussines="@isBussines.ToString()" method="post" class="py-7" >
-                        @if (isBussines == 1)
-                        {
+                    <form asp-controller="Account" asp-action="Register"  method="post" class="py-7" >
+                        @*@if (isBussines == 1)
+                        {*@
                             <div class="bg-light p-5 mb-8 rounded">
                                 <h3 class="h4 font-weight-normal mb-4">suscripción</h3>
                                 <div class="row justify-content-between">
                                     <div class="col-md-6">
                                         <div class="select-bg-transparent select-border w-100">
-                                            <select asp-for="RoleName" class="select-location">
-                                                @foreach (var plan in lstPlans)
-                                                {
-                                                    <option value="@plan.Name">@plan.Name</option>
-                                                }
+                                            <select  class="select-location">
+                                                @*@foreach (var plan in lstPlans)
+                                                {*@
+                                                    <option value="test">test</option>
+                                                @*}*@
                                                 @*<option>Free</option>
                                                     <option>Premium-119 USD/YEAR</option>
                                                     <option>Lifetime 299 USD/YEAR</option>*@
@@ -46,25 +45,25 @@
                                     </div>
                                 </div>
                             </div>
-                        }
+                            //}
 
 
                         <h3 class="h4 font-weight-normal mb-4">Información de cuenta</h3>
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="inputtext">Nombre*</label>
-                                <input asp-for="FirstName" type="text" class="form-control" placeholder="Ej: Peter Pevensie" required>
+                                <input  type="text" class="form-control" placeholder="Ej: Peter Pevensie" required>
                             </div>
 
                         </div>
                         <div class="form-group mb-8">
                             <label for="inputAddress">Dirección Email*</label>
-                            <input asp-for="Email" type="email" class="form-control" placeholder="Ej: peter@email.com" required>
+                            <input  type="email" class="form-control" placeholder="Ej: peter@email.com" required>
                         </div>
                         <div class="row mb-6">
                             <div class="form-group col-md-6 mb-4">
                                 <label for="inputPassword">Contraseña*</label>
-                                <input asp-for="Password" type="password" class="form-control" placeholder="Al menos 6 caracteres" required>
+                                <input  type="password" class="form-control" placeholder="Al menos 6 caracteres" required>
                             </div>
 
                         </div>
@@ -90,22 +89,22 @@
                         <div class="form-group mb-6">
                             <div class="checkbox">
                                 <label>
-                                    <input  asp-for="AcceptTerms" type="checkbox">
+                                    <input   type="checkbox">
                                     Estoy de acuerdo con los <a href="terms-of-services.html">Terminos de uso</a> &amp; <a href="#">Política de privacidad</a>.
                                 </label>
                             </div>
                         </div>
-                        @if (isBussines == 0)
-                        {
+                        @*@if (isBussines == 0)
+                        {*@
                             <div class="form-group mb-6">
                                 <div class="checkbox">
                                     <label>
-                                        <input asp-for="AllowMarketing" type="checkbox">
+                                        <input  type="checkbox">
                                         Acepto recibir mensajes sobre promociones y servicios, puedes desuscribirte cuando quieras.
                                     </label>
                                 </div>
                             </div>
-                        }
+                            //}
                         <button type="submit" class="btn btn-primary"> Crear cuenta </button>
 
                     </form>

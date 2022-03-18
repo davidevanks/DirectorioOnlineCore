@@ -1,36 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Http
-@using AppDirectorioWeb.Utiles.CustomAttributes
+
 
 @{
-    var isAuthenticated = Context.User.Identity.IsAuthenticated;
-    var isAdmin = User.Identity.HavePermission(Roles.Admin);
-    var isBrujulaBasica = User.Identity.HavePermission(Roles.BrujulaBasica);
-    var isBrujulaInicial = User.Identity.HavePermission(Roles.BrujulaInicial);
-    var isBrujulaPremium = User.Identity.HavePermission(Roles.BrujulaPremium);
-    var isConsumidor = User.Identity.HavePermission(Roles.Consumidor);
-    string roleName="";
-
-    if(isAdmin)
-    {
-        roleName = Roles.Admin;
-    }
-    if(isBrujulaBasica)
-    {
-        roleName = Roles.BrujulaBasica;
-    }
-    if(isBrujulaInicial)
-    {
-        roleName = Roles.BrujulaInicial;
-    }
-    if(isConsumidor)
-    {
-        roleName = Roles.Consumidor;
-    }
-    if(isBrujulaPremium)
-    {
-        roleName = Roles.BrujulaPremium;
-    }
-
+   
 
 }
 <!DOCTYPE html>
@@ -88,16 +60,15 @@
                       
                         <img src="~/img/brands/brujulaPymeLogo.png"/>
                     </a>
-                    @if (isAuthenticated)
-                    {
+                 
                         <div class="menu-right">
 
                             <div class="avatar">
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
                                     <img class="avatar-img" src="~/img/user/avatar-01.png" alt="Image">
                                     <span class="avatar-name">
-                                        @User.Identity.Name
-                                    <span class="small">@roleName</span>
+                                      
+                                    <span class="small">Admin-Test</span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu">
@@ -119,18 +90,15 @@
 
                         </div>
                     </div>
-                }
-                    @if (isAdmin || isBrujulaBasica || isBrujulaInicial || isBrujulaPremium || !isAuthenticated)
-                    {
+              
+                    
                         <div class="float-right btn-wrapper">
                             <a class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
                         </div>
-                    }
-
+                 
                     <ul class="menuzord-menu menuzord-right">
 
-                        @if (isAdmin)
-                        {
+                       
                             <li>
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
@@ -155,9 +123,7 @@
                                 </ul>
                             </li>
 
-                        }
-                        else if (isBrujulaBasica || isBrujulaInicial || isBrujulaPremium)
-                        {
+                      
                             <li>
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
@@ -165,9 +131,7 @@
                                 <a href="javascript:0">Mis listados</a>
                             </li>
 
-                        }
-                        else if (isConsumidor)
-                        {
+                       
                             <li>
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
@@ -175,37 +139,21 @@
                                 <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                             </li>
 
-                            @*<li class="">
-                                    <a href="javascript:0">Mi Panel</a>
-                                    <ul class="dropdown">
-                                        <li class="">
-                                            <a href="javascript:0">Mis favoritos</a>
-                                        </li>
-                                        <li class="">
-                                            <a href="javascript:0">Categorías</a>
-                                        </li>
-
-                                    </ul>
-                                </li>*@
-                        }
-                        else
-                        {
+                            
+                       
                             <li>
                                 <a asp-controller="Home" asp-action="Index">Inicio</a>
                             </li>
                             <li class="">
                                 <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                             </li>
-                        }
-
-                        @*area login logoff username*@
-                        @if (!isAuthenticated)
-                        {
+                      
+                     
                             <li class="">
                                 <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
 
                             </li>
-                        }
+                   
 
 
 

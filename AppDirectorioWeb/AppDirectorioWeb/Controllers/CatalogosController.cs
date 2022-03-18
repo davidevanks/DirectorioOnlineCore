@@ -1,8 +1,7 @@
-﻿using AppDirectorioWeb.RequestProvider.Interfaces;
+﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ModelApp.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +11,10 @@ namespace AppDirectorioWeb.Controllers
 {
     public class CatalogosController : Controller
     {
-        private readonly IBackendHelperApp _backend;
-        public CatalogosController(IBackendHelperApp backend)
+       
+        public CatalogosController()
         {
-            _backend = backend;
+           
         }
        
         public async Task<JsonResult> getCatalogosByPadre(string Padre)
@@ -23,8 +22,8 @@ namespace AppDirectorioWeb.Controllers
             try
             {
                 var urlCat = $"CatCatalogo/GetCatalogosxNombrePadre/"+ Padre;
-                var modeloCAt = await _backend.GetAsync<List<CatCatalogoRequest>>(urlCat).ConfigureAwait(false) ?? new List<CatCatalogoRequest>();
-                return Json(new SelectList(modeloCAt, "Id", "Nombre"));
+               
+                return Json("");
             }
             catch (Exception ex)
             {
@@ -39,8 +38,8 @@ namespace AppDirectorioWeb.Controllers
             try
             {
                 var urlCat = $"CatCatalogo/GetCatalogosxId/" + id;
-                var modeloCAt = await _backend.GetAsync<List<CatCatalogoRequest>>(urlCat).ConfigureAwait(false) ?? new List<CatCatalogoRequest>();
-                return Json(new SelectList(modeloCAt, "Id", "Nombre"));
+                
+                return Json("");
             }
             catch (Exception ex)
             {

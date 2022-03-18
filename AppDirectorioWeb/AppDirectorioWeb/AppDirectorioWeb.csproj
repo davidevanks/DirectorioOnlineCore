@@ -17,11 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ModelApp\ModelApp.csproj" />
-    <ProjectReference Include="..\Models\Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Files\" />
   </ItemGroup>
 

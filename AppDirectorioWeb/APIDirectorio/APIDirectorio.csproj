@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataApp\DataApp.csproj" />
     <ProjectReference Include="..\ModelApp\ModelApp.csproj" />
   </ItemGroup>
 

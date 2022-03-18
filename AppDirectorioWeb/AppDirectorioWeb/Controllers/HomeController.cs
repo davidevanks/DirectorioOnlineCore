@@ -1,18 +1,14 @@
 ﻿using AppDirectorioWeb.Models;
-using AppDirectorioWeb.RequestProvider.Interfaces;
-using AppDirectorioWeb.Utiles.CustomAttributes;
-using AppDirectorioWeb.Utiles.Jwt;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using ModelApp.Models;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ModelApp.Dto.AnuncioInfo;
-using Models.Models;
-using Models.Models.Identity.AccountViewModels;
+
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -21,8 +17,7 @@ namespace AppDirectorioWeb.Controllers
         #region Private Fields
 
         private readonly string _backendApiUrlNegocio;
-        private readonly IBackendHelper _backendHelper;
-        private readonly IDecode _decode;
+       
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<HomeController> _logger;
         private readonly string _backendApiUrlSeguridad;
@@ -30,12 +25,11 @@ namespace AppDirectorioWeb.Controllers
 
         #region Public Constructors
 
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IDecode decode, IBackendHelper backendHelper, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
-            _decode = decode;
-            _backendHelper = backendHelper;
+           
             _backendApiUrlNegocio = configuration["BackendApiUrlNegocio"];
             _backendApiUrlSeguridad = configuration["BackendApiUrlSeguridad"];
         }
@@ -54,20 +48,7 @@ namespace AppDirectorioWeb.Controllers
         //public async Task<IActionResult> Index()
         public IActionResult Index()
         {
-            //remover en produccion
-            //var JWToken = HttpContext.Session.GetString("Token");
-            //if (string.IsNullOrEmpty(JWToken))
-            //{
-            //    LoginViewModel model = new LoginViewModel();
-            //    model.Email = "davidevanks@gmail.com";
-            //    model.Password = "12345678";
-            //    var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad + "/api/Account/api/Login", model);
-            //    HttpContext.Session.SetString("Token", response.Token.Token);
-            //    return RedirectToAction("Index", "Home");
-            //}
-           
             
-            //-----------remover en prod
             return View();
            
         }
@@ -79,7 +60,7 @@ namespace AppDirectorioWeb.Controllers
 
          
             var JWToken = HttpContext.Session.GetString("Token");
-            var test = await _backendHelper.GetAsync<IEnumerable<CatCatalogosViewModel>>(url, JWToken);
+          
             return View();
         }
 
@@ -87,13 +68,12 @@ namespace AppDirectorioWeb.Controllers
 
         #region Private Methods
 
-        public async Task<IActionResult> SeachBussines(SearchBussinesRequest model)
+        public async Task<IActionResult> SeachBussines()
         {
-            string url = _backendApiUrlNegocio + "/api/AnuncioInfo/api/GetAllAnuncioBySearch";
-            var response = await _backendHelper.PostAsync<IEnumerable<AnuncioInfoConsultarDto>>(url, model);
-            ViewData["Bussines"] = response.ToList();
+         
+          
       
-            return View(model);
+            return View();
 
         }
 

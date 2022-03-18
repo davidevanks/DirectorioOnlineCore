@@ -1,17 +1,15 @@
-﻿using AppDirectorioWeb.RequestProvider.Interfaces;
-using AppDirectorioWeb.Utiles.Jwt;
+﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Models.Models;
-using Models.Models.Identity.AccountViewModels;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.Configuration;
-using ModelApp.Models;
+
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -19,18 +17,16 @@ namespace AppDirectorioWeb.Controllers
     {
         #region Private Fields
 
-        private readonly IBackendHelper _backendHelper;
-        private readonly IDecode _decode;
+       
         private readonly string _backendApiUrlSeguridad;
         private readonly string _backendApiUrlNegocio;
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController(IBackendHelper backendHelper, IDecode decode, IConfiguration configuration)
+        public AccountController( IConfiguration configuration)
         {
-            _backendHelper = backendHelper;
-            _decode = decode;
+          
             _backendApiUrlSeguridad= configuration["BackendApiUrlSeguridad"];
          
             _backendApiUrlNegocio= configuration["BackendApiUrlNegocio"];
@@ -51,45 +47,45 @@ namespace AppDirectorioWeb.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string ReturnUrl = null)
+        public async Task<IActionResult> Login()
         {
-            //returnUrl = context.Result;
-            ReturnUrl ??= Url.Content("~/");
-            ViewData["MessageErrorLogin"] = "";
-            ViewData["ReturnUrl"] = ReturnUrl;
-            if (ModelState.IsValid)
-            {
-                var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad+"/api/Account/api/Login", model);
+            ////returnUrl = context.Result;
+            //ReturnUrl ??= Url.Content("~/");
+            //ViewData["MessageErrorLogin"] = "";
+            //ViewData["ReturnUrl"] = ReturnUrl;
+            //if (ModelState.IsValid)
+            //{
+            //    var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad+"/api/Account/api/Login", model);
 
-                if (response.MessageResponseCode == ResponseViewModel.MessageCode.Success && !String.IsNullOrEmpty(response.Token.Token))
-                {
-                    var token = _decode.DecodeToken(response.Token.Token);
-                    int expiration = Convert.ToInt32(token.Claims.First(c => c.Type == "DurationToken").Value);
-                    HttpContext.Session.SetString("Token", response.Token.Token);
+            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.Success && !String.IsNullOrEmpty(response.Token.Token))
+            //    {
+            //        var token = _decode.DecodeToken(response.Token.Token);
+            //        int expiration = Convert.ToInt32(token.Claims.First(c => c.Type == "DurationToken").Value);
+            //        HttpContext.Session.SetString("Token", response.Token.Token);
                  
-                    if (String.IsNullOrEmpty(ReturnUrl))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    return LocalRedirect(ReturnUrl);
-                }
+            //        if (String.IsNullOrEmpty(ReturnUrl))
+            //        {
+            //            return RedirectToAction("Index", "Home");
+            //        }
+            //        return LocalRedirect(ReturnUrl);
+            //    }
 
-                if (response.MessageResponseCode == ResponseViewModel.MessageCode.IncorrectPassword || response.MessageResponseCode == ResponseViewModel.MessageCode.UserNotExist || response.MessageResponseCode == ResponseViewModel.MessageCode.InvalidInformation)
-                {
-                    ViewData["MessageErrorLogin"] = "Email o password inválidos";
-                }
+            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.IncorrectPassword || response.MessageResponseCode == ResponseViewModel.MessageCode.UserNotExist || response.MessageResponseCode == ResponseViewModel.MessageCode.InvalidInformation)
+            //    {
+            //        ViewData["MessageErrorLogin"] = "Email o password inválidos";
+            //    }
 
-                if (response.MessageResponseCode == ResponseViewModel.MessageCode.EmailNotConfirmed)
-                {
-                    ViewData["MessageErrorLogin"] = "Por favor revise su correo y confirme su cuenta para poder ingresar";
-                }
-                if (response.MessageResponseCode == ResponseViewModel.MessageCode.Failed)
-                {
-                    ViewData["MessageErrorLogin"] = "Ha ocurrido un error.";
-                }
-            }
+            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.EmailNotConfirmed)
+            //    {
+            //        ViewData["MessageErrorLogin"] = "Por favor revise su correo y confirme su cuenta para poder ingresar";
+            //    }
+            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.Failed)
+            //    {
+            //        ViewData["MessageErrorLogin"] = "Ha ocurrido un error.";
+            //    }
+            //}
 
-            return View(model);
+            return View();
         }
 
         // GET: /Account/Register
@@ -97,46 +93,17 @@ namespace AppDirectorioWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Register(string IsBussines)
         {
-            List<PlanViewModel> lstPlanes = new List<PlanViewModel>();
-            ViewData["IsBussines"] = IsBussines;
-
-            if (IsBussines=="1")
-            {
-                lstPlanes= await _backendHelper.GetAsync<List<PlanViewModel>>(_backendApiUrlNegocio+"/api/Rol/api/GetPlans");
-            }
-
-            //hacemos request para mandar a traer los planes disponibles.
-            ViewData["lstPlanes"] = lstPlanes;
+          
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model,string isBussines="0")
+        public async Task<IActionResult> Register()
         {
-            //falta aplicar validaciones a nivel backend y nivel frontend. solo se implementa funcionalidad básica
-            List<PlanViewModel> lstPlanes = new List<PlanViewModel>();
-            ViewData["IsBussines"] = isBussines;
-     
-            model.UrlContext = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + "/Account/ConfirmEmail";
-            if (ModelState.IsValid)
-            {
-                var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad + "/api/Account/api/RegisterUser", model);
-                
-                if (response.MessageResponseCode==ResponseViewModel.MessageCode.Success)
-                {
-                    return RedirectToAction("RegisterSuccess", "Account");
-                }
-            }
-            if (isBussines == "1")
-            {
-                lstPlanes = await _backendHelper.GetAsync<List<PlanViewModel>>(_backendApiUrlNegocio + "/api/Rol/api/GetPlans");
-            }
-
-            ViewData["lstPlanes"] = lstPlanes;
-            ViewData["MessageError"] = "Ocurrio un error, intentelo de nuevo";
-            return View(model);
+           
+            return View();
         }
         [HttpGet]
         [AllowAnonymous]
@@ -151,9 +118,8 @@ namespace AppDirectorioWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-
-            var response = await _backendHelper.GetAsync<ResponseViewModel>(_backendApiUrlSeguridad + $"/api/Account/api/ConfirmEmail?userId={userId}&code={HttpUtility.UrlEncode(code)}");
-            ViewData["MessageResponse"] = response.MessageResponse;
+            
+           
             return View();
         }
 

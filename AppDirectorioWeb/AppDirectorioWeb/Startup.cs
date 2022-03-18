@@ -1,7 +1,4 @@
 using AppDirectorioWeb.DATA;
-using AppDirectorioWeb.RequestProvider.Implementation;
-using AppDirectorioWeb.RequestProvider.Interfaces;
-using AppDirectorioWeb.Utiles.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -91,9 +88,6 @@ namespace AppDirectorioWeb
             //para permitir refrescar cambios en naveador html
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews();
-            services.AddScoped<IBackendHelper, BackendHelper>();
-            services.AddScoped<IBackendHelperApp, BackendHelperApp>();
-            services.AddScoped<IDecode, Decode>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession(options =>
             {
