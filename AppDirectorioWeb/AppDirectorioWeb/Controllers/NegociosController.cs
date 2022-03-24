@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
-using AppDirectorioWeb.Data;
+using AppDirectorioWeb.DataAcces.Data;
+
 
 namespace AppDirectorioWeb.Controllers
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Security.AccessControl;
 
-namespace AppDirectorioWeb.Models
+namespace AppDirectorioWeb.Models.ViewModels
 {
     public class ErrorViewModel
     {

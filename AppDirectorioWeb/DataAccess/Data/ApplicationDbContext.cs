@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AppDirectorioWeb.Data
+namespace AppDirectorioWeb.DataAcces.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

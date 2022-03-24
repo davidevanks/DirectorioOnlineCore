@@ -1,4 +1,4 @@
-﻿using AppDirectorioWeb.Models;
+﻿
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,8 +40,8 @@ namespace AppDirectorioWeb.Controllers
 
         public IActionResult Error()
         {
-            ErrorViewModel e = new ErrorViewModel();
-            e.MessageError = "no tienes acceso a esta página";
+          
+            //e.MessageError = "no tienes acceso a esta página";
             return View();
         }
 
