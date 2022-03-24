@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace AppDirectorioWeb.Controllers
 {
+    [Area("Security")]
     public class AccountController : Controller
     {
         #region Private Fields

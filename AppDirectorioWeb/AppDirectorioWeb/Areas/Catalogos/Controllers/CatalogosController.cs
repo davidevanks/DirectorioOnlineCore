@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace AppDirectorioWeb.Controllers
 {
+    [Area("Catalogos")]
     public class CatalogosController : Controller
     {
        

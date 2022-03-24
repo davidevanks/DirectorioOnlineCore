@@ -16,7 +16,7 @@ using AppDirectorioWeb.DataAcces.Data;
 
 namespace AppDirectorioWeb.Controllers
 {
-   
+    [Area("Negocios")]
     public class NegociosController : Controller
     {
         /*private readonly ILogger<HomeController> _logger;*/

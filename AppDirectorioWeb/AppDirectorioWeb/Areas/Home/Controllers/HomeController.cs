@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace AppDirectorioWeb.Controllers
 {
+    [Area("Home")]
     public class HomeController : Controller
     {
         #region Private Fields
