@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using Microsoft.AspNetCore.Authorization;
 using System.IO;
-using AppDirectorioWeb.DataAcces.Data;
+using DataAccess.Models;
 
 
 namespace AppDirectorioWeb.Controllers
@@ -22,9 +22,9 @@ namespace AppDirectorioWeb.Controllers
         /*private readonly ILogger<HomeController> _logger;*/
         private readonly IHttpContextAccessor _httpContextAccessor;
      
-        private readonly ApplicationDbContext context;
+        private readonly DirectorioOnlineCoreContext context;
 
-        public NegociosController(ApplicationDbContext context,/*ILogger<NegociosController> logger,*/ IHttpContextAccessor httpContextAccessor)
+        public NegociosController(DirectorioOnlineCoreContext context,/*ILogger<NegociosController> logger,*/ IHttpContextAccessor httpContextAccessor)
         {
         
         }

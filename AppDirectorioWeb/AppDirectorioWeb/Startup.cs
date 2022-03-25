@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
-using AppDirectorioWeb.DataAcces.Data;
+using DataAccess.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,15 +28,22 @@ namespace AppDirectorioWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+
+         
+            services.AddDbContext<DirectorioOnlineCoreContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<DirectorioOnlineCoreContext>()
+                .AddDefaultTokenProviders();
+
+
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            services.AddDefaultIdentity<IdentityUser>()
-           .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            // services.AddDefaultIdentity<IdentityUser>()
+            //.AddEntityFrameworkStores<DirectorioOnlineCoreContext>();
+            // services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
