@@ -9,7 +9,7 @@ namespace DataAccess.Repository.IRepository
 {
     public interface ISP_Call: IDisposable
     {
-        Task Single<T>(string procedureName, DynamicParameters param=null);
+        T Single<T>(string procedureName, DynamicParameters param=null);
 
         void Execute(string procedureName, DynamicParameters param = null);
 
