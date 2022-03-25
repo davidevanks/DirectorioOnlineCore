@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using DataAccess.Models;
+using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,7 +45,9 @@ namespace AppDirectorioWeb
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             // services.AddDefaultIdentity<IdentityUser>()
             //.AddEntityFrameworkStores<DirectorioOnlineCoreContext>();
-            // services.AddControllersWithViews();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
