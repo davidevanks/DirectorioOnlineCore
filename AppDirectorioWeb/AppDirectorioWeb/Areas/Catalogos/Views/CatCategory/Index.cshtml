@@ -9,15 +9,22 @@
         <!-- Breadcrumb -->
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
             <h3 class="font-weight-normal mb-4 mb-md-0">Administración de Maestro Catalogo</h3>
+           
+            <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Upsert" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i> Agregar categoría</a>
          
         </nav>
-
+       
+        
         <div id="my-listing_wrapper" class="dataTables_wrapper no-footer">
-            <table id="my-listing" class="display nowrap table-data-default dataTable no-footer dtr-inline" style="width: 100%;" role="grid">
+            <table id="tblCategory" class="display nowrap table-data-default dataTable no-footer dtr-inline" style="width: 100%;" role="grid">
                 <thead>
-                    <tr class="table-row-bg-white" role="row"><th class="sorting" tabindex="0" aria-controls="my-listing" rowspan="1" colspan="1" style="width: 200px;" aria-label="Listing: activate to sort column ascending">Categoría Principal</th><th class="sorting_disabled" rowspan="1" colspan="1" style="width: 56px;" aria-label="Views"></th><th class="sorting_disabled" rowspan="1" colspan="1" style="width: 92px;" aria-label="Reviews"></th></tr>
+                <tr class="table-row-bg-white" role="row">
+                    <th class="sorting" tabindex="0" aria-controls="my-listing" rowspan="1" colspan="1" style="width: 100px;" aria-label="Listing: activate to sort column ascending">Categoría Principal</th>
+                    <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views"></th>
+                    
+                </tr>
                 </thead>
-                <tbody>
+                @*<tbody>
 
 
                     <tr class="table-row-bg-white odd" role="row">
@@ -26,20 +33,27 @@
                         </td>
                      
                         <td>
-
-                            <button id="btnAgregar" class="btn btn-primary text-white">Agregar</button>
+                            
+                           
+                            <a href="/Catalogos/CatCategory/AddCat/id" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-plus"></i></a>
+                            <a href="/Catalogos/CatCategory/Update/id" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>
+                          
                         </td>
-                        <td>
-                            @*<span class="badge badge-warning px-2 py-1 text-white"><a id="btnEditar">Editar</a></span>*@
-                            <button id="btnEditar" class="btn btn-warning text-white">Editar</button>
-                        </td>
+                      
                       
                      
                     </tr>
                   
-                </tbody>
-            </table><div class="dataTables_paginate paging_simple_numbers" id="my-listing_paginate"><a class="paginate_button previous disabled" aria-controls="my-listing" data-dt-idx="0" tabindex="0" id="my-listing_previous">Prev</a><span><a class="paginate_button current" aria-controls="my-listing" data-dt-idx="1" tabindex="0">1</a></span><a class="paginate_button next disabled" aria-controls="my-listing" data-dt-idx="2" tabindex="0" id="my-listing_next">Next</a></div>
+                </tbody>*@
+            </table>
+            @*<div class="dataTables_paginate paging_simple_numbers" id="my-listing_paginate">
+                <a class="paginate_button previous disabled" aria-controls="my-listing" data-dt-idx="0" tabindex="0" id="my-listing_previous">Prev</a><span><a class="paginate_button current" aria-controls="my-listing" data-dt-idx="1" tabindex="0">1</a></span><a class="paginate_button next disabled" aria-controls="my-listing" data-dt-idx="2" tabindex="0" id="my-listing_next">Next</a>
+            </div>*@
         </div>
 
     </div>
 </section>
+
+@section scripts{ 
+    <script src="~/js/Handlers/CategoryHandler.js"></script>
+}
