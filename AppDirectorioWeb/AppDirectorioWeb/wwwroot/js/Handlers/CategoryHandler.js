@@ -7,11 +7,13 @@ $(document).ready(function() {
 function loadDataTable() {
 //tblCategory
     dataTable = $('#tblCategory').DataTable({
+        "bSortClasses": false,
+        "stripeClasses": [],
         "ajax": {
             "url": "/Catalogos/CatCategory/GetAllParents"
         },
         "columns": [
-            { "data": "nombre", "width": "60%" },
+            { "data": "nombre", "width": "60%", "className": "t" },
             {
                 "data": "id",
                 "render": function(data) {
