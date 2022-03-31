@@ -18,13 +18,14 @@ namespace DataAccess.Repository
             _db = db;
         }
 
-        public void Update(CatCategoryViewModel  category)
+        public void Update(CatCategorium  category)
         {
             var objFromDb = _db.CatCategoria.FirstOrDefault(s => s.Id == category.Id);
             if (objFromDb!=null)
             {
                 objFromDb.Nombre = category.Nombre;
-                _db.SaveChanges();
+                objFromDb.Activo = category.Activo;
+               
             }
             
           

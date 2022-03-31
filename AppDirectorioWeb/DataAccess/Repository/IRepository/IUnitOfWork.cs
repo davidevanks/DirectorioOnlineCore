@@ -10,5 +10,6 @@ namespace DataAccess.Repository.IRepository
     {
         ICategoryRepository Category { get; }
         ISP_Call SP_CALL { get; }
+        void Save();
     }
 }

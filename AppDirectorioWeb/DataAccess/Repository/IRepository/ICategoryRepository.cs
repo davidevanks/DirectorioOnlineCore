@@ -10,6 +10,6 @@ namespace DataAccess.Repository.IRepository
 {
     public interface ICategoryRepository:IRepository<CatCategorium>
     {
-        void Update(CatCategoryViewModel category);
+        void Update(CatCategorium category);
     }
 }

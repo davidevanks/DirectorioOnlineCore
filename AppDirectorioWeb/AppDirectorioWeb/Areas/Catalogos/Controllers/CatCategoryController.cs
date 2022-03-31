@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Models.ViewModels;
 
 namespace AppDirectorioWeb.Areas.Catalogos.Controllers
 {
@@ -24,19 +25,65 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            CatCategorium category = new CatCategorium();
+            CatCategoryViewModel category = new CatCategoryViewModel();
             if (id==null)
             {
                 return View(category);
             }
 
-            category = _unitOfWork.Category.Get(id.GetValueOrDefault());
-            if (category==null)
+            var cat = _unitOfWork.Category.Get(id.GetValueOrDefault());
+
+          
+           
+
+            if (cat == null)
             {
                 return NotFound();
             }
-
+           
+                
+            category.Id = cat.Id;
+            category.IdPadre = cat.IdPadre;
+            category.Nombre = cat.Nombre;
+            category.Activo = (cat.Activo != null && cat.Activo != false);
+                
             return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(CatCategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id==0)
+                {
+                    _unitOfWork.Category.Add(new CatCategorium()
+                    {
+                        Id = model.Id,
+                        IdPadre = 0,
+                        Nombre = model.Nombre,
+                        Activo = model.Activo
+                    });
+
+                 
+                }
+                else
+                {
+                    _unitOfWork.Category.Update(new CatCategorium()
+                        {
+                            Id = model.Id,
+                            IdPadre = 0,
+                            Nombre = model.Nombre,
+                            Activo = model.Activo
+                        });
+                }
+
+                _unitOfWork.Save();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
         }
 
         #region API_CALLS
