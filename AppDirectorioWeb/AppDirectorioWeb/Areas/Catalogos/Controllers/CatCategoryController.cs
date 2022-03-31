@@ -86,6 +86,20 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
             return View(model);
         }
 
+        [HttpDelete]
+        public IActionResult DeleteParentCat(int id)
+        {
+            var cat = _unitOfWork.Category.Get(id);
+            if (cat==null)
+            {
+                return Json(new{success=false,message="Error al borrar"});
+            }
+
+            _unitOfWork.Category.Remove(id);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Se borro categoría padre exitosamente" });
+        }
+
         #region API_CALLS
 
         [HttpGet]
