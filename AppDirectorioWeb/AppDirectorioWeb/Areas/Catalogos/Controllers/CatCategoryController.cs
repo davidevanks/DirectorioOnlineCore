@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 using Models.ViewModels;
+using Utiles;
 
 namespace AppDirectorioWeb.Areas.Catalogos.Controllers
 {
@@ -179,6 +180,7 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
         [HttpGet]
          public IActionResult GetAllParents()
          {
+             var test = _unitOfWork.SP_CALL.List<CatCategoryViewModel>(SP.Proc_GetAllCatTest,null);
              var parentsObj = _unitOfWork.Category.GetAll(x => x.IdPadre == 0);
              return Json(new{data= parentsObj });
          }
