@@ -50,6 +50,79 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
             return View(category);
         }
 
+        public IActionResult UpsertChild(int? id,int? idPadre)
+        {
+            CatCategoryViewModel category = new CatCategoryViewModel();
+           
+            if (id == null)
+            {
+                category.IdPadre = idPadre;
+                category.Activo = true;
+                return View(category);
+            }
+
+            var cat = _unitOfWork.Category.Get(id.GetValueOrDefault());
+
+
+
+
+            if (cat == null)
+            {
+                return NotFound();
+            }
+
+
+            category.Id = cat.Id;
+            category.Nombre = cat.Nombre;
+            category.IdPadre = cat.IdPadre;
+            category.Activo = (cat.Activo != null && cat.Activo != false);
+
+            return View(category);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpsertChild(CatCategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id == 0)
+                {
+                    _unitOfWork.Category.Add(new CatCategorium()
+                    {
+                        Id = model.Id,
+                        IdPadre = model.IdPadre,
+                        Nombre = model.Nombre,
+                        Activo = model.Activo
+                    });
+
+
+                }
+                else
+                {
+                    _unitOfWork.Category.Update(new CatCategorium()
+                    {
+                        Id = model.Id,
+                        IdPadre = model.IdPadre,
+                        Nombre = model.Nombre,
+                        Activo = model.Activo
+                    });
+                }
+
+                _unitOfWork.Save();
+                return RedirectToAction(nameof(AddCatChild), new { id = model.IdPadre });
+            }
+
+            return View(model);
+        }
+
+
+        public IActionResult AddCatChild(int id)
+        {
+            return View(id);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(CatCategoryViewModel model)
@@ -86,6 +159,7 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
             return View(model);
         }
 
+
         [HttpDelete]
         public IActionResult DeleteParentCat(int id)
         {
@@ -108,6 +182,14 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
              var parentsObj = _unitOfWork.Category.GetAll(x => x.IdPadre == 0);
              return Json(new{data= parentsObj });
          }
+
+
+         [HttpGet]
+         public IActionResult GetAllChildCategory(int idPadre)
+         {
+             var parentsObj = _unitOfWork.Category.GetAll(x => x.IdPadre == idPadre);
+             return Json(new { data = parentsObj });
+        }
          #endregion
     }
 }

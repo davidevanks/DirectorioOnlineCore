@@ -1,37 +1,40 @@
 ﻿var dataTable;
 
-$(document).ready(function() {
+$(document).ready(function () {
     loadDataTable();
 });
 
 function loadDataTable() {
-//tblCategory
+    //tblCategory
     dataTable = $('#tblCategory').DataTable({
         "bSortClasses": false,
         "stripeClasses": [],
         "ajax": {
-            "url": "/Catalogos/CatCategory/GetAllParents"
+            "url": "/Catalogos/CatCategory/GetAllChildCategory?idPadre=" + $('#hdfIdPadre').val()
+          
         },
         "columns": [
             { "data": "nombre", "width": "60%", "className": "t" },
-            { "data": "activo", "render": function(data) {
-                if (data)
-                    return `Activo`;
-                else
-                    return `Inactivo`;
+            {
+                "data": "activo", "render": function (data) {
+                    if (data)
+                        return `Activo`;
+                    else
+                        return `Inactivo`;
 
-            }, "width": "20%"},
+                }, "width": "20%"
+            },
             {
                 "data": "id",
-                "render": function(data) {
-                    return ` <a href="/Catalogos/CatCategory/AddCatChild/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-plus"></i></a>
-                            <a href="/Catalogos/CatCategory/Upsert/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>
-                             <a onclick=DeleteParent("/Catalogos/CatCategory/DeleteParentCat/${data}"); class="btn btn-danger text-white" id="btnEditar"><i class="fa fa-trash"></i></a>`
-                 
-                    ;
-                },"width":"40%"
+                "render": function (data) {
+                    return ` 
+                            <a href="/Catalogos/CatCategory/UpsertChild/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>
+                             `
+
+                        ;
+                }, "width": "40%"
             }
-            ]
+        ]
 
     });
 }
@@ -49,7 +52,7 @@ function DeleteParent(url) {
             $.ajax({
                 type: "DELETE",
                 url: url,
-                success: function(data) {
+                success: function (data) {
                     if (data.success) {
                         /*toastr.success(data.message);*/
                         swal({ title: data.message, icon: "success" });
