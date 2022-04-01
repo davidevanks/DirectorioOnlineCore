@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppDirectorioWeb", "AppDire
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WEBAPP", "WEBAPP", "{26DB5C12-AD5D-4963-BE67-283EB2AA284E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FFA0D40D-DC8F-4412-BE29-97BCDE09DE83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{FFA0D40D-DC8F-4412-BE29-97BCDE09DE83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{D36D5804-FA22-4BE5-AF1A-5CB26AB4B528}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{D36D5804-FA22-4BE5-AF1A-5CB26AB4B528}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DirectorioOnlineCoreDb", "DirectorioOnlineCoreDb\DirectorioOnlineCoreDb.sqlproj", "{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,12 @@ Global
 		{D36D5804-FA22-4BE5-AF1A-5CB26AB4B528}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D36D5804-FA22-4BE5-AF1A-5CB26AB4B528}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D36D5804-FA22-4BE5-AF1A-5CB26AB4B528}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899DDBEF-FD7F-44EE-93BB-F36ED74AB98A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
