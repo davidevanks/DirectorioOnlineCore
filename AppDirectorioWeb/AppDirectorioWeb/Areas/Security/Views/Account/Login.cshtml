@@ -18,7 +18,7 @@
                         <h2 class="text-white mb-0 h4">Inicia sesión</h2>
                     </div>
                     <div class="card-body px-7 pt-7 pb-0">
-                        <form asp-controller="Account" asp-action="Login" asp-route-ReturnUrl="@returnUrl" method="post" class="form-horizontal">
+                        <form  class="form-horizontal">
                             <div class="form-group mb-7">
                                 <label for="exampleInputText">Email*</label>
                                 <input  type="text" class="form-control" aria-describedby="emailHelp" required>
@@ -51,11 +51,11 @@
                         <p class="mb-0">No te has registrado aún? <strong>Registrate</strong></p>
                       
                           
-                            <a asp-route-IsBussines="0" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Consumidores</a>
+                            <a asp-area="Identity" asp-page="/Account/Register"class="btn btn-primary text-uppercase">Para Consumidores</a>
                             <p style="margin-bottom: -0.1em;">Ó</p>
 
                    
-                        <a asp-route-IsBussines="1" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Pymes/Negocios</a>
+                        @*<a asp-route-IsBussines="1" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Pymes/Negocios</a>*@
 
                         </div>
                 </div>

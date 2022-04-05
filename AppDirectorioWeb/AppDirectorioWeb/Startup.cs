@@ -14,7 +14,9 @@ using DataAccess.Models;
 using DataAccess.Repository;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Utiles;
 
 namespace AppDirectorioWeb
 {
@@ -45,6 +47,7 @@ namespace AppDirectorioWeb
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             // services.AddDefaultIdentity<IdentityUser>()
             //.AddEntityFrameworkStores<DirectorioOnlineCoreContext>();
+            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
              services.AddControllersWithViews().AddRazorRuntimeCompilation();
              services.AddRazorPages();
