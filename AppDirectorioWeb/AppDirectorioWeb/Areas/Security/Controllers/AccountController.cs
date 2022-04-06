@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 
 
@@ -21,16 +22,17 @@ namespace AppDirectorioWeb.Controllers
        
         private readonly string _backendApiUrlSeguridad;
         private readonly string _backendApiUrlNegocio;
+        private readonly SignInManager<IdentityUser> _signInManager;
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController( IConfiguration configuration)
+        public AccountController( IConfiguration configuration, SignInManager<IdentityUser> signInManager)
         {
           
             _backendApiUrlSeguridad= configuration["BackendApiUrlSeguridad"];
-         
-            _backendApiUrlNegocio= configuration["BackendApiUrlNegocio"];
+            _signInManager = signInManager;
+            _backendApiUrlNegocio = configuration["BackendApiUrlNegocio"];
         }
 
         #endregion Public Constructors
@@ -124,10 +126,20 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Logout()
+    
+
+        public async Task<IActionResult> Logout(string returnUrl = null)
         {
-            HttpContext.Session.Clear();
-            return Redirect("~/Home/Index");
+            await _signInManager.SignOutAsync();
+           
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                return Redirect("~/Home/Index");
+            }
         }
 
         #endregion Public Methods
