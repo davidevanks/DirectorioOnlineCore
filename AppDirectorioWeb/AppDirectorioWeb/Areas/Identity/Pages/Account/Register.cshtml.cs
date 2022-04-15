@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Utiles;
@@ -60,20 +61,48 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} y un máximo de {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Confirmar password")]
+            [Compare("Password", ErrorMessage = "El password y la confirmación de password no coinciden.")]
             public string ConfirmPassword { get; set; }
+            [Display(Name = "Que tipo de usuario eres?")]
+            public string Role { get; set; }
+            public IEnumerable<SelectListItem> RoleList { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
+
+            if (User.IsInRole(SP.Role_Admin))
+            {
+                Input = new InputModel()
+                {
+                    RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                    {
+                        Text = i,
+                        Value = i
+                    })
+                };
+            }
+            else
+            {
+                Input = new InputModel()
+                {
+                    RoleList = _roleManager.Roles.Where(x => x.Name != SP.Role_Admin).Select(x => x.Name).Select(i => new SelectListItem
+                    {
+                        Text = i,
+                        Value = i
+                    })
+                };
+            }
+          
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
@@ -114,7 +143,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(SP.Role_Customer));
                     }
 
-                    await _userManager.AddToRoleAsync(user, SP.Role_Admin);
+                    //await _userManager.AddToRoleAsync(user, SP.Role_Admin);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
