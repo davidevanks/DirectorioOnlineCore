@@ -143,7 +143,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(SP.Role_Customer));
                     }
 
-                    //await _userManager.AddToRoleAsync(user, SP.Role_Admin);
+                    await _userManager.AddToRoleAsync(user, Input.Role);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -151,8 +151,17 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        if (User.IsInRole(SP.Role_Admin))
+                        {
+                            //admin is registering  new user
+                            return RedirectToAction("Index", "User", new {Area = "Security"});
+                        }
+                      
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
+                   
+
+                       
                     }
                 }
                 foreach (var error in result.Errors)
