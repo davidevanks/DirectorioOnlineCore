@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Utiles;
+using DataAccess.Models;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -55,12 +56,21 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "El nombre completo es requerido")]
+            public string FullName { get; set; }
+
+            [Required(ErrorMessage ="El email es requerido")]
             [EmailAddress]
             [Display(Name = "Email")]
+            
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "El número de telefono es requerido")]
+            [Phone]
+            [Display(Name = "Número de telefono")]
+            public string Telefono { get; set; }
+
+            [Required(ErrorMessage = "El password es requerido")]
             [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} y un máximo de {1} caracteres.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
@@ -72,6 +82,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
             [Display(Name = "Que tipo de usuario eres?")]
             public string Role { get; set; }
+           
             public IEnumerable<SelectListItem> RoleList { get; set; }
         }
 
@@ -112,9 +123,12 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
-                
+                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Telefono };
+              
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName, RegistrationDate = DateTime.Now };
+                  _unitOfWork.UserDetail.Add(userDetail);
                 if (result.Succeeded)
                 {
                     //_logger.LogInformation("User created a new account with password.");

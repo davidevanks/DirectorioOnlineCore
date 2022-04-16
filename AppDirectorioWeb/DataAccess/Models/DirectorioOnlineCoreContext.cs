@@ -25,6 +25,7 @@ namespace DataAccess.Models
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
         public virtual DbSet<Negocio> Negocios { get; set; }
+        public virtual DbSet<UserDetail> UserDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -186,6 +187,19 @@ namespace DataAccess.Models
                     .HasForeignKey(d => d.IdDepartamento)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Negocio_CatDepartamento");
+            });
+
+            modelBuilder.Entity<UserDetail>(entity =>
+            {
+                entity.ToTable("UserDetails", "bs");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UserId).HasMaxLength(450);
             });
 
             OnModelCreatingPartial(modelBuilder);

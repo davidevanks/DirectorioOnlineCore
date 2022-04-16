@@ -10,6 +10,8 @@ namespace DataAccess.Repository.IRepository
     {
         ICategoryRepository Category { get; }
         ISP_Call SP_CALL { get; }
+
+        public IUserDetailsRepository UserDetail { get;  }
         void Save();
     }
 }
