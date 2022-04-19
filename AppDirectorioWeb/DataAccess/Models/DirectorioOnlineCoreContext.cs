@@ -284,6 +284,8 @@ namespace DataAccess.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.IdUserCreate).HasMaxLength(450);
+
                 entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
 
                 entity.Property(e => e.RegistrationDate).HasColumnType("datetime");

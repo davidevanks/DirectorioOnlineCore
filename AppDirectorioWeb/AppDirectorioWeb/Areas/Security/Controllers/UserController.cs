@@ -19,6 +19,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DirectorioOnlineCoreContext _db;
+
         public UserController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, DirectorioOnlineCoreContext db)
         {
             _unitOfWork = unitOfWork;
@@ -32,31 +33,15 @@ namespace AppDirectorioWeb.Controllers
         }
 
 
-
-
         #region API_CALLS
 
         [HttpGet]
          public IActionResult GetAll()
          {
-             var user = _userManager.Users.ToList();
-             var userRol = _db.UserRoles.ToList();
-             var roles = _roleManager.Roles.ToList();
+          
 
              List<UserViewModel> userList = new List<UserViewModel>();
-             foreach (var u in user)
-             {
-                 UserViewModel userAdd = new UserViewModel();
-                 var roleId = userRol.FirstOrDefault(x => x.UserId == u.Id).RoleId;
-                 userAdd.Role = roles.FirstOrDefault(x => x.Id == roleId).Name;
-                 userAdd.Email = u.Email;
-                 userAdd.Id = u.Id;
-
-                 userList.Add(userAdd);
-
-             }
-
-
+            userList = _unitOfWork.UserDetail.GetAUsersDetails("");
              return Json(new{data= userList });
          }
 

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Utiles;
 using DataAccess.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -127,7 +128,18 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
               
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName, RegistrationDate = DateTime.Now };
+               
+                string idUserCreate = "";
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                {
+                    idUserCreate = user.Id;
+                }else
+                {
+                    idUserCreate = HttpContext.Session.GetString("UserId");
+                }
+               
+
+                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName, RegistrationDate = DateTime.Now,IdUserCreate= idUserCreate };
                   _unitOfWork.UserDetail.Add(userDetail);
                 if (result.Succeeded)
                 {
