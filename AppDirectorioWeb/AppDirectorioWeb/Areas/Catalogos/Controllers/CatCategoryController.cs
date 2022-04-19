@@ -7,6 +7,7 @@ using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 using Models.ViewModels;
 using Utiles;
+using Microsoft.AspNetCore.Http;
 
 namespace AppDirectorioWeb.Areas.Catalogos.Controllers
 {
@@ -95,7 +96,9 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
                         Id = model.Id,
                         IdPadre = model.IdPadre,
                         Nombre = model.Nombre,
-                        Activo = model.Activo
+                        Activo = model.Activo,
+                        IdUserCreate = HttpContext.Session.GetString("UserId"),
+                        CreateDate=DateTime.Now
                     });
 
 
@@ -107,7 +110,9 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
                         Id = model.Id,
                         IdPadre = model.IdPadre,
                         Nombre = model.Nombre,
-                        Activo = model.Activo
+                        Activo = model.Activo,
+                        IdUserUpdate= HttpContext.Session.GetString("UserId"),
+                        UpdateDate= DateTime.Now
                     });
                 }
 
@@ -137,7 +142,9 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
                         Id = model.Id,
                         IdPadre = 0,
                         Nombre = model.Nombre,
-                        Activo = model.Activo
+                        Activo = model.Activo,
+                        IdUserCreate = HttpContext.Session.GetString("UserId"),
+                        CreateDate = DateTime.Now
                     });
 
                  
@@ -149,8 +156,10 @@ namespace AppDirectorioWeb.Areas.Catalogos.Controllers
                             Id = model.Id,
                             IdPadre = 0,
                             Nombre = model.Nombre,
-                            Activo = model.Activo
-                        });
+                            Activo = model.Activo,
+                            IdUserUpdate = HttpContext.Session.GetString("UserId"),
+                             UpdateDate = DateTime.Now
+                    });
                 }
 
                 _unitOfWork.Save();

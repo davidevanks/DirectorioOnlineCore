@@ -17,6 +17,10 @@ namespace DataAccess.Models
         public int? IdPadre { get; set; }
         public string Nombre { get; set; }
         public bool? Activo { get; set; }
+        public string IdUserCreate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string IdUserUpdate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public virtual ICollection<FeatureNegocio> FeatureNegocios { get; set; }
         public virtual ICollection<Negocio> Negocios { get; set; }

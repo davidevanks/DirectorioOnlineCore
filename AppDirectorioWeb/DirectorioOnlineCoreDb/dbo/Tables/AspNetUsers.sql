@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[AspNetUsers] (
     [Id]                   NVARCHAR (450)     NOT NULL,
+    [FullName]             VARCHAR (500)      NULL,
     [UserName]             NVARCHAR (256)     NULL,
     [NormalizedUserName]   NVARCHAR (256)     NULL,
     [Email]                NVARCHAR (256)     NULL,
@@ -16,6 +17,8 @@
     [AccessFailedCount]    INT                NOT NULL,
     CONSTRAINT [PK_AspNetUsers] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 GO

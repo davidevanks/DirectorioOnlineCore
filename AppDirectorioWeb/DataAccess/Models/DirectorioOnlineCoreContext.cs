@@ -25,6 +25,7 @@ namespace DataAccess.Models
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
         public virtual DbSet<Negocio> Negocios { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -44,18 +45,38 @@ namespace DataAccess.Models
             {
                 entity.ToTable("CatCategoria", "bs");
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(300)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<CatDepartamento>(entity =>
             {
                 entity.ToTable("CatDepartamento", "bs");
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(300)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdPaisNavigation)
                     .WithMany(p => p.CatDepartamentos)
@@ -67,14 +88,34 @@ namespace DataAccess.Models
             {
                 entity.ToTable("CatPais", "bs");
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(300)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<FeatureNegocio>(entity =>
             {
                 entity.ToTable("FeatureNegocio", "bs");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdFeatureNavigation)
                     .WithMany(p => p.FeatureNegocios)
@@ -91,6 +132,8 @@ namespace DataAccess.Models
             {
                 entity.ToTable("HorarioNegocio", "bs");
 
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
                 entity.Property(e => e.HoraDesde)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -98,6 +141,14 @@ namespace DataAccess.Models
                 entity.Property(e => e.HoraHasta)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdNegocioNavigation)
                     .WithMany(p => p.HorarioNegocios)
@@ -109,7 +160,15 @@ namespace DataAccess.Models
             {
                 entity.ToTable("ImagenesNegocio", "bs");
 
-                entity.Property(e => e.Image).HasMaxLength(50);
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdNegocioNavigation)
                     .WithMany(p => p.ImagenesNegocios)
@@ -120,6 +179,8 @@ namespace DataAccess.Models
             modelBuilder.Entity<Negocio>(entity =>
             {
                 entity.ToTable("Negocio", "bs");
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DescripcionNegocio)
                     .IsRequired()
@@ -139,14 +200,21 @@ namespace DataAccess.Models
                     .IsUnicode(false)
                     .HasColumnName("FacebookURL");
 
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.InstagramUrl)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("InstagramURL");
+
                 entity.Property(e => e.LinkedInUrl)
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("LinkedInURL");
-
-                entity.Property(e => e.LogoNegocio)
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
 
                 entity.Property(e => e.NombreNegocio)
                     .IsRequired()
@@ -176,6 +244,8 @@ namespace DataAccess.Models
                     .IsUnicode(false)
                     .HasColumnName("TwitterURL");
 
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
                 entity.HasOne(d => d.IdCategoriaNavigation)
                     .WithMany(p => p.Negocios)
                     .HasForeignKey(d => d.IdCategoria)
@@ -189,6 +259,23 @@ namespace DataAccess.Models
                     .HasConstraintName("FK_Negocio_CatDepartamento");
             });
 
+            modelBuilder.Entity<Review>(entity =>
+            {
+                entity.ToTable("Reviews", "bs");
+
+                entity.Property(e => e.Comments).IsUnicode(false);
+
+                entity.Property(e => e.IdUser)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.IdBusinessNavigation)
+                    .WithMany(p => p.Reviews)
+                    .HasForeignKey(d => d.IdBusiness)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Reviews_Negocio");
+            });
+
             modelBuilder.Entity<UserDetail>(entity =>
             {
                 entity.ToTable("UserDetails", "bs");
@@ -197,7 +284,11 @@ namespace DataAccess.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
                 entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UserId).HasMaxLength(450);
             });

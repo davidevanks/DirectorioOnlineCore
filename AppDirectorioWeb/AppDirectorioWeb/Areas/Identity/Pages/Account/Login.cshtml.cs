@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -85,6 +86,8 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    HttpContext.Session.SetString("UserId", _userManager.Users.Select(x => x.Id).FirstOrDefault());
+                   
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

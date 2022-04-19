@@ -61,6 +61,7 @@
     <Folder Include="bs\" />
     <Folder Include="bs\Tables\" />
     <Folder Include="Security\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\AspNetUserTokens.sql" />
@@ -78,5 +79,8 @@
     <Build Include="bs\Tables\CatPais.sql" />
     <Build Include="bs\Tables\CatCategoria.sql" />
     <Build Include="Security\bs.sql" />
+    <Build Include="bs\Tables\UserDetails.sql" />
+    <Build Include="bs\Tables\Reviews.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetAllCategoriesTest.sql" />
   </ItemGroup>
 </Project>

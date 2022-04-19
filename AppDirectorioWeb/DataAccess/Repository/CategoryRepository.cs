@@ -25,7 +25,8 @@ namespace DataAccess.Repository
             {
                 objFromDb.Nombre = category.Nombre;
                 objFromDb.Activo = category.Activo;
-               
+                objFromDb.IdUserUpdate= category.IdUserUpdate;
+                objFromDb.UpdateDate = category.UpdateDate;
             }
             
           

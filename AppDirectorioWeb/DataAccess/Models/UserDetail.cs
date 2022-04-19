@@ -10,6 +10,8 @@ namespace DataAccess.Models
         public int Id { get; set; }
         public string UserId { get; set; }
         public string FullName { get; set; }
-        public DateTime? RegistrationDate { get; set; }
+        public DateTime RegistrationDate { get; set; }
+        public string IdUserUpdate { get; set; }
+        public DateTime? UpdateDate { get; set; }
     }
 }
