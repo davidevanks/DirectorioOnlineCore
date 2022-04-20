@@ -58,6 +58,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required(ErrorMessage = "El nombre completo es requerido")]
+            [Display(Name = "Nombre Completo")]
             public string FullName { get; set; }
 
             [Required(ErrorMessage ="El email es requerido")]
@@ -77,11 +78,13 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "La confirmación de password es requerido")]
             [DataType(DataType.Password)]
             [Display(Name = "Confirmar password")]
             [Compare("Password", ErrorMessage = "El password y la confirmación de password no coinciden.")]
             public string ConfirmPassword { get; set; }
             [Display(Name = "Que tipo de usuario eres?")]
+            [Required(ErrorMessage = "El tipo de cliente es requerido")]
             public string Role { get; set; }
            
             public IEnumerable<SelectListItem> RoleList { get; set; }

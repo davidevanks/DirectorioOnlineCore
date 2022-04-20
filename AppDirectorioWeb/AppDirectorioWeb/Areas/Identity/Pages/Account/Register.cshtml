@@ -108,13 +108,14 @@
             <img src="assets/img/business/recaptcha.jpg" data-src="assets/img/business/recaptcha.jpg" alt="Image captcha" class="img-fluid lazyestload">
         </div>*@
 
-                        <div class="form-group mb-8">
-                            @*<label for="inputAddress">Dirección Email*</label>
-            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                    <div class="form-group mb-8">
+                        @*<label for="inputAddress">Dirección Email*</label>
+        <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
-                            <label asp-for="Input.Role"></label>
-                            @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "- SELECCIONA UN TIPO -", new { @class = "form-control" })
-                        </div>
+                        <label asp-for="Input.Role"></label>
+                        @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "- SELECCIONA UN TIPO -", new { @class = "form-control" })
+                        <span asp-validation-for="Input.Role" class="text-danger"></span>
+                    </div>
 
 
 

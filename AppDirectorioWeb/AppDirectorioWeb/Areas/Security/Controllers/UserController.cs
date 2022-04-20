@@ -12,7 +12,7 @@ using Utiles;
 
 namespace AppDirectorioWeb.Controllers
 {
-    [Area("Catalogos")]
+    [Area("Security")]
     public class UserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -44,6 +44,32 @@ namespace AppDirectorioWeb.Controllers
             userList = _unitOfWork.UserDetail.GetAUsersDetails("");
              return Json(new{data= userList });
          }
+
+        [HttpPost]
+        public IActionResult LockUnlock([FromBody] string id)
+        {
+            var user = _db.Users.FirstOrDefault(u=>u.Id==id);
+            string message = "";
+            if (user==null)
+            {
+                return Json(new { success = false,message="Usuario no existe!" });  
+            }
+
+            if (user.LockoutEnd!=null && user.LockoutEnd>DateTime.Now)
+            {
+                //user is currently locked, we will unlock
+                user.LockoutEnd = DateTime.Now;
+                message = " Desbloqueado!";
+            }
+            else
+            {
+                user.LockoutEnd = DateTime.Now.AddYears(1000);
+                message = " Bloqueado!";
+            }
+
+            _db.SaveChanges();
+            return Json(new { success = true, message = "Usuario"+message });
+        }
 
 
        

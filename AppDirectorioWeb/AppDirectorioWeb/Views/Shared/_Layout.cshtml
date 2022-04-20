@@ -119,11 +119,11 @@
                                 <li class="">
                                     <a href="javascript:0">Adm. listados</a>
                                 </li>
-                                <li class="">
+                                @*<li class="">
                                     <a href="javascript:0">Admin. propietarios de listados</a>
-                                </li>
+                                </li>*@
                                 <li class="">
-                                    <a href="javascript:0">Admin. usuarios Generales</a>
+                                    <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. usuarios</a>
                                 </li>
                                 <li class="">
                                     <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>

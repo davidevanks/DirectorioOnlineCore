@@ -19,30 +19,33 @@ namespace DataAccess.Repository
 
         public List<UserViewModel> GetAUsersDetails(string userId)
         {
-            var roles = _db.Roles;
-            var roleUser = _db.UserRoles;
-            var user = _db.Users;
-            var userDetail = _db.UserDetails;
+            var roles = _db.Roles.AsQueryable();
+            var roleUser = _db.UserRoles.AsQueryable();
+            var user = _db.Users.AsQueryable();
+            var userDetail = _db.UserDetails.AsQueryable();
 
             var query = (from u in user
-                         join ud in userDetail on u.Id equals ud.UserId
+                         join ud in userDetail on u.Id equals ud.UserId into uddef
+                         from udff in uddef.DefaultIfEmpty()
                          join ur in roleUser on u.Id equals ur.UserId
                          join r in roles on ur.RoleId equals r.Id
-                         join urr in user on ud.IdUserCreate equals urr.Id
-                         join urup in user on ud.IdUserUpdate equals urup.Id into urupdef
+                         join urr in user on udff.IdUserCreate equals urr.Id into urrdef
+                         from urrdf in urrdef.DefaultIfEmpty()
+                         join urup in user on udff.IdUserUpdate equals urup.Id into urupdef
                          from urupdf in urupdef.DefaultIfEmpty()
                          select new UserViewModel
                          {
                              Id=u.Id,
                              Email=u.Email,
                              PhoneNumber=u.PhoneNumber,
-                             FullName=ud.FullName,
+                             FullName= udff.FullName==null?"": udff.FullName,
                              Role=r.Name,
-                             ProfilePicture=ud.UserPicture,
-                             UserRegistration= urr.UserName,
-                             RegistrationDate=ud.RegistrationDate,
+                             ProfilePicture= udff.UserPicture,
+                             UserRegistration= urrdf.UserName,
+                             RegistrationDate= udff.RegistrationDate,
                              UpdateUser= urupdf.UserName,
-                             NotificationsPromo=ud.NotificationsPromo
+                             NotificationsPromo= udff.NotificationsPromo,
+                             LockoutEnd=u.LockoutEnd
                          });
 
 

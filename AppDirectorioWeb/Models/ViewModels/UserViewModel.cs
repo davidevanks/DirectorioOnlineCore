@@ -15,7 +15,7 @@ namespace Models.ViewModels
         public string RoleId { get; set; }
         public string FullName { get; set; }
         public byte[] ProfilePicture { get; set; }
-        public DateTime RegistrationDate { get; set; }
+        public DateTime? RegistrationDate { get; set; }
         public string UserRegistration { get; set; }
         public bool? NotificationsPromo { get; set; }
         public DateTime? UpdateDate { get; set; }
