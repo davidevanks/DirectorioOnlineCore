@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
+@using Utiles; 
 @{
 
 
@@ -60,70 +60,73 @@
     <header class="header">
         <nav class="nav-menuzord navbar-sticky">
             <div class="container clearfix">
-                <div id="menuzord" class="menuzord menuzord-responsive">
+                <div id="menuzord" class="menuzord menuzord-responsive" >
 
                     <a class="menuzord-brand">
 
                         <img src="~/img/brands/brujulaPymeLogo.png" />
                     </a>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <div class="menu-right">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="menu-right">
 
-                        <div class="avatar">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
-                                <img class="avatar-img" src="~/img/user/avatar-01.png" alt="Image">
-                                <span class="avatar-name">
+                            <div class="avatar">
+                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
+                                    <img class="avatar-img" src="~/img/user/avatar-01.png" alt="Image">
+                                    <span class="avatar-name">
+                                        Hola
+                                        <span class="small">@User.Identity.Name.ToLower()!</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="d-flex flex-wrap align-items-center">
+                                            <i class="fa fa-user mr-2" aria-hidden="true"></i>
+                                            <span>Mi perfil</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Security" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area ="Home" })" class="d-flex flex-wrap align-items-center">
+                                            <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i>
+                                            <span>Cerrar Sesión</span>
+                                        </a>
+                                    </li>
 
-                                    <span class="small">Hola @User.Identity.Name!</span>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="d-flex flex-wrap align-items-center">
-                                        <i class="fa fa-user mr-2" aria-hidden="true"></i>
-                                        <span>Mi perfil</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-area="Security" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area ="Home" })" class="d-flex flex-wrap align-items-center">
-                                        <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i>
-                                        <span>Cerrar Sesión</span>
-                                    </a>
-                                </li>
 
+                                </ul>
 
-                            </ul>
-
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                    @*posterior agregar validación si ya tiene un negocio no mostrar tampoco*@
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+                        <div class="float-right btn-wrapper">
+                            <a class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
+                        </div>
+                    }
 
-                    <div class="float-right btn-wrapper">
-                        <a class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
-                    </div>
-
-                    <ul class="menuzord-menu menuzord-right">
 
 
-                        <li>
-                            <a asp-controller="Home" asp-action="Index">Inicio</a>
+                <ul class="menuzord-menu menuzord-right">
 
-                        </li>
-                        <li>
-                            <a href="javascript:0">DashBoard</a>
-                        </li>
+
+                    <li>
+                        <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
+
+                    </li>
+
+                    @if (User.IsInRole(SP.Role_Admin))
+                    {
                         <li class="">
                             <a href="javascript:0">Administración</a>
                             <ul class="dropdown">
                                 <li class="">
-                                    <a href="javascript:0">Adm. listados</a>
+                                    <a href="javascript:0">Adm. Negocios</a>
                                 </li>
-                                @*<li class="">
-                                    <a href="javascript:0">Admin. propietarios de listados</a>
-                                </li>*@
+
                                 <li class="">
-                                    <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. usuarios</a>
+                                    <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
                                 </li>
                                 <li class="">
                                     <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
@@ -131,30 +134,98 @@
                             </ul>
                         </li>
 
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a href="javascript:0">Blog</a>
+                                </li>
 
-                        <li>
-                            <a asp-controller="Home" asp-action="Index">Inicio</a>
+                                <li class="">
+                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                </li>
+                                <li class="">
+                                    <a href="javascript:0">Categorías</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    }
+
+                    @if (User.IsInRole(SP.Role_BusinesAdmin))
+                    {
+                        <li class="">
+                            <a href="javascript:0">Mis Negocios</a>
+                        </li>
+
+                        <li class="">
+                            <a href="javascript:0">Categorías</a>
+                        </li>
+
+                        <li class="">
+                            <a href="javascript:0">Blog</a>
+                        </li>
+
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+
+
+                                <li class="">
+                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                    }
+
+                    @if (User.IsInRole(SP.Role_Customer))
+                    {
+                        <li class="">
+                            <a href="javascript:0">Mis Negocios Favoritos</a>
                         </li>
                         <li class="">
-                            <a href="javascript:0">Mis listados</a>
+                            <a href="javascript:0">Categorías</a>
                         </li>
 
+                        <li class="">
+                            <a href="javascript:0">Blog</a>
+                        </li>
 
-                        <li>
-                            <a asp-controller="Home" asp-action="Index">Inicio</a>
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+
+
+                                <li class="">
+                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                    }
+
+
+
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+
+                        <li class="">
+                            <a href="javascript:0">Categorías</a>
+                        </li>
+                        <li class="">
+                            <a href="javascript:0">Blog</a>
                         </li>
                         <li class="">
                             <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                         </li>
 
 
+                    }
 
-                        <li>
-                            <a asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
-                        <li class="">
-                            <a href="javascript:0">¿Qué es Brújula Pyme?</a>
-                        </li>
+
                     @if (!SignInManager.IsSignedIn(User))
                     {
 
@@ -166,7 +237,7 @@
 
 
 
-                    </ul>
+                </ul>
 
                 </div>
             </div>

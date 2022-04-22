@@ -8,10 +8,12 @@ using DataAccess.Repository.IRepository;
 using Models.ViewModels;
 using Utiles;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppDirectorioWeb.Areas.Catalogos.Controllers
 {
     [Area("Catalogos")]
+    [Authorize(Roles =SP.Role_Admin)]
     public class CatCategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 using Utiles;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppDirectorioWeb.Controllers
 {
     [Area("Security")]
+    [Authorize(Roles = SP.Role_Admin)]
     public class UserController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -28,14 +28,14 @@ function loadDataTable() {
                         //user is currently locked
                         return ` 
                              <a onclick=LockUnlock('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:200px;" >
-                             <i class="fa fa-lock-open"></i> Desbloquear</a>`
+                             <i class="fa fa-lock-open"></i> Activar</a>`
 
                             ;
                     } else {
 
                         return ` 
                              <a onclick=LockUnlock('${data.id}'); class="btn btn-success text-white" style="cursor:pointer;width:200px;">
-                             <i class="fa fa-lock"></i> Bloquear</a>`
+                             <i class="fa fa-lock"></i> Desactivar</a>`
 
                             ;
                     }
