@@ -39,7 +39,7 @@ namespace AppDirectorioWeb
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DirectorioOnlineCoreContext>()
                 .AddDefaultTokenProviders();
 
@@ -51,6 +51,7 @@ namespace AppDirectorioWeb
             services.AddScoped<IUnitOfWork, UnitOfWork>();
              services.AddControllersWithViews().AddRazorRuntimeCompilation();
              services.AddRazorPages();
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.ConfigureApplicationCookie(options =>
             {

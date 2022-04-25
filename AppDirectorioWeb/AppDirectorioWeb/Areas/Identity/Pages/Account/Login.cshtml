@@ -14,6 +14,7 @@
                     <div class="bg-primary text-center py-4">
                         <h2 class="text-white mb-0 h4">Inicia sesión</h2>
                     </div>
+                    <div asp-validation-summary="All" class=" text-center text-danger"></div>
                     <div class="card-body px-7 pt-7 pb-0">
                         <form id="account" method="post" class="form-horizontal">
                             <div class="form-group mb-7">
@@ -42,24 +43,25 @@
                                     </label>
                                 </div>
                             </div>
-                            <button type="submit" asp-page-handler="SendVerificationEmail" class="btn-link" style="padding:0px;margin:0px;border:0px;background-color:white">Reenviar mensaje de verificación de cuenta</button>
-                            <br />
-                            <br />
-                      
+
+
                         </form>
+                        <a asp-page="./ResendEmailConfirmation"  class="btn-link" style="padding:0px;margin:0px;border:0px;background-color:white">Reenviar mensaje de verificación de cuenta</a>
+                        <br />
+                        <br />
                     </div>
                     <div class="card-footer bg-transparent text-center py-3">
 
-                      
+
                         <p class="mb-0">No te has registrado aún? <strong>Registrate</strong></p>
 
 
-                        <a  asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><strong>Registrar nuevo usuario</strong></a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><strong>Registrar nuevo usuario</strong></a>
 
 
-                   
-                       
-                        
+
+
+
                         @*<a asp-route-IsBussines="1" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Pymes/Negocios</a>*@
 
                     </div>

@@ -107,22 +107,29 @@
             </label> <br>
             <img src="assets/img/business/recaptcha.jpg" data-src="assets/img/business/recaptcha.jpg" alt="Image captcha" class="img-fluid lazyestload">
         </div>*@
+                        @if (User.IsInRole(SP.Role_Admin))
+                        {
+                            <div class="form-group mb-8">
 
-                    <div class="form-group mb-8">
-                        @*<label for="inputAddress">Dirección Email*</label>
-        <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
-                        <label asp-for="Input.Role"></label>
-                        @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "- SELECCIONA UN TIPO -", new { @class = "form-control" })
-                        <span asp-validation-for="Input.Role" class="text-danger"></span>
-                    </div>
+                                <label asp-for="Input.Role"></label>
+                                @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, "- SELECCIONA UN TIPO -", new { @class = "form-control" })
+                                <span asp-validation-for="Input.Role" class="text-danger"></span>
+                            </div>
+
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, new { @class = "form-control" , @style = "display:none" })
+                        }
+
 
 
 
                         <div class="form-group mb-6">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox">
+                                    <input id="chkTerm" type="checkbox">
                                     Estoy de acuerdo con los <a href="terms-of-services.html">Terminos de uso</a> &amp; <a href="#">Política de privacidad</a>.
                                 </label>
                             </div>
@@ -131,13 +138,13 @@
                         <div class="form-group mb-6">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox">
+                                    <input asp-for="Input.NotificationsPromo" type="checkbox">
                                     Acepto recibir mensajes sobre promociones y servicios, puedes desuscribirte cuando quieras.
                                 </label>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary"> Crear cuenta </button>
+                        <button id="btnCrearCuenta" type="submit" class="btn btn-primary"> Crear cuenta </button>
 
                     </form>
 
@@ -179,4 +186,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+<script>
+    $('#btnCrearCuenta').attr("disabled", true);
+
+  
+
+    $('#chkTerm').click(function () {
+        if (document.getElementById('chkTerm').checked) {
+            $(":submit").removeAttr("disabled");
+        } else {
+            $('#btnCrearCuenta').attr("disabled", true);
+        }
+    });
+</script>
 }

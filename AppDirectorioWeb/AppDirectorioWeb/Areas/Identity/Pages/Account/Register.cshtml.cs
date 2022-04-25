@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Utiles;
 using DataAccess.Models;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -62,13 +63,13 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             public string FullName { get; set; }
 
             [Required(ErrorMessage ="El email es requerido")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage ="Email no valido")]
             [Display(Name = "Email")]
             
             public string Email { get; set; }
 
             [Required(ErrorMessage = "El número de telefono es requerido")]
-            [Phone]
+            [Phone(ErrorMessage ="télefono no valido")]
             [Display(Name = "Número de telefono")]
             public string Telefono { get; set; }
 
@@ -88,6 +89,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             public string Role { get; set; }
            
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            public bool NotificationsPromo { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -109,12 +111,14 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             {
                 Input = new InputModel()
                 {
-                    RoleList = _roleManager.Roles.Where(x => x.Name != SP.Role_Admin).Select(x => x.Name).Select(i => new SelectListItem
+                    RoleList = _roleManager.Roles.Where(x => x.Name == SP.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
                     {
                         Text = i,
                         Value = i
                     })
                 };
+
+                Input.Role = SP.Role_Customer;
             }
           
 
@@ -125,6 +129,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Telefono };
@@ -142,22 +147,13 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 }
                
 
-                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName, RegistrationDate = DateTime.Now,IdUserCreate= idUserCreate };
+                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName,NotificationsPromo=Input.NotificationsPromo, RegistrationDate = DateTime.Now,IdUserCreate= idUserCreate };
                   _unitOfWork.UserDetail.Add(userDetail);
                 if (result.Succeeded)
                 {
                     //_logger.LogInformation("User created a new account with password.");
 
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    //var callbackUrl = Url.Page(
-                    //    "/Account/ConfirmEmail",
-                    //    pageHandler: null,
-                    //    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                    //    protocol: Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                   
 
                     if (! await _roleManager.RoleExistsAsync(SP.Role_Admin))
                     {
@@ -172,7 +168,29 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(SP.Role_Customer));
                     }
 
-                    await _userManager.AddToRoleAsync(user, Input.Role);
+                   
+                        await _userManager.AddToRoleAsync(user, Input.Role);
+                  
+                 
+                  
+             
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        protocol: Request.Scheme);
+
+                    string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateConfirmEmail.html";
+                    StreamReader str = new StreamReader(FilePath);
+                    string MailText = str.ReadToEnd();
+                    str.Close();
+
+                    MailText = MailText.Replace("[username]", Input.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Verificación de Cuenta", MailText);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

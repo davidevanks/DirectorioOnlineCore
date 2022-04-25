@@ -43,15 +43,15 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "El email es requerido")]
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage ="Contraseña es requerida")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Recuerdame?")]
             public bool RememberMe { get; set; }
         }
 
@@ -101,7 +101,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Inicio de sesión no válido. Verifique sus credenciales o asegurese de haber activado su cuenta");
                     return Page();
                 }
             }
