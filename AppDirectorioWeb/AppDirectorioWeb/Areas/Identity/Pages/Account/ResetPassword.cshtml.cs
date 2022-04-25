@@ -48,7 +48,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         {
             if (code == null)
             {
-                return BadRequest("A code must be supplied for password reset.");
+                return BadRequest("Para el restablecimiento de la contraseña se debe suministrar un código.");
             }
             else
             {

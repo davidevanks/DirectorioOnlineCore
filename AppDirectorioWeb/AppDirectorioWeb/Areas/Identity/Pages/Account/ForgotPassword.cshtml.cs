@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using System.IO;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -43,7 +44,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return RedirectToPage("./ForgotPassword");
                 }
 
                 // For more information on how to enable account confirmation and password reset please 
@@ -56,10 +57,16 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+               
+
+                string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateResetPasswordEmail.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+                MailText = MailText.Replace("[username]", Input.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
+
+                await _emailSender.SendEmailAsync(Input.Email, "Reestablecer contraseña", MailText);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
