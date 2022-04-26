@@ -17,5 +17,7 @@ namespace Models.ViewModels
         public DateTime CreateDate { get; set; }
         public string IdUserUpdate { get; set; }
         public DateTime? UpdateDate { get; set; }
+
+        public List<CatCategoryViewModel> Days { get; set; }
     }
 }
