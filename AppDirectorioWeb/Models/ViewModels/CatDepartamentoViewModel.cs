@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models.ViewModels
+{
+   public class CatDepartamentoViewModel
+    {
+        public int Id { get; set; }
+        public int? IdPais { get; set; }
+        public string Nombre { get; set; }
+        public bool? Activo { get; set; }
+        public string IdUserCreate { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string IdUserUpdate { get; set; }
+        public DateTime? UpdateDate { get; set; }
+    }
+}

@@ -29,7 +29,7 @@ namespace AppDirectorioWeb.Controllers
         
         }
       
-        public async Task<IActionResult> AgregarNegocioAsync()
+        public  IActionResult AgregarNegocio()
         {
             return View();
         }

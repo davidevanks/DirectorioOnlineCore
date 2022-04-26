@@ -102,7 +102,7 @@
                     @if (!SignInManager.IsSignedIn(User))
                     {
                         <div class="float-right btn-wrapper">
-                            <a class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
+                            <a class="btn btn-outline-primary" asp-area="Negocios" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
                         </div>
                     }
 
@@ -157,23 +157,23 @@
                         <li class="">
                             <a href="javascript:0">Mis Negocios</a>
                         </li>
-
                         <li class="">
                             <a href="javascript:0">Categorías</a>
                         </li>
 
-                        <li class="">
-                            <a href="javascript:0">Blog</a>
-                        </li>
 
                         <li class="">
                             <a href="javascript:0">Más</a>
                             <ul class="dropdown">
 
-
+                                <li class="">
+                                    <a href="javascript:0">Blog</a>
+                                </li>
                                 <li class="">
                                     <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                                 </li>
+
+
 
 
                             </ul>
@@ -189,13 +189,13 @@
                             <a href="javascript:0">Categorías</a>
                         </li>
 
-                        <li class="">
-                            <a href="javascript:0">Blog</a>
-                        </li>
 
                         <li class="">
                             <a href="javascript:0">Más</a>
                             <ul class="dropdown">
+                                <li class="">
+                                    <a href="javascript:0">Blog</a>
+                                </li>
 
 
                                 <li class="">
@@ -215,11 +215,22 @@
                         <li class="">
                             <a href="javascript:0">Categorías</a>
                         </li>
-                        <li class="">
-                            <a href="javascript:0">Blog</a>
-                        </li>
+
                         <li class="">
                             <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                        </li>
+
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a href="javascript:0">Blog</a>
+                                </li>
+
+
+
+
+                            </ul>
                         </li>
 
 

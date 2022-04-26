@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace DataAccess.Models
+namespace Models.ViewModels
 {
-    public partial class Negocio
+    public class BussinesViewModel
     {
-        public Negocio()
-        {
-            FeatureNegocios = new HashSet<FeatureNegocio>();
-            HorarioNegocios = new HashSet<HorarioNegocio>();
-            ImagenesNegocios = new HashSet<ImagenesNegocio>();
-            Reviews = new HashSet<Review>();
-        }
-
         public int Id { get; set; }
         public string NombreNegocio { get; set; }
         public string DescripcionNegocio { get; set; }
@@ -42,11 +35,11 @@ namespace DataAccess.Models
         public string IdUserUpdate { get; set; }
         public DateTime? UpdateDate { get; set; }
 
-        public virtual CatCategorium IdCategoriaNavigation { get; set; }
-        public virtual CatDepartamento IdDepartamentoNavigation { get; set; }
-        public virtual ICollection<FeatureNegocio> FeatureNegocios { get; set; }
-        public virtual ICollection<HorarioNegocio> HorarioNegocios { get; set; }
-        public virtual ICollection<ImagenesNegocio> ImagenesNegocios { get; set; }
-        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual CatCategoryViewModel IdCategoriaNavigation { get; set; }
+        public virtual CatDepartamentoViewModel IdDepartamentoNavigation { get; set; }
+        public virtual ICollection<FeatureNegocioViewModel> FeatureNegocios { get; set; }
+        public virtual ICollection<HorarioNegocioViewModel> HorarioNegocios { get; set; }
+        public virtual ICollection<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
+        public virtual ICollection<ReviewViewModel> Reviews { get; set; }
     }
 }
