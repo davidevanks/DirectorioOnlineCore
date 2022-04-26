@@ -15,6 +15,7 @@
     [FacebookURL]        VARCHAR (200)   NULL,
     [InstagramURL]       VARCHAR (200)   NULL,
     [TwitterURL]         VARCHAR (200)   NULL,
+    [HasDelivery]        BIT             NULL,
     [PedidosYa]          BIT             NULL,
     [Hugo]               BIT             NULL,
     [Piki]               BIT             NULL,
@@ -28,6 +29,8 @@
     CONSTRAINT [FK_Negocio_CatCategoria] FOREIGN KEY ([IdCategoria]) REFERENCES [bs].[CatCategoria] ([Id]),
     CONSTRAINT [FK_Negocio_CatDepartamento] FOREIGN KEY ([IdDepartamento]) REFERENCES [bs].[CatDepartamento] ([Id])
 );
+
+
 
 
 
