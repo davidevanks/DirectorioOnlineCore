@@ -168,6 +168,8 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
 
+                entity.Property(e => e.Image).IsUnicode(false);
+
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdNegocioNavigation)
@@ -215,6 +217,8 @@ namespace DataAccess.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("LinkedInURL");
+
+                entity.Property(e => e.LogoNegocio).IsUnicode(false);
 
                 entity.Property(e => e.NombreNegocio)
                     .IsRequired()
@@ -293,6 +297,8 @@ namespace DataAccess.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.UserId).HasMaxLength(450);
+
+                entity.Property(e => e.UserPicture).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

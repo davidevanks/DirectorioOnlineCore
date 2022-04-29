@@ -35,7 +35,7 @@ namespace DataAccess.Models
         public bool? PedidosYa { get; set; }
         public bool? Hugo { get; set; }
         public bool? Piki { get; set; }
-        public byte[] LogoNegocio { get; set; }
+        public string LogoNegocio { get; set; }
         public int Status { get; set; }
         public string IdUserCreate { get; set; }
         public DateTime CreateDate { get; set; }

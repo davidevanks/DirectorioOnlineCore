@@ -9,7 +9,7 @@ namespace DataAccess.Models
     {
         public long Id { get; set; }
         public int? IdNegocio { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public string IdUserCreate { get; set; }
         public DateTime CreateDate { get; set; }
         public string IdUserUpdate { get; set; }

@@ -9,7 +9,7 @@ namespace DataAccess.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public byte[] UserPicture { get; set; }
+        public string UserPicture { get; set; }
         public string FullName { get; set; }
         public bool? NotificationsPromo { get; set; }
         public string IdUserCreate { get; set; }
