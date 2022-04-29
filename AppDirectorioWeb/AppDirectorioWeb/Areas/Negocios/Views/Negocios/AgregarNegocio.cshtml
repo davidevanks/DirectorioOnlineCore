@@ -1,4 +1,5 @@
 ﻿
+@model Models.ViewModels.AddUpdBusinessViewModel;
 
 
 
@@ -13,58 +14,71 @@
             </ul>
         </nav>
 
-        <form id="form_atencion" asp-action="NegociosNuevo" asp-controller="Negocios" asp-antiforgery="true" method="post">
+        <form enctype="multipart/form-data" id="form_atencion" asp-action="NegociosNuevo" asp-controller="Negocios" asp-antiforgery="true" method="post">
             <div class="card">
                 <div class="card-body px-6 pt-6 pb-1">
                     <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
                     <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
 
                     <div class="row">
-                        <div class="form-group mb-8">
-                            <label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>
 
-                            <label asp-for="Input.Email"></label>
-                            <input asp-for="Input.Email" class="form-control" />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <div class="form-group col-md-6 mb-4">
+                            @*<label for="inputAddress">Dirección Email*</label>
+            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+
+                            <label asp-for="User.Email"></label>
+                            <input placeholder="Ej: peter@email.com" asp-for="User.Email" class="form-control" />
+                            <span asp-validation-for="User.Email" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-8">
-                            <label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>
+                        <div class="form-group col-md-6 mb-4"></div>
+                        <div class="form-group col-md-6 mb-4">
+                            @*<label for="inputAddress">Dirección Email*</label>
+            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
-                            <label asp-for="Input.FullName"></label>
-                            <input asp-for="Input.FullName" class="form-control" />
-                            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                            <label asp-for="User.FullName"></label>
+                            <input asp-for="User.FullName" class="form-control" />
+                            <span asp-validation-for="User.FullName" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-8">
-                            <label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>
+                        <div class="form-group col-md-6 mb-4"></div>
+                        <div class="form-group col-md-6 mb-4">
+                            @*<label for="inputAddress">Dirección Email*</label>
+            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
-                            <label asp-for="Input.Telefono"></label>
-                            <input asp-for="Input.Telefono" class="form-control" />
-                            <span asp-validation-for="Input.Telefono" class="text-danger"></span>
+                            <label asp-for="User.Telefono"></label>
+                            <input asp-for="User.Telefono" class="form-control" />
+                            <span asp-validation-for="User.Telefono" class="text-danger"></span>
                         </div>
-                        <div class="row mb-6">
-                            <div class="form-group col-md-6 mb-4">
-                                <label for="inputPassword">Contraseña*</label>
-                                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>
 
-                                <label asp-for="Input.Password"></label>
-                                <input asp-for="Input.Password" class="form-control" />
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                        <div class="form-group col-md-6 mb-4"></div>
+                        <div class="form-group col-md-4 mb-4">
+                            @*<label for="inputPassword">Contraseña*</label>
+            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+
+                            <label asp-for="User.Password"></label>
+                            <input asp-for="User.Password" class="form-control" />
+                            <span asp-validation-for="User.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-4 mb-4">
+                            @*<label for="inputPassword">Contraseña*</label>
+            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+
+                            <label asp-for="User.ConfirmPassword"></label>
+                            <input asp-for="User.ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-6">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox">
+                                    Estoy de acuerdo con los <a href="terms-of-services.html">Terminos de uso</a> &amp; <a href="#">Política de privacidad</a>.
+                                </label>
                             </div>
-
-                            <div class="form-group col-md-6 mb-4">
-                                <label for="inputPassword">Contraseña*</label>
-                                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>
-
-                                <label asp-for="Input.ConfirmPassword"></label>
-                                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                            </div>
                         </div>
 
 
+                    </div>
                     </div>
                 </div>
 
@@ -76,26 +90,28 @@
                         <div class="row">
                             <div class="form-group col-md-6 mb-6">
                                 <label for="listingTitle">Nombre del negocio</label>
-                                <input type="text" class="form-control" placeholder="Nombre del negocio" required>
+                                <input asp-for="Business.NombreNegocio" class="form-control" />
+                                <span asp-validation-for="Business.NombreNegocio" class="text-danger"></span>
                             </div>
 
                             <div class="form-group col-md-6 mb-6">
                                 <label for="exampleFormControlSelect1">Categoria</label>
                                 <div class="select-default bg-white">
-                                    <select class="form-control" id="IdCategoria" required>
-                                        <option value="">Eliga una opción</option>
-                                    </select>
+                                    @Html.DropDownListFor(m => m.Business.IdCategoria, Model.Business.Categories, "- SELECCIONA UNA CATEGORÍA -", new { @class = "form-control" })
+                                    <span asp-validation-for="Business.IdCategoria" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="form-group col-md-12 mb-6">
                                 <label for="discribeTheListing">Descripción del negocio</label>
-                                <textarea class="form-control" rows="6" placeholder="Describa el negocio" required></textarea>
+                                <textarea asp-for="Business.DescripcionNegocio" class="form-control" rows="6" placeholder="Describa el negocio" required></textarea>
+                                <span asp-validation-for="Business.DescripcionNegocio" class="text-danger"></span>
                             </div>
 
                             <div class="form-group col-md-12 mb-6">
                                 <label for="addTags">Tags</label>
-                                <input type="text" class="form-control" id="addTags" placeholder="Add Tags">
+                                <input asp-for="Business.Tags" class="form-control" />
+                                <span asp-validation-for="Business.Tags" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -112,38 +128,40 @@
                         <div class="row">
                             <div class="col-md-6">
 
-                                <div class="form-group mb-6">
+                                @*<div class="form-group mb-6">
                                     <label for="exampleFormControlSelect1">Pais</label>
                                     <div class="select-default bg-white">
                                         <select class="form-control" id="IdPais" required>
                                             <option value="">Eliga una opción</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div>*@
 
                                 <div class="form-group mb-6">
                                     <label for="exampleFormControlSelect1">Departamento</label>
                                     <div class="select-default bg-white">
-                                        <select class="form-control" id="IdDepartamento" required>
-                                            <option value="">Eliga una opción</option>
-                                        </select>
+                                        @Html.DropDownListFor(m => m.Business.IdDepartamento, Model.Business.Departamentos, "- SELECCIONA UN DEPARTAMENTO -", new { @class = "form-control" })
+                                        <span asp-validation-for="Business.IdDepartamento" class="text-danger"></span>
                                     </div>
                                 </div>
 
                                 <div class="form-group mb-6">
                                     <label for="discribeTheListing">Dirección del negocio</label>
-                                    <textarea class="form-control" rows="3" placeholder="Dirección del negocio" required></textarea>
+                                    <textarea asp-for="Business.DireccionNegocio" class="form-control" rows="3" placeholder="Dirección del negocio" required></textarea>
+                                    <span asp-validation-for="Business.DireccionNegocio" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group mb-6">
                                     <label for="listingPhone">Telefono</label>
-                                    <input type="number" class="form-control" maxlength="8" placeholder="88888888" required>
+                                    <input asp-for="Business.TelefonoNegocio1" placeholder="88888888" class="form-control" />
+                                    <span asp-validation-for="Business.TelefonoNegocio1" class="text-danger"></span>
                                 </div>
 
 
                                 <div class="form-group mb-6">
                                     <label for="listingPhone">Correo electronico</label>
-                                    <input type="email" class="form-control" placeholder="tucorreo@mail.com" required>
+                                    <input asp-for="Business.EmailNegocio" class="form-control" />
+                                    <span asp-validation-for="Business.EmailNegocio" class="text-danger"></span>
                                 </div>
 
 
@@ -151,7 +169,7 @@
                             </div>
 
 
-                            <div class="col-md-6 map-place-search-wrapper">
+                            @*<div class="col-md-6 map-place-search-wrapper">
                                 <div class="form-group mb-0 ">
                                     <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
 
@@ -172,7 +190,7 @@
 
                                 </div>
 
-                            </div>
+                            </div>*@
 
                         </div>
                     </div>
@@ -186,32 +204,42 @@
 
                         <div class="row">
                             <div class="form-group col-md-6 mb-6">
+                                <label for="youtubeUrl">WhatsApp</label>
+                                <input asp-for="Business.TelefonoWhatsApp" class="form-control" />
+                                <span asp-validation-for="Business.TelefonoWhatsApp" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-12 mb-12">
+                                <label for="youtubeUrl">Pagina web</label>
+                                <input asp-for="Business.SitioWebNegocio" class="form-control" />
+                                <span asp-validation-for="Business.SitioWebNegocio" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-6 mb-6">
                                 <label for="linkedUrl">Facebook</label>
-                                <input type="text" class="form-control" placeholder="http://instagram.com/">
+                                <input asp-for="Business.FacebookUrl" class="form-control" />
+                                <span asp-validation-for="Business.FacebookUrl" class="text-danger"></span>
                             </div>
 
                             <div class="form-group col-md-6 mb-6">
                                 <label for="facebookUrl">Instagram</label>
-                                <input type="text" class="form-control" placeholder="http://facebook.com/">
+                                <input asp-for="Business.InstagramUrl" class="form-control" />
+                                <span asp-validation-for="Business.InstagramUrl" class="text-danger"></span>
                             </div>
 
                             <div class="form-group col-md-6 mb-6">
                                 <label for="twitterUrl">Twitter</label>
-                                <input type="text" class="form-control" placeholder="http://twitter.com/">
+                                <input asp-for="Business.TwitterUrl" class="form-control" />
+                                <span asp-validation-for="Business.TwitterUrl" class="text-danger"></span>
                             </div>
 
-                            <div class="form-group col-md-6 mb-6">
-                                <label for="youtubeUrl">WhatsApp</label>
-                                <input type="text" class="form-control" placeholder="88888888" maxlength="8">
-                            </div>
+
                             <div class="form-group col-md-6 mb-6">
                                 <label for="youtubeUrl">Linkedin</label>
-                                <input type="text" class="form-control" placeholder="88888888" maxlength="8">
+                                <input asp-for="Business.LinkedInUrl" class="form-control" />
+                                <span asp-validation-for="Business.LinkedInUrl" class="text-danger"></span>
                             </div>
-                            <div class="form-group col-md-12 mb-12">
-                                <label for="youtubeUrl">Pagina web</label>
-                                <input type="text" class="form-control" placeholder="http://tupagina.com/">
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -227,19 +255,19 @@
                                 <div class="form-group form-check mb-6 ">
                                     <div class="row align-items-center form-check-readonly">
                                         <div class="col-5">
-                                            <input type="checkbox" class="form-check-input" id="monday">
+                                            <input asp-for="Business.HasDelivery" class="form-check-input" type="checkbox">
                                             <label class="form-check-label" for="monday">Servicio a domicilio/Delivery</label>
                                         </div>
                                         <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
+                                            <input asp-for="Business.Hugo" class="form-check-input" type="checkbox">
                                             <label class="form-check-label" for="monday">Hugo</label>
                                         </div>
                                         <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
+                                            <input asp-for="Business.PedidosYa" class="form-check-input" type="checkbox">
                                             <label class="form-check-label" for="monday">Pedidos Ya</label>
                                         </div>
                                         <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
+                                            <input asp-for="Business.Piki" class="form-check-input" type="checkbox">
                                             <label class="form-check-label" for="monday">Piki</label>
                                         </div>
                                     </div>
@@ -424,14 +452,9 @@
                     </div>
                 </div>
 
-                Contact
-                <div class="card">
-                    <div class="card-body p-6">
-                        <h3 class="h4 mb-4">Contact</h3>
-                        <p class="mb-5">We are not responsible for any damages caused by the use of this website, or by posting business listings here. Please use our site at your own discretion and exercise good judgement as well as common sense when advertising business here.</p>
-                    </div>
-                </div>
-                Gallery
+          
+            
+                @*Gallery*@
                 <div class="card">
                     <div class="card-body p-6">
                         <h3 class="h4 mb-4">Galeria de productos</h3>
@@ -452,8 +475,8 @@
 
                         <div class="form-group col-md-4">
 
-                            <input type="file" name="files" />
-
+                            <input asp-for="Logo" class="form-control custom-file-input">
+                            <label class="custom-file-label">Selecciona el logo de tu negocio...</label>
                         </div>
 
 

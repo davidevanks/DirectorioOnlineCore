@@ -12,6 +12,8 @@ namespace DataAccess.Repository.IRepository
         ISP_Call SP_CALL { get; }
 
         public IUserDetailsRepository UserDetail { get;  }
+
+        public IDepartamentRepository Departament { get; }
         void Save();
     }
 }

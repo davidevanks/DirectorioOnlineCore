@@ -18,12 +18,15 @@ namespace DataAccess.Repository
             Category = new CategoryRepository(_db);
             SP_CALL = new SP_CALL(_db);
             UserDetail = new UserDetailRepository(_db);
+            Departament = new DepartamentRepository(_db);
         }
 
         public ICategoryRepository Category { get; private set; }
         public ISP_Call SP_CALL { get; private set; }
         public IUserDetailsRepository UserDetail { get; private set; }
-     
+
+        public IDepartamentRepository Departament { get; private set; }
+
 
         public void Dispose()
         {

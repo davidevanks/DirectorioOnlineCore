@@ -4,12 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Models.ViewModels
 {
     public class BussinesViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         [Required(ErrorMessage = "El Nombre del negocio es requerido")]
         [Display(Name = "Nombre Negocio")]
         public string NombreNegocio { get; set; }
@@ -21,10 +22,10 @@ namespace Models.ViewModels
         public string Tags { get; set; }
         [Required(ErrorMessage = "La categoría es requerida")]
         [Display(Name = "Categoría")]
-        public int IdCategoria { get; set; }
+        public string IdCategoria { get; set; }
         [Required(ErrorMessage = "El departamento es requerido")]
         [Display(Name = "Departamento")]
-        public int IdDepartamento { get; set; }
+        public string IdDepartamento { get; set; }
         [Required(ErrorMessage = "La dirección del negocio es requerida")]
         [Display(Name = "Dirección Negocio")]
         public string DireccionNegocio { get; set; }
@@ -56,19 +57,19 @@ namespace Models.ViewModels
         [Display(Name = "Twitter")]
         [Url(ErrorMessage = "Twitter no valido")]
         public string TwitterUrl { get; set; }
-        public bool? HasDelivery { get; set; }
-        public bool? PedidosYa { get; set; }
-        public bool? Hugo { get; set; }
-        public bool? Piki { get; set; }
-        public byte[] LogoNegocio { get; set; }
+        public bool HasDelivery { get; set; }
+        public bool PedidosYa { get; set; }
+        public bool Hugo { get; set; }
+        public bool Piki { get; set; }
+        public string LogoNegocio { get; set; }
         public int? Status { get; set; }
         public string IdUserCreate { get; set; }
         public DateTime? CreateDate { get; set; }
         public string IdUserUpdate { get; set; }
         public DateTime? UpdateDate { get; set; }
 
-        public  List<CatCategoryViewModel> Categories { get; set; }
-        public  List<CatDepartamentoViewModel> Departamentos { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
+        public IEnumerable<SelectListItem> Departamentos { get; set; }
     
         //public virtual ICollection<ReviewViewModel> Reviews { get; set; }
     }
