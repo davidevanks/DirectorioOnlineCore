@@ -69,9 +69,7 @@ namespace Models.ViewModels
 
         public  List<CatCategoryViewModel> Categories { get; set; }
         public  List<CatDepartamentoViewModel> Departamentos { get; set; }
-        public virtual ICollection<FeatureNegocioViewModel> FeatureNegocios { get; set; }
-        public virtual ICollection<HorarioNegocioViewModel> HorarioNegocios { get; set; }
-        public virtual ICollection<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
+    
         //public virtual ICollection<ReviewViewModel> Reviews { get; set; }
     }
 }
