@@ -68,7 +68,11 @@
                             <input asp-for="User.ConfirmPassword" class="form-control" />
                             <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-6">
+                        <div class="form-group col-md-4 mb-4">
+
+
+                        </div>
+                        <div class="form-group col-md-6 mb-4">
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox">
@@ -475,8 +479,8 @@
 
                         <div class="form-group col-md-4">
 
-                            <input asp-for="Logo" class="form-control custom-file-input">
-                            <label class="custom-file-label">Selecciona el logo de tu negocio...</label>
+                            <input asp-for="Logo" class="form-control custom-file-input cfi">
+                            <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
                         </div>
 
 
@@ -498,3 +502,14 @@
     </div>
 </section>
 
+@section Scripts{ 
+<script>
+    $(document).ready(function () {
+        $('.cfi').on("change", function () {
+            var filename = $(this).val().split("\\").pop();
+            $(this).next('.cfl').html(filename);
+        });
+
+    });
+</script>
+}
