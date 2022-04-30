@@ -293,22 +293,15 @@
                             <div class="col-md-6">
                                 <div class="form-group form-check mb-6 ">
                                     <div class="row align-items-center form-check-readonly">
-                                        <div class="col-5">
-                                            <input type="checkbox" class="form-check-input" id="monday">
-                                            <label class="form-check-label" for="monday">Servicio a domicilio/Delivery</label>
-                                        </div>
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
-                                            <label class="form-check-label" for="monday">Hugo</label>
-                                        </div>
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
-                                            <label class="form-check-label" for="monday">Pedidos Ya</label>
-                                        </div>
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
-                                            <label class="form-check-label" for="monday">Piki</label>
-                                        </div>
+                                        @foreach (var feature in Model.FeatureNegocios)
+                                        {
+                                            <div class="col-6">
+                                                <input asp-for="@feature.Activo" type="checkbox" class="form-check-input" id="monday">
+                                                <label class="form-check-label" >@feature.Feature</label>
+                                            </div>
+                                        }
+
+
                                     </div>
                                 </div>
                             </div>
@@ -323,134 +316,33 @@
                 <div class="card">
                     <div class="card-body p-6">
                         <h3 class="h4 mb-4">Horario de atención</h3>
-                        <p class="mb-5">Ejemplo: 10.00am - 5.00pm or 10.00 - 17.00</p>
+                        <p class="mb-5">Ejemplo: 10:00am - 5:00pm </p>
 
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6 ">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="monday">
-                                            <label class="form-check-label" for="monday">Lunes</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm">
+                            @foreach (var schedule in Model.HorarioNegocios)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group form-check mb-6 ">
+                                        <div class="row align-items-center form-check-readonly">
+                                            <div class="col-3">
+                                                <input asp-for="@schedule.Active" type="checkbox" class="form-check-input" >
+                                                <label class="form-check-label">@schedule.Day</label>
+                                            </div>
+                                            <div class="col-3 pr-0">
+                                                <input asp-for="@schedule.HoraDesde" type="text" class="form-control form-control-sm" placeholder="10:00am">
+                                            </div>
+                                            <div class="col-1 text-center px-0">-</div>
+                                            <div class="col-3 pl-0">
+                                                <input asp-for="@schedule.HoraHasta" type="text" class="form-control form-control-sm" placeholder="05:00pm">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
 
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6 ">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="Tuesday">
-                                            <label class="form-check-label" for="Tuesday">Martes</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6 form-check-readonly">
-                                    <div class="row align-items-center">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="Wednesday">
-                                            <label class="form-check-label" for="Wednesday">Miercoles</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6 ">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="Thrusday">
-                                            <label class="form-check-label" for="Thrusday">Jueves</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="Friday" chcked>
-                                            <label class="form-check-label" for="Friday">Viernes</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6 ">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="Staurday">
-                                            <label class="form-check-label" for="Staurday">Sabado</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input type="checkbox" class="form-check-input" id="Sunday">
-                                            <label class="form-check-label" for="Sunday">Domingo</label>
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="10:00am" readonly>
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input type="text" class="form-control form-control-sm" placeholder="05:00pm" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -461,12 +353,12 @@
                 @*Gallery*@
                 <div class="card">
                     <div class="card-body p-6">
-                        <h3 class="h4 mb-4">Galeria de productos</h3>
+                        <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
 
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
 
-                            <input type="file" name="files" required multiple />
-
+                            <input accept="image/*" class="form-control custom-file-input cfis"  asp-for="PicturesBusiness" type="file" name="files" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
                         </div>
 
 
@@ -477,9 +369,9 @@
                     <div class="card-body p-6">
                         <h3 class="h4 mb-4">Logo de negocio</h3>
 
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-5">
 
-                            <input asp-for="Logo" class="form-control custom-file-input cfi">
+                            <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
                             <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
                         </div>
 
@@ -508,6 +400,19 @@
         $('.cfi').on("change", function () {
             var filename = $(this).val().split("\\").pop();
             $(this).next('.cfl').html(filename);
+        });
+
+
+        $('.cfis').on("change", function () {
+            var fileLabel = $(this).next('.cfls');
+            var files = $(this)[0].files;
+            if (files.length>1) {
+                fileLabel.html(files.length+' imagenes seleccionadas')
+            } else if (files.length==1){
+                fileLabel.html(files[0].name);
+            }
+
+           
         });
 
     });

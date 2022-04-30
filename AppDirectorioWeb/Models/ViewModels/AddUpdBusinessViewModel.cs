@@ -17,5 +17,6 @@ namespace Models.ViewModels
         //public List<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
 
         public IFormFile Logo { get; set; }
+        public List<IFormFile> PicturesBusiness { get; set; }
     }
 }

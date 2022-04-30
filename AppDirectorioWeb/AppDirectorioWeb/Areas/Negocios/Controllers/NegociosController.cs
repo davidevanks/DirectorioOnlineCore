@@ -35,7 +35,7 @@ namespace AppDirectorioWeb.Controllers
         public  IActionResult AgregarNegocio()
         {
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
-
+            //Se agrega cataegorias y departamentos
             model.Business = new BussinesViewModel()
             {
                 Categories=_unitOfWork.Category.GetAll().Where(x=>x.IdPadre==1).Select(x=>new { x.Id,x.Nombre}).Select(i=>new SelectListItem 
@@ -51,8 +51,35 @@ namespace AppDirectorioWeb.Controllers
                 })
             };
 
+            //Se agrega data de días
+            var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25).ToList();
+           
             
+            List<HorarioNegocioViewModel> ScheduleDayList = new List<HorarioNegocioViewModel>();
+            foreach (var d in Days)
+            {
+                HorarioNegocioViewModel ScheduleDay = new HorarioNegocioViewModel();
+                ScheduleDay.Day = d.Nombre;
+                ScheduleDay.IdDia = d.Id;
 
+                ScheduleDayList.Add(ScheduleDay);
+            }
+
+            model.HorarioNegocios = ScheduleDayList;
+
+            //Se agrega data para mostrar features
+            List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
+            var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20).ToList();
+            foreach (var fn in Features)
+            {
+                FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
+                feature.IdFeature = fn.Id;
+                feature.Feature = fn.Nombre;
+
+                FeatureNegocios.Add(feature);
+            }
+
+            model.FeatureNegocios = FeatureNegocios;
             return View(model);
         }
     
