@@ -19,6 +19,8 @@ namespace DataAccess.Repository
             SP_CALL = new SP_CALL(_db);
             UserDetail = new UserDetailRepository(_db);
             Departament = new DepartamentRepository(_db);
+            Business = new BusinessRepository(_db);
+            Feature = new FeatureNegocioRepository(_db);
         }
 
         public ICategoryRepository Category { get; private set; }
@@ -27,7 +29,9 @@ namespace DataAccess.Repository
 
         public IDepartamentRepository Departament { get; private set; }
 
+        public IBusinessRepository Business { get; private set; }
 
+        public IFeatureNegocioRepository Feature { get; private set; }
         public void Dispose()
         {
            _db.Dispose();

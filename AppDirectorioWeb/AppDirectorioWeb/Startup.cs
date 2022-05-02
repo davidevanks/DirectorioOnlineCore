@@ -50,7 +50,8 @@ namespace AppDirectorioWeb
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
              services.AddControllersWithViews().AddRazorRuntimeCompilation();
-             services.AddRazorPages();
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddRazorPages();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.ConfigureApplicationCookie(options =>

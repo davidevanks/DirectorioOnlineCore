@@ -15,6 +15,9 @@ using DataAccess.Models;
 using Models.ViewModels;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -24,14 +27,29 @@ namespace AppDirectorioWeb.Controllers
         /*private readonly ILogger<HomeController> _logger;*/
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         private readonly DirectorioOnlineCoreContext context;
 
-        public NegociosController(DirectorioOnlineCoreContext context,/*ILogger<NegociosController> logger,*/ IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork)
+        public NegociosController(DirectorioOnlineCoreContext context,
+            IHttpContextAccessor httpContextAccessor,
+            IUnitOfWork unitOfWork, 
+            IMapper mapper,
+            UserManager<IdentityUser> userManager,
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _userManager = userManager;
+            _emailSender = emailSender;
+            _roleManager = roleManager;
         }
-      
+        [HttpGet]
+        [AllowAnonymous]
         public  IActionResult AgregarNegocio()
         {
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
@@ -61,7 +79,8 @@ namespace AppDirectorioWeb.Controllers
                 HorarioNegocioViewModel ScheduleDay = new HorarioNegocioViewModel();
                 ScheduleDay.Day = d.Nombre;
                 ScheduleDay.IdDia = d.Id;
-
+                ScheduleDay.CreateDate = DateTime.Now;
+                ScheduleDay.IdUserCreate = HttpContext.Session.GetString("UserId");
                 ScheduleDayList.Add(ScheduleDay);
             }
 
@@ -75,7 +94,8 @@ namespace AppDirectorioWeb.Controllers
                 FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
                 feature.IdFeature = fn.Id;
                 feature.Feature = fn.Nombre;
-
+                feature.CreateDate = DateTime.Now;
+                feature.IdUserCreate= HttpContext.Session.GetString("UserId"); 
                 FeatureNegocios.Add(feature);
             }
 
@@ -85,11 +105,40 @@ namespace AppDirectorioWeb.Controllers
     
         [HttpPost]
         [ValidateAntiForgeryToken]
-  
-        public async Task<JsonResult> NegociosNuevo()
+        [AllowAnonymous]
+        public IActionResult AgregarNegocio(AddUpdBusinessViewModel model)
         {
-         
-            return Json("");
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser { UserName = model.Email, Email = Input.Email, PhoneNumber = Input.Telefono };
+
+                var negocio= _mapper.Map<Negocio>(model.Business);
+                negocio.CreateDate = DateTime.Now;
+                negocio.IdUserCreate= HttpContext.Session.GetString("UserId");
+
+                _unitOfWork.Business.Add(negocio);
+                _unitOfWork.Save();
+
+
+                foreach (var feature in model.FeatureNegocios)
+                {
+                    feature.IdNegocio = negocio.Id;
+                }
+
+
+                var features = _mapper.Map<List<FeatureNegocio>>(model.FeatureNegocios);
+                _unitOfWork.Feature.InsertList(features);
+
+                foreach (var sche in model.HorarioNegocios)
+                {
+                    sche.IdNegocio = negocio.Id;
+                }
+
+                var schedules = _mapper.Map<List<HorarioNegocio>>(model.HorarioNegocios);
+
+            }
+
+            return View();
         }
         [AllowAnonymous]
         public async Task<IActionResult> GetDetailByBussinesId(int id)

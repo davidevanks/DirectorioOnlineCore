@@ -14,6 +14,10 @@ namespace DataAccess.Repository.IRepository
         public IUserDetailsRepository UserDetail { get;  }
 
         public IDepartamentRepository Departament { get; }
+
+        public IBusinessRepository Business { get; }
+
+        public IFeatureNegocioRepository Feature { get; }
         void Save();
     }
 }
