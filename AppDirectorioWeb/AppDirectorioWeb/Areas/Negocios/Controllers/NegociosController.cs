@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using Utiles;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -116,14 +117,16 @@ namespace AppDirectorioWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public IActionResult AgregarNegocio(AddUpdBusinessViewModel model)
+        public async Task<IActionResult> AgregarNegocio(AddUpdBusinessViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
 
-                var result =  _userManager.CreateAsync(user, model.User.Password);
+                var result = await _userManager.CreateAsync(user, model.User.Password);
 
+                //asignar rol
+                await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
 
                 //asignamos el id del usuario a su negocio(idUserCreate)
                 model.Business.IdUserCreate = user.Id;
@@ -134,7 +137,7 @@ namespace AppDirectorioWeb.Controllers
                 if (model.Logo!=null)
                 {
                   string uploadsFolder=  Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                  uniqueFileName= Guid.NewGuid().ToString() + "_" + user.Id + "_logoBusiness_" + model.Logo.FileName;
+                  uniqueFileName= Guid.NewGuid().ToString() +  "_logoBusiness_" + model.Logo.FileName;
                   string filePath=Path.Combine(uploadsFolder,uniqueFileName);
                   model.Logo.CopyTo(new FileStream(filePath,FileMode.Create));
                 }
@@ -178,7 +181,7 @@ namespace AppDirectorioWeb.Controllers
                     {
                         ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
                         string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                        uniqueFileNames = Guid.NewGuid().ToString() + "_" + user.Id + "_picturesBusiness_" + picture.FileName;
+                        uniqueFileNames = Guid.NewGuid().ToString() +  "_picturesBusiness_" + picture.FileName;
                         string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
                         picture.CopyTo(new FileStream(filePath, FileMode.Create));
 
@@ -198,7 +201,7 @@ namespace AppDirectorioWeb.Controllers
                 //codigo para envio de correo de verificación de cuenta
                 string returnUrl = null;
                 returnUrl ??= Url.Content("~/");
-                var code =  _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
                     "/Account/ConfirmEmail",
@@ -213,7 +216,7 @@ namespace AppDirectorioWeb.Controllers
 
                 MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
 
-                 _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
+               await  _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
 
                 //
 

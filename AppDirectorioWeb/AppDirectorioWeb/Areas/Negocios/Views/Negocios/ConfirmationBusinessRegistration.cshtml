@@ -8,16 +8,35 @@
         Your password has been reset. Please <a asp-page="./Login">click here to log in</a>.
     </p>*@
 
-<section class="py-7 py-md-10 bg-light ">
+@*<section class="py-7 py-md-10 bg-light ">
     <div class="container">
         <div class="row justify-content-center">
 
             <div class="col-md-6">
                 <h5>Su registro fue completado con exito, se le envio un correo a su usuario admin para verificar la cuenta. Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar la información, una vez verificada, revise el status en el menú Admin. Negocios.
-                Favor <a asp-area="Identity" asp-page="/Account/Login">haga click aqui para iniciar sesión</a>.</h5>
+                Favor <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">haga click aqui para iniciar sesión</a>.</h5>
 
             </div>
 
+        </div>
+    </div>
+</section>*@
+
+<section class="py-7 py-md-10 comingsoon-wrapper">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+           
+                <div class="py-7 py-md-9">
+                    <h1>Registro exitoso!</h1>
+                    <p>Su registro fue completado con exito, se le envio un correo a su usuario admin para verificar la cuenta. Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar la información, una vez verificada, revise el status en el menú Admin. Negocios.</p>
+                  <br />
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
+                </div>
+
+            
+               
+            </div>
         </div>
     </div>
 </section>
