@@ -16,6 +16,7 @@ namespace DataAccess.Models
         }
 
         public int Id { get; set; }
+        public string IdUserOwner { get; set; }
         public string NombreNegocio { get; set; }
         public string DescripcionNegocio { get; set; }
         public string Tags { get; set; }

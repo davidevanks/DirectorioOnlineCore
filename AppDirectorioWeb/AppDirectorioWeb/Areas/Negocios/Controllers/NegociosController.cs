@@ -18,6 +18,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -31,6 +35,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
         private readonly DirectorioOnlineCoreContext context;
 
@@ -40,14 +45,19 @@ namespace AppDirectorioWeb.Controllers
             IMapper mapper,
             UserManager<IdentityUser> userManager,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IWebHostEnvironment hostingEnvironment)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            this.hostingEnvironment = hostingEnvironment;
         }
+
+       
+
         [HttpGet]
         [AllowAnonymous]
         public  IActionResult AgregarNegocio()
@@ -118,9 +128,18 @@ namespace AppDirectorioWeb.Controllers
                 //asignamos el id del usuario a su negocio(idUserCreate)
                 model.Business.IdUserCreate = user.Id;
                 model.Business.CreateDate = DateTime.Now;
-
+                model.Business.IdUserOwner= user.Id;
                 //logica para logo
+                string uniqueFileName = null;
+                if (model.Logo!=null)
+                {
+                  string uploadsFolder=  Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                  uniqueFileName= Guid.NewGuid().ToString() + "_" + user.Id + "_logoBusiness_" + model.Logo.FileName;
+                  string filePath=Path.Combine(uploadsFolder,uniqueFileName);
+                  model.Logo.CopyTo(new FileStream(filePath,FileMode.Create));
+                }
 
+                model.Business.LogoNegocio = uniqueFileName;
                 var negocio = _mapper.Map<Negocio>(model.Business);
            
 
@@ -150,15 +169,74 @@ namespace AppDirectorioWeb.Controllers
 
 
                 //logica para galerias de imagenes
+                string uniqueFileNames = null;
+                List<ImagenesNegocioViewModel> lstPictures = new List<ImagenesNegocioViewModel>();
+                if (model.PicturesBusiness != null && model.PicturesBusiness.Count>0)
+                {
+                   
+                    foreach (IFormFile picture in model.PicturesBusiness)
+                    {
+                        ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                        uniqueFileNames = Guid.NewGuid().ToString() + "_" + user.Id + "_picturesBusiness_" + picture.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
+                        picture.CopyTo(new FileStream(filePath, FileMode.Create));
+
+                        pic.IdNegocio = negocio.Id;
+                        pic.IdUserCreate = user.Id;
+                        pic.CreateDate = DateTime.Now;
+                        pic.Image = uniqueFileNames;
+                        lstPictures.Add(pic);
+                    }
+
+                    var picturesBusiness = _mapper.Map<List<ImagenesNegocio>>(lstPictures);
+                    _unitOfWork.ImageBusiness.InsertList(picturesBusiness);
+
+                }
+                _unitOfWork.Save();
+
+                //codigo para envio de correo de verificación de cuenta
+                string returnUrl = null;
+                returnUrl ??= Url.Content("~/");
+                var code =  _userManager.GenerateEmailConfirmationTokenAsync(user).Result;
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    protocol: Request.Scheme);
+
+                string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateConfirmEmail.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailText = str.ReadToEnd();
+                str.Close();
+
+                MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
+
+                 _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
+
+                //
+
+
+                return RedirectToAction(nameof(ConfirmationBusinessRegistration));
             }
 
-            return View();
+          
+
+            return View(model);
         }
         [AllowAnonymous]
         public async Task<IActionResult> GetDetailByBussinesId(int id)
         {
         
             return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult ConfirmationBusinessRegistration()
+        {
+            return View();
+
         }
     }
 }

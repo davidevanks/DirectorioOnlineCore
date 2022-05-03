@@ -29,6 +29,7 @@ namespace DataAccess.Repository
             if (objFromDb != null)
             {
                 objFromDb.Id = negocio.Id;
+                objFromDb.IdUserOwner = negocio.IdUserOwner;
                 objFromDb.NombreNegocio = negocio.NombreNegocio;
                 objFromDb.DescripcionNegocio = negocio.DescripcionNegocio;
                 objFromDb.Tags = negocio.Tags;

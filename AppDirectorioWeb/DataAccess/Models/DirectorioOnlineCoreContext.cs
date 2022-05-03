@@ -206,6 +206,8 @@ namespace DataAccess.Models
                     .IsRequired()
                     .HasMaxLength(450);
 
+                entity.Property(e => e.IdUserOwner).HasMaxLength(450);
+
                 entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
 
                 entity.Property(e => e.InstagramUrl)

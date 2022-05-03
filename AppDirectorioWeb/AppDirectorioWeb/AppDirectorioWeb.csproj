@@ -47,6 +47,7 @@
     <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
     <None Include="Properties\serviceDependencies.local.json.user" />
     <None Include="wwwroot\EmailTemplates\TemplateConfirmEmail.html" />
+    <None Include="wwwroot\ImagesBusiness\maxresdefault.jpg" />
   </ItemGroup>
 
   <ItemGroup>

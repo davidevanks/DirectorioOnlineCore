@@ -11,6 +11,7 @@ namespace Models.ViewModels
     public class BussinesViewModel
     {
         public int? Id { get; set; }
+        public string IdUserOwner { get; set; }
         [Required(ErrorMessage = "El Nombre del negocio es requerido")]
         [Display(Name = "Nombre Negocio")]
         public string NombreNegocio { get; set; }

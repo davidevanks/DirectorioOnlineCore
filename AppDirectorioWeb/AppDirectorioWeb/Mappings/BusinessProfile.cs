@@ -15,6 +15,7 @@ namespace AppDirectorioWeb.Mappings
             CreateMap<BussinesViewModel, Negocio>();
             CreateMap<FeatureNegocioViewModel, FeatureNegocio>();
             CreateMap<HorarioNegocioViewModel, HorarioNegocio>();
+            CreateMap<ImagenesNegocioViewModel, ImagenesNegocio>();
         }
            
     }
