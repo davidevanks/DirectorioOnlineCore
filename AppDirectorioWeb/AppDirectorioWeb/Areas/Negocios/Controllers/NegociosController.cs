@@ -80,7 +80,7 @@ namespace AppDirectorioWeb.Controllers
                 ScheduleDay.Day = d.Nombre;
                 ScheduleDay.IdDia = d.Id;
                 ScheduleDay.CreateDate = DateTime.Now;
-                ScheduleDay.IdUserCreate = HttpContext.Session.GetString("UserId");
+                ScheduleDay.IdUserCreate = "0";
                 ScheduleDayList.Add(ScheduleDay);
             }
 
@@ -95,7 +95,7 @@ namespace AppDirectorioWeb.Controllers
                 feature.IdFeature = fn.Id;
                 feature.Feature = fn.Nombre;
                 feature.CreateDate = DateTime.Now;
-                feature.IdUserCreate= HttpContext.Session.GetString("UserId"); 
+                feature.IdUserCreate   = "0";
                 FeatureNegocios.Add(feature);
             }
 
@@ -110,11 +110,19 @@ namespace AppDirectorioWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.Email, Email = Input.Email, PhoneNumber = Input.Telefono };
+                var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
 
-                var negocio= _mapper.Map<Negocio>(model.Business);
-                negocio.CreateDate = DateTime.Now;
-                negocio.IdUserCreate= HttpContext.Session.GetString("UserId");
+                var result =  _userManager.CreateAsync(user, model.User.Password);
+
+
+                //asignamos el id del usuario a su negocio(idUserCreate)
+                model.Business.IdUserCreate = user.Id;
+                model.Business.CreateDate = DateTime.Now;
+
+                //logica para logo
+
+                var negocio = _mapper.Map<Negocio>(model.Business);
+           
 
                 _unitOfWork.Business.Add(negocio);
                 _unitOfWork.Save();
@@ -123,6 +131,8 @@ namespace AppDirectorioWeb.Controllers
                 foreach (var feature in model.FeatureNegocios)
                 {
                     feature.IdNegocio = negocio.Id;
+                    feature.IdUserCreate = user.Id;
+
                 }
 
 
@@ -132,10 +142,14 @@ namespace AppDirectorioWeb.Controllers
                 foreach (var sche in model.HorarioNegocios)
                 {
                     sche.IdNegocio = negocio.Id;
+                    sche.IdUserCreate = user.Id;
                 }
 
                 var schedules = _mapper.Map<List<HorarioNegocio>>(model.HorarioNegocios);
+                _unitOfWork.ScheduleBusiness.InsertList(schedules);
 
+
+                //logica para galerias de imagenes
             }
 
             return View();

@@ -18,6 +18,8 @@ namespace DataAccess.Repository.IRepository
         public IBusinessRepository Business { get; }
 
         public IFeatureNegocioRepository Feature { get; }
+        public IScheduleBusinessRepository ScheduleBusiness { get; }
+        public IImagesBusinessRepository ImageBusiness { get; }
         void Save();
     }
 }

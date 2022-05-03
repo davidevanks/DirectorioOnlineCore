@@ -21,6 +21,8 @@ namespace DataAccess.Repository
             Departament = new DepartamentRepository(_db);
             Business = new BusinessRepository(_db);
             Feature = new FeatureNegocioRepository(_db);
+            ScheduleBusiness = new ScheduleBusinessRepository(_db);
+            ImageBusiness = new ImagesBusinessRepository(_db);
         }
 
         public ICategoryRepository Category { get; private set; }
@@ -32,6 +34,8 @@ namespace DataAccess.Repository
         public IBusinessRepository Business { get; private set; }
 
         public IFeatureNegocioRepository Feature { get; private set; }
+        public IScheduleBusinessRepository ScheduleBusiness { get; private set; }
+        public IImagesBusinessRepository ImageBusiness { get; private set; }
         public void Dispose()
         {
            _db.Dispose();
