@@ -121,15 +121,32 @@ namespace AppDirectorioWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+               
+
                 var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
 
                 var result = await _userManager.CreateAsync(user, model.User.Password);
 
+                string idUserCreate = "";
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                {
+                    idUserCreate = user.Id;
+                }
+                else
+                {
+                    idUserCreate = HttpContext.Session.GetString("UserId");
+                }
                 //asignar rol
                 await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
 
+                //guardamos el detalle del usuario.
+           
+
+                var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate };
+                _unitOfWork.UserDetail.Add(userDetail);
+
                 //asignamos el id del usuario a su negocio(idUserCreate)
-                model.Business.IdUserCreate = user.Id;
+                model.Business.IdUserCreate = idUserCreate;
                 model.Business.CreateDate = DateTime.Now;
                 model.Business.IdUserOwner= user.Id;
                 //logica para logo
@@ -153,8 +170,8 @@ namespace AppDirectorioWeb.Controllers
                 foreach (var feature in model.FeatureNegocios)
                 {
                     feature.IdNegocio = negocio.Id;
-                    feature.IdUserCreate = user.Id;
-
+                    feature.IdUserCreate = idUserCreate;
+                    feature.CreateDate = DateTime.Now;
                 }
 
 
@@ -164,7 +181,8 @@ namespace AppDirectorioWeb.Controllers
                 foreach (var sche in model.HorarioNegocios)
                 {
                     sche.IdNegocio = negocio.Id;
-                    sche.IdUserCreate = user.Id;
+                    sche.IdUserCreate = idUserCreate;
+                    sche.CreateDate = DateTime.Now;
                 }
 
                 var schedules = _mapper.Map<List<HorarioNegocio>>(model.HorarioNegocios);
@@ -186,7 +204,7 @@ namespace AppDirectorioWeb.Controllers
                         picture.CopyTo(new FileStream(filePath, FileMode.Create));
 
                         pic.IdNegocio = negocio.Id;
-                        pic.IdUserCreate = user.Id;
+                        pic.IdUserCreate = idUserCreate;
                         pic.CreateDate = DateTime.Now;
                         pic.Image = uniqueFileNames;
                         lstPictures.Add(pic);
