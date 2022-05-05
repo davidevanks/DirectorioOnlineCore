@@ -1,4 +1,6 @@
-﻿$('#btnCrearCuenta').attr("disabled", true);
+﻿
+
+$('#btnCrearCuenta').attr("disabled", true);
 
 $('#chkTerm').click(function () {
     if (document.getElementById('chkTerm').checked) {

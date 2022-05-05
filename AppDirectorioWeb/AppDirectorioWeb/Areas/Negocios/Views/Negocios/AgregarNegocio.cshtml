@@ -144,7 +144,7 @@
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Departamento</label>
                                 <div class="select-default bg-white">
-                                    @Html.DropDownListFor(m => m.Business.IdDepartamento, Model.Business.Departamentos, "- SELECCIONA UN DEPARTAMENTO -", new { @class = "form-control" })
+                                    @Html.DropDownListFor(m => m.Business.IdDepartamento, Model.Business.Departamentos, "- SELECCIONA UN DEPARTAMENTO -", new { @class = "form-control " })
                                     <span asp-validation-for="Business.IdDepartamento" class="text-danger"></span>
                                 </div>
                             </div>

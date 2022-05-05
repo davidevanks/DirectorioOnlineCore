@@ -55,12 +55,13 @@
     <!-- CUSTOM CSS -->
     <link href="~/css/style.css" rel="stylesheet" id="option_style">
     <link href="~/plugins/toasterNotification/toastr.min.css" rel="stylesheet" />
+
 </head>
 <body>
     <header class="header">
         <nav class="nav-menuzord navbar-sticky">
             <div class="container clearfix">
-                <div id="menuzord" class="menuzord menuzord-responsive" >
+                <div id="menuzord" class="menuzord menuzord-responsive">
 
                     <a class="menuzord-brand">
 
@@ -108,147 +109,147 @@
 
 
 
-                <ul class="menuzord-menu menuzord-right">
+                    <ul class="menuzord-menu menuzord-right">
 
 
-                    <li>
-                        <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
-
-                    </li>
-
-                    @if (User.IsInRole(SP.Role_Admin))
-                    {
-                        <li class="">
-                            <a href="javascript:0">Administración</a>
-                            <ul class="dropdown">
-                                <li class="">
-                                    <a href="javascript:0">Adm. Negocios</a>
-                                </li>
-
-                                <li class="">
-                                    <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
-                                </li>
-                                <li class="">
-                                    <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="">
-                            <a href="javascript:0">Más</a>
-                            <ul class="dropdown">
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
-
-                                <li class="">
-                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
-                                </li>
-                                <li class="">
-                                    <a href="javascript:0">Categorías</a>
-                                </li>
-
-                            </ul>
-                        </li>
-                    }
-
-                    @if (User.IsInRole(SP.Role_BusinesAdmin))
-                    {
-                        <li class="">
-                            <a href="javascript:0">Mis Negocios</a>
-                        </li>
-                        <li class="">
-                            <a href="javascript:0">Categorías</a>
-                        </li>
-
-
-                        <li class="">
-                            <a href="javascript:0">Más</a>
-                            <ul class="dropdown">
-
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
-                                <li class="">
-                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
-                                </li>
-
-
-
-
-                            </ul>
-                        </li>
-                    }
-
-                    @if (User.IsInRole(SP.Role_Customer))
-                    {
-                        <li class="">
-                            <a href="javascript:0">Mis Negocios Favoritos</a>
-                        </li>
-                        <li class="">
-                            <a href="javascript:0">Categorías</a>
-                        </li>
-
-
-                        <li class="">
-                            <a href="javascript:0">Más</a>
-                            <ul class="dropdown">
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
-
-
-                                <li class="">
-                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
-                                </li>
-
-
-                            </ul>
-                        </li>
-                    }
-
-
-
-                    @if (!SignInManager.IsSignedIn(User))
-                    {
-
-                        <li class="">
-                            <a href="javascript:0">Categorías</a>
-                        </li>
-
-                        <li class="">
-                            <a href="javascript:0">¿Qué es Brújula Pyme?</a>
-                        </li>
-
-                        <li class="">
-                            <a href="javascript:0">Más</a>
-                            <ul class="dropdown">
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
-
-
-
-
-                            </ul>
-                        </li>
-
-
-                    }
-
-
-                    @if (!SignInManager.IsSignedIn(User))
-                    {
-
-                        <li class="">
-                            <a asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
+                        <li>
+                            <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
 
                         </li>
-                    }
+
+                        @if (User.IsInRole(SP.Role_Admin))
+                        {
+                            <li class="">
+                                <a href="javascript:0">Administración</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Adm. Negocios</a>
+                                    </li>
+
+                                    <li class="">
+                                        <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
+                                    </li>
+                                    <li class="">
+                                        <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+
+                                    <li class="">
+                                        <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="javascript:0">Categorías</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(SP.Role_BusinesAdmin))
+                        {
+                            <li class="">
+                                <a href="javascript:0">Mis Negocios</a>
+                            </li>
+                            <li class="">
+                                <a href="javascript:0">Categorías</a>
+                            </li>
+
+
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    </li>
 
 
 
-                </ul>
+
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(SP.Role_Customer))
+                        {
+                            <li class="">
+                                <a href="javascript:0">Mis Negocios Favoritos</a>
+                            </li>
+                            <li class="">
+                                <a href="javascript:0">Categorías</a>
+                            </li>
+
+
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+
+
+                                    <li class="">
+                                        <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        }
+
+
+
+                        @if (!SignInManager.IsSignedIn(User))
+                        {
+
+                            <li class="">
+                                <a href="javascript:0">Categorías</a>
+                            </li>
+
+                            <li class="">
+                                <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                            </li>
+
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+
+
+
+
+                                </ul>
+                            </li>
+
+
+                        }
+
+
+                        @if (!SignInManager.IsSignedIn(User))
+                        {
+
+                            <li class="">
+                                <a asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
+
+                            </li>
+                        }
+
+
+
+                    </ul>
 
                 </div>
             </div>
@@ -426,9 +427,11 @@
 
 
     <script src='~/plugins/velocity/velocity.min.js'></script>
+    <!-- CUSTOM JS -->
     <script src="~/plugins/sweetAlert/sweetalert.min.js"></script>
     <script src="~/plugins/DataTables/DataTables-1.10.18/js/jquery.dataTables.js"></script>
     <script src="~/plugins/toasterNotification/toastr.min.js"></script>
+ 
     @RenderSection("Scripts", required: false)
 
 
