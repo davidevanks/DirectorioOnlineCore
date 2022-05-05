@@ -16,10 +16,10 @@ namespace Models.ViewModels
         [Display(Name = "Nombre Negocio")]
         public string NombreNegocio { get; set; }
         [Required(ErrorMessage = "La descripción del negocio es requerida")]
-        [Display(Name = "Descripción Negocio")]
+        [Display(Name = "Descripción Negocio", Prompt = "Describe especificamente de que trata tu negocio y que servicios ofreces")]
         public string DescripcionNegocio { get; set; }
         [Required(ErrorMessage = "Los Tags son requeridos")]
-        [Display(Name = "Tags")]
+        [Display(Name = "Tags",Prompt ="Ejemplo: Comida rápida, lavado de carro, lavar")]
         public string Tags { get; set; }
         [Required(ErrorMessage = "La categoría es requerida")]
         [Display(Name = "Categoría")]
@@ -28,35 +28,30 @@ namespace Models.ViewModels
         [Display(Name = "Departamento")]
         public string IdDepartamento { get; set; }
         [Required(ErrorMessage = "La dirección del negocio es requerida")]
-        [Display(Name = "Dirección Negocio")]
+        [Display(Name = "Dirección Negocio",Prompt = "Dirección del negocio")]
         public string DireccionNegocio { get; set; }
         [Required(ErrorMessage = "El número de telefono es requerido")]
         [Phone(ErrorMessage = "télefono no valido")]
-        [Display(Name = "Número de telefono")]
+        [Display(Name = "Número de telefono", Prompt = "7777777")]
         public string TelefonoNegocio1 { get; set; }
         public string TelefonoNegocio2 { get; set; }
         [Required(ErrorMessage = "Número de whatsApp es requerido")]
         [Phone(ErrorMessage = "télefono no valido")]
-        [Display(Name = "Número de WhatsApp")]
+        [Display(Name = "Número de WhatsApp", Prompt = "7777777")]
         public string TelefonoWhatsApp { get; set; }
         [Required(ErrorMessage = "El email es requerido")]
         [EmailAddress(ErrorMessage = "Email no valido")]
         [Display(Name = "Email Negocio")]
         public string EmailNegocio { get; set; }
         [Display(Name = "Sitio Web")]
-        [Url(ErrorMessage ="Sitio web no valido")]
         public string SitioWebNegocio { get; set; }
         [Display(Name = "Linkedin")]
-        [Url(ErrorMessage = "Linkedin no valido")]
         public string LinkedInUrl { get; set; }
         [Display(Name = "Facebook")]
-        [Url(ErrorMessage = "Facebook no valido")]
         public string FacebookUrl { get; set; }
         [Display(Name = "Instagram")]
-        [Url(ErrorMessage = "Instagram no valido")]
         public string InstagramUrl { get; set; }
         [Display(Name = "Twitter")]
-        [Url(ErrorMessage = "Twitter no valido")]
         public string TwitterUrl { get; set; }
         public bool HasDelivery { get; set; }
         public bool PedidosYa { get; set; }
