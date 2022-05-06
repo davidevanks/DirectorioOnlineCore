@@ -70,7 +70,7 @@ namespace AppDirectorioWeb.Controllers
             //Se agrega cataegorias y departamentos
             model.Business = new BussinesViewModel()
             {
-                Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo==true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
                 {
                     Text = i.Nombre,
                     Value = i.Id.ToString()
@@ -84,7 +84,7 @@ namespace AppDirectorioWeb.Controllers
             };
 
             //Se agrega data de días
-            var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25).ToList();
+            var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
 
             List<HorarioNegocioViewModel> ScheduleDayList = new List<HorarioNegocioViewModel>();
             foreach (var d in Days)
@@ -101,7 +101,7 @@ namespace AppDirectorioWeb.Controllers
 
             //Se agrega data para mostrar features
             List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
-            var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20).ToList();
+            var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20 && x.Activo == true).ToList();
             foreach (var fn in Features)
             {
                 FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
@@ -193,7 +193,29 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
+        [Authorize(Roles = SP.Role_BusinesAdmin+","+SP.Role_Admin)]
+        public IActionResult AdminBusiness()
+        {
+            string idOwner = "";
+            if (User.IsInRole(SP.Role_BusinesAdmin))
+            {
+                idOwner = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
+            }
+
+            ViewBag.idOwner = idOwner;
+            return View();
+        }
+
         #endregion Public Methods
+
+        #region API_CALLS
+        [HttpGet]
+        public IActionResult GetBusinessByOwners(string idOwner)
+        {
+            var parentsObj = _unitOfWork.Business.GetBusinessByOwners(idOwner);
+            return Json(new { data = parentsObj });
+        }
+        #endregion
 
         #region MetodosAuxiliares
 

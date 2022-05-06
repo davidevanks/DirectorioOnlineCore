@@ -1,5 +1,7 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Models.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DataAccess.Repository
@@ -17,6 +19,43 @@ namespace DataAccess.Repository
         public BusinessRepository(DirectorioOnlineCoreContext db) : base(db)
         {
             _db = db;
+        }
+
+        public List<BusinessOwnerViewModel> GetBusinessByOwners(string idOwner)
+        {
+           
+            var business = _db.Negocios.AsQueryable();
+            var businessCategory = _db.CatCategoria.AsQueryable().Where(x => x.IdPadre == 20);
+            var businessStatus= _db.CatCategoria.AsQueryable().Where(x => x.IdPadre == 16);
+            var deparment = _db.CatDepartamentos.AsQueryable();
+            var users = _db.Users.AsQueryable();
+            var usersDetails = _db.UserDetails.AsQueryable();
+
+            var query = (from b in business
+                         join bc in businessCategory on b.IdCategoria equals bc.Id
+                         join bStatus in businessStatus on b.Status equals bStatus.Id
+                         join dep in deparment on b.IdDepartamento equals dep.Id
+                         join u in users on b.IdUserOwner equals u.Id
+                         join ud in usersDetails on u.Id equals ud.UserId
+                         select new BusinessOwnerViewModel { 
+                         FullName=ud.FullName,
+                         Email=u.UserName,
+                         NombreNegocio=b.NombreNegocio,
+                         IdCategoria=bc.Id.ToString(),
+                         categoryBusinessName=bc.Nombre,
+                         Status=bStatus.Id,
+                         statusName=bStatus.Nombre,
+                         IdDepartamento=dep.Id.ToString(),
+                         departmentName=dep.Nombre,
+                         CreateDate=b.CreateDate
+                         });
+
+            if (!string.IsNullOrEmpty(idOwner))
+            {
+                query = query.Where(x => x.IdUserOwner == idOwner);
+            }
+
+            return query.ToList();
         }
 
         #endregion Public Constructors

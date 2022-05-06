@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace DataAccess.Repository.IRepository
     public interface IBusinessRepository : IRepository<Negocio>
     {
         void Update(Negocio negocio);
+        List<BusinessOwnerViewModel> GetBusinessByOwners(string idOwner);
     }
 }
