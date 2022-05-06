@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -41,7 +42,8 @@ namespace AppDirectorioWeb.Controllers
 
         public IActionResult Error()
         {
-          
+            var exceptionHandlerPathFeature =
+            HttpContext.Features.Get<IExceptionHandlerPathFeature>();
             //e.MessageError = "no tienes acceso a esta página";
             return View();
         }

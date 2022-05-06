@@ -66,7 +66,6 @@ namespace AppDirectorioWeb.Controllers
         [AllowAnonymous]
         public IActionResult AgregarNegocio()
         {
-            var tt = HttpContext.Session.GetString("UserId").ToString();
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
             //Se agrega cataegorias y departamentos
             model.Business = new BussinesViewModel()
