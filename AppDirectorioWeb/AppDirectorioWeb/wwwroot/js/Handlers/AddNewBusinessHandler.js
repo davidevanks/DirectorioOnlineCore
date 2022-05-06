@@ -22,7 +22,7 @@ $('#chkTerm').click(function () {
 
 $(document).ready(function () {
 
-    $('.ti').inputmask("99-9999999");
+  
     $('.cfi').on("change", function () {
         $('#logoVal').html('');
         var filename = $(this).val().split("\\").pop();
