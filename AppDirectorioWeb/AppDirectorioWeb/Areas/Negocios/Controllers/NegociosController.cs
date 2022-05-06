@@ -149,6 +149,7 @@ namespace AppDirectorioWeb.Controllers
                 model.Business.IdUserCreate = idUserCreate;
                 model.Business.CreateDate = DateTime.Now;
                 model.Business.IdUserOwner= user.Id;
+                model.Business.Status = 19;
                 //logica para logo
                 string uniqueFileName = null;
                 if (model.Logo!=null)

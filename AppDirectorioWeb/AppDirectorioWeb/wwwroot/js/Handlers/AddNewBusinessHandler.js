@@ -1,4 +1,14 @@
-﻿
+﻿////$('.ti').inputmask({
+////    alias: "datetime",
+////    placeholder: "12:00 AM",
+////    inputFormat: "hh:MM TT",
+////    insertMode: false,
+////    showMaskOnHover: false,
+////    hourFormat: 12
+////});
+
+
+
 
 $('#btnCrearCuenta').attr("disabled", true);
 
@@ -11,12 +21,14 @@ $('#chkTerm').click(function () {
 });
 
 $(document).ready(function () {
+
+    $('.ti').inputmask("99-9999999");
     $('.cfi').on("change", function () {
         $('#logoVal').html('');
         var filename = $(this).val().split("\\").pop();
         $(this).next('.cfl').html(filename);
 
-
+   
 
         // recuperamos la extensión del archivo
         var ext = filename.split('.').pop();
