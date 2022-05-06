@@ -1,0 +1,81 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<section class="py-7 py-md-10 bg-light ">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+
+                <div class="card">
+                    <div class="bg-primary text-center py-4">
+                        <h2 class="text-white mb-0 h4">Inicia sesión</h2>
+                    </div>
+                    <div asp-validation-summary="All" class=" text-center text-danger"></div>
+                    <div class="card-body px-7 pt-7 pb-0">
+                        <form id="account" method="post" class="form-horizontal">
+                            <div class="form-group mb-7">
+                                <label asp-for="Input.Email"></label>
+                                <input asp-for="Input.Email" class="form-control" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-7">
+                                <label asp-for="Input.Password"></label>
+                                <input asp-for="Input.Password" class="form-control" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+
+                            </div>
+                            <div class="form-group d-flex justify-content-between align-items-center mb-7">
+                                <button type="submit" class="btn btn-outline-primary text-uppercase">
+                                    Ingresar
+                                </button>
+                                <a id="forgot-password" asp-page="./ForgotPassword">Olvidaste tu contraseña?</a>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label asp-for="Input.RememberMe">
+                                        <input asp-for="Input.RememberMe" />
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+
+
+                        </form>
+                        <a asp-page="./ResendEmailConfirmation"  class="btn-link" style="padding:0px;margin:0px;border:0px;background-color:white">Reenviar mensaje de verificación de cuenta</a>
+                        <br />
+                        <br />
+                    </div>
+                    <div class="card-footer bg-transparent text-center py-3">
+
+
+                        <p class="mb-0">No te has registrado aún? <strong>Registrate</strong></p>
+
+
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><strong>REGISTRAR NUEVO USUARIO</strong></a>
+                        <br />
+                       <strong>Ó</strong>
+                        <br />
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><strong>REGISTRAR MI NEGOCIO</strong></a>
+
+
+
+
+
+                        @*<a asp-route-IsBussines="1" asp-controller="Account" asp-action="Register" class="btn btn-primary text-uppercase">Para Pymes/Negocios</a>*@
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

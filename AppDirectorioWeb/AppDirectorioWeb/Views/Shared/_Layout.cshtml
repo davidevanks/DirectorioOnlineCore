@@ -1,35 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http
-@using AppDirectorioWeb.Utiles.CustomAttributes
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using Utiles; 
 @{
-    var isAuthenticated = Context.User.Identity.IsAuthenticated;
-    var isAdmin = User.Identity.HavePermission(Roles.Admin);
-    var isBrujulaBasica = User.Identity.HavePermission(Roles.BrujulaBasica);
-    var isBrujulaInicial = User.Identity.HavePermission(Roles.BrujulaInicial);
-    var isBrujulaPremium = User.Identity.HavePermission(Roles.BrujulaPremium);
-    var isConsumidor = User.Identity.HavePermission(Roles.Consumidor);
-    string roleName="";
-
-    if(isAdmin)
-    {
-        roleName = Roles.Admin;
-    }
-    if(isBrujulaBasica)
-    {
-        roleName = Roles.BrujulaBasica;
-    }
-    if(isBrujulaInicial)
-    {
-        roleName = Roles.BrujulaInicial;
-    }
-    if(isConsumidor)
-    {
-        roleName = Roles.Consumidor;
-    }
-    if(isBrujulaPremium)
-    {
-        roleName = Roles.BrujulaPremium;
-    }
 
 
 }
@@ -57,13 +31,12 @@
 
     <!-- CUSTOM CSS -->
     <!--<link href="~/css/style.css" rel="stylesheet" id="option_style">-->
-
     <!-- <link rel="stylesheet" href="assets/css/default.css" id="option_color"> -->
     <!-- FAVICON -->
     <link href="~/img/favicon.png" rel="shortcut icon">
 
 
-  
+
     <link href='~/plugins/rateyo/jquery.rateyo.min.css' rel='stylesheet'>
     <link href='~/plugins/map/css/map.css' rel='stylesheet'>
     <link href='~/plugins/daterangepicker/daterangepicker.css' rel='stylesheet'>
@@ -75,8 +48,14 @@
     <link href="~/css/color4.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
+
+    <link href='~/plugins/DataTables/DataTables-1.10.18/css/jquery.dataTables.min.css' rel='stylesheet'>
+    <link href='~/plugins/DataTables/Responsive-2.2.2/css/responsive.dataTables.min.css' rel='stylesheet'>
+
     <!-- CUSTOM CSS -->
     <link href="~/css/style.css" rel="stylesheet" id="option_style">
+    <link href="~/plugins/toasterNotification/toastr.min.css" rel="stylesheet" />
+
 </head>
 <body>
     <header class="header">
@@ -84,11 +63,11 @@
             <div class="container clearfix">
                 <div id="menuzord" class="menuzord menuzord-responsive">
 
-                    <a  class="menuzord-brand">
-                      
-                        <img src="~/img/brands/brujulaPymeLogo.png"/>
+                    <a class="menuzord-brand">
+
+                        <img src="~/img/brands/brujulaPymeLogo.png" />
                     </a>
-                    @if (isAuthenticated)
+                    @if (SignInManager.IsSignedIn(User))
                     {
                         <div class="menu-right">
 
@@ -96,113 +75,174 @@
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
                                     <img class="avatar-img" src="~/img/user/avatar-01.png" alt="Image">
                                     <span class="avatar-name">
-                                        @User.Identity.Name
-                                    <span class="small">@roleName</span>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
+                                        Hola
+                                        <span class="small">@User.Identity.Name.ToLower()!</span>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
                                         <a class="d-flex flex-wrap align-items-center">
-                                        <i class="fa fa-user mr-2" aria-hidden="true"></i>
-                                        <span>Mi perfil</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-controller="Account" asp-action="Logout" class="d-flex flex-wrap align-items-center">
-                                        <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i>
-                                        <span>Cerrar Sesión</span>
-                                    </a>
-                                </li>
+                                            <i class="fa fa-user mr-2" aria-hidden="true"></i>
+                                            <span>Mi perfil</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-area="Security" asp-action="Logout" asp-controller="Account" asp-route-returnUrl="@Url.Action("Index", "Home", new { area ="Home" })" class="d-flex flex-wrap align-items-center">
+                                            <i class="fa fa-arrow-circle-right mr-2" aria-hidden="true"></i>
+                                            <span>Cerrar Sesión</span>
+                                        </a>
+                                    </li>
 
 
-                            </ul>
+                                </ul>
 
+                            </div>
                         </div>
-                    </div>
-                }
-                    @if (isAdmin || isBrujulaBasica || isBrujulaInicial || isBrujulaPremium || !isAuthenticated)
+                    }
+                    @*posterior agregar validación si ya tiene un negocio no mostrar tampoco*@
+                    @if (!SignInManager.IsSignedIn(User))
                     {
                         <div class="float-right btn-wrapper">
-                            <a class="btn btn-outline-primary" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
+                            <a class="btn btn-outline-primary" asp-area="Negocios" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
                         </div>
                     }
 
+
+
                     <ul class="menuzord-menu menuzord-right">
 
-                        @if (isAdmin)
+
+                        <li>
+                            <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
+
+                        </li>
+
+                        @if (User.IsInRole(SP.Role_Admin))
                         {
-                            <li>
-                                <a asp-controller="Home" asp-action="Index">Inicio</a>
-                            </li>
-                            <li>
-                                <a href="javascript:0">DashBoard</a>
-                            </li>
                             <li class="">
                                 <a href="javascript:0">Administración</a>
                                 <ul class="dropdown">
                                     <li class="">
-                                        <a href="javascript:0">Adm. listados</a>
+                                        <a href="javascript:0">Adm. Negocios</a>
+                                    </li>
+
+                                    <li class="">
+                                        <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
                                     </li>
                                     <li class="">
-                                        <a href="javascript:0">Admin. propietarios de listados</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="javascript:0">Admin. usuarios Generales</a>
-                                    </li>
-                                    <li class="">
-                                        <a href="javascript:0">Admin Catalogos</a>
+                                        <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
                                     </li>
                                 </ul>
                             </li>
 
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+
+                                    <li class="">
+                                        <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="javascript:0">Categorías</a>
+                                    </li>
+
+                                </ul>
+                            </li>
                         }
-                        else if (isBrujulaBasica || isBrujulaInicial || isBrujulaPremium)
+
+                        @if (User.IsInRole(SP.Role_BusinesAdmin))
                         {
-                            <li>
-                                <a asp-controller="Home" asp-action="Index">Inicio</a>
+                            <li class="">
+                                <a href="javascript:0">Mis Negocios</a>
                             </li>
                             <li class="">
-                                <a href="javascript:0">Mis listados</a>
+                                <a href="javascript:0">Categorías</a>
                             </li>
 
-                        }
-                        else if (isConsumidor)
-                        {
-                            <li>
-                                <a asp-controller="Home" asp-action="Index">Inicio</a>
+
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+                                    <li class="">
+                                        <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    </li>
+
+
+
+
+                                </ul>
                             </li>
+                        }
+
+                        @if (User.IsInRole(SP.Role_Customer))
+                        {
+                            <li class="">
+                                <a href="javascript:0">Mis Negocios Favoritos</a>
+                            </li>
+                            <li class="">
+                                <a href="javascript:0">Categorías</a>
+                            </li>
+
+
+                            <li class="">
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+
+
+                                    <li class="">
+                                        <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        }
+
+
+
+                        @if (!SignInManager.IsSignedIn(User))
+                        {
+
+                            <li class="">
+                                <a href="javascript:0">Categorías</a>
+                            </li>
+
                             <li class="">
                                 <a href="javascript:0">¿Qué es Brújula Pyme?</a>
                             </li>
 
-                            @*<li class="">
-                                    <a href="javascript:0">Mi Panel</a>
-                                    <ul class="dropdown">
-                                        <li class="">
-                                            <a href="javascript:0">Mis favoritos</a>
-                                        </li>
-                                        <li class="">
-                                            <a href="javascript:0">Categorías</a>
-                                        </li>
-
-                                    </ul>
-                                </li>*@
-                        }
-                        else
-                        {
-                            <li>
-                                <a asp-controller="Home" asp-action="Index">Inicio</a>
-                            </li>
                             <li class="">
-                                <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                <a href="javascript:0">Más</a>
+                                <ul class="dropdown">
+                                    <li class="">
+                                        <a href="javascript:0">Blog</a>
+                                    </li>
+
+
+
+
+                                </ul>
                             </li>
+
+
                         }
 
-                        @*area login logoff username*@
-                        @if (!isAuthenticated)
+
+                        @if (!SignInManager.IsSignedIn(User))
                         {
+
                             <li class="">
-                                <a asp-controller="Account" asp-action="Login">Iniciar Sesión</a>
+                                <a asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
 
                             </li>
                         }
@@ -269,7 +309,7 @@
                         <li class="mb-3">
                             <a href="add-listings.html">Agregar negocio</a>
                         </li>
-                    
+
                     </ul>
                 </div>
 
@@ -287,7 +327,7 @@
                         <li class="mb-3">
                             <a href="how-it-works.html">¿Que es Brújula digital?</a>
                         </li>
-                        
+
                         <li class="mb-3">
                             <a href="pricing-table.html">Precios planes</a>
                         </li>
@@ -339,8 +379,8 @@
     <script src="~/js/backend.js"></script>
     <script src='~/plugins/selectric/jquery.selectric.min.js'></script>
     <script src='~/plugins/dzsparallaxer/dzsparallaxer.js'></script>
-<script src='~/plugins/owl-carousel/owl.carousel.min.js'></script>
-<script src='~/plugins/rateyo/jquery.rateyo.min.js'></script>
+    <script src='~/plugins/owl-carousel/owl.carousel.min.js'></script>
+    <script src='~/plugins/rateyo/jquery.rateyo.min.js'></script>
 
 
 
@@ -359,7 +399,7 @@
     @*<script src='~/plugins/map/js/rich-marker.js'></script>*@
     @*<script src='~/plugins/map/js/infobox_packed.js'></script>*@
     <script src='~/js/map.js'></script>
-  
+
     <script src="~/js/Regexp.min.js"></script>
     <script src="~/js/format.min.js"></script>
     <script src="~/js/alerts.min.js"></script>
@@ -371,23 +411,30 @@
     </script>
     <script src='~/js/listty.js'></script>
 
-    
-    
-<script src='~/plugins/fancybox/jquery.fancybox.min.js'></script>
-<script src='~/plugins/daterangepicker/moment.min.js'></script>
-<script src='~/plugins/daterangepicker/daterangepicker.js'></script>
-    
-    
-<script src='~/plugins/smoothscroll/SmoothScroll.js'></script>
-<script src='~/plugins/lazyestload/lazyestload.js'></script>
-
-<script src='~/plugins/rateyo/jquery.rateyo.min.js'></script>
-    
-    
-    
-<script src='~/plugins/velocity/velocity.min.js'></script>
 
 
+    <script src='~/plugins/fancybox/jquery.fancybox.min.js'></script>
+    <script src='~/plugins/daterangepicker/moment.min.js'></script>
+    <script src='~/plugins/daterangepicker/daterangepicker.js'></script>
+
+
+    <script src='~/plugins/smoothscroll/SmoothScroll.js'></script>
+    <script src='~/plugins/lazyestload/lazyestload.js'></script>
+
+    <script src='~/plugins/rateyo/jquery.rateyo.min.js'></script>
+
+    <script src="~/lib/jqueryui/jquery-ui.js"></script>
+
+
+    <script src='~/plugins/velocity/velocity.min.js'></script>
+    <!-- CUSTOM JS -->
+    <script src="~/plugins/sweetAlert/sweetalert.min.js"></script>
+    <script src="~/plugins/DataTables/DataTables-1.10.18/js/jquery.dataTables.js"></script>
+    <script src="~/plugins/toasterNotification/toastr.min.js"></script>
+
+  
     @RenderSection("Scripts", required: false)
+
+
 </body>
 </html>

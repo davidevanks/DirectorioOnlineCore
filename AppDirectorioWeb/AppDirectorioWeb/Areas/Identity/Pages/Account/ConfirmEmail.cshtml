@@ -1,0 +1,22 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<section class="bg-light py-10">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-content-404">
+                    <h4>@Model.StatusMessage</h4>
+                    <br />
+                    @*<p class="mb-9">Inicie sesión y disfrute de la plataforma Brújula Digital.</p>*@
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">Iniciar Sesión</a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>

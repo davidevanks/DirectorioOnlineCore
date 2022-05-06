@@ -1,0 +1,21 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+
+            <div class="py-7 py-md-9">
+                <h1>Acceso denegado</h1>
+                <p> No tienes acceso a esta opción,<a asp-area="Home" asp-controller="Home" asp-action="Index"> regresa al Inicio</a> </p>
+            </div>
+
+            <div class="count-down text-center mb-7 mb-md-10">
+                <div class="simple_timer"></div>
+            </div>
+        </div>
+    </div>
+</div>

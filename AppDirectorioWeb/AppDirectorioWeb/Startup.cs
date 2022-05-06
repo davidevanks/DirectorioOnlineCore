@@ -1,8 +1,5 @@
-using AppDirectorioWeb.DATA;
-using AppDirectorioWeb.RequestProvider.Implementation;
-using AppDirectorioWeb.RequestProvider.Interfaces;
-using AppDirectorioWeb.Utiles.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,27 +10,62 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using DataAccess.Models;
+using DataAccess.Repository;
+using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using Utiles;
 
 namespace AppDirectorioWeb
 {
     public class Startup
     {
-        #region Public Constructors
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        #endregion Public Constructors
-
-        #region Public Properties
-
         public IConfiguration Configuration { get; }
 
-        #endregion Public Properties
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
 
-        #region Public Methods
+         
+            services.AddDbContext<DirectorioOnlineCoreContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<DirectorioOnlineCoreContext>()
+                .AddDefaultTokenProviders();
+
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            // services.AddDefaultIdentity<IdentityUser>()
+            //.AddEntityFrameworkStores<DirectorioOnlineCoreContext>();
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.AddRazorPages();
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,7 +73,7 @@ namespace AppDirectorioWeb
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-   
+                app.UseMigrationsEndPoint();
             }
             else
             {
@@ -51,75 +83,19 @@ namespace AppDirectorioWeb
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+
             app.UseRouting();
 
-            app.UseSession();
-
-            //Add JWToken to all incoming HTTP Request Header - 
-            app.Use(async (context, next) =>
-            {
-                var JWToken = context.Session.GetString("Token");
-                if (!string.IsNullOrEmpty(JWToken))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
-                }
-                await next();
-            });
-            //Add JWToken Authentication service - JRozario
             app.UseAuthentication();
-
+            app.UseAuthorization();
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area=Home}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                // Si hay problemas con transacciones, consultar este link
-                // https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
-
-                options.EnableDetailedErrors(true);
-                options.EnableSensitiveDataLogging(true);
-            });
-            //para permitir refrescar cambios en naveador html
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddControllersWithViews();
-            services.AddScoped<IBackendHelper, BackendHelper>();
-            services.AddScoped<IBackendHelperApp, BackendHelperApp>();
-            services.AddScoped<IDecode, Decode>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromDays(30);//You can set Time
-            });
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            //Configure JWT Token Authentication
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = "yourdomain.com",
-                        ValidAudience = "yourdomain.com",
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.UTF8.GetBytes(Configuration["LlaveToken"])),
-                        ClockSkew = TimeSpan.Zero
-                    });
-        }
-
-        #endregion Public Methods
     }
 }
