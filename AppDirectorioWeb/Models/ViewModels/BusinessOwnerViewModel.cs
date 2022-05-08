@@ -69,5 +69,6 @@ namespace Models.ViewModels
         public string statusName { get; set; }
         public string categoryBusinessName { get; set; }
         public string departmentName { get; set; }
+        public string CreateDateString { get; set; }
     }
 }

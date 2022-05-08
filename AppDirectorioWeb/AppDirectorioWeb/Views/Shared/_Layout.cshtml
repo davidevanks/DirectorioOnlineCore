@@ -123,7 +123,7 @@
                                 <a href="javascript:0">Administración</a>
                                 <ul class="dropdown">
                                     <li class="">
-                                        <a href="javascript:0">Adm. Negocios</a>
+                                        <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Adm. Negocios</a>
                                     </li>
 
                                     <li class="">
@@ -156,7 +156,7 @@
                         @if (User.IsInRole(SP.Role_BusinesAdmin))
                         {
                             <li class="">
-                                <a href="javascript:0">Mis Negocios</a>
+                                <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mis Negocios</a>
                             </li>
                             <li class="">
                                 <a href="javascript:0">Categorías</a>

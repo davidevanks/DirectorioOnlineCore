@@ -196,7 +196,7 @@ namespace AppDirectorioWeb.Controllers
         [Authorize(Roles = SP.Role_BusinesAdmin+","+SP.Role_Admin)]
         public IActionResult AdminBusiness()
         {
-            string idOwner = "";
+            string idOwner = "-1";
             if (User.IsInRole(SP.Role_BusinesAdmin))
             {
                 idOwner = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
@@ -215,6 +215,66 @@ namespace AppDirectorioWeb.Controllers
             var parentsObj = _unitOfWork.Business.GetBusinessByOwners(idOwner);
             return Json(new { data = parentsObj });
         }
+
+        [HttpPost]
+        public IActionResult ManageBusinesActivation([FromBody] string id)
+        {
+            var business = _unitOfWork.Business.Get(Convert.ToInt32(id));
+            var emailUser = _userManager.FindByIdAsync(business.IdUserOwner).Result.Email;
+           
+
+            string message = "";
+            if (business == null)
+            {
+                return Json(new { success = false, message = "Negocio no existe!" });
+            }
+
+            if (business.Status==19)
+            {
+                //user is currently locked, we will unlock
+                business.Status = 17;
+                message = " Aprobado!";
+            }
+            else if (business.Status == 17)
+            {
+                business.Status = 18;
+                message = " Desactivado!";
+            }
+            else if (business.Status == 18)
+            {
+                business.Status = 17;
+                message = " Activado!";
+            }
+
+
+
+            _unitOfWork.Business.Update(business);
+            _unitOfWork.Save();
+
+
+            //ENVIO DE MENSAJE DE CAMBIO DE STATUS
+            string MailText;
+            var callbackUrl = Url.Action(
+              "AdminBusiness",
+              "Negocios",
+              values: new {  idOwner = business.IdUserOwner },
+              protocol: Request.Scheme);
+
+            string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateBusinessStatusNotification.html";
+            StreamReader str = new StreamReader(FilePath);
+            MailText = str.ReadToEnd();
+            str.Close();
+
+             MailText  = MailText.Replace("[username]", emailUser).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
+            MailText = MailText.Replace("[negocioName]", business.NombreNegocio);
+
+            _emailSender.SendEmailAsync(emailUser, "Notificación cambio de status negocio", MailText);
+            //-----------------------------------
+
+
+            return Json(new { success = true, message = "Negocio" + message });
+        }
+
         #endregion
 
         #region MetodosAuxiliares

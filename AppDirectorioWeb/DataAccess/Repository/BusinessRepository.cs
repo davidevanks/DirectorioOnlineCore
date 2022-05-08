@@ -25,8 +25,8 @@ namespace DataAccess.Repository
         {
            
             var business = _db.Negocios.AsQueryable();
-            var businessCategory = _db.CatCategoria.AsQueryable().Where(x => x.IdPadre == 20);
-            var businessStatus= _db.CatCategoria.AsQueryable().Where(x => x.IdPadre == 16);
+            var businessCategory = _db.CatCategoria.AsQueryable();//.Where(x => x.IdPadre == 20);
+            var businessStatus = _db.CatCategoria.AsQueryable(); //.Where(x => x.IdPadre == 16);
             var deparment = _db.CatDepartamentos.AsQueryable();
             var users = _db.Users.AsQueryable();
             var usersDetails = _db.UserDetails.AsQueryable();
@@ -38,6 +38,7 @@ namespace DataAccess.Repository
                          join u in users on b.IdUserOwner equals u.Id
                          join ud in usersDetails on u.Id equals ud.UserId
                          select new BusinessOwnerViewModel { 
+                         Id=b.Id,
                          FullName=ud.FullName,
                          Email=u.UserName,
                          NombreNegocio=b.NombreNegocio,
@@ -47,10 +48,11 @@ namespace DataAccess.Repository
                          statusName=bStatus.Nombre,
                          IdDepartamento=dep.Id.ToString(),
                          departmentName=dep.Nombre,
-                         CreateDate=b.CreateDate
+                         CreateDateString = b.CreateDate.ToShortDateString(),
+                         IdUserOwner=b.IdUserOwner
                          });
 
-            if (!string.IsNullOrEmpty(idOwner))
+            if (idOwner!= "-1")
             {
                 query = query.Where(x => x.IdUserOwner == idOwner);
             }
