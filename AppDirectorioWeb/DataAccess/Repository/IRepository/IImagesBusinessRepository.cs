@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace DataAccess.Repository.IRepository
         void Update(ImagenesNegocio image);
         void InsertList(List<ImagenesNegocio> imagenes);
         void RemoveList(List<ImagenesNegocio> imagenes);
+        List<ImagenesNegocioViewModel> GetImagesByBusinessId(int id);
     }
 }

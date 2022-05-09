@@ -11,6 +11,8 @@ namespace DataAccess.Repository.IRepository
     public interface IBusinessRepository : IRepository<Negocio>
     {
         void Update(Negocio negocio);
-        List<BusinessOwnerViewModel> GetBusinessByOwners(string idOwner);
+        List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner);
+
+        BusinessOwnerViewModel GetBusinessById(int id);
     }
 }

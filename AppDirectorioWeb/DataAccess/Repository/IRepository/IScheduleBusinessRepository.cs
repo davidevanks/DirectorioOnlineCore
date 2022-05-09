@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace DataAccess.Repository.IRepository
     {
         void Update(HorarioNegocio schedule);
         void InsertList(List<HorarioNegocio> schedules);
+        List<HorarioNegocioViewModel> GetScheduleListByBusinessId(int id);
     }
 }

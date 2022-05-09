@@ -204,8 +204,23 @@ namespace AppDirectorioWeb.Controllers
 
         public IActionResult GetDetailByBussinesId(int id)
         {
+            DetailsBusinessViewModel BusinessDetails = new DetailsBusinessViewModel();
+            BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
+            BusinessDetails.FeatureNegocios = _unitOfWork.Feature.GetListFeaturesByBusinessId(id);
+            BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
+            BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);
+     
 
-            return View();
+            foreach (var item in BusinessDetails.ImagenesNegocios)
+            {
+                string uploadsFolder = "/ImagesBusiness/";
+                string uniqueFileNames = item.Image;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
+                item.Image = filePath;
+            }
+
+
+            return View(BusinessDetails);
         }
 
         #endregion Public Methods
@@ -214,7 +229,7 @@ namespace AppDirectorioWeb.Controllers
         [HttpGet]
         public IActionResult GetBusinessByOwners(string idOwner)
         {
-            var parentsObj = _unitOfWork.Business.GetBusinessByOwners(idOwner);
+            var parentsObj = _unitOfWork.Business.GetListBusinessByOwners(idOwner);
             return Json(new { data = parentsObj });
         }
 

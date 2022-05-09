@@ -57,8 +57,8 @@ $(document).ready(function () {
         var files = $(this)[0].files;
 
 
-        if (files.length > 5) {
-            $('#galVal').html('La cantidad máxima de imagenes son 5');
+        if (files.length > 6) {
+            $('#galVal').html('La cantidad máxima de imagenes son 6');
             fileLabel.html('Selecciona fotos de tus productos/servicios...');
             this.value = '';
         } else {

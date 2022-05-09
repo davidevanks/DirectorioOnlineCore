@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,25 @@ namespace DataAccess.Repository
         public FeatureNegocioRepository(DirectorioOnlineCoreContext db) : base(db)
         {
             _db = db;
+        }
+
+        public List<FeatureNegocioViewModel> GetListFeaturesByBusinessId(int id)
+        {
+            var features = _db.CatCategoria.AsQueryable();
+            var businessFeatures = _db.FeatureNegocios.AsQueryable();
+
+            var query = (from bf in businessFeatures join f in features on bf.IdFeature equals f.Id
+                         where bf.IdNegocio==id && bf.Activo==true && f.Activo==true
+                         select new FeatureNegocioViewModel { 
+                         IdFeature=bf.IdFeature,
+                         IdNegocio=bf.IdNegocio,
+                         Id=bf.Id,
+                         Feature=f.Nombre,
+                         Activo=(bool)bf.Activo
+                         }).ToList();
+
+            return query;
+           
         }
 
         public void InsertList(List<FeatureNegocio> features)

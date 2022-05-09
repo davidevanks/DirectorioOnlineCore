@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,23 @@ namespace DataAccess.Repository
         {
             _db = db;
         }
+
+        public List<ImagenesNegocioViewModel> GetImagesByBusinessId(int id)
+        {
+            var images = _db.ImagenesNegocios.AsQueryable();
+
+            var query = (from im in images
+                         where im.IdNegocio==id
+                         select new ImagenesNegocioViewModel
+                         {
+                             Id=im.Id,
+                             IdNegocio=im.IdNegocio,
+                             Image=im.Image
+                         }).ToList();
+
+            return query;
+        }
+
         public void InsertList(List<ImagenesNegocio> imagenes)
         {
             _db.ImagenesNegocios.AddRange(imagenes);
