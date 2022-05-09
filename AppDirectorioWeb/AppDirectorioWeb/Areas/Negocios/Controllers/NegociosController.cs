@@ -187,11 +187,7 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
-        [AllowAnonymous]
-        public async Task<IActionResult> GetDetailByBussinesId(int id)
-        {
-            return View();
-        }
+    
 
         [Authorize(Roles = SP.Role_BusinesAdmin+","+SP.Role_Admin)]
         public IActionResult AdminBusiness()
@@ -203,6 +199,12 @@ namespace AppDirectorioWeb.Controllers
             }
 
             ViewBag.idOwner = idOwner;
+            return View();
+        }
+
+        public IActionResult GetDetailByBussinesId(int id)
+        {
+
             return View();
         }
 

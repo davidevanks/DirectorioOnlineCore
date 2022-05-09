@@ -62,7 +62,7 @@ function loadDataTableAdmin() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Catalogos/CatCategory/AddCatChild/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-eye"></i></a>`
+                    return ` <a href="/Negocios/Negocios/GetDetailByBussinesId/${data}" class="btn btn-primary text-white" id="btnVerDetalle"><i class="fa fa-eye"></i></a>`
                            
                         ;
                 }, "width": "40%"
