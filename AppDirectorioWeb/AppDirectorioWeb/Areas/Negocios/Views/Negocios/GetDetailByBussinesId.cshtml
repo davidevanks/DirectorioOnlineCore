@@ -1,5 +1,12 @@
 ﻿
 @model Models.ViewModels.DetailsBusinessViewModel; 
+
+<style>
+
+ /*   .fa-whatsapp {
+        content: "\f232" !important;
+    }*/
+</style>
 <!-- ====================================
 ———	LISTING SINGLE HEADING
 ===================================== -->
@@ -10,7 +17,7 @@
                 <div class="mb-2 mb-lg-0">
                     <h1 class="single-listing-title">@Model.Business.NombreNegocio</h1>
                     <p class="text-muted mb-1"> <i class="fas fa-map-marker-alt text-primary mr-1"></i> @Model.Business.DireccionNegocio </p>
-                    <p class="text-muted mb-1"> <i class="fas fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
+                    <p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
                     <p class="text-muted mb-1"> <i class="fas fa-phone-alt text-primary mr-1"></i> @Model.Business.TelefonoNegocio1</p>
                     <p class="text-muted mb-1"> <i class="fas fa-mail-bulk text-primary mr-1"></i> @Model.Business.EmailNegocio</p>
 
@@ -85,6 +92,52 @@
                 </div>
 
                 <hr>
+                @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl) || !String.IsNullOrEmpty(Model.Business.TwitterUrl) || !String.IsNullOrEmpty(Model.Business.LinkedInUrl) || !String.IsNullOrEmpty(Model.Business.InstagramUrl))
+                {
+            <div class="my-6">
+                <h3 class="font-weight-normal mb-6">Redes sociales</h3>
+                <ul class="list-unstyled mb-7">
+                    @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl))
+                    {
+            <li class="list-inline-item">
+                <a class="mr-2" href="@Model.Business.FacebookUrl">
+                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                </a>
+            </li>
+}
+                    @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
+                    {
+            <li class="list-inline-item">
+                <a class="mr-2" href="@Model.Business.InstagramUrl">
+                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                </a>
+            </li>
+}
+                    @if (!String.IsNullOrEmpty(Model.Business.TwitterUrl))
+                    {
+            <li class="list-inline-item">
+                <a class="mr-2" href="@Model.Business.TwitterUrl">
+                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                </a>
+            </li>
+}
+                    @if (!String.IsNullOrEmpty(Model.Business.LinkedInUrl))
+                    {
+            <li class="list-inline-item">
+                <a class="mr-2" href="@Model.Business.LinkedInUrl">
+                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                </a>
+            </li>
+}
+
+
+
+
+
+                </ul>
+                <hr>
+            </div>}
+
 
                 <!-- Features -->
                 <div class="my-6">
@@ -92,16 +145,55 @@
                     <ul class="list-unstyled mb-7">
                         @foreach (var feature in Model.FeatureNegocios)
                         {
-                            <li class="d-inline-block mr-4 mb-2">
-                                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>@feature.Feature
-                            </li>
-                        }
+                    <li class="d-inline-block mr-4 mb-2">
+                        <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>@feature.Feature
+                    </li>}
 
-
+                     
 
                     </ul>
                     <hr>
                 </div>
+                @if (Model.Business.HasDelivery == true || Model.Business.PedidosYa == true || Model.Business.Hugo == true || Model.Business.Piki == true)
+                {
+                    <div class="my-6">
+                        <h3 class="font-weight-normal mb-6">Delivery (Servicio a domicilio)</h3>
+                        <ul class="list-unstyled mb-7">
+                            @if (Model.Business.HasDelivery == true)
+                            {
+            <li class="d-inline-block mr-4 mb-2">
+                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Delivery
+            </li>}
+                            @if (Model.Business.Hugo == true)
+                            {
+            <li class="d-inline-block mr-4 mb-2">
+                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Hugo
+            </li>
+}
+
+                            @if (Model.Business.PedidosYa == true)
+                            {
+            <li class="d-inline-block mr-4 mb-2">
+                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Pedidos Ya
+            </li>
+}
+                            @if (Model.Business.Piki == true)
+                            {
+            <li class="d-inline-block mr-4 mb-2">
+                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Piki
+            </li>
+}
+
+
+
+
+
+
+                        </ul>
+                        <hr>
+                    </div>
+                }
+
 
                 <!-- Added By -->
                 <div>
@@ -116,34 +208,34 @@
                                 <ul class="list-inline d-flex flex-column flex-lg-row mb-0">
 
                                     @*<li class="list-inline-item">
-                                        <i class="fas fa-phone-alt" aria-hidden="true"></i>
-                                        <span class="ml-2">+55 654 545 122</span>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <i class="fa fa-envelope" aria-hidden="true"></i>
-                                        <span class="ml-2">example.com</span>
-                                    </li>*@
+                                <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                                <span class="ml-2">+55 654 545 122</span>
+                            </li>
+                            <li class="list-inline-item">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <span class="ml-2">example.com</span>
+                            </li>*@
 
                                 </ul>
 
                                 @*<ul class="list-inline list-inline-icon ml-lg-auto">
-                                    <li class="list-inline-item">
-                                        <a class="mr-2" href="javascript:void(0)">
-                                            <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a class="mr-2" href="javascript:void(0)">
-                                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a class="mr-2" href="javascript:void(0)">
-                                            <i class="fab fa-instagram" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
+                            <li class="list-inline-item">
+                                <a class="mr-2" href="javascript:void(0)">
+                                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="mr-2" href="javascript:void(0)">
+                                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="mr-2" href="javascript:void(0)">
+                                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                                </a>
+                            </li>
 
-                                </ul>*@
+                        </ul>*@
 
                             </div>
                         </div>
