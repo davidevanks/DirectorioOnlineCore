@@ -14,5 +14,6 @@ namespace DataAccess.Repository.IRepository
         List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner);
 
         BusinessOwnerViewModel GetBusinessById(int id);
+        BussinesViewModel GetBusinessToEditById(int id);
     }
 }

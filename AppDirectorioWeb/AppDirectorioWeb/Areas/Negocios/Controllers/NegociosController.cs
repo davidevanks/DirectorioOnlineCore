@@ -64,24 +64,51 @@ namespace AppDirectorioWeb.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult AgregarNegocio()
+        public IActionResult AgregarNegocio(int? Id)
         {
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
-            //Se agrega cataegorias y departamentos
-            model.Business = new BussinesViewModel()
-            {
-                Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo==true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
-                {
-                    Text = i.Nombre,
-                    Value = i.Id.ToString()
-                }),
 
-                Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+            if (Id!=null)
+            {
+                model.Business = _unitOfWork.Business.GetBusinessToEditById((int)Id);
+
+                if (model.Business==null)
+                {
+                    return NotFound();
+                }
+
+                model.Business.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
                 {
                     Text = i.Nombre,
                     Value = i.Id.ToString()
-                })
-            };
+                });
+
+                model.Business.Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                {
+                    Text = i.Nombre,
+                    Value = i.Id.ToString()
+                });
+            }
+            else
+            {
+                //Se agrega cataegorias y departamentos
+                model.Business = new BussinesViewModel()
+                {
+                    Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                    {
+                        Text = i.Nombre,
+                        Value = i.Id.ToString()
+                    }),
+
+                    Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                    {
+                        Text = i.Nombre,
+                        Value = i.Id.ToString()
+                    })
+                };
+            }
+
+      
 
             //Se agrega data de días
             var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
@@ -96,8 +123,8 @@ namespace AppDirectorioWeb.Controllers
                 ScheduleDay.IdUserCreate = "0";
                 ScheduleDayList.Add(ScheduleDay);
             }
-
-            model.HorarioNegocios = ScheduleDayList;
+            
+            model.HorarioNegocios =(Id==null)? ScheduleDayList:_unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId((int)Id);
 
             //Se agrega data para mostrar features
             List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
@@ -111,8 +138,8 @@ namespace AppDirectorioWeb.Controllers
                 feature.IdUserCreate = "0";
                 FeatureNegocios.Add(feature);
             }
-
-            model.FeatureNegocios = FeatureNegocios;
+           
+            model.FeatureNegocios = (Id == null) ? FeatureNegocios : _unitOfWork.Feature.GetListFeaturesToEditByBusinessId((int)Id);
             return View(model);
         }
 

@@ -71,6 +71,49 @@ namespace DataAccess.Repository
             return query;
         }
 
+        public BussinesViewModel GetBusinessToEditById(int id)
+        {
+            var business = _db.Negocios.AsQueryable();
+            var businessCategory = _db.CatCategoria.AsQueryable();//.Where(x => x.IdPadre == 20);
+            var businessStatus = _db.CatCategoria.AsQueryable(); //.Where(x => x.IdPadre == 16);
+            var deparment = _db.CatDepartamentos.AsQueryable();
+            var users = _db.Users.AsQueryable();
+            var usersDetails = _db.UserDetails.AsQueryable();
+
+            var query = (from b in business
+                         join bc in businessCategory on b.IdCategoria equals bc.Id
+                         join bStatus in businessStatus on b.Status equals bStatus.Id
+                         join dep in deparment on b.IdDepartamento equals dep.Id
+                         join u in users on b.IdUserOwner equals u.Id
+                         join ud in usersDetails on u.Id equals ud.UserId
+                         where b.Id == id
+                         select new BussinesViewModel
+                         {
+                             Id = b.Id,
+                             TelefonoWhatsApp = b.TelefonoWhatsApp,
+                             TwitterUrl = b.TwitterUrl,
+                             FacebookUrl = b.FacebookUrl,
+                             InstagramUrl = b.InstagramUrl,
+                             LinkedInUrl = b.LinkedInUrl,
+                             HasDelivery = (bool)b.HasDelivery,
+                             PedidosYa = (bool)b.PedidosYa,
+                             Piki = (bool)b.Piki,
+                             Hugo = (bool)b.Hugo,
+                             EmailNegocio = b.EmailNegocio,
+                             NombreNegocio = b.NombreNegocio,
+                             DireccionNegocio = b.DireccionNegocio,
+                             TelefonoNegocio1 = b.TelefonoNegocio1,
+                             TelefonoNegocio2 = b.TelefonoNegocio2,
+                             DescripcionNegocio = b.DescripcionNegocio,
+                             IdCategoria = bc.Id.ToString(),
+                             Status = bStatus.Id,
+                             IdDepartamento = dep.Id.ToString(),
+                             IdUserOwner = b.IdUserOwner
+                         }).FirstOrDefault();
+
+            return query;
+        }
+
         public List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner)
         {
            

@@ -120,7 +120,7 @@ function loadDataTableBusinessAdmin() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Catalogos/CatCategory/AddCatChild/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-edit"></i></a>
+                    return ` <a href="/Negocios/Negocios/AgregarNegocio/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-edit"></i></a>
                         <a onclick = DeleteParent("/Catalogos/CatCategory/DeleteParentCat/${data}"); class="btn btn-danger text-white" id = "btnEditar" > <i class="fa fa-trash"></i></a >`
                         ;
                 }, "width": "40%"
