@@ -379,7 +379,10 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Logo de negocio</h3>
-
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && !string.IsNullOrEmpty(Model.Business.LogoNegocio))
+                    {
+                        <a href="javascript:0" class="text-danger">@Model.Business.LogoNegocio</a>
+                    }
                     <div class="form-group col-md-5">
 
                         <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">

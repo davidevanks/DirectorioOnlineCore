@@ -88,6 +88,8 @@ namespace AppDirectorioWeb.Controllers
                     Text = i.Nombre,
                     Value = i.Id.ToString()
                 });
+
+                model.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId((int)Id);
             }
             else
             {

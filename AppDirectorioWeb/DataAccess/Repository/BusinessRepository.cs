@@ -108,7 +108,8 @@ namespace DataAccess.Repository
                              IdCategoria = bc.Id.ToString(),
                              Status = bStatus.Id,
                              IdDepartamento = dep.Id.ToString(),
-                             IdUserOwner = b.IdUserOwner
+                             IdUserOwner = b.IdUserOwner,
+                             LogoNegocio=b.LogoNegocio
                          }).FirstOrDefault();
 
             return query;
