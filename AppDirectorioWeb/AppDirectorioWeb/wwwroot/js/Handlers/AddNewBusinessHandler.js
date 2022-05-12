@@ -1,24 +1,55 @@
-﻿////$('.ti').inputmask({
-////    alias: "datetime",
-////    placeholder: "12:00 AM",
-////    inputFormat: "hh:MM TT",
-////    insertMode: false,
-////    showMaskOnHover: false,
-////    hourFormat: 12
-////});
-
-
-
-
+﻿
 $('#btnCrearCuenta').attr("disabled", true);
+
+$('.cfiinvisible').attr("disabled", true);
+
+
 
 $('#chkTerm').click(function () {
     if (document.getElementById('chkTerm').checked) {
-        $(":submit").removeAttr("disabled");
+        $('#btnCrearCuenta').removeAttr("disabled");
     } else {
         $('#btnCrearCuenta').attr("disabled", true);
     }
 });
+
+
+function DeleteLogo(Id) {
+   
+    swal({
+        title: "Estas seguro que desea eliminar este logo?",
+        text: "Una vez borrado, no puedes recuperar el registro",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+
+    }).then((willDelete) => {
+        if (willDelete) {
+
+
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+            });
+            
+            $.ajax({
+                type: "GET",
+                url: '/Negocios/Negocios/DeleteLogo/'+Id,
+                success: function (data) {
+                   
+                    if (data.success) {
+                        /*toastr.success(data.message);*/
+                        swal({ title: data.message, icon: "success" });
+                        $('.cfiinvisible').removeAttr("disabled");
+                        $('#adellogo').text('');
+                    } else {
+                        /*toastr.error(data.message);*/
+                        swal({ title: data.message, icon: "info" });
+                    }
+                }
+            });
+        }
+    });
+}
 
 $(document).ready(function () {
 

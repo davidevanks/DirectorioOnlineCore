@@ -381,14 +381,25 @@
                     <h3 class="h4 mb-4">Logo de negocio</h3>
                     @if ((Model.Business.Id != 0 || Model.Business.Id != null) && !string.IsNullOrEmpty(Model.Business.LogoNegocio))
                     {
-                        <a href="javascript:0" class="text-danger">@Model.Business.LogoNegocio</a>
-                    }
-                    <div class="form-group col-md-5">
+                        <a id="adellogo" onclick="DeleteLogo(@Model.Business.Id)"  class="text-danger">@Model.Business.LogoNegocio     Eliminar <span class="fa fa-close"></span></a>
 
-                        <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
-                        <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
-                        <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
-                    </div>
+                        <div class="form-group col-md-5">
+                            <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi cfiinvisible">
+                            <label class="custom-file-label cfl ">Selecciona el logo de tu negocio...</label>
+                            <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-5">
+                            <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
+                            <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
+                            <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
+                        </div>
+                    }
+
+
 
 
                 </div>
@@ -405,7 +416,7 @@
                         }
                         else
                         {
-                            <button id="btnCrearCuenta" type="submit" class="btn btn-lg btn-primary btn-block">Actualizar Negocio</button>
+                            <button id="btnUpdateNegocio" type="submit" class="btn btn-lg btn-primary btn-block">Actualizar Negocio</button>
                         }
 
                     </div>

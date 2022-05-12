@@ -321,6 +321,41 @@ namespace AppDirectorioWeb.Controllers
             return Json(new { success = true, message = "Negocio" + message });
         }
 
+        [HttpGet]
+        public IActionResult DeleteLogo(int id)
+        {
+            var Business = _unitOfWork.Business.Get(id);
+            if (Business == null)
+            {
+                return Json(new { success = false, message = "Error al borrar" });
+            }
+
+            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, Business.LogoNegocio);
+
+            //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+            //uniqueFileNames = Guid.NewGuid().ToString() + "_picturesBusiness_" + picture.FileName;
+            //string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
+            //picture.CopyTo(new FileStream(filePath, FileMode.Create));
+
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            else
+            {
+                return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+            }
+
+            Business.LogoNegocio = "";
+            _unitOfWork.Business.Update(Business);
+            _unitOfWork.Save();
+
+
+
+            return Json(new { success = true, message = "Se borro logo exitosamente" });
+        }
+
         #endregion
 
         #region MetodosAuxiliares
