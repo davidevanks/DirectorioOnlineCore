@@ -142,6 +142,7 @@ namespace AppDirectorioWeb.Controllers
             }
            
             model.FeatureNegocios = (Id == null) ? FeatureNegocios : _unitOfWork.Feature.GetListFeaturesToEditByBusinessId((int)Id);
+            
             return View(model);
         }
 
@@ -356,6 +357,41 @@ namespace AppDirectorioWeb.Controllers
             return Json(new { success = true, message = "Se borro logo exitosamente" });
         }
 
+
+        [HttpGet]
+        public IActionResult DeletePictures(int id)
+        {
+            var pictures = _unitOfWork.ImageBusiness.GetRangeImagesToDeleteByBusinessId(id);
+            if (pictures == null)
+            {
+                return Json(new { success = false, message = "Error al borrar" });
+            }
+
+            foreach (var item in pictures)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
+
+       
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+                }
+            }
+
+
+            _unitOfWork.ImageBusiness.RemoveRange(pictures);
+            _unitOfWork.Save();
+
+
+
+            return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
+        }
         #endregion
 
         #region MetodosAuxiliares

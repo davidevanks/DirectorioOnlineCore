@@ -365,12 +365,29 @@
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
 
-                    <div class="form-group col-md-5">
 
-                        <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
-                        <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
-                        <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
-                    </div>
+
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && Model.ImagenesNegocios.Count>0)
+                    {
+                        <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
+
+                        <div class="form-group col-md-5">
+
+                            <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PicturesBusiness" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-5">
+
+                            <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        </div>
+                    }
 
 
                 </div>

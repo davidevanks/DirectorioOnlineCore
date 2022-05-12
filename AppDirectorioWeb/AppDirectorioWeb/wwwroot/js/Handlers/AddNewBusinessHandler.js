@@ -2,6 +2,7 @@
 $('#btnCrearCuenta').attr("disabled", true);
 
 $('.cfiinvisible').attr("disabled", true);
+$('.cfisinvisible').attr("disabled", true);
 
 
 
@@ -41,6 +42,44 @@ function DeleteLogo(Id) {
                         swal({ title: data.message, icon: "success" });
                         $('.cfiinvisible').removeAttr("disabled");
                         $('#adellogo').text('');
+                    } else {
+                        /*toastr.error(data.message);*/
+                        swal({ title: data.message, icon: "info" });
+                    }
+                }
+            });
+        }
+    });
+}
+
+
+function DeletePictures(Id) {
+
+    swal({
+        title: "Estas seguro que desea todas las fotos?",
+        text: "Una vez borrado, no puedes recuperar los registros",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+
+    }).then((willDelete) => {
+        if (willDelete) {
+
+
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+            });
+
+            $.ajax({
+                type: "GET",
+                url: '/Negocios/Negocios/DeletePictures/' + Id,
+                success: function (data) {
+
+                    if (data.success) {
+                        /*toastr.success(data.message);*/
+                        swal({ title: data.message, icon: "success" });
+                        $('.cfisinvisible').removeAttr("disabled");
+                        $('#adelpictures').text('');
                     } else {
                         /*toastr.error(data.message);*/
                         swal({ title: data.message, icon: "info" });

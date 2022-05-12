@@ -34,6 +34,22 @@ namespace DataAccess.Repository
             return query;
         }
 
+        public List<ImagenesNegocio> GetRangeImagesToDeleteByBusinessId(int id)
+        {
+            var images = _db.ImagenesNegocios.AsQueryable();
+
+            var query = (from im in images
+                         where im.IdNegocio == id
+                         select new ImagenesNegocio
+                         {
+                             Id = im.Id,
+                             IdNegocio = im.IdNegocio,
+                             Image = im.Image
+                         }).ToList();
+
+            return query;
+        }
+
         public void InsertList(List<ImagenesNegocio> imagenes)
         {
             _db.ImagenesNegocios.AddRange(imagenes);

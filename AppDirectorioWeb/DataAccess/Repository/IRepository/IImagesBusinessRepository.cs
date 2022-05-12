@@ -14,5 +14,6 @@ namespace DataAccess.Repository.IRepository
         void InsertList(List<ImagenesNegocio> imagenes);
         void RemoveList(List<ImagenesNegocio> imagenes);
         List<ImagenesNegocioViewModel> GetImagesByBusinessId(int id);
+        List<ImagenesNegocio> GetRangeImagesToDeleteByBusinessId(int id);
     }
 }
