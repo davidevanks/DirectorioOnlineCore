@@ -98,7 +98,8 @@
                 <div class="card-body px-6 pt-6 pb-1">
                     <h3 class="h4 mb-4">Información del negocio</h3>
                     <p class="mb-5">No somos responsables de ningún daño causado por el uso de este sitio web o por publicar listados de negocios aquí. Utilice nuestro sitio a su propia discreción y ejerza el buen juicio, así como el sentido común al anunciar negocios aquí.</p>
-
+                    <input asp-for="Business.Id" type="hidden"/>
+                    <input asp-for="Business.IdUserOwner" type="hidden"/>
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="listingTitle">Nombre del negocio</label>
@@ -303,11 +304,12 @@
                                 <div class="row align-items-center form-check-readonly">
                                     @for (int i = 0; i < Model.FeatureNegocios.Count; i++)
                                     {
-                                        <div class="col-6">
-                                            <input type="hidden" asp-for="@Model.FeatureNegocios[i].IdFeature" />
-                                            <input asp-for="@Model.FeatureNegocios[i].Activo" type="checkbox" class="form-check-input">
-                                            <label class="form-check-label">@Model.FeatureNegocios[i].Feature</label>
-                                        </div>
+                                    <div class="col-6">
+                                        <input type="hidden" asp-for="@Model.FeatureNegocios[i].Id" />
+                                        <input type="hidden" asp-for="@Model.FeatureNegocios[i].IdFeature" />
+                                        <input asp-for="@Model.FeatureNegocios[i].Activo" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label">@Model.FeatureNegocios[i].Feature</label>
+                                    </div>
                                     }
 
 
@@ -334,6 +336,7 @@
                                 <div class="form-group form-check mb-6 ">
                                     <div class="row align-items-center form-check-readonly">
                                         <div class="col-3">
+                                            <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
                                             <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
                                             <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
                                             <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
@@ -364,7 +367,7 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
-
+                    <input asp-for="@Model.Business.LogoNegocio" type="hidden"/>
 
 
                     @if ((Model.Business.Id != 0 || Model.Business.Id != null) && Model.ImagenesNegocios.Count>0)

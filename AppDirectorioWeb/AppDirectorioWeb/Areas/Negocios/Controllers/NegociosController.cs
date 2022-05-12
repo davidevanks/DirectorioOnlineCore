@@ -36,6 +36,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DirectorioOnlineCoreContext context;
         private readonly IWebHostEnvironment hostingEnvironment;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         #endregion Private Fields
 
@@ -48,7 +49,8 @@ namespace AppDirectorioWeb.Controllers
             UserManager<IdentityUser> userManager,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            IWebHostEnvironment hostingEnvironment)
+            IWebHostEnvironment hostingEnvironment,
+            SignInManager<IdentityUser> signInManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -56,11 +58,25 @@ namespace AppDirectorioWeb.Controllers
             _emailSender = emailSender;
             _roleManager = roleManager;
             this.hostingEnvironment = hostingEnvironment;
+            _signInManager = signInManager;
         }
 
         #endregion Public Constructors
 
         #region Public Methods
+
+        [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
+        public IActionResult AdminBusiness()
+        {
+            string idOwner = "-1";
+            if (User.IsInRole(SP.Role_BusinesAdmin))
+            {
+                idOwner = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
+            }
+
+            ViewBag.idOwner = idOwner;
+            return View();
+        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -68,11 +84,11 @@ namespace AppDirectorioWeb.Controllers
         {
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
 
-            if (Id!=null)
+            if (Id != null)
             {
                 model.Business = _unitOfWork.Business.GetBusinessToEditById((int)Id);
 
-                if (model.Business==null)
+                if (model.Business == null)
                 {
                     return NotFound();
                 }
@@ -110,8 +126,6 @@ namespace AppDirectorioWeb.Controllers
                 };
             }
 
-      
-
             //Se agrega data de días
             var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
 
@@ -125,8 +139,8 @@ namespace AppDirectorioWeb.Controllers
                 ScheduleDay.IdUserCreate = "0";
                 ScheduleDayList.Add(ScheduleDay);
             }
-            
-            model.HorarioNegocios =(Id==null)? ScheduleDayList:_unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId((int)Id);
+
+            model.HorarioNegocios = (Id == null) ? ScheduleDayList : _unitOfWork.ScheduleBusiness.GetScheduleListToEditByBusinessId((int)Id);
 
             //Se agrega data para mostrar features
             List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
@@ -140,9 +154,9 @@ namespace AppDirectorioWeb.Controllers
                 feature.IdUserCreate = "0";
                 FeatureNegocios.Add(feature);
             }
-           
+
             model.FeatureNegocios = (Id == null) ? FeatureNegocios : _unitOfWork.Feature.GetListFeaturesToEditByBusinessId((int)Id);
-            
+
             return View(model);
         }
 
@@ -151,61 +165,123 @@ namespace AppDirectorioWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AgregarNegocio(AddUpdBusinessViewModel model)
         {
-        
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
-
-                var result = await _userManager.CreateAsync(user, model.User.Password);
-
-                string idUserCreate = "";
-                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                if ((model.Business.Id==0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
                 {
-                    idUserCreate = user.Id;
+                    //registro negocio nuevo y usuario nuevo
+                    var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
+
+                    var result = await _userManager.CreateAsync(user, model.User.Password);
+
+                    string idUserCreate = "";
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    {
+                        idUserCreate = user.Id;
+                    }
+                    else
+                    {
+                        idUserCreate = HttpContext.Session.GetString("UserId");
+                    }
+                    //asignar rol
+                    await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
+
+                    //guardamos el detalle del usuario.
+
+                    var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate };
+                    _unitOfWork.UserDetail.Add(userDetail);
+
+                    //asignamos el id del usuario a su negocio(idUserCreate)
+                    model.Business.IdUserCreate = idUserCreate;
+                    model.Business.CreateDate = DateTime.Now;
+                    model.Business.IdUserOwner = user.Id;
+                    model.Business.Status = 19;
+
+                    //logica para logo
+                    string uniqueFileName = SaveLogoPicture(model);
+                    model.Business.LogoNegocio = uniqueFileName;
+
+                    var negocio = _mapper.Map<Negocio>(model.Business);
+                    _unitOfWork.Business.Add(negocio);
+                    _unitOfWork.Save();
+
+                    SaveFeaturesBusiness(model, negocio, idUserCreate);
+
+                    SaveSchedulesBusiness(model, negocio, idUserCreate);
+
+                    //logica para galerias de imagenes
+                    SavePicturesBusiness(model, negocio, idUserCreate);
+
+                    _unitOfWork.Save();
+
+                    //codigo para envio de correo de verificación de cuenta
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    string MailText = GetEmailActivationUserAdminBusiness(user, code);
+                    await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
+
+                    //
+
+                    return RedirectToAction(nameof(ConfirmationBusinessRegistration));
                 }
-                else
+                else if((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
                 {
-                    idUserCreate = HttpContext.Session.GetString("UserId");
+                    //actualización negocio
+                    //asignamos el id del usuario a su negocio(idUserCreate)
+                    model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
+                    model.Business.UpdateDate = DateTime.Now;
+                    model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
+
+                    //logica para logo
+                    if (model.Logo != null)
+                    {
+                        string uniqueFileName = SaveLogoPicture(model);
+                        model.Business.LogoNegocio = uniqueFileName;
+                    }
+                   
+
+                    var negocio = _mapper.Map<Negocio>(model.Business);
+                    _unitOfWork.Business.Update(negocio);
+
+                    //update features
+                    UpdateFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                    UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                    //logica para galerias de imagenes
+                    SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                    _unitOfWork.Save();
+                    return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
+                    
                 }
-                //asignar rol
-                await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
+                else if ((model.Business.Id == 0 || model.Business.Id == null) && _signInManager.IsSignedIn(User))
+                {
+                    //negocio nuevo pero con usuario ya registrado
+                    //asignamos el id del usuario a su negocio(idUserCreate)
+                    model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
+                    model.Business.UpdateDate = DateTime.Now;
+                    model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
-                //guardamos el detalle del usuario.
+                    //logica para logo
+                    string uniqueFileName = SaveLogoPicture(model);
+                    model.Business.LogoNegocio = uniqueFileName;
 
-                var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate };
-                _unitOfWork.UserDetail.Add(userDetail);
+                    var negocio = _mapper.Map<Negocio>(model.Business);
+                    _unitOfWork.Business.Add(negocio);
+                    _unitOfWork.Save();
 
-                //asignamos el id del usuario a su negocio(idUserCreate)
-                model.Business.IdUserCreate = idUserCreate;
-                model.Business.CreateDate = DateTime.Now;
-                model.Business.IdUserOwner = user.Id;
-                model.Business.Status = 19;
+                    SaveFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
-                //logica para logo
-                string uniqueFileName = SaveLogoPicture(model);
-                model.Business.LogoNegocio = uniqueFileName;
+                    SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
-                var negocio = _mapper.Map<Negocio>(model.Business);
-                _unitOfWork.Business.Add(negocio);
-                _unitOfWork.Save();
+                    //logica para galerias de imagenes
+                    SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
-                SaveFeaturesBusiness(model, negocio, idUserCreate);
+                    _unitOfWork.Save();
+                    return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
 
-                SaveSchedulesBusiness(model, negocio, idUserCreate);
+                }
 
-                //logica para galerias de imagenes
-                SavePicturesBusiness(model, negocio, idUserCreate);
-
-                _unitOfWork.Save();
-
-                //codigo para envio de correo de verificación de cuenta
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                string MailText = GetEmailActivationUserAdminBusiness(user, code);
-                await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
-
-                //
-
-                return RedirectToAction(nameof(ConfirmationBusinessRegistration));
             }
 
             return View(model);
@@ -217,18 +293,9 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
-    
-
-        [Authorize(Roles = SP.Role_BusinesAdmin+","+SP.Role_Admin)]
-        public IActionResult AdminBusiness()
+        [AllowAnonymous]
+        public IActionResult UpdateSaveBusinessRegistration()
         {
-            string idOwner = "-1";
-            if (User.IsInRole(SP.Role_BusinesAdmin))
-            {
-                idOwner = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
-            }
-
-            ViewBag.idOwner = idOwner;
             return View();
         }
 
@@ -239,7 +306,6 @@ namespace AppDirectorioWeb.Controllers
             BusinessDetails.FeatureNegocios = _unitOfWork.Feature.GetListFeaturesByBusinessId(id);
             BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
             BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);
-     
 
             foreach (var item in BusinessDetails.ImagenesNegocios)
             {
@@ -249,13 +315,78 @@ namespace AppDirectorioWeb.Controllers
                 item.Image = filePath;
             }
 
-
             return View(BusinessDetails);
         }
 
         #endregion Public Methods
 
         #region API_CALLS
+
+        [HttpGet]
+        public IActionResult DeleteLogo(int id)
+        {
+            var Business = _unitOfWork.Business.Get(id);
+            if (Business == null)
+            {
+                return Json(new { success = false, message = "Error al borrar" });
+            }
+
+            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, Business.LogoNegocio);
+
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            else
+            {
+                return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+            }
+
+            Business.LogoNegocio = "";
+            _unitOfWork.Business.Update(Business);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Se borro logo exitosamente" });
+        }
+
+        [HttpGet]
+        public IActionResult DeletePictures(int id)
+        {
+            var pictures = _unitOfWork.ImageBusiness.GetRangeImagesToDeleteByBusinessId(id);
+            if (pictures == null)
+            {
+                return Json(new { success = false, message = "Error al borrar" });
+            }
+
+            foreach (var item in pictures)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
+
+                base.Dispose();
+
+                if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+                    }
+
+                    
+             
+             
+            }
+
+            _unitOfWork.ImageBusiness.RemoveRange(pictures);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
+        }
+
         [HttpGet]
         public IActionResult GetBusinessByOwners(string idOwner)
         {
@@ -268,7 +399,6 @@ namespace AppDirectorioWeb.Controllers
         {
             var business = _unitOfWork.Business.Get(Convert.ToInt32(id));
             var emailUser = _userManager.FindByIdAsync(business.IdUserOwner).Result.Email;
-           
 
             string message = "";
             if (business == null)
@@ -276,7 +406,7 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Negocio no existe!" });
             }
 
-            if (business.Status==19)
+            if (business.Status == 19)
             {
                 //user is currently locked, we will unlock
                 business.Status = 17;
@@ -293,18 +423,15 @@ namespace AppDirectorioWeb.Controllers
                 message = " Activado!";
             }
 
-
-
             _unitOfWork.Business.Update(business);
             _unitOfWork.Save();
-
 
             //ENVIO DE MENSAJE DE CAMBIO DE STATUS
             string MailText;
             var callbackUrl = Url.Action(
               "AdminBusiness",
               "Negocios",
-              values: new {  idOwner = business.IdUserOwner },
+              values: new { idOwner = business.IdUserOwner },
               protocol: Request.Scheme);
 
             string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateBusinessStatusNotification.html";
@@ -312,87 +439,16 @@ namespace AppDirectorioWeb.Controllers
             MailText = str.ReadToEnd();
             str.Close();
 
-             MailText  = MailText.Replace("[username]", emailUser).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
+            MailText = MailText.Replace("[username]", emailUser).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
             MailText = MailText.Replace("[negocioName]", business.NombreNegocio);
 
             _emailSender.SendEmailAsync(emailUser, "Notificación cambio de status negocio", MailText);
             //-----------------------------------
 
-
             return Json(new { success = true, message = "Negocio" + message });
         }
 
-        [HttpGet]
-        public IActionResult DeleteLogo(int id)
-        {
-            var Business = _unitOfWork.Business.Get(id);
-            if (Business == null)
-            {
-                return Json(new { success = false, message = "Error al borrar" });
-            }
-
-            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, Business.LogoNegocio);
-
-            //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-            //uniqueFileNames = Guid.NewGuid().ToString() + "_picturesBusiness_" + picture.FileName;
-            //string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-            //picture.CopyTo(new FileStream(filePath, FileMode.Create));
-
-            if (System.IO.File.Exists(path))
-            {
-                System.IO.File.Delete(path);
-            }
-            else
-            {
-                return Json(new { success = false, message = "Error al borrar, directorio no existe" });
-            }
-
-            Business.LogoNegocio = "";
-            _unitOfWork.Business.Update(Business);
-            _unitOfWork.Save();
-
-
-
-            return Json(new { success = true, message = "Se borro logo exitosamente" });
-        }
-
-
-        [HttpGet]
-        public IActionResult DeletePictures(int id)
-        {
-            var pictures = _unitOfWork.ImageBusiness.GetRangeImagesToDeleteByBusinessId(id);
-            if (pictures == null)
-            {
-                return Json(new { success = false, message = "Error al borrar" });
-            }
-
-            foreach (var item in pictures)
-            {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
-
-       
-
-                if (System.IO.File.Exists(path))
-                {
-                    System.IO.File.Delete(path);
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Error al borrar, directorio no existe" });
-                }
-            }
-
-
-            _unitOfWork.ImageBusiness.RemoveRange(pictures);
-            _unitOfWork.Save();
-
-
-
-            return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
-        }
-        #endregion
+        #endregion API_CALLS
 
         #region MetodosAuxiliares
 
@@ -428,6 +484,23 @@ namespace AppDirectorioWeb.Controllers
 
             var features = _mapper.Map<List<FeatureNegocio>>(model.FeatureNegocios);
             _unitOfWork.Feature.InsertList(features);
+        }
+
+        public void UpdateFeaturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserUpdate)
+        {
+            foreach (var feature in model.FeatureNegocios)
+            {
+               
+                feature.IdUserUpdate = idUserUpdate;
+                feature.UpdateDate = DateTime.Now;
+            }
+
+            var features = _mapper.Map<List<FeatureNegocio>>(model.FeatureNegocios);
+            foreach (var item in features)
+            {
+                _unitOfWork.Feature.Update(item);
+            }
+          
         }
 
         public string SaveLogoPicture(AddUpdBusinessViewModel model)
@@ -481,6 +554,24 @@ namespace AppDirectorioWeb.Controllers
 
             var schedules = _mapper.Map<List<HorarioNegocio>>(model.HorarioNegocios);
             _unitOfWork.ScheduleBusiness.InsertList(schedules);
+        }
+        public void UpdateSchedulesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserUpdate)
+        {
+            foreach (var sche in model.HorarioNegocios)
+            {
+                
+                sche.IdUserUpdate = idUserUpdate;
+                sche.UpdateDate = DateTime.Now;
+            }
+
+            var schedules = _mapper.Map<List<HorarioNegocio>>(model.HorarioNegocios);
+
+            foreach (var item in schedules)
+            {
+                _unitOfWork.ScheduleBusiness.Update(item);
+            }
+            
+           
         }
 
         #endregion MetodosAuxiliares

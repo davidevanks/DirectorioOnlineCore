@@ -50,7 +50,9 @@ namespace DataAccess.Repository
                              IdNegocio = bf.IdNegocio,
                              Id = bf.Id,
                              Feature = f.Nombre,
-                             Activo = (bool)bf.Activo
+                             Activo = (bool)bf.Activo,
+                             IdUserCreate = bf.IdUserCreate,
+                             CreateDate = bf.CreateDate
                          }).ToList();
 
             return query;
@@ -59,6 +61,7 @@ namespace DataAccess.Repository
         public void InsertList(List<FeatureNegocio> features)
         {
             _db.FeatureNegocios.AddRange(features);
+            
         }
 
         public void Update(FeatureNegocio feature)
@@ -66,13 +69,18 @@ namespace DataAccess.Repository
             var objFromDb = _db.FeatureNegocios.FirstOrDefault(s => s.Id == feature.Id);
             if (objFromDb != null)
             {
-                objFromDb.IdFeature = feature.IdFeature;
-                objFromDb.IdNegocio = feature.IdNegocio;
+                //objFromDb.IdFeature = feature.IdFeature;
+                //objFromDb.IdNegocio = feature.IdNegocio;
                 objFromDb.Activo = feature.Activo;
                 objFromDb.IdUserUpdate = feature.IdUserUpdate;
                 objFromDb.UpdateDate = feature.UpdateDate;
             
             }
+        }
+
+        public void UpdateList(List<FeatureNegocio> features)
+        {
+            _db.FeatureNegocios.UpdateRange(features);
         }
     }
 }

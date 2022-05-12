@@ -28,7 +28,9 @@ namespace DataAccess.Repository
                          {
                              Id=im.Id,
                              IdNegocio=im.IdNegocio,
-                             Image=im.Image
+                             Image=im.Image,
+                             IdUserCreate = im.IdUserCreate,
+                             CreateDate = im.CreateDate
                          }).ToList();
 
             return query;

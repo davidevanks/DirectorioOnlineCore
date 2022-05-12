@@ -14,5 +14,7 @@ namespace DataAccess.Repository.IRepository
         void InsertList(List<FeatureNegocio> features);
         List<FeatureNegocioViewModel> GetListFeaturesByBusinessId(int id);
         List<FeatureNegocioViewModel> GetListFeaturesToEditByBusinessId(int id);
+
+        void UpdateList(List<FeatureNegocio> features);
     }
 }

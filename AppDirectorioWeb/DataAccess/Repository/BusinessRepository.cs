@@ -95,6 +95,7 @@ namespace DataAccess.Repository
                              FacebookUrl = b.FacebookUrl,
                              InstagramUrl = b.InstagramUrl,
                              LinkedInUrl = b.LinkedInUrl,
+                             SitioWebNegocio=b.SitioWebNegocio,
                              HasDelivery = (bool)b.HasDelivery,
                              PedidosYa = (bool)b.PedidosYa,
                              Piki = (bool)b.Piki,
@@ -109,7 +110,10 @@ namespace DataAccess.Repository
                              Status = bStatus.Id,
                              IdDepartamento = dep.Id.ToString(),
                              IdUserOwner = b.IdUserOwner,
-                             LogoNegocio=b.LogoNegocio
+                             LogoNegocio=b.LogoNegocio,
+                             Tags=b.Tags,
+                             IdUserCreate=b.IdUserCreate,
+                             CreateDate=b.CreateDate
                          }).FirstOrDefault();
 
             return query;
@@ -164,7 +168,7 @@ namespace DataAccess.Repository
             if (objFromDb != null)
             {
                 objFromDb.Id = negocio.Id;
-                objFromDb.IdUserOwner = negocio.IdUserOwner;
+                //objFromDb.IdUserOwner = negocio.IdUserOwner;
                 objFromDb.NombreNegocio = negocio.NombreNegocio;
                 objFromDb.DescripcionNegocio = negocio.DescripcionNegocio;
                 objFromDb.Tags = negocio.Tags;
@@ -186,8 +190,6 @@ namespace DataAccess.Repository
                 objFromDb.Piki = negocio.Piki;
                 objFromDb.LogoNegocio = negocio.LogoNegocio;
                 objFromDb.Status = negocio.Status;
-                objFromDb.IdUserCreate = negocio.IdUserCreate;
-                objFromDb.CreateDate = negocio.CreateDate;
                 objFromDb.IdUserUpdate = negocio.IdUserUpdate;
                 objFromDb.UpdateDate = negocio.UpdateDate;
             }

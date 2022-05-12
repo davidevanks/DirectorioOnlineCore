@@ -13,5 +13,9 @@ namespace DataAccess.Repository.IRepository
         void Update(HorarioNegocio schedule);
         void InsertList(List<HorarioNegocio> schedules);
         List<HorarioNegocioViewModel> GetScheduleListByBusinessId(int id);
+
+        List<HorarioNegocioViewModel> GetScheduleListToEditByBusinessId(int id);
+
+        void UpdateList(List<HorarioNegocio> schedules);
     }
 }
