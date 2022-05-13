@@ -44,7 +44,7 @@ namespace DataAccess.Repository
                              UserRegistration= urrdf.UserName,
                              RegistrationDate= udff.RegistrationDate,
                              UpdateUser= urupdf.UserName,
-                             NotificationsPromo= udff.NotificationsPromo,
+                             NotificationsPromo= udff.NotificationsPromo==null?false: (bool)udff.NotificationsPromo,
                              LockoutEnd=u.LockoutEnd
                          });
 

@@ -17,7 +17,7 @@ namespace Models.ViewModels
         public string ProfilePicture { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public string UserRegistration { get; set; }
-        public bool? NotificationsPromo { get; set; }
+        public bool NotificationsPromo { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [bs].[Negocio] (
     [Id]                 INT            IDENTITY (1, 1) NOT NULL,
+    [IdUserOwner]        NVARCHAR (450) NULL,
     [NombreNegocio]      VARCHAR (MAX)  NOT NULL,
     [DescripcionNegocio] VARCHAR (MAX)  NOT NULL,
     [Tags]               VARCHAR (MAX)  NULL,
@@ -29,6 +30,8 @@
     CONSTRAINT [FK_Negocio_CatCategoria] FOREIGN KEY ([IdCategoria]) REFERENCES [bs].[CatCategoria] ([Id]),
     CONSTRAINT [FK_Negocio_CatDepartamento] FOREIGN KEY ([IdDepartamento]) REFERENCES [bs].[CatDepartamento] ([Id])
 );
+
+
 
 
 

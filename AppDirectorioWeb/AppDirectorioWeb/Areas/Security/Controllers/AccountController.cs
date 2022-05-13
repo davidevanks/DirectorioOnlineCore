@@ -1,8 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Models;
+using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Models.ViewModels;
+using Utiles;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -12,14 +19,16 @@ namespace AppDirectorioWeb.Controllers
         #region Private Fields
 
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController(IConfiguration configuration, SignInManager<IdentityUser> signInManager)
+        public AccountController( SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork)
         {
             _signInManager = signInManager;
+            _unitOfWork = unitOfWork;
         }
 
         #endregion Public Constructors
@@ -29,7 +38,8 @@ namespace AppDirectorioWeb.Controllers
         [Authorize]
         public IActionResult GetMyProfile(string userId)
         {
-            return View();
+            UserViewModel userProfile = _unitOfWork.UserDetail.GetAUsersDetails(userId).FirstOrDefault();
+            return View(userProfile);
         }
 
         public IActionResult Logout(string returnUrl = null)
