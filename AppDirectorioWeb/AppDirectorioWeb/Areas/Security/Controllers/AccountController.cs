@@ -1,16 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-
+using System.Threading.Tasks;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -19,119 +11,31 @@ namespace AppDirectorioWeb.Controllers
     {
         #region Private Fields
 
-       
-        private readonly string _backendApiUrlSeguridad;
-        private readonly string _backendApiUrlNegocio;
         private readonly SignInManager<IdentityUser> _signInManager;
+
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController( IConfiguration configuration, SignInManager<IdentityUser> signInManager)
+        public AccountController(IConfiguration configuration, SignInManager<IdentityUser> signInManager)
         {
-          
-            _backendApiUrlSeguridad= configuration["BackendApiUrlSeguridad"];
             _signInManager = signInManager;
-            _backendApiUrlNegocio = configuration["BackendApiUrlNegocio"];
         }
 
         #endregion Public Constructors
 
         #region Public Methods
 
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        [Authorize]
+        public IActionResult GetMyProfile(string userId)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login()
+        public IActionResult Logout(string returnUrl = null)
         {
-            ////returnUrl = context.Result;
-            //ReturnUrl ??= Url.Content("~/");
-            //ViewData["MessageErrorLogin"] = "";
-            //ViewData["ReturnUrl"] = ReturnUrl;
-            //if (ModelState.IsValid)
-            //{
-            //    var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad+"/api/Account/api/Login", model);
+             _signInManager.SignOutAsync();
 
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.Success && !String.IsNullOrEmpty(response.Token.Token))
-            //    {
-            //        var token = _decode.DecodeToken(response.Token.Token);
-            //        int expiration = Convert.ToInt32(token.Claims.First(c => c.Type == "DurationToken").Value);
-            //        HttpContext.Session.SetString("Token", response.Token.Token);
-                 
-            //        if (String.IsNullOrEmpty(ReturnUrl))
-            //        {
-            //            return RedirectToAction("Index", "Home");
-            //        }
-            //        return LocalRedirect(ReturnUrl);
-            //    }
-
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.IncorrectPassword || response.MessageResponseCode == ResponseViewModel.MessageCode.UserNotExist || response.MessageResponseCode == ResponseViewModel.MessageCode.InvalidInformation)
-            //    {
-            //        ViewData["MessageErrorLogin"] = "Email o password inválidos";
-            //    }
-
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.EmailNotConfirmed)
-            //    {
-            //        ViewData["MessageErrorLogin"] = "Por favor revise su correo y confirme su cuenta para poder ingresar";
-            //    }
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.Failed)
-            //    {
-            //        ViewData["MessageErrorLogin"] = "Ha ocurrido un error.";
-            //    }
-            //}
-
-            return View();
-        }
-
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register(string IsBussines)
-        {
-          
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register()
-        {
-           
-            return View();
-        }
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult RegisterSuccess()
-        {
-           
-            return View();
-        }
-
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            
-           
-            return View();
-        }
-
-    
-
-        public async Task<IActionResult> Logout(string returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-           
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
@@ -141,7 +45,6 @@ namespace AppDirectorioWeb.Controllers
                 return Redirect("~/Home/Index");
             }
         }
-
         #endregion Public Methods
     }
 }

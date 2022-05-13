@@ -1,0 +1,101 @@
+﻿<!-- ====================================
+———	MY PROFILE
+===================================== -->
+<section class="bg-light py-5 height100vh">
+    <div class="container">
+        <nav class="bg-transparent breadcrumb breadcrumb-2 py-4" aria-label="breadcrumb">
+            <h2 class="font-weight-normal mb-4 mb-md-0">Mi Perfil</h2>
+        
+        </nav>
+        <div class="row">
+            <div class="col-md-5 col-lg-4">
+                <div class="card card-profile">
+                    <div class="card-profile-img py-6">
+                        <img class="rounded-circle lazyestload" data-src="/img/user/user-2.jpg" src="/img/user/user-2.jpg" alt="Image">
+                    </div>
+                    <form class="px-6">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFileLang" lang="es">
+                            <label class="custom-file-label" for="customFileLang">Cambiar foto</label>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <div class="card-body text-center">
+                        <p>Tu Plan Actual</p>
+                        <h3 class="font-weight-normal mb-4">Gratis</h3>
+                        @*<span class="d-block mb-4">Next Payment: <span class="text-primary" id="current_date"></span> </span>
+                        <a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-md-7 col-lg-8">
+             
+
+                <form>
+                    <div class="card">
+                        <div class="card-body p-6">
+                            <h3 class="font-weight-normal mb-4">Acerca de ti</h3>
+
+                            <div class="row">
+                                <div class="form-group col-md-12 mb-4">
+                                    <label for="firstNameProfile">Nombre Completo</label>
+                                    <input type="text" class="form-control" id="firstNameProfile">
+                                </div>
+
+                                <div class="form-group col-md-6 mb-6">
+                                    <label for="emailProfile">Email</label>
+                                    <input type="email" class="form-control">
+                                </div>
+                                <div class="form-group col-md-6 mb-6">
+                                    <label for="phoneProfile">Telefono</label>
+                                    <input type="number" class="form-control" placeholder="Phone" value="">
+                                </div>
+                                <div class="form-group col-md-6 mb-6">
+                                    <input type="checkbox">
+                                    <label for="phoneProfile">Recibir mensajes sobre promociones y servicios</label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+                <form>
+                    <div class="card">
+                        <div class="card-body p-6">
+                            <h3 class="font-weight-normal mb-4">Actualizar Password</h3>
+                            <div class="row">
+
+                                <div class="form-group col-12">
+                                    <label for="currentPassword">Password Actual</label>
+                                    <input type="password" class="form-control" placeholder="********" autocomplete="current-password">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="newPassword">Nuevo Password</label>
+                                    <input type="password" class="form-control" placeholder="New Password" autocomplete="new-password">
+                                </div>
+                                <div class="form-group col-12">
+                                    <label for="confirmPassword">Confirmar Password</label>
+                                    <input type="password" class="form-control" placeholder="Confirm Password" autocomplete="new-password">
+                                </div>
+                                <div class="form-group col-12 mt-4">
+                                    <button class="btn btn-primary" type="button">Cambiar Password</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
