@@ -364,11 +364,10 @@ namespace AppDirectorioWeb.Controllers
                 string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
                 var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
 
-                base.Dispose();
-
                 if (System.IO.File.Exists(path))
                     {
-                        System.IO.File.Delete(path);
+                  
+                    System.IO.File.Delete(path);
 
                     }
                     else
@@ -511,7 +510,11 @@ namespace AppDirectorioWeb.Controllers
                 string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
                 uniqueFileName = Guid.NewGuid().ToString() + "_logoBusiness_" + model.Logo.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                model.Logo.CopyTo(new FileStream(filePath, FileMode.Create));
+                FileStream s = new FileStream(filePath, FileMode.Create);
+                model.Logo.CopyTo(s);
+
+                s.Close();
+                s.Dispose();
             }
 
             return uniqueFileName;
@@ -529,13 +532,17 @@ namespace AppDirectorioWeb.Controllers
                     string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
                     uniqueFileNames = Guid.NewGuid().ToString() + "_picturesBusiness_" + picture.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-                    picture.CopyTo(new FileStream(filePath, FileMode.Create));
+                    FileStream s = new FileStream(filePath, FileMode.Create);
+                    picture.CopyTo(s);
 
                     pic.IdNegocio = negocio.Id;
                     pic.IdUserCreate = idUserCreate;
                     pic.CreateDate = DateTime.Now;
                     pic.Image = uniqueFileNames;
                     lstPictures.Add(pic);
+
+                    s.Close();
+                    s.Dispose();
                 }
 
                 var picturesBusiness = _mapper.Map<List<ImagenesNegocio>>(lstPictures);
