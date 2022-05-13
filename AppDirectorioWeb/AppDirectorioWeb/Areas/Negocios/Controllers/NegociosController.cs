@@ -227,11 +227,16 @@ namespace AppDirectorioWeb.Controllers
                 {
                     //actualización negocio
                     //asignamos el id del usuario a su negocio(idUserCreate)
+                  
+                   
                     model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
                     model.Business.UpdateDate = DateTime.Now;
                     model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
                     //logica para logo
+                    //volvemos a consultar negocio para reeactualizar estado de logo actual
+                    var logB = _unitOfWork.Business.GetBusinessToEditById((int)model.Business.Id);
+                    model.Business.LogoNegocio = logB.LogoNegocio;
                     if (model.Logo != null)
                     {
                         string uniqueFileName = SaveLogoPicture(model);
@@ -340,6 +345,9 @@ namespace AppDirectorioWeb.Controllers
             }
             else
             {
+                Business.LogoNegocio = "";
+                _unitOfWork.Business.Update(Business);
+                _unitOfWork.Save();
                 return Json(new { success = false, message = "Error al borrar, directorio no existe" });
             }
 

@@ -17,7 +17,7 @@
             </ul>
         </nav>
 
-        <form enctype="multipart/form-data" id="form_atencion" asp-action="AgregarNegocio" asp-controller="Negocios" asp-antiforgery="true" method="post">
+        <form enctype="multipart/form-data" id="form_atencion"  asp-controller="Negocios" asp-antiforgery="true" method="post">
             @if (!SignInManager.IsSignedIn(User))
             {
 
@@ -432,11 +432,11 @@
                     <div class="mb-6">
                         @if (Model.Business.Id == 0 || Model.Business.Id == null)
                         {
-                            <button id="btnCrearCuenta" type="submit" class="btn btn-lg btn-primary btn-block">Crear Negocio</button>
+                            <button formaction="AgregarNegocio" id="btnCrearCuenta" type="submit" class="btn btn-lg btn-primary btn-block">Crear Negocio</button>
                         }
                         else
                         {
-                            <button id="btnUpdateNegocio" type="submit" class="btn btn-lg btn-primary btn-block">Actualizar Negocio</button>
+                            <button formaction="AgregarNegocio" id="btnUpdateNegocio" type="submit" class="btn btn-lg btn-primary btn-block">Actualizar Negocio</button>
                         }
 
                     </div>

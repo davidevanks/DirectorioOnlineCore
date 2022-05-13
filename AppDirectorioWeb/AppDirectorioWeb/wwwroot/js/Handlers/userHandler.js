@@ -35,7 +35,7 @@ function loadDataTable() {
 
                         return ` 
                              <a onclick=LockUnlock('${data.id}'); class="btn btn-success text-white" style="cursor:pointer;width:200px;">
-                             <i class="fa fa-lock-open"></i> Desactivar</a>`
+                             <i class="fa fa-unlock"></i> Desactivar</a>`
                         
                             ;
                     }

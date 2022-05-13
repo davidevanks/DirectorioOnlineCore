@@ -20,12 +20,41 @@ function loadDataTableAdmin() {
             "url": "/Negocios/Negocios/GetBusinessByOwners?idOwner=" + $('#OwnerId').val()
         },
         "columns": [
-            { "data": "email", "width": "25%", "className": "t" },
-            { "data": "nombreNegocio", "width": "25%", "className": "t" },
-            { "data": "categoryBusinessName", "width": "10%", "className": "t" },
-            { "data": "departmentName", "width": "15%", "className": "t" },
+            { "data": "email", "width": "10%", "className": "t" },
+            { "data": "nombreNegocio", "width": "30%", "className": "t" },
+            { "data": "categoryBusinessName", "width": "5%", "className": "t" },
+            { "data": "departmentName", "width": "5%", "className": "t" },
             { "data": "createDateString", "width": "5%", "className": "t" },
-           
+            {
+                "data": {
+                    statusName: "statusName", status: "status"
+                },
+                "render": function (data) {
+
+                    if (data.status == 19) {
+                        //user is currently locked
+                        return ` 
+                             <span style="font-size: medium;" class="badge badge-success">${data.statusName}</span>
+                             `
+
+                            ;
+                    } else if (data.status == 17) {
+
+                        return ` 
+                             <span style="font-size: medium;" class="badge badge-primary">${data.statusName}</span>
+                             `
+
+                            ;
+                    } else if (data.status == 18) {
+                        return ` 
+                            <span style="font-size: medium;" class="badge badge-danger">${data.statusName}</span>
+                           `
+
+                            ;
+                    }
+
+                }, "width": "5%"
+            },
           
             {
                 "data": {
@@ -36,20 +65,20 @@ function loadDataTableAdmin() {
                     if (data.status == 19) {
                         //user is currently locked
                         return ` 
-                             <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:200px;" >
+                             <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:180px;" >
                              <i class="fa fa-check"></i> Aprobar</a>`
 
                             ;
                     } else if (data.status == 17) {
 
                         return ` 
-                             <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-success text-white" style="cursor:pointer;width:200px;">
+                             <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-success text-white" style="cursor:pointer;width:180px;">
                              <i class="fa fa-times"></i> Inactivar</a>`
 
                             ;
                     } else if (data.status == 18) {
                         return ` 
-                            <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:200px;" >
+                            <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:180px;" >
                              <i class="fa fa-check"></i> Activar</a>`
 
                             ;
@@ -57,7 +86,7 @@ function loadDataTableAdmin() {
 
 
 
-                }, "width": "25%"
+                }, "width": "15%"
             },
             {
                 "data": "id",
@@ -65,7 +94,7 @@ function loadDataTableAdmin() {
                     return ` <a href="/Negocios/Negocios/GetDetailByBussinesId/${data}" class="btn btn-primary text-white" id="btnVerDetalle"><i class="fa fa-eye"></i></a>`
                            
                         ;
-                }, "width": "40%"
+                }, "width": "10%"
             }
         ]
 
@@ -96,21 +125,21 @@ function loadDataTableBusinessAdmin() {
                     if (data.status == 19) {
                         //user is currently locked
                         return ` 
-                             <a  class="btn btn-danger text-white" style="cursor:pointer;width:200px;" >
-                             ${data.statusName}</a>`
+                             <span style="font-size: medium;" class="badge badge-success">${data.statusName}</span>
+                             `
 
                             ;
                     } else if (data.status == 17) {
 
                         return ` 
-                             <a  class="btn btn-success text-white" style="cursor:pointer;width:200px;">
-                             ${data.statusName}</a>`
+                             <span style="font-size: medium;" class="badge badge-primary">${data.statusName}</span>
+                             `
 
                             ;
                     } else if (data.status == 18) {
                         return ` 
-                            <a  class="btn btn-danger text-white" style="cursor:pointer;width:200px;" >
-                            ${data.statusName}</a>`
+                            <span style="font-size: medium;" class="badge badge-danger">${data.statusName}</span>
+                           `
 
                             ;
                     }

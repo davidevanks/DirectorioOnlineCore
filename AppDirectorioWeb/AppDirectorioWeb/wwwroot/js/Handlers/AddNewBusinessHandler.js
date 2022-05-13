@@ -4,15 +4,7 @@ $('#btnCrearCuenta').attr("disabled", true);
 $('.cfiinvisible').attr("disabled", true);
 $('.cfisinvisible').attr("disabled", true);
 
-//$('#btnCrearCuenta').click(function (e) {
-   
-//    document.getElementById('form_atencion').submit()
-//});
 
-//$('#btnUpdateNegocio').click(function (e) {
- 
-//    document.getElementById('form_atencion').submit()
-//});
 
 
 
@@ -38,9 +30,7 @@ function DeleteLogo(Id) {
         if (willDelete) {
 
 
-            $('form').on('submit', function (e) {
-                e.stopPropagation();
-            });
+      
             
             $.ajax({
                 type: "GET",
@@ -52,7 +42,7 @@ function DeleteLogo(Id) {
                         swal({ title: data.message, icon: "success" });
                         $('.cfiinvisible').removeAttr("disabled");
                         $('#adellogo').text('');
-                        $("#form_atencion").unbind("submit");
+                     
                     } else {
                         /*toastr.error(data.message);*/
                         swal({ title: data.message, icon: "info" });
@@ -75,11 +65,6 @@ function DeletePictures(Id) {
 
     }).then((willDelete) => {
         if (willDelete) {
-
-
-            $('form').on('submit', function (e) {
-                e.stopPropagation();
-            });
 
             $.ajax({
                 type: "GET",
