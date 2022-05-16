@@ -56,8 +56,29 @@ namespace AppDirectorioWeb.Controllers
             _unitOfWork.UserDetail.Update(userProfile);
             _unitOfWork.Save();
             UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+            ViewBag.Updated = "1";
             return View(nameof(GetMyProfile), userProfileUpdated);
         }
+
+
+        [Authorize]
+        public IActionResult ChangePassword(UserViewModel userProfile)
+        {
+            UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+            var user = _userManager.FindByNameAsync(userProfile.UserName).Result;
+            var changePasswordResult =  _userManager.ChangePasswordAsync(user, userProfile.ChangePassword.OldPassword, userProfile.ChangePassword.NewPassword).Result;
+            if (!changePasswordResult.Succeeded)
+            {
+                return View(nameof(GetMyProfile), userProfileUpdated);
+            }
+
+             _signInManager.RefreshSignInAsync(user);
+           
+            ViewBag.UpdatedPass = "1";
+          
+            return View(nameof(GetMyProfile), userProfileUpdated);
+        }
+
 
 
 
