@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Models.ViewModels;
 using Utiles;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -20,15 +21,17 @@ namespace AppDirectorioWeb.Controllers
 
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController( SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork)
+        public AccountController( SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         #endregion Public Constructors
@@ -36,11 +39,27 @@ namespace AppDirectorioWeb.Controllers
         #region Public Methods
 
         [Authorize]
-        public IActionResult GetMyProfile(string userId)
+        public IActionResult GetMyProfile(string userName)
         {
-            UserViewModel userProfile = _unitOfWork.UserDetail.GetAUsersDetails(userId).FirstOrDefault();
+            var user = _userManager.FindByNameAsync(userName);
+            
+            UserViewModel userProfile = _unitOfWork.UserDetail.GetAUsersDetails(user.Result.Id).FirstOrDefault();
             return View(userProfile);
         }
+
+        [Authorize]
+        public IActionResult UpdateMyProfile(UserViewModel userProfile)
+        {
+            userProfile.UpdateUser = HttpContext.Session.GetString("UserId");
+            userProfile.UpdateDate = DateTime.Now;
+            userProfile.UserName =userProfile.Email;
+            _unitOfWork.UserDetail.Update(userProfile);
+            _unitOfWork.Save();
+            UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+            return View(nameof(GetMyProfile), userProfileUpdated);
+        }
+
+
 
         public IActionResult Logout(string returnUrl = null)
         {

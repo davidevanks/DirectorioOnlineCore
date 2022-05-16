@@ -10,7 +10,7 @@ namespace DataAccess.Repository.IRepository
 {
     public interface IUserDetailsRepository : IRepository<UserDetail>
     {
-        void Update(UserDetail userDetail);
+        void Update(UserViewModel userProfile);
         List<UserViewModel> GetAUsersDetails(string userId);
     }
 }

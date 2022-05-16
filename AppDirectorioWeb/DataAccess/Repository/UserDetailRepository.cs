@@ -45,7 +45,8 @@ namespace DataAccess.Repository
                              RegistrationDate= udff.RegistrationDate,
                              UpdateUser= urupdf.UserName,
                              NotificationsPromo= udff.NotificationsPromo==null?false: (bool)udff.NotificationsPromo,
-                             LockoutEnd=u.LockoutEnd
+                             LockoutEnd=u.LockoutEnd,
+                             UserName=u.UserName
                          });
 
 
@@ -59,13 +60,23 @@ namespace DataAccess.Repository
 
         }
 
-        public void Update(UserDetail userDetail)
+        public void Update(UserViewModel userProfile)
         {
-            var objFromDb = _db.UserDetails.FirstOrDefault(s => s.UserId == userDetail.UserId);
+            var objFromDb = _db.UserDetails.FirstOrDefault(s => s.UserId == userProfile.Id);
             if (objFromDb != null)
             {
-                objFromDb.FullName = userDetail.FullName;
-                objFromDb.RegistrationDate = userDetail.RegistrationDate;
+                objFromDb.FullName = userProfile.FullName;
+                objFromDb.UpdateDate = userProfile.UpdateDate;
+                objFromDb.NotificationsPromo = userProfile.NotificationsPromo;
+                objFromDb.IdUserUpdate = userProfile.UpdateUser;
+            }
+            
+            var objFromDbUser = _db.Users.FirstOrDefault(s => s.Id == userProfile.Id);
+            if (objFromDbUser != null)
+            {
+                objFromDbUser.PhoneNumber = userProfile.PhoneNumber;
+                objFromDbUser.Email = userProfile.Email;
+                objFromDbUser.UserName = userProfile.UserName;
 
             }
 
