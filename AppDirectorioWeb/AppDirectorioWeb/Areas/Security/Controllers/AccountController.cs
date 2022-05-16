@@ -66,7 +66,7 @@ namespace AppDirectorioWeb.Controllers
         [Authorize]
         public IActionResult UpdateMyPictureProfile(UserViewModel userProfile)
         {
-
+          
             string uniqueFileName = "";
             if (userProfile.Picture != null)
             {
@@ -82,8 +82,10 @@ namespace AppDirectorioWeb.Controllers
             userProfile.ProfilePicture = uniqueFileName;
             _unitOfWork.UserDetail.UpdateProfilePicture(userProfile);
             _unitOfWork.Save();
+            var user = _userManager.FindByNameAsync(userProfile.UserName).Result;
+            _signInManager.RefreshSignInAsync(user);
             UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
-          
+      
             return View(nameof(GetMyProfile), userProfileUpdated);
         }
 

@@ -22,8 +22,9 @@
                         }
 
                     </div>
-                    <form enctype="multipart/form-data" id="frmProfilePic"   asp-controller="Account" asp-action="UpdateMyPictureProfile" asp-antiforgery="true" method="post" class="px-6">
+                    <form enctype="multipart/form-data" id="frmProfilePic" asp-controller="Account" asp-action="UpdateMyPictureProfile" asp-antiforgery="true" method="post" class="px-6">
                         <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="UserName" />
                         <div class="custom-file">
                             <input asp-for="Picture" class="custom-file-input cfi" id="customFileLang" lang="es">
                             <label class="custom-file-label" for="customFileLang">Cambiar foto</label>
