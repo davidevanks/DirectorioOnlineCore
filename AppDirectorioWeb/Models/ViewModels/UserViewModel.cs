@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -23,6 +24,8 @@ namespace Models.ViewModels
         public string UpdateUser { get; set; }
 
         public ChangePassowrdViewModel ChangePassword { get; set; }
+
+        public IFormFile Picture { get; set; }
     }
 
     public class ChangePassowrdViewModel

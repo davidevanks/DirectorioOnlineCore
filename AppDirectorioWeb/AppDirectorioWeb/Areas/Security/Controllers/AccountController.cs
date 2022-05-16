@@ -11,6 +11,8 @@ using Models.ViewModels;
 using Utiles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -22,16 +24,17 @@ namespace AppDirectorioWeb.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
-
+        private readonly IWebHostEnvironment hostingEnvironment;
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController( SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+        public AccountController( SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, IWebHostEnvironment hostingEnvironment)
         {
             _signInManager = signInManager;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            this.hostingEnvironment = hostingEnvironment; 
         }
 
         #endregion Public Constructors
@@ -59,6 +62,31 @@ namespace AppDirectorioWeb.Controllers
             ViewBag.Updated = "1";
             return View(nameof(GetMyProfile), userProfileUpdated);
         }
+
+        [Authorize]
+        public IActionResult UpdateMyPictureProfile(UserViewModel userProfile)
+        {
+
+            string uniqueFileName = "";
+            if (userProfile.Picture != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                uniqueFileName = Guid.NewGuid().ToString() + "_picprofile_" + userProfile.Picture.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                FileStream s = new FileStream(filePath, FileMode.Create);
+                userProfile.Picture.CopyTo(s);
+
+                s.Close();
+                s.Dispose();
+            }
+            userProfile.ProfilePicture = uniqueFileName;
+            _unitOfWork.UserDetail.UpdateProfilePicture(userProfile);
+            _unitOfWork.Save();
+            UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+          
+            return View(nameof(GetMyProfile), userProfileUpdated);
+        }
+
 
 
         [Authorize]

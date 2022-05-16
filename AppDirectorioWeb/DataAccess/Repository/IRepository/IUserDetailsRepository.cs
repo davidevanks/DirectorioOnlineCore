@@ -12,5 +12,7 @@ namespace DataAccess.Repository.IRepository
     {
         void Update(UserViewModel userProfile);
         List<UserViewModel> GetAUsersDetails(string userId);
+
+        void UpdateProfilePicture(UserViewModel userProfile);
     }
 }

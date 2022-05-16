@@ -55,7 +55,7 @@ function DeleteLogo(Id) {
 
 
 function DeletePictures(Id) {
-    console.log('gdgdgdgdgd');
+   
     swal({
         title: "Estas seguro que desea todas las fotos?",
         text: "Una vez borrado, no puedes recuperar los registros",
