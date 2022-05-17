@@ -15,7 +15,7 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AppDirectorioWeb</title>
+    <title>Brújula Pyme</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 
@@ -78,7 +78,15 @@
 
                             <div class="avatar">
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
-                                    <img class="avatar-img" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                    @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
+                                    {
+                                        <img class="avatar-img" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                    }
+                                    else
+                                    {
+                                        <img class="avatar-img" src="/img/user/avatar-01.png" alt="Image">
+                                    }
+
                                     <span class="avatar-name">
                                         Hola
                                         <span class="small">@User.Identity.Name.ToLower()!</span>

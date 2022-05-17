@@ -200,7 +200,15 @@
                     <h3 class="font-weight-normal mb-6">Agregado por </h3>
                     <div class="media mb-7">
                         <div class="media-img">
-                            <img src="/img/user/user-xs-4.jpg" data-src="/img/user/user-xs-4.jpg" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
+                            @if (!string.IsNullOrEmpty(Model.Business.PictureProfile))
+                            {
+                            <img src="/ImagesBusiness/@Model.Business.PictureProfile" data-src="/ImagesBusiness/@Model.Business.PictureProfile" style="width: 90px;"  class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
+                            }
+                            else
+                            {
+                            <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" style="width: 90px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
+                            }
+                            
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading">@Model.Business.FullName</h5>

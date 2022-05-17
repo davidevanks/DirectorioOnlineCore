@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dapper;
 using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
@@ -32,11 +33,11 @@ namespace AppDirectorioWeb.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DirectorioOnlineCoreContext context;
         private readonly IWebHostEnvironment hostingEnvironment;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
         #endregion Private Fields
 
@@ -64,6 +65,19 @@ namespace AppDirectorioWeb.Controllers
         #endregion Public Constructors
 
         #region Public Methods
+
+        public IActionResult LookForBusiness(LookForBusinessViewModel model)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", model.Search);
+            parameters.Add("@IdDepartment", model.IdDepartamento);
+            parameters.Add("@IdCategoria", null);
+           
+            ViewBag.Search = model.Search;
+            ViewBag.DepartmentName = _unitOfWork.Departament.Get(Convert.ToInt32(model.IdDepartamento)).Nombre;
+            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
+            return View(BusinessResult.ToList());
+        }
 
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult AdminBusiness()
@@ -167,7 +181,7 @@ namespace AppDirectorioWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if ((model.Business.Id==0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
+                if ((model.Business.Id == 0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
                 {
                     //registro negocio nuevo y usuario nuevo
                     var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
@@ -223,12 +237,11 @@ namespace AppDirectorioWeb.Controllers
 
                     return RedirectToAction(nameof(ConfirmationBusinessRegistration));
                 }
-                else if((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
+                else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
                 {
                     //actualización negocio
                     //asignamos el id del usuario a su negocio(idUserCreate)
-                  
-                   
+
                     model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
                     model.Business.UpdateDate = DateTime.Now;
                     model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
@@ -242,7 +255,6 @@ namespace AppDirectorioWeb.Controllers
                         string uniqueFileName = SaveLogoPicture(model);
                         model.Business.LogoNegocio = uniqueFileName;
                     }
-                   
 
                     var negocio = _mapper.Map<Negocio>(model.Business);
                     _unitOfWork.Business.Update(negocio);
@@ -257,7 +269,6 @@ namespace AppDirectorioWeb.Controllers
 
                     _unitOfWork.Save();
                     return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
-                    
                 }
                 else if ((model.Business.Id == 0 || model.Business.Id == null) && _signInManager.IsSignedIn(User))
                 {
@@ -284,9 +295,7 @@ namespace AppDirectorioWeb.Controllers
 
                     _unitOfWork.Save();
                     return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
-
                 }
-
             }
 
             return View(model);
@@ -294,12 +303,6 @@ namespace AppDirectorioWeb.Controllers
 
         [AllowAnonymous]
         public IActionResult ConfirmationBusinessRegistration()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        public IActionResult UpdateSaveBusinessRegistration()
         {
             return View();
         }
@@ -321,6 +324,12 @@ namespace AppDirectorioWeb.Controllers
             }
 
             return View(BusinessDetails);
+        }
+
+        [AllowAnonymous]
+        public IActionResult UpdateSaveBusinessRegistration()
+        {
+            return View();
         }
 
         #endregion Public Methods
@@ -373,19 +382,13 @@ namespace AppDirectorioWeb.Controllers
                 var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
 
                 if (System.IO.File.Exists(path))
-                    {
-                  
+                {
                     System.IO.File.Delete(path);
-
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "Error al borrar, directorio no existe" });
-                    }
-
-                    
-             
-             
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+                }
             }
 
             _unitOfWork.ImageBusiness.RemoveRange(pictures);
@@ -493,23 +496,6 @@ namespace AppDirectorioWeb.Controllers
             _unitOfWork.Feature.InsertList(features);
         }
 
-        public void UpdateFeaturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserUpdate)
-        {
-            foreach (var feature in model.FeatureNegocios)
-            {
-               
-                feature.IdUserUpdate = idUserUpdate;
-                feature.UpdateDate = DateTime.Now;
-            }
-
-            var features = _mapper.Map<List<FeatureNegocio>>(model.FeatureNegocios);
-            foreach (var item in features)
-            {
-                _unitOfWork.Feature.Update(item);
-            }
-          
-        }
-
         public string SaveLogoPicture(AddUpdBusinessViewModel model)
         {
             string uniqueFileName = "";
@@ -570,11 +556,26 @@ namespace AppDirectorioWeb.Controllers
             var schedules = _mapper.Map<List<HorarioNegocio>>(model.HorarioNegocios);
             _unitOfWork.ScheduleBusiness.InsertList(schedules);
         }
+
+        public void UpdateFeaturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserUpdate)
+        {
+            foreach (var feature in model.FeatureNegocios)
+            {
+                feature.IdUserUpdate = idUserUpdate;
+                feature.UpdateDate = DateTime.Now;
+            }
+
+            var features = _mapper.Map<List<FeatureNegocio>>(model.FeatureNegocios);
+            foreach (var item in features)
+            {
+                _unitOfWork.Feature.Update(item);
+            }
+        }
+
         public void UpdateSchedulesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserUpdate)
         {
             foreach (var sche in model.HorarioNegocios)
             {
-                
                 sche.IdUserUpdate = idUserUpdate;
                 sche.UpdateDate = DateTime.Now;
             }
@@ -585,8 +586,6 @@ namespace AppDirectorioWeb.Controllers
             {
                 _unitOfWork.ScheduleBusiness.Update(item);
             }
-            
-           
         }
 
         #endregion MetodosAuxiliares
