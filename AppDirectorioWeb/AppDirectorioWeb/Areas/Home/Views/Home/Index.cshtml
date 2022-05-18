@@ -1,4 +1,6 @@
-﻿@model Models.ViewModels.LookForBusinessViewModel;
+﻿@using DataAccess.Repository.IRepository;
+@inject IUnitOfWork _unitOfWork;
+@model Models.ViewModels.LookForBusinessViewModel;
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -50,7 +52,43 @@
     </div>
 
 </section>
+<section class="pt-md-10 sec-pb-70 pt-8 pb-6 bg-light">
+    <div class="container">
+        <div class="section-title">
+            <h2>Que te interesa encontrar?</h2>
+            <p>Explora y conecta con negocios locales</p>
+        </div>
+        <div class="row">
 
+            @foreach (var item in _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).ToList())
+            {
+                <div class="col-md-4 col-lg-3 col-xs-12">
+                    <a class="card py-5 hover-bg-primary bg-transparent"  asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">
+                        <div class="card-body text-center">
+                            @*<div class="icon-md">
+                            <i class="icon-listy icon-tea-cup-1"></i>
+                        </div>*@
+                            <span class="h5">@item.Nombre</span>
+                        </div>
+                    </a>
+                </div>
+            }
+
+
+
+            <div class="col-md-4 col-lg-3 col-xs-12">
+                <a class="card py-5 hover-bg-primary bg-transparent" href="listings-half-screen-map-list.html">
+                    <div class="card-body text-center">
+                        @*<div class="icon-md">
+                        <i class="icon-listy icon-more"></i>
+                    </div>*@
+                        <span class="h5">Ver todo</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpu1uIOHN3nx3y6dzStDmtSZD83-Jebx0&sensor=false&libraries=places"></script>

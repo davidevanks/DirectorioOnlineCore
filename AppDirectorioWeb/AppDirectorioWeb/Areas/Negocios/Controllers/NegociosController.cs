@@ -78,6 +78,18 @@ namespace AppDirectorioWeb.Controllers
             var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
             return View(BusinessResult.ToList());
         }
+        public IActionResult LookForBusinessByCategory(int categoryId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", "");
+            parameters.Add("@IdDepartment", null);
+            parameters.Add("@IdCategoria", categoryId);
+
+           
+            ViewBag.CategoryName = _unitOfWork.Category.GetAll().Where(x => x.Id==categoryId).FirstOrDefault().Nombre;
+            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
+            return View(BusinessResult.ToList());
+        }
 
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult AdminBusiness()
