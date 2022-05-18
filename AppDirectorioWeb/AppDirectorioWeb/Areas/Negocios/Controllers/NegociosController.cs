@@ -416,6 +416,13 @@ namespace AppDirectorioWeb.Controllers
             return Json(new { data = parentsObj });
         }
 
+        [HttpGet]
+        public IActionResult GetReviewByBussines(int BusinessId)
+        {
+            var ReviewsObj = _unitOfWork.Review.GetReviewsByBusinessId(BusinessId);
+            return Json(new {ReviewsObj });
+        }
+
         [HttpPost]
         public IActionResult ManageBusinesActivation([FromBody] string id)
         {

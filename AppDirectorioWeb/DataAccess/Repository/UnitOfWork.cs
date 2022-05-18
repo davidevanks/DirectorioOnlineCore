@@ -23,6 +23,7 @@ namespace DataAccess.Repository
             Feature = new FeatureNegocioRepository(_db);
             ScheduleBusiness = new ScheduleBusinessRepository(_db);
             ImageBusiness = new ImagesBusinessRepository(_db);
+            Review = new ReviewRepository(_db);
         }
 
         public ICategoryRepository Category { get; private set; }
@@ -36,6 +37,7 @@ namespace DataAccess.Repository
         public IFeatureNegocioRepository Feature { get; private set; }
         public IScheduleBusinessRepository ScheduleBusiness { get; private set; }
         public IImagesBusinessRepository ImageBusiness { get; private set; }
+        public IReviewRepository Review { get; private set; }
         public void Dispose()
         {
            _db.Dispose();

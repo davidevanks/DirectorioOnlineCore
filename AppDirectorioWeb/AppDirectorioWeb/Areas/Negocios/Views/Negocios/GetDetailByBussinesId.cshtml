@@ -1,9 +1,9 @@
 ﻿
-@model Models.ViewModels.DetailsBusinessViewModel; 
+@model Models.ViewModels.DetailsBusinessViewModel;
 
 <style>
 
- /*   .fa-whatsapp {
+    /*   .fa-whatsapp {
         content: "\f232" !important;
     }*/
 </style>
@@ -16,6 +16,7 @@
             <div class="col-lg-8">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="single-listing-title">@Model.Business.NombreNegocio</h1>
+                    <input id="IBusinessId" type="hidden" asp-for="@Model.Business.Id"/>
                     <p class="text-muted mb-1"> <i class="fas fa-map-marker-alt text-primary mr-1"></i> @Model.Business.DireccionNegocio </p>
                     <p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
                     <p class="text-muted mb-1"> <i class="fas fa-phone-alt text-primary mr-1"></i> @Model.Business.TelefonoNegocio1</p>
@@ -40,7 +41,7 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                             </li>
                         </ul>
-                        <span class="d-inline-block mr-2">(5 Reviews)</span>
+                        <span class="d-inline-block mr-2">(5 Reseñas)</span>
                         <button class="btn-like px-2" data-toggle="tooltip" data-placement="top" title="Favourite this listing">
                             <i class="far fa-heart text-primary" aria-hidden="true"></i>
                             <span>5 k</span>
@@ -49,7 +50,7 @@
                 </div>
             </div>
             <div class="col-lg-4 d-lg-flex justify-content-end align-items-end">
-                <a href="#add-review" class="btn btn-primary scrolling">Write a review</a>
+                <a href="#add-review" class="btn btn-primary scrolling">Escribe una reseña</a>
             </div>
         </div>
 
@@ -63,12 +64,11 @@
     <div class="owl-carousel owl-theme listing-details-carousel nav-light-dark">
         @foreach (var images in Model.ImagenesNegocios)
         {
-            <div class="single-item">
-                <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img class="lazyestload" data-src="@images.Image" src="@images.Image" alt="Image" />
-                </a>
-            </div>
-        }
+<div class="single-item">
+    <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
+        <img class="lazyestload" data-src="@images.Image" src="@images.Image" alt="Image" />
+    </a>
+</div>}
 
 
 
@@ -94,49 +94,45 @@
                 <hr>
                 @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl) || !String.IsNullOrEmpty(Model.Business.TwitterUrl) || !String.IsNullOrEmpty(Model.Business.LinkedInUrl) || !String.IsNullOrEmpty(Model.Business.InstagramUrl))
                 {
-            <div class="my-6">
-                <h3 class="font-weight-normal mb-6">Redes sociales</h3>
-                <ul class="list-unstyled mb-7">
-                    @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl))
-                    {
-            <li class="list-inline-item">
-                <a class="mr-2" href="@Model.Business.FacebookUrl">
-                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                </a>
-            </li>
-}
-                    @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
-                    {
-            <li class="list-inline-item">
-                <a class="mr-2" href="@Model.Business.InstagramUrl">
-                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                </a>
-            </li>
-}
-                    @if (!String.IsNullOrEmpty(Model.Business.TwitterUrl))
-                    {
-            <li class="list-inline-item">
-                <a class="mr-2" href="@Model.Business.TwitterUrl">
-                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                </a>
-            </li>
-}
-                    @if (!String.IsNullOrEmpty(Model.Business.LinkedInUrl))
-                    {
-            <li class="list-inline-item">
-                <a class="mr-2" href="@Model.Business.LinkedInUrl">
-                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                </a>
-            </li>
-}
+    <div class="my-6">
+        <h3 class="font-weight-normal mb-6">Redes sociales</h3>
+        <ul class="list-unstyled mb-7">
+            @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl))
+            {
+<li class="list-inline-item">
+    <a class="mr-2" href="@Model.Business.FacebookUrl">
+        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+    </a>
+</li>}
+            @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
+            {
+<li class="list-inline-item">
+    <a class="mr-2" href="@Model.Business.InstagramUrl">
+        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+    </a>
+</li>}
+            @if (!String.IsNullOrEmpty(Model.Business.TwitterUrl))
+            {
+<li class="list-inline-item">
+    <a class="mr-2" href="@Model.Business.TwitterUrl">
+        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+    </a>
+</li>}
+            @if (!String.IsNullOrEmpty(Model.Business.LinkedInUrl))
+            {
+<li class="list-inline-item">
+    <a class="mr-2" href="@Model.Business.LinkedInUrl">
+        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+    </a>
+</li>}
 
 
 
 
 
-                </ul>
-                <hr>
-            </div>}
+        </ul>
+        <hr>
+    </div>}
 
 
                 <!-- Features -->
@@ -145,54 +141,52 @@
                     <ul class="list-unstyled mb-7">
                         @foreach (var feature in Model.FeatureNegocios)
                         {
-                    <li class="d-inline-block mr-4 mb-2">
-                        <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>@feature.Feature
-                    </li>}
+            <li class="d-inline-block mr-4 mb-2">
+                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>@feature.Feature
+            </li>
+}
 
-                     
+
 
                     </ul>
                     <hr>
                 </div>
                 @if (Model.Business.HasDelivery == true || Model.Business.PedidosYa == true || Model.Business.Hugo == true || Model.Business.Piki == true)
                 {
-                    <div class="my-6">
-                        <h3 class="font-weight-normal mb-6">Delivery (Servicio a domicilio)</h3>
-                        <ul class="list-unstyled mb-7">
-                            @if (Model.Business.HasDelivery == true)
-                            {
-            <li class="d-inline-block mr-4 mb-2">
-                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Delivery
-            </li>}
-                            @if (Model.Business.Hugo == true)
-                            {
-            <li class="d-inline-block mr-4 mb-2">
-                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Hugo
-            </li>
+    <div class="my-6">
+        <h3 class="font-weight-normal mb-6">Delivery (Servicio a domicilio)</h3>
+        <ul class="list-unstyled mb-7">
+            @if (Model.Business.HasDelivery == true)
+            {
+<li class="d-inline-block mr-4 mb-2">
+    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Delivery
+</li>
 }
+            @if (Model.Business.Hugo == true)
+            {
+<li class="d-inline-block mr-4 mb-2">
+    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Hugo
+</li>}
 
-                            @if (Model.Business.PedidosYa == true)
-                            {
-            <li class="d-inline-block mr-4 mb-2">
-                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Pedidos Ya
-            </li>
-}
-                            @if (Model.Business.Piki == true)
-                            {
-            <li class="d-inline-block mr-4 mb-2">
-                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Piki
-            </li>
-}
+            @if (Model.Business.PedidosYa == true)
+            {
+<li class="d-inline-block mr-4 mb-2">
+    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Pedidos Ya
+</li>}
+            @if (Model.Business.Piki == true)
+            {
+<li class="d-inline-block mr-4 mb-2">
+    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Piki
+</li>}
 
 
 
 
 
 
-                        </ul>
-                        <hr>
-                    </div>
-                }
+        </ul>
+        <hr>
+    </div>}
 
 
                 <!-- Added By -->
@@ -202,13 +196,12 @@
                         <div class="media-img">
                             @if (!string.IsNullOrEmpty(Model.Business.PictureProfile))
                             {
-                            <img src="/ImagesBusiness/@Model.Business.PictureProfile" data-src="/ImagesBusiness/@Model.Business.PictureProfile" style="width: 90px;"  class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
+                                <img src="/ImagesBusiness/@Model.Business.PictureProfile" data-src="/ImagesBusiness/@Model.Business.PictureProfile" style="width: 70px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
                             }
                             else
                             {
-                            <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" style="width: 90px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
-                            }
-                            
+                <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" style="width: 70px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">}
+
                         </div>
                         <div class="media-body">
                             <h5 class="media-heading">@Model.Business.FullName</h5>
@@ -216,34 +209,34 @@
                                 <ul class="list-inline d-flex flex-column flex-lg-row mb-0">
 
                                     @*<li class="list-inline-item">
-                                <i class="fas fa-phone-alt" aria-hidden="true"></i>
-                                <span class="ml-2">+55 654 545 122</span>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                                <span class="ml-2">example.com</span>
-                            </li>*@
+                                            <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                                            <span class="ml-2">+55 654 545 122</span>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            <span class="ml-2">example.com</span>
+                                        </li>*@
 
                                 </ul>
 
                                 @*<ul class="list-inline list-inline-icon ml-lg-auto">
-                            <li class="list-inline-item">
-                                <a class="mr-2" href="javascript:void(0)">
-                                    <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a class="mr-2" href="javascript:void(0)">
-                                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a class="mr-2" href="javascript:void(0)">
-                                    <i class="fab fa-instagram" aria-hidden="true"></i>
-                                </a>
-                            </li>
+                                        <li class="list-inline-item">
+                                            <a class="mr-2" href="javascript:void(0)">
+                                                <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a class="mr-2" href="javascript:void(0)">
+                                                <i class="fab fa-twitter" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a class="mr-2" href="javascript:void(0)">
+                                                <i class="fab fa-instagram" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
 
-                        </ul>*@
+                                    </ul>*@
 
                             </div>
                         </div>
@@ -254,123 +247,55 @@
 
                 <!-- Reviews -->
                 <div class="my-6">
-                    <h3 class="font-weight-normal mb-6">Reviews (3)</h3>
-                    <div class="media mb-3">
-                        <div class="media-img">
-                            <img src="/img/user/user-xs-1.jpg" data-src="/img/user/user-xs-1.jpg" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading">Aaren</h5>
-                            <ul class="list-inline list-inline-rating">
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                            </ul>
-                            <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape
-                                riam,
-                            </p>
-
-                            <!-- Reply Section -->
-                            <div class="reply-wrapper">
-                                <a class="d-inline-block mb-2 btn-reply" href="javascript:0">Reply</a>
-                                <form class="form-reply my-3">
-                                    <textarea class="form-control mb-6" rows="3" placeholder="Enter your comment"></textarea>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </form>
+                    <h3 id="revContador" class="font-weight-normal mb-6">Reseñas (3)</h3>
+                    <div id="divContentMainReview">
+                        <!--<div class="media mb-3">
+                            <div class="media-img">
+                                <img src="/img/user/user-xs-1.jpg" data-src="/img/user/user-xs-1.jpg" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
                             </div>
+                            <div class="media-body">
+                                <h5 class="media-heading">Aaren</h5>
+                                <ul class="list-inline list-inline-rating">
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </li>
+                                </ul>
+                                <p>
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape
+                                    riam,
+                                </p>-->
 
-                        </div>
-                    </div>
-                    <div class="media mb-3">
-                        <div class="media-img">
-                            <img src="/img/user/user-xs-2.jpg" data-src="/img/user/user-xs-2.jpg" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading">Abby</h5>
-                            <ul class="list-inline list-inline-rating">
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="far fa-star" aria-hidden="true"></i>
-                                </li>
-                            </ul>
-                            <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque lauda totam rem ape riam,
-                            </p>
-
-                            <p class="bg-light p-4 rounded">
-                                Nam illo asperiores architecto fuga corrupti. Voluptates, assumenda. Repellendus,
-                                dicta voluptatum. Voluptatibus eos voluptatum, consequuntur rerum voluptas reiciendis et quo deleniti illum
-                                nihil
-                            </p>
-                        </div>
-                    </div>
-                    <div class="media mb-3">
-                        <div class="media-img">
-                            <img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading">Abriel</h5>
-                            <ul class="list-inline list-inline-rating">
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="fa fa-star" aria-hidden="true"></i>
-                                </li>
-                                <li class="list-inline-item">
-                                    <i class="far fa-star" aria-hidden="true"></i>
-                                </li>
-                            </ul>
-                            <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape
-                                riam,
-                            </p>
-
-                            <p class="bg-light p-4 rounded">
-                                Nam illo asperiores architecto fuga corrupti. Voluptates, assumenda. Repellendus,
-                                dicta
-                                voluptatum. Voluptatibus eos voluptatum, consequuntur rerum voluptas reiciendis et quo deleniti illum nihil
-                            </p>
-
-                        </div>
+                                <!-- Reply Section -->
+                                <!--<div class="reply-wrapper">
+                        <a class="d-inline-block mb-2 btn-reply" href="javascript:0">Reply</a>
+                        <form class="form-reply my-3">
+                            <textarea class="form-control mb-6" rows="3" placeholder="Enter your comment"></textarea>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
                     </div>
 
+                            </div>
+                        </div>-->
+
+                    </div>
                     <hr>
                 </div>
-
+              
                 <!-- Add Review -->
                 <div class="my-6" id="add-review">
-                    <h3 class="font-weight-normal mb-6"> Add Review </h3>
+                    <h3 class="font-weight-normal mb-6">Agregar reseña </h3>
                     <span class="star add-rating-default pl-0 mb-6"></span>
                     <form>
                         <div class="form-check form-check-inline mb-6 mr-lg-7">
@@ -400,7 +325,7 @@
                             <textarea class="form-control" rows="6" placeholder="Enter Your Comment"></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary text-uppercase"> Send Review </button>
+                            <button type="submit" class="btn btn-primary text-uppercase"> Enviar reseña </button>
                         </div>
                     </form>
 
@@ -469,18 +394,17 @@
                     <ul class="list-unstyled mb-0">
                         @foreach (var schedule in Model.HorarioNegocios)
                         {
-                        <li class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-                            <span>@schedule.Day</span>
-                            @if (@schedule.Active == true)
-                            {
-                        <span>@schedule.HoraDesde - @schedule.HoraHasta</span> }
-                                        else
-                                        {
-                        <span><a href="#">Closed</a></span>}
+            <li class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                <span>@schedule.Day</span>
+                @if (@schedule.Active == true)
+                {
+<span>@schedule.HoraDesde - @schedule.HoraHasta</span> }
+else
+{
+<span><a href="#">Closed</a></span>}
 
 
-                        </li>
-                        }
+            </li>}
 
 
 
@@ -563,4 +487,10 @@
         </div>
     </div>
 </section>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Handlers/ReviewsHandler.js"></script>
+}
 
