@@ -1,5 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
 @model Models.ViewModels.DetailsBusinessViewModel;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using DataAccess.Repository.IRepository;
+@inject IUnitOfWork _unitOfWork;
 
 <style>
 
@@ -16,7 +21,7 @@
             <div class="col-lg-8">
                 <div class="mb-2 mb-lg-0">
                     <h1 class="single-listing-title">@Model.Business.NombreNegocio</h1>
-                    <input id="IBusinessId" type="hidden" asp-for="@Model.Business.Id"/>
+                    <input id="IBusinessId" type="hidden" asp-for="@Model.Business.Id" />
                     <p class="text-muted mb-1"> <i class="fas fa-map-marker-alt text-primary mr-1"></i> @Model.Business.DireccionNegocio </p>
                     <p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
                     <p class="text-muted mb-1"> <i class="fas fa-phone-alt text-primary mr-1"></i> @Model.Business.TelefonoNegocio1</p>
@@ -26,26 +31,26 @@
                     <div class="d-flex align-items-center">
                         <ul id="mainStarsUl" class="list-inline list-inline-rating mr-2">
                             @*<li class="list-inline-item">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </li>
-                            <li class="list-inline-item">
-                                <i class="fa fa-star" aria-hidden="true"></i>
-                            </li>*@
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </li>
+                                <li class="list-inline-item">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </li>*@
                         </ul>
                         <span id="spanReviewCount" class="d-inline-block mr-2">(5 Reseñas)</span>
                         @*<button class="btn-like px-2" data-toggle="tooltip" data-placement="top" title="Favourite this listing">
-                            <i class="far fa-heart text-primary" aria-hidden="true"></i>
-                            <span>5 k</span>
-                        </button>*@
+                                <i class="far fa-heart text-primary" aria-hidden="true"></i>
+                                <span>5 k</span>
+                            </button>*@
                     </div>
                 </div>
             </div>
@@ -64,11 +69,11 @@
     <div class="owl-carousel owl-theme listing-details-carousel nav-light-dark">
         @foreach (var images in Model.ImagenesNegocios)
         {
-<div class="single-item">
-    <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
-        <img class="lazyestload" data-src="@images.Image" src="@images.Image" alt="Image" />
-    </a>
-</div>}
+            <div class="single-item">
+                <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
+                    <img class="lazyestload" data-src="@images.Image" src="@images.Image" alt="Image" />
+                </a>
+            </div>}
 
 
 
@@ -94,45 +99,49 @@
                 <hr>
                 @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl) || !String.IsNullOrEmpty(Model.Business.TwitterUrl) || !String.IsNullOrEmpty(Model.Business.LinkedInUrl) || !String.IsNullOrEmpty(Model.Business.InstagramUrl))
                 {
-    <div class="my-6">
-        <h3 class="font-weight-normal mb-6">Redes sociales</h3>
-        <ul class="list-unstyled mb-7">
-            @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl))
-            {
-<li class="list-inline-item">
-    <a class="mr-2" href="@Model.Business.FacebookUrl">
-        <i class="fab fa-facebook-square" aria-hidden="true"></i>
-    </a>
-</li>}
-            @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
-            {
-<li class="list-inline-item">
-    <a class="mr-2" href="@Model.Business.InstagramUrl">
-        <i class="fab fa-facebook-square" aria-hidden="true"></i>
-    </a>
-</li>}
-            @if (!String.IsNullOrEmpty(Model.Business.TwitterUrl))
-            {
-<li class="list-inline-item">
-    <a class="mr-2" href="@Model.Business.TwitterUrl">
-        <i class="fab fa-facebook-square" aria-hidden="true"></i>
-    </a>
-</li>}
-            @if (!String.IsNullOrEmpty(Model.Business.LinkedInUrl))
-            {
-<li class="list-inline-item">
-    <a class="mr-2" href="@Model.Business.LinkedInUrl">
-        <i class="fab fa-facebook-square" aria-hidden="true"></i>
-    </a>
-</li>}
+                    <div class="my-6">
+                        <h3 class="font-weight-normal mb-6">Redes sociales</h3>
+                        <ul class="list-unstyled mb-7">
+                            @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="mr-2" href="@Model.Business.FacebookUrl">
+                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="mr-2" href="@Model.Business.InstagramUrl">
+                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.Business.TwitterUrl))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="mr-2" href="@Model.Business.TwitterUrl">
+                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            }
+                            @if (!String.IsNullOrEmpty(Model.Business.LinkedInUrl))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="mr-2" href="@Model.Business.LinkedInUrl">
+                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                            }
 
 
 
 
 
-        </ul>
-        <hr>
-    </div>}
+                        </ul>
+                        <hr>
+                    </div>}
 
 
                 <!-- Features -->
@@ -141,10 +150,10 @@
                     <ul class="list-unstyled mb-7">
                         @foreach (var feature in Model.FeatureNegocios)
                         {
-            <li class="d-inline-block mr-4 mb-2">
-                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>@feature.Feature
-            </li>
-}
+                            <li class="d-inline-block mr-4 mb-2">
+                                <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>@feature.Feature
+                            </li>
+                        }
 
 
 
@@ -153,40 +162,43 @@
                 </div>
                 @if (Model.Business.HasDelivery == true || Model.Business.PedidosYa == true || Model.Business.Hugo == true || Model.Business.Piki == true)
                 {
-    <div class="my-6">
-        <h3 class="font-weight-normal mb-6">Delivery (Servicio a domicilio)</h3>
-        <ul class="list-unstyled mb-7">
-            @if (Model.Business.HasDelivery == true)
-            {
-<li class="d-inline-block mr-4 mb-2">
-    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Delivery
-</li>
-}
-            @if (Model.Business.Hugo == true)
-            {
-<li class="d-inline-block mr-4 mb-2">
-    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Hugo
-</li>}
+                    <div class="my-6">
+                        <h3 class="font-weight-normal mb-6">Delivery (Servicio a domicilio)</h3>
+                        <ul class="list-unstyled mb-7">
+                            @if (Model.Business.HasDelivery == true)
+                            {
+                                <li class="d-inline-block mr-4 mb-2">
+                                    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Delivery
+                                </li>
+                            }
+                            @if (Model.Business.Hugo == true)
+                            {
+                                <li class="d-inline-block mr-4 mb-2">
+                                    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Hugo
+                                </li>
+                            }
 
-            @if (Model.Business.PedidosYa == true)
-            {
-<li class="d-inline-block mr-4 mb-2">
-    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Pedidos Ya
-</li>}
-            @if (Model.Business.Piki == true)
-            {
-<li class="d-inline-block mr-4 mb-2">
-    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Piki
-</li>}
+                            @if (Model.Business.PedidosYa == true)
+                            {
+                                <li class="d-inline-block mr-4 mb-2">
+                                    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Pedidos Ya
+                                </li>
+                            }
+                            @if (Model.Business.Piki == true)
+                            {
+                                <li class="d-inline-block mr-4 mb-2">
+                                    <i class="fa fa-check-circle mr-2" aria-hidden="true"></i>Piki
+                                </li>
+                            }
 
 
 
 
 
 
-        </ul>
-        <hr>
-    </div>}
+                        </ul>
+                        <hr>
+                    </div>}
 
 
                 <!-- Added By -->
@@ -196,11 +208,10 @@
                         <div class="media-img">
                             @if (!string.IsNullOrEmpty(Model.Business.PictureProfile))
                             {
-                                <img src="/ImagesBusiness/@Model.Business.PictureProfile" data-src="/ImagesBusiness/@Model.Business.PictureProfile" style="width: 70px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">
-                            }
+                                <img src="/ImagesBusiness/@Model.Business.PictureProfile" data-src="/ImagesBusiness/@Model.Business.PictureProfile" style="width: 70px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User"> }
                             else
                             {
-                <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" style="width: 70px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">}
+                                <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" style="width: 70px;" class="mr-3 media-object rounded-circle lazyestload" alt="Image User">}
 
                         </div>
                         <div class="media-body">
@@ -276,56 +287,77 @@
                                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan totam rem ape
                                     riam,
                                 </p>-->
+                        <!-- Reply Section -->
+                        <!--<div class="reply-wrapper">
+                            <a class="d-inline-block mb-2 btn-reply" href="javascript:0">Reply</a>
+                            <form class="form-reply my-3">
+                                <textarea class="form-control mb-6" rows="3" placeholder="Enter your comment"></textarea>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
 
-                                <!-- Reply Section -->
-                                <!--<div class="reply-wrapper">
-                        <a class="d-inline-block mb-2 btn-reply" href="javascript:0">Reply</a>
-                        <form class="form-reply my-3">
-                            <textarea class="form-control mb-6" rows="3" placeholder="Enter your comment"></textarea>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-
-                            </div>
-                        </div>-->
+                                </div>
+                            </div>-->
 
                     </div>
                     <hr>
                 </div>
-              
+
                 <!-- Add Review -->
                 <div class="my-6" id="add-review">
                     <h3 class="font-weight-normal mb-6">Agregar reseña </h3>
                     <span class="star add-rating-default pl-0 mb-6"></span>
-                    <form>
-                        <div class="form-check form-check-inline mb-6 mr-lg-7">
-                            <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"
-                                   checked>
-                            <label class="form-check-label" for="inlineRadio1">
-                                <div class="media media-xs align-items-center">
-                                    <img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-2 media-object rounded-circle lazyestload" alt="Image User">
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb-0">William</h5>
+                    <form id="reviewForm">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="form-check form-check-inline mb-6 mr-lg-7">
+                                <input id="iUserId" type="hidden" value="@UserManager.FindByNameAsync(User.Identity.Name).Result.Id" />
+                                <input type="hidden" value="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName" id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" />
+                                <input readonly class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"
+                                       checked>
+                                <label class="form-check-label" for="inlineRadio1">
+                                    <div class="media media-xs align-items-center">
+                                        @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
+                                        {
+                                            <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                        }
+                                        else
+                                        {
+                                            <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/avatar-01.png" alt="Image">
+                                        }
+                                        @*<img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-2 media-object rounded-circle lazyestload" alt="Image User">*@
+                                        <div class="media-body">
+                                            <h5 class="media-heading mb-0">@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName</h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline mb-6">
-                            <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                            <label class="form-check-label" for="inlineRadio2">
-                                <div class="media media-xs align-items-center">
-                                    <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb-0">Anonymous</h5>
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <input id="iUserId" type="hidden" value="0" />
+                            <div class="form-group mb-6">
+                               
+                                <input id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" required />
+                            </div>
+                        }
+
+                        @*<div class="form-check form-check-inline mb-6">
+                                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">
+                                    <div class="media media-xs align-items-center">
+                                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
+                                        <div class="media-body">
+                                            <h5 class="media-heading mb-0">Anonymous</h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </label>
-                        </div>
+                                </label>
+                            </div>*@
                         <div class="form-group mb-6">
-                            <textarea class="form-control" rows="6" placeholder="Enter Your Comment"></textarea>
+                            <textarea name="reviewDescription" class="form-control" rows="6" placeholder="Escribe tu reseña" required></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary text-uppercase"> Enviar reseña </button>
+                            <button id="btnSendReview" class="btn btn-primary text-uppercase"> Enviar reseña </button>
                         </div>
                     </form>
 
@@ -394,17 +426,18 @@
                     <ul class="list-unstyled mb-0">
                         @foreach (var schedule in Model.HorarioNegocios)
                         {
-            <li class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-                <span>@schedule.Day</span>
-                @if (@schedule.Active == true)
-                {
-<span>@schedule.HoraDesde - @schedule.HoraHasta</span> }
-else
-{
-<span><a href="#">Closed</a></span>}
+                            <li class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                                <span>@schedule.Day</span>
+                                @if (@schedule.Active == true)
+                                {
+                                    <span>@schedule.HoraDesde - @schedule.HoraHasta</span> }
+                                else
+                                {
+                                    <span><a href="#">Closed</a></span>}
 
 
-            </li>}
+                            </li>
+                        }
 
 
 

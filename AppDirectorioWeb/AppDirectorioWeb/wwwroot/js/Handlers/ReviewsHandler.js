@@ -64,4 +64,26 @@ function float2int(value) {
     return value | 0;
 }
 
+jQuery.extend(jQuery.validator.messages, {
+    required: "Este campo es requerido.",
+  
+});
+$('#btnSendReview').click(function () {
+
+    if ($('#reviewForm').valid() == false) {
+
+
+    } else {
+        $('#reviewForm').submit(function (e) {
+            e.preventDefault();
+        });
+
+
+
+    }
+    
+  
+    
+});
+
 
