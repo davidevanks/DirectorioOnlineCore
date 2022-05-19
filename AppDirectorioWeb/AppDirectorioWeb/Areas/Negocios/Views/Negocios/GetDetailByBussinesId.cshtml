@@ -62,13 +62,29 @@
 ===================================== -->
 <section>
     <div class="owl-carousel owl-theme listing-details-carousel nav-light-dark">
-        @foreach (var images in Model.ImagenesNegocios)
+        @if (Model.ImagenesNegocios.Count > 0)
+        {
+            @foreach (var images in Model.ImagenesNegocios)
+            {
+                <div class="single-item">
+                    <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
+                        <img data-src="@images.Image" src="@images.Image" alt="Image" />
+                    </a>
+                </div>}
+
+
+
+        }
+        else
         {
             <div class="single-item">
-                <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img class="lazyestload" data-src="@images.Image" src="@images.Image" alt="Image" />
+                <a class="overlay" href="~/img/listing/listing-04.jpg" data-fancybox="gallery" data-caption="Caption for single image">
+                    <img data-src="~/img/listing/listing-04.jpg" src="~/img/listing/listing-04.jpg" alt="Image" />
                 </a>
-            </div>}
+            </div>
+        
+        }
+
 
 
 
