@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 
 namespace DataAccess.Repository
 {
-    public class UnitOfWork:IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
+        #region Private Fields
+
         private readonly DirectorioOnlineCoreContext _db;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public UnitOfWork(DirectorioOnlineCoreContext db)
         {
@@ -26,26 +27,34 @@ namespace DataAccess.Repository
             Review = new ReviewRepository(_db);
         }
 
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public IBusinessRepository Business { get; private set; }
         public ICategoryRepository Category { get; private set; }
+        public IDepartamentRepository Departament { get; private set; }
+        public IFeatureNegocioRepository Feature { get; private set; }
+        public IImagesBusinessRepository ImageBusiness { get; private set; }
+        public IReviewRepository Review { get; private set; }
+        public IScheduleBusinessRepository ScheduleBusiness { get; private set; }
         public ISP_Call SP_CALL { get; private set; }
         public IUserDetailsRepository UserDetail { get; private set; }
 
-        public IDepartamentRepository Departament { get; private set; }
+        #endregion Public Properties
 
-        public IBusinessRepository Business { get; private set; }
+        #region Public Methods
 
-        public IFeatureNegocioRepository Feature { get; private set; }
-        public IScheduleBusinessRepository ScheduleBusiness { get; private set; }
-        public IImagesBusinessRepository ImageBusiness { get; private set; }
-        public IReviewRepository Review { get; private set; }
         public void Dispose()
         {
-           _db.Dispose();
+            _db.Dispose();
         }
 
         public void Save()
         {
             _db.SaveChanges();
         }
+
+        #endregion Public Methods
     }
 }

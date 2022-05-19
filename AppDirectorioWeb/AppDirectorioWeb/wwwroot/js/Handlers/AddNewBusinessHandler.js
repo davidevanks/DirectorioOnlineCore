@@ -5,9 +5,6 @@ $('.cfiinvisible').attr("disabled", true);
 $('.cfisinvisible').attr("disabled", true);
 
 
-
-
-
 $('#chkTerm').click(function () {
     if (document.getElementById('chkTerm').checked) {
         $('#btnCrearCuenta').removeAttr("disabled");
@@ -29,8 +26,6 @@ function DeleteLogo(Id) {
     }).then((willDelete) => {
         if (willDelete) {
 
-
-      
             
             $.ajax({
                 type: "GET",
@@ -132,9 +127,6 @@ $(document).ready(function () {
 
 
 
-
-
-
             if (files.length > 1) {
                 fileLabel.html(files.length + ' imagenes seleccionadas')
             } else if (files.length == 1) {
@@ -150,14 +142,13 @@ $(document).ready(function () {
                 // la extensión del archivo puede estar en mayúscula
                 ext = ext.toLowerCase();
 
-                // console.log(ext);
+              
                 switch (ext) {
                     case 'jpg':
                     case 'jpeg':
                     case 'png': break;
                     default:
 
-                        // alert('El archivo no tiene la extensión adecuada');
                         this.value = ''; // reset del valor
                         $('#galVal').html('Solo se permiten imagenes, favor intentar de nuevo');
                         fileLabel.html('Selecciona fotos de tus productos/servicios...');

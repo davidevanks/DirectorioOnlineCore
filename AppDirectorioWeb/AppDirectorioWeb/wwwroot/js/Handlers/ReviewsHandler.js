@@ -126,7 +126,6 @@ $('#btnSendReview').click(function () {
 });
 
 
-
 $("#starsToAdd").rateYo({
     maxValue: 5,
     numStars: 5,

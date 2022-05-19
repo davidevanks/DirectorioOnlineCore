@@ -1,19 +1,21 @@
 ﻿using DataAccess.Models;
 using Models.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
     public interface IBusinessRepository : IRepository<Negocio>
     {
-        void Update(Negocio negocio);
-        List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner);
+        #region Public Methods
 
         BusinessOwnerViewModel GetBusinessById(int id);
+
         BussinesViewModel GetBusinessToEditById(int id);
+
+        List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner);
+
+        void Update(Negocio negocio);
+
+        #endregion Public Methods
     }
 }

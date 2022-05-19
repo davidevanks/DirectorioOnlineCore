@@ -1,21 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 using Models.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DataAccess.Repository
 {
     public class UserDetailRepository : Repository<UserDetail>, IUserDetailsRepository
     {
+        #region Private Fields
+
         private readonly DirectorioOnlineCoreContext _db;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public UserDetailRepository(DirectorioOnlineCoreContext db) : base(db)
         {
             _db = db;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public List<UserViewModel> GetAUsersDetails(string userId)
         {
@@ -35,29 +43,26 @@ namespace DataAccess.Repository
                          from urupdf in urupdef.DefaultIfEmpty()
                          select new UserViewModel
                          {
-                             Id=u.Id,
-                             Email=u.Email,
-                             PhoneNumber=u.PhoneNumber,
-                             FullName= udff.FullName==null?"": udff.FullName,
-                             Role=r.Name,
-                             ProfilePicture= udff.UserPicture,
-                             UserRegistration= urrdf.UserName,
-                             RegistrationDate= udff.RegistrationDate,
-                             UpdateUser= urupdf.UserName,
-                             NotificationsPromo= udff.NotificationsPromo==null?false: (bool)udff.NotificationsPromo,
-                             LockoutEnd=u.LockoutEnd,
-                             UserName=u.UserName
+                             Id = u.Id,
+                             Email = u.Email,
+                             PhoneNumber = u.PhoneNumber,
+                             FullName = udff.FullName == null ? "" : udff.FullName,
+                             Role = r.Name,
+                             ProfilePicture = udff.UserPicture,
+                             UserRegistration = urrdf.UserName,
+                             RegistrationDate = udff.RegistrationDate,
+                             UpdateUser = urupdf.UserName,
+                             NotificationsPromo = udff.NotificationsPromo == null ? false : (bool)udff.NotificationsPromo,
+                             LockoutEnd = u.LockoutEnd,
+                             UserName = u.UserName
                          });
-
 
             if (!string.IsNullOrEmpty(userId))
             {
-                query=query.Where(x=>x.Id==userId);
+                query = query.Where(x => x.Id == userId);
             }
 
             return query.ToList();
-
-
         }
 
         public void Update(UserViewModel userProfile)
@@ -70,17 +75,14 @@ namespace DataAccess.Repository
                 objFromDb.NotificationsPromo = userProfile.NotificationsPromo;
                 objFromDb.IdUserUpdate = userProfile.UpdateUser;
             }
-            
+
             var objFromDbUser = _db.Users.FirstOrDefault(s => s.Id == userProfile.Id);
             if (objFromDbUser != null)
             {
                 objFromDbUser.PhoneNumber = userProfile.PhoneNumber;
                 objFromDbUser.Email = userProfile.Email;
                 objFromDbUser.UserName = userProfile.UserName;
-
             }
-
-
         }
 
         public void UpdateProfilePicture(UserViewModel userProfile)
@@ -89,8 +91,9 @@ namespace DataAccess.Repository
             if (objFromDb != null)
             {
                 objFromDb.UserPicture = userProfile.ProfilePicture;
-            
             }
         }
+
+        #endregion Public Methods
     }
 }

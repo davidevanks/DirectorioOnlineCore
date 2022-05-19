@@ -1,6 +1,4 @@
-﻿
-
-using DataAccess.Repository.IRepository;
+﻿using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Models.ViewModels;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -19,24 +14,14 @@ namespace AppDirectorioWeb.Controllers
     public class HomeController : Controller
     {
         #region Private Fields
-
-        private readonly string _backendApiUrlNegocio;
-       
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ILogger<HomeController> _logger;
-        private readonly string _backendApiUrlSeguridad;
         private readonly IUnitOfWork _unitOfWork;
+
         #endregion Private Fields
 
         #region Public Constructors
 
         public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IUnitOfWork unitOfWork)
         {
-            _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
-           
-            _backendApiUrlNegocio = configuration["BackendApiUrlNegocio"];
-            _backendApiUrlSeguridad = configuration["BackendApiUrlSeguridad"];
             _unitOfWork = unitOfWork;
         }
 
@@ -48,11 +33,10 @@ namespace AppDirectorioWeb.Controllers
         {
             var exceptionHandlerPathFeature =
             HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-            //e.MessageError = "no tienes acceso a esta página";
+
             return View();
         }
 
-        //public async Task<IActionResult> Index()
         public IActionResult Index()
         {
             LookForBusinessViewModel model = new LookForBusinessViewModel();
@@ -71,33 +55,8 @@ namespace AppDirectorioWeb.Controllers
             });
 
             return View(model);
-           
-        }
-
-        //[Authorize(Roles.Admin)]
-        public async Task<IActionResult> Privacy()
-        {
-            string url = _backendApiUrlNegocio + "/api/CatCatalogo/api/GetAllCatalogo";
-
-         
-            var JWToken = HttpContext.Session.GetString("Token");
-          
-            return View();
         }
 
         #endregion Public Methods
-
-        #region Private Methods
-
-        public async Task<IActionResult> SeachBussines()
-        {
-         
-          
-      
-            return View();
-
-        }
-
-        #endregion Private Methods
     }
 }

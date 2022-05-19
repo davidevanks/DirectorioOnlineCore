@@ -1,25 +1,39 @@
-﻿using DataAccess.Repository.IRepository;
+﻿using DataAccess.Models;
+using DataAccess.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly DirectorioOnlineCoreContext _db;
+        #region Internal Fields
+
         internal DbSet<T> dbSet;
+
+        #endregion Internal Fields
+
+        #region Private Fields
+
+        private readonly DirectorioOnlineCoreContext _db;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public Repository(DirectorioOnlineCoreContext db)
         {
             _db = db;
             this.dbSet = _db.Set<T>();
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public void Add(T entity)
         {
             dbSet.Add(entity);
@@ -34,20 +48,20 @@ namespace DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
 
-            if (filter!=null)
+            if (filter != null)
             {
                 query = query.Where(filter);
             }
 
-            if (includeProperties!=null)
+            if (includeProperties != null)
             {
-                foreach (var includeProp in includeProperties.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProp);
                 }
             }
 
-            if (orderBy!=null)
+            if (orderBy != null)
             {
                 return orderBy(query).ToList();
             }
@@ -72,8 +86,6 @@ namespace DataAccess.Repository
                 }
             }
 
-          
-
             return query.FirstOrDefault();
         }
 
@@ -92,5 +104,7 @@ namespace DataAccess.Repository
         {
             dbSet.RemoveRange(entity);
         }
+
+        #endregion Public Methods
     }
 }

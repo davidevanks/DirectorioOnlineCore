@@ -25,8 +25,6 @@ namespace AppDirectorioWeb.Controllers
     [Area("Negocios")]
     public class NegociosController : Controller
     {
-        /*private readonly ILogger<HomeController> _logger;*/
-
         #region Private Fields
 
         private readonly IEmailSender _emailSender;
@@ -65,43 +63,6 @@ namespace AppDirectorioWeb.Controllers
         #endregion Public Constructors
 
         #region Public Methods
-
-        public IActionResult LookForBusiness(LookForBusinessViewModel model)
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("@Search", model.Search);
-            parameters.Add("@IdDepartment", model.IdDepartamento);
-            parameters.Add("@IdCategoria", null);
-           
-            ViewBag.Search = model.Search;
-            ViewBag.DepartmentName = _unitOfWork.Departament.Get(Convert.ToInt32(model.IdDepartamento)).Nombre;
-            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
-            return View(BusinessResult.ToList());
-        }
-        public IActionResult LookForBusinessByCategory(int categoryId)
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("@Search", "");
-            parameters.Add("@IdDepartment", null);
-            parameters.Add("@IdCategoria", categoryId);
-
-           
-            ViewBag.CategoryName = _unitOfWork.Category.GetAll().Where(x => x.Id==categoryId).FirstOrDefault().Nombre;
-            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
-            return View(BusinessResult.ToList());
-        }
-        public IActionResult LookForBusinessByAllCategory(int? categoryId)
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("@Search", "");
-            parameters.Add("@IdDepartment", null);
-            parameters.Add("@IdCategoria", null);
-
-
-            ViewBag.CategoryName = "Todas";
-            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
-            return View(nameof(LookForBusinessByCategory),BusinessResult.ToList());
-        }
 
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult AdminBusiness()
@@ -350,6 +311,43 @@ namespace AppDirectorioWeb.Controllers
             return View(BusinessDetails);
         }
 
+        public IActionResult LookForBusiness(LookForBusinessViewModel model)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", model.Search);
+            parameters.Add("@IdDepartment", model.IdDepartamento);
+            parameters.Add("@IdCategoria", null);
+
+            ViewBag.Search = model.Search;
+            ViewBag.DepartmentName = _unitOfWork.Departament.Get(Convert.ToInt32(model.IdDepartamento)).Nombre;
+            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
+            return View(BusinessResult.ToList());
+        }
+
+        public IActionResult LookForBusinessByAllCategory(int? categoryId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", "");
+            parameters.Add("@IdDepartment", null);
+            parameters.Add("@IdCategoria", null);
+
+            ViewBag.CategoryName = "Todas";
+            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
+            return View(nameof(LookForBusinessByCategory), BusinessResult.ToList());
+        }
+
+        public IActionResult LookForBusinessByCategory(int categoryId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", "");
+            parameters.Add("@IdDepartment", null);
+            parameters.Add("@IdCategoria", categoryId);
+
+            ViewBag.CategoryName = _unitOfWork.Category.GetAll().Where(x => x.Id == categoryId).FirstOrDefault().Nombre;
+            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
+            return View(BusinessResult.ToList());
+        }
+
         [AllowAnonymous]
         public IActionResult UpdateSaveBusinessRegistration()
         {
@@ -361,6 +359,7 @@ namespace AppDirectorioWeb.Controllers
         #region API_CALLS
 
         [HttpGet]
+        [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult DeleteLogo(int id)
         {
             var Business = _unitOfWork.Business.Get(id);
@@ -392,6 +391,7 @@ namespace AppDirectorioWeb.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult DeletePictures(int id)
         {
             var pictures = _unitOfWork.ImageBusiness.GetRangeImagesToDeleteByBusinessId(id);
@@ -432,28 +432,11 @@ namespace AppDirectorioWeb.Controllers
         public IActionResult GetReviewByBussines(int BusinessId)
         {
             var ReviewsObj = _unitOfWork.Review.GetReviewsByBusinessId(BusinessId);
-            return Json(new {ReviewsObj });
+            return Json(new { ReviewsObj });
         }
+
         [HttpPost]
-        public IActionResult SaveReview([FromBody]  Review model)
-        {
-            try
-            {
-                _unitOfWork.Review.Add(model);
-                _unitOfWork.Save();
-
-
-                return Json(new { success = true, message = "Review Guardado!" });
-            }
-            catch (Exception ex)
-            {
-
-                return Json(new { success = false, message = "Error!" });
-            }
-          
-        }
-
-            [HttpPost]
+        [Authorize(Roles = SP.Role_Admin)]
         public IActionResult ManageBusinesActivation([FromBody] string id)
         {
             var business = _unitOfWork.Business.Get(Convert.ToInt32(id));
@@ -505,6 +488,22 @@ namespace AppDirectorioWeb.Controllers
             //-----------------------------------
 
             return Json(new { success = true, message = "Negocio" + message });
+        }
+
+        [HttpPost]
+        public IActionResult SaveReview([FromBody] Review model)
+        {
+            try
+            {
+                _unitOfWork.Review.Add(model);
+                _unitOfWork.Save();
+
+                return Json(new { success = true, message = "Review Guardado!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error!" });
+            }
         }
 
         #endregion API_CALLS

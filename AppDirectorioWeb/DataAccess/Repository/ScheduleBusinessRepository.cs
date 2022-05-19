@@ -4,40 +4,49 @@ using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
     public class ScheduleBusinessRepository : Repository<HorarioNegocio>, IScheduleBusinessRepository
     {
+        #region Private Fields
+
         private readonly DirectorioOnlineCoreContext _db;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public ScheduleBusinessRepository(DirectorioOnlineCoreContext db) : base(db)
         {
             _db = db;
         }
 
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public List<HorarioNegocioViewModel> GetScheduleListByBusinessId(int id)
         {
-           var days = _db.CatCategoria.AsQueryable();
-           var scheduleBusiness = _db.HorarioNegocios.AsQueryable();
+            var days = _db.CatCategoria.AsQueryable();
+            var scheduleBusiness = _db.HorarioNegocios.AsQueryable();
 
-            var query = (from sb in scheduleBusiness join d in days on sb.IdDia equals d.Id
-                         where sb.IdNegocio==id
-                         select new HorarioNegocioViewModel { 
-                         Id=sb.Id,
-                         IdDia=sb.IdDia,
-                         Day=d.Nombre,
-                         HoraDesde=Convert.ToDateTime(sb.HoraDesde).ToShortTimeString(),
-                         HoraHasta = Convert.ToDateTime(sb.HoraHasta).ToShortTimeString(),
-                         Active=sb.Active,
-                         IdUserCreate = sb.IdUserCreate,
-                         CreateDate = sb.CreateDate
+            var query = (from sb in scheduleBusiness
+                         join d in days on sb.IdDia equals d.Id
+                         where sb.IdNegocio == id
+                         select new HorarioNegocioViewModel
+                         {
+                             Id = sb.Id,
+                             IdDia = sb.IdDia,
+                             Day = d.Nombre,
+                             HoraDesde = Convert.ToDateTime(sb.HoraDesde).ToShortTimeString(),
+                             HoraHasta = Convert.ToDateTime(sb.HoraHasta).ToShortTimeString(),
+                             Active = sb.Active,
+                             IdUserCreate = sb.IdUserCreate,
+                             CreateDate = sb.CreateDate
                          }).ToList();
-           
-            return query;
 
-           
+            return query;
         }
 
         public List<HorarioNegocioViewModel> GetScheduleListToEditByBusinessId(int id)
@@ -61,7 +70,6 @@ namespace DataAccess.Repository
                          }).ToList();
 
             return query;
-
         }
 
         public void InsertList(List<HorarioNegocio> schedules)
@@ -81,7 +89,6 @@ namespace DataAccess.Repository
                 objFromDb.Active = schedule.Active;
                 objFromDb.IdUserUpdate = schedule.IdUserUpdate;
                 objFromDb.UpdateDate = schedule.UpdateDate;
-
             }
         }
 
@@ -89,5 +96,7 @@ namespace DataAccess.Repository
         {
             _db.HorarioNegocios.UpdateRange(schedules);
         }
+
+        #endregion Public Methods
     }
 }

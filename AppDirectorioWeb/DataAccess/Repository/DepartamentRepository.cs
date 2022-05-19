@@ -1,23 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Models;
+﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Models.ViewModels;
+using System.Linq;
 
 namespace DataAccess.Repository
 {
     public class DepartamentRepository : Repository<CatDepartamento>, IDepartamentRepository
     {
+        #region Private Fields
+
         private readonly DirectorioOnlineCoreContext _db;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public DepartamentRepository(DirectorioOnlineCoreContext db) : base(db)
         {
             _db = db;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
+
         public void Update(CatDepartamento department)
         {
             var objFromDb = _db.CatDepartamentos.FirstOrDefault(s => s.Id == department.Id);
@@ -30,5 +35,7 @@ namespace DataAccess.Repository
                 objFromDb.IdPais = department.IdPais;
             }
         }
+
+        #endregion Public Methods
     }
 }

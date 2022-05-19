@@ -12,7 +12,7 @@ $(document).ready(function () {
 });
 
 function loadDataTableAdmin() {
-    //tblCategory
+
     dataTable = $('#tblBusiness').DataTable({
         "bSortClasses": false,
         "stripeClasses": [],
@@ -32,7 +32,7 @@ function loadDataTableAdmin() {
                 "render": function (data) {
 
                     if (data.status == 19) {
-                        //user is currently locked
+                    
                         return ` 
                              <span style="font-size: medium;" class="badge badge-success">${data.statusName}</span>
                              `
@@ -63,7 +63,7 @@ function loadDataTableAdmin() {
                 "render": function (data) {
                 
                     if (data.status == 19) {
-                        //user is currently locked
+                       
                         return ` 
                              <a onclick=ManageBusinessActivation('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:180px;" >
                              <i class="fa fa-check"></i> Aprobar</a>`
@@ -103,7 +103,7 @@ function loadDataTableAdmin() {
 
 
 function loadDataTableBusinessAdmin() {
-    //tblCategory
+   
     dataTable = $('#tblBusiness').DataTable({
         "bSortClasses": false,
         "stripeClasses": [],
@@ -123,7 +123,7 @@ function loadDataTableBusinessAdmin() {
                 "render": function (data) {
 
                     if (data.status == 19) {
-                        //user is currently locked
+                     
                         return ` 
                              <span style="font-size: medium;" class="badge badge-success">${data.statusName}</span>
                              `
@@ -149,8 +149,7 @@ function loadDataTableBusinessAdmin() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Negocios/Negocios/AgregarNegocio/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-edit"></i></a>
-                        <a onclick = DeleteParent("/Catalogos/CatCategory/DeleteParentCat/${data}"); class="btn btn-danger text-white" id = "btnEditar" > <i class="fa fa-trash"></i></a >`
+                    return ` <a href="/Negocios/Negocios/AgregarNegocio/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-edit"></i></a>`
                         ;
                 }, "width": "40%"
             }

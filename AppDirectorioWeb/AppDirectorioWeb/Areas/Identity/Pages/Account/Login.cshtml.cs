@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
+        #region Private Fields
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, 
+        private readonly ILogger<LoginModel> _logger;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
+        public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager)
         {
@@ -31,29 +34,23 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        #endregion Public Constructors
 
-        public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
-        public string ReturnUrl { get; set; }
+        #region Public Properties
 
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public class InputModel
-        {
-            [Required(ErrorMessage = "El email es requerido")]
-            [EmailAddress]
-            public string Email { get; set; }
+        public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-            [Required(ErrorMessage ="Contraseña es requerida")]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
+        [BindProperty]
+        public InputModel Input { get; set; }
 
-            [Display(Name = "Recuerdame?")]
-            public bool RememberMe { get; set; }
-        }
+        public string ReturnUrl { get; set; }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -77,7 +74,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -87,7 +84,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User logged in.");
                     HttpContext.Session.SetString("UserId", _userManager.Users.Select(x => x.Id).FirstOrDefault());
-                   
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -109,5 +106,29 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+        #endregion Public Methods
+
+        #region Public Classes
+
+        public class InputModel
+        {
+            #region Public Properties
+
+            [Required(ErrorMessage = "El email es requerido")]
+            [EmailAddress]
+            public string Email { get; set; }
+
+            [Required(ErrorMessage = "Contraseña es requerida")]
+            [DataType(DataType.Password)]
+            public string Password { get; set; }
+
+            [Display(Name = "Recuerdame?")]
+            public bool RememberMe { get; set; }
+
+            #endregion Public Properties
+        }
+
+        #endregion Public Classes
     }
 }

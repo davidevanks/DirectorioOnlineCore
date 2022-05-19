@@ -1,34 +1,41 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 using Models.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
     public class ImagesBusinessRepository : Repository<ImagenesNegocio>, IImagesBusinessRepository
     {
+        #region Private Fields
+
         private readonly DirectorioOnlineCoreContext _db;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public ImagesBusinessRepository(DirectorioOnlineCoreContext db) : base(db)
         {
             _db = db;
         }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public List<ImagenesNegocioViewModel> GetImagesByBusinessId(int id)
         {
             var images = _db.ImagenesNegocios.AsQueryable();
 
             var query = (from im in images
-                         where im.IdNegocio==id
+                         where im.IdNegocio == id
                          select new ImagenesNegocioViewModel
                          {
-                             Id=im.Id,
-                             IdNegocio=im.IdNegocio,
-                             Image=im.Image,
+                             Id = im.Id,
+                             IdNegocio = im.IdNegocio,
+                             Image = im.Image,
                              IdUserCreate = im.IdUserCreate,
                              CreateDate = im.CreateDate
                          }).ToList();
@@ -71,8 +78,9 @@ namespace DataAccess.Repository
                 objFromDb.IdNegocio = image.IdNegocio;
                 objFromDb.IdUserUpdate = image.IdUserUpdate;
                 objFromDb.UpdateDate = image.UpdateDate;
-
             }
         }
+
+        #endregion Public Methods
     }
 }

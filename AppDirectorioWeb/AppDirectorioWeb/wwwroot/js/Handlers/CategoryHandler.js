@@ -5,7 +5,7 @@ $(document).ready(function() {
 });
 
 function loadDataTable() {
-//tblCategory
+
     dataTable = $('#tblCategory').DataTable({
         "bSortClasses": false,
         "stripeClasses": [],

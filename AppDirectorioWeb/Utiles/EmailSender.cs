@@ -3,33 +3,31 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Utiles
 {
     public class EmailSender : IEmailSender
     {
+        #region Private Fields
+
         private readonly MailSettings _mailSettings;
+
+        #endregion Private Fields
+
+        #region Public Constructors
+
         public EmailSender(IOptions<MailSettings> mailSettings)
         {
             _mailSettings = mailSettings.Value;
         }
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
-        {
-            return Execute( email,  subject,  htmlMessage);
-        }
+
+        #endregion Public Constructors
+
+        #region Public Methods
 
         public async Task Execute(string email, string subject, string htmlMessage)
         {
-            //string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\WelcomeTemplate.html";
-            //StreamReader str = new StreamReader(FilePath);
-            //string MailText = str.ReadToEnd();
-            //str.Close();
             string MailText = htmlMessage;
             MailText = MailText.Replace("[username]", email).Replace("[email]", email);
             var emailMime = new MimeMessage();
@@ -47,11 +45,21 @@ namespace Utiles
             await smtp.SendAsync(emailMime);
             smtp.Disconnect(true);
         }
+
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        {
+            return Execute(email, subject, htmlMessage);
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
         private bool RemoteServerCertificateValidationCallback(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
         {
-            //Console.WriteLine(certificate);
             return true;
         }
 
+        #endregion Private Methods
     }
 }

@@ -1,17 +1,16 @@
-﻿using System;
+﻿using DataAccess.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Models;
-using Models.ViewModels;
 
 namespace DataAccess.Repository.IRepository
 {
-    public interface ICategoryRepository:IRepository<CatCategorium>
+    public interface ICategoryRepository : IRepository<CatCategorium>
     {
-        void Update(CatCategorium category);
+        #region Public Methods
 
         IEnumerable<CatCategorium> GetCatUsedByBusiness();
+
+        void Update(CatCategorium category);
+
+        #endregion Public Methods
     }
 }

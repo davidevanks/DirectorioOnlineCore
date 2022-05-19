@@ -19,61 +19,25 @@
                     </p>
 
                     <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="py-7">
-                        @*@if (isBussines == 1)
-        {*@
-                        <!--<div class="bg-light p-5 mb-8 rounded">
-    <h3 class="h4 font-weight-normal mb-4">suscripción</h3>
-    <div class="row justify-content-between">
-        <div class="col-md-6">
-            <div class="select-bg-transparent select-border w-100">
-                <select class="select-location">-->
-                        @*@foreach (var plan in lstPlans)
-        {*@
-                        <!--<option value="test">test</option>-->
-                        @*}*@
-                        @*<option>Free</option>
-        <option>Premium-119 USD/YEAR</option>
-        <option>Lifetime 299 USD/YEAR</option>*@
-                        <!--</select>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="d-flex justify-content-md-end">
-                    <a class="btn btn-link pl-0" href="pricing-table.html">Ver detalle de los planes y precios</a>
-                </div>
-            </div>
-        </div>
-    </div>-->
-                        @*//}*@
-
-
+ 
                         <h3 class="h4 font-weight-normal mb-4">Información de cuenta</h3>
-                        @*<div class="row">
-            <div class="form-group col-md-6">
-                <label for="inputtext">Nombre*</label>
-                <input type="text" class="form-control" placeholder="Ej: Peter Pevensie" required>
-            </div>
-
-        </div>*@
+          
                         <div class="form-group mb-8">
-                            @*<label for="inputAddress">Dirección Email*</label>
-            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                           
 
                             <label asp-for="Input.Email"></label>
                             <input asp-for="Input.Email" class="form-control" />
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-8">
-                            @*<label for="inputAddress">Dirección Email*</label>
-            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                           
 
                             <label asp-for="Input.FullName"></label>
                             <input asp-for="Input.FullName" class="form-control" />
                             <span asp-validation-for="Input.FullName" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-8">
-                            @*<label for="inputAddress">Dirección Email*</label>
-            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                       
 
                             <label asp-for="Input.Telefono"></label>
                             <input asp-for="Input.Telefono" class="form-control" />
@@ -81,8 +45,7 @@
                         </div>
                         <div class="row mb-6">
                             <div class="form-group col-md-6 mb-4">
-                                @*<label for="inputPassword">Contraseña*</label>
-                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                    
 
                                 <label asp-for="Input.Password"></label>
                                 <input asp-for="Input.Password" class="form-control" />
@@ -90,8 +53,7 @@
                             </div>
 
                             <div class="form-group col-md-6 mb-4">
-                                @*<label for="inputPassword">Contraseña*</label>
-                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+            
 
                                 <label asp-for="Input.ConfirmPassword"></label>
                                 <input asp-for="Input.ConfirmPassword" class="form-control" />
@@ -100,13 +62,7 @@
 
                         </div>
 
-                        @*<h3 class="h4 font-weight-normal mb-4 mt-7">Security Control</h3>*@
-                        @*<div class="form-group mb-7">
-            <label for="usernames" class="control-label">
-                Confirm that you are human*
-            </label> <br>
-            <img src="assets/img/business/recaptcha.jpg" data-src="assets/img/business/recaptcha.jpg" alt="Image captcha" class="img-fluid lazyestload">
-        </div>*@
+              
                         @if (User.IsInRole(SP.Role_Admin))
                         {
                             <div class="form-group mb-8">
@@ -148,36 +104,6 @@
 
                     </form>
 
-                    @*<div class="border rounded d-inline-block p-3 mb-4 position-relative">
-                            <img class="paypal lazyestload" data-src="assets/img/business/paypal.png" src="assets/img/business/paypal.png" alt="paypal">
-                            <ul class="list-unstyled list-payment-logo">
-                                <li>
-                                    <a href="#visa">
-                                        <img class="lazyestload" data-src="assets/img/business/visa.jpg" src="assets/img/business/visa.jpg" alt="visa.jpg">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#master-card">
-                                        <img class="lazyestload" data-src="assets/img/business/master-card.jpg" src="assets/img/business/master-card.jpg" alt="master-card.jpg">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#american-express">
-                                        <img class="lazyestload" data-src="assets/img/business/american-express.jpg" src="assets/img/business/american-express.jpg" alt="american-express.jpg">
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#discover">
-                                        <img class="lazyestload" data-src="assets/img/business/discover.jpg" src="assets/img/business/discover.jpg" alt="discover.jpg">
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>*@
-                    @*<p class="mb-0">
-                            We use <span class="text-dark">PayPal</span> to process all transactions securely. <span class="text-dark">Payments can be made using any major credit card, without the need for a PayPal account</span>. If
-                            you already have a PayPal account, you can also pay with PayPal funds or through your bank account. We don't keep any
-                            credit card information stored on our site. No tax is added to your order. For more information <a href="https://www.paypal.com" target="_blank">www.paypal.com</a>
-                        </p>*@
                 </div>
             </div>
         </div>
