@@ -11,5 +11,7 @@ namespace DataAccess.Repository.IRepository
     public interface ICategoryRepository:IRepository<CatCategorium>
     {
         void Update(CatCategorium category);
+
+        IEnumerable<CatCategorium> GetCatUsedByBusiness();
     }
 }

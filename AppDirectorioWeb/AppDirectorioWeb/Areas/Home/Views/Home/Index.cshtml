@@ -59,11 +59,20 @@
             <p>Explora y conecta con negocios locales</p>
         </div>
         <div class="row">
-
-            @foreach (var item in _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).ToList())
+            <div class="col-md-4 col-lg-3 col-xs-12">
+                <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">
+                    <div class="card-body text-center">
+                        @*<div class="icon-md">
+                        <i class="icon-listy icon-more"></i>
+                    </div>*@
+                        <span class="h5">Ver todo</span>
+                    </div>
+                </a>
+            </div>
+            @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness().ToList())
             {
                 <div class="col-md-4 col-lg-3 col-xs-12">
-                    <a class="card py-5 hover-bg-primary bg-transparent"  asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">
+                    <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">
                         <div class="card-body text-center">
                             @*<div class="icon-md">
                             <i class="icon-listy icon-tea-cup-1"></i>
@@ -74,18 +83,6 @@
                 </div>
             }
 
-
-
-            <div class="col-md-4 col-lg-3 col-xs-12">
-                <a class="card py-5 hover-bg-primary bg-transparent" href="listings-half-screen-map-list.html">
-                    <div class="card-body text-center">
-                        @*<div class="icon-md">
-                        <i class="icon-listy icon-more"></i>
-                    </div>*@
-                        <span class="h5">Ver todo</span>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
 </section>

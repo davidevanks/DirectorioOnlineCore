@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var ratingToSave = 0;
+
+$(document).ready(function () {
     loadReviews();
 });
 
@@ -70,20 +72,68 @@ jQuery.extend(jQuery.validator.messages, {
 });
 $('#btnSendReview').click(function () {
 
-    if ($('#reviewForm').valid() == false) {
+    if ($('#reviewForm').valid() == false || ratingToSave===0) {
+    
+        if (ratingToSave === 0) {
+            $('#txtErrorStarsRev').text('Favor calificar con las estrellas');
+        }
 
-
+        $('#reviewForm').submit(function (e) {
+            e.preventDefault();
+        });
     } else {
         $('#reviewForm').submit(function (e) {
             e.preventDefault();
         });
 
+        var model = { IdBusiness: $('#IBusinessId').val(), IdUser: $('#iUserId').val(), FullName: $('#fnComplete').val(), Comments: $('#txtAreaComments').val(), Stars: ratingToSave, Active: true};
 
+        $.ajax({
+            type: "POST",
+            url: "/Negocios/Negocios/SaveReview",
+            data: JSON.stringify(model),
+            contentType: "application/json",
+            success: function (data) {
+                if (data.success) {
+                    /*toastr.success(data.message);*/
+                    loadReviews();
+                    $('#txtAreaComments').val('');
+                    $('#txtErrorStarsRev').text('');
+
+                    $("#starsToAdd").rateYo("destroy");
+
+
+                    $("#starsToAdd").rateYo({
+                        maxValue: 5,
+                        numStars: 5,
+                        starWidth: "23px",
+                        fullStar: true,
+                        onSet: function (rating, rateYoInstance) {
+
+                            ratingToSave = rating;
+                        }
+                    });
+
+                } else {
+                    /*toastr.error(data.message);*/
+                   /* swal({ title: data.message, icon: "info" });*/
+                }
+            }
+        });
 
     }
-    
-  
     
 });
 
 
+
+$("#starsToAdd").rateYo({
+    maxValue: 5,
+    numStars: 5,
+    starWidth: "23px",
+    fullStar: true,
+    onSet:  function (rating, rateYoInstance) {
+
+        ratingToSave= rating;
+    }
+});

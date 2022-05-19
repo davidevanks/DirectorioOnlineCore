@@ -62,6 +62,7 @@
     <Folder Include="bs\Tables\" />
     <Folder Include="Security\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\Functions\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\AspNetUserTokens.sql" />
@@ -82,5 +83,7 @@
     <Build Include="bs\Tables\UserDetails.sql" />
     <Build Include="bs\Tables\Reviews.sql" />
     <Build Include="dbo\Stored Procedures\usp_GetAllCategoriesTest.sql" />
+    <Build Include="dbo\Functions\fnc_GetStarsBusiness.sql" />
+    <Build Include="dbo\Stored Procedures\usp_GetAllBusinessBySearch.sql" />
   </ItemGroup>
 </Project>

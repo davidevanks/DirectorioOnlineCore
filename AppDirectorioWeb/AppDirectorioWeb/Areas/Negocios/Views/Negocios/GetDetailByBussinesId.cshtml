@@ -6,12 +6,7 @@
 @using DataAccess.Repository.IRepository;
 @inject IUnitOfWork _unitOfWork;
 
-<style>
 
-    /*   .fa-whatsapp {
-        content: "\f232" !important;
-    }*/
-</style>
 <!-- ====================================
 ———	LISTING SINGLE HEADING
 ===================================== -->
@@ -306,7 +301,8 @@
                 <!-- Add Review -->
                 <div class="my-6" id="add-review">
                     <h3 class="font-weight-normal mb-6">Agregar reseña </h3>
-                    <span class="star add-rating-default pl-0 mb-6"></span>
+                    <span id="starsToAdd" class="star add-rating-default pl-0 mb-6"></span>
+                    <span id="txtErrorStarsRev" class="text-danger"></span>
                     <form id="reviewForm">
                         @if (SignInManager.IsSignedIn(User))
                         {
@@ -337,24 +333,24 @@
                         {
                             <input id="iUserId" type="hidden" value="0" />
                             <div class="form-group mb-6">
-                               
+
                                 <input id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" required />
                             </div>
                         }
 
                         @*<div class="form-check form-check-inline mb-6">
-                                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">
-                                    <div class="media media-xs align-items-center">
-                                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
-                                        <div class="media-body">
-                                            <h5 class="media-heading mb-0">Anonymous</h5>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>*@
+                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                <label class="form-check-label" for="inlineRadio2">
+                    <div class="media media-xs align-items-center">
+                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
+                        <div class="media-body">
+                            <h5 class="media-heading mb-0">Anonymous</h5>
+                        </div>
+                    </div>
+                </label>
+            </div>*@
                         <div class="form-group mb-6">
-                            <textarea name="reviewDescription" class="form-control" rows="6" placeholder="Escribe tu reseña" required></textarea>
+                            <textarea id="txtAreaComments" name="reviewDescription" class="form-control" rows="6" placeholder="Escribe tu reseña" required></textarea>
                         </div>
                         <div class="form-group">
                             <button id="btnSendReview" class="btn btn-primary text-uppercase"> Enviar reseña </button>

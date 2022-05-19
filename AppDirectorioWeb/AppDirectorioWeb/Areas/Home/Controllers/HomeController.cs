@@ -64,7 +64,7 @@ namespace AppDirectorioWeb.Controllers
                 Value = i.Id.ToString()
             });
 
-            model.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+            model.Categories = _unitOfWork.Category.GetCatUsedByBusiness().Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
             {
                 Text = i.Nombre,
                 Value = i.Id.ToString()

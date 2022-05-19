@@ -90,6 +90,18 @@ namespace AppDirectorioWeb.Controllers
             var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
             return View(BusinessResult.ToList());
         }
+        public IActionResult LookForBusinessByAllCategory(int? categoryId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Search", "");
+            parameters.Add("@IdDepartment", null);
+            parameters.Add("@IdCategoria", null);
+
+
+            ViewBag.CategoryName = "Todas";
+            var BusinessResult = _unitOfWork.SP_CALL.List<BusinessSearchResult>(SP.Proc_GetAllBusinessBySearch, parameters);
+            return View(nameof(LookForBusinessByCategory),BusinessResult.ToList());
+        }
 
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult AdminBusiness()
@@ -422,8 +434,26 @@ namespace AppDirectorioWeb.Controllers
             var ReviewsObj = _unitOfWork.Review.GetReviewsByBusinessId(BusinessId);
             return Json(new {ReviewsObj });
         }
-
         [HttpPost]
+        public IActionResult SaveReview([FromBody]  Review model)
+        {
+            try
+            {
+                _unitOfWork.Review.Add(model);
+                _unitOfWork.Save();
+
+
+                return Json(new { success = true, message = "Review Guardado!" });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, message = "Error!" });
+            }
+          
+        }
+
+            [HttpPost]
         public IActionResult ManageBusinesActivation([FromBody] string id)
         {
             var business = _unitOfWork.Business.Get(Convert.ToInt32(id));
