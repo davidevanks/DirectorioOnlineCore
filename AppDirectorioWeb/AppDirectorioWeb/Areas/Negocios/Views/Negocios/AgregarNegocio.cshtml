@@ -83,7 +83,7 @@
                                 <div class="checkbox">
                                     <label>
                                         <input id="chkTerm" type="checkbox">
-                                        Estoy de acuerdo con los <a asp-area="Home" asp-controller="Home" asp-action="GetTermsAndConditions">Terminos y Condiciones de uso</a>.
+                                        Estoy de acuerdo con los <a target="_blank" asp-area="Home" asp-controller="Home" asp-action="GetTermsAndConditions">Terminos y Condiciones de uso</a>.
                                     </label>
                                 </div>
                             </div>
@@ -370,7 +370,7 @@
                     <input asp-for="@Model.Business.LogoNegocio" type="hidden"/>
 
 
-                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && Model.ImagenesNegocios.Count>0)
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && Model.ImagenesNegocios!=null)
                     {
                         <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
 
