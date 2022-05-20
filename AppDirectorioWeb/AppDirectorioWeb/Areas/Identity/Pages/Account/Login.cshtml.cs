@@ -116,7 +116,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             #region Public Properties
 
             [Required(ErrorMessage = "El email es requerido")]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage ="El email ingresado no es valido")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Contraseña es requerida")]
