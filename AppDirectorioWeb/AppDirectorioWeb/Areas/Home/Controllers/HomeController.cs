@@ -68,10 +68,21 @@ namespace AppDirectorioWeb.Controllers
            
             return View();
         }
+        public IActionResult GetHowItWorks()
+        {
+
+            return View();
+        }
+
+        public IActionResult GetTermsAndConditions()
+        {
+
+            return View();
+        }
 
         #endregion Public Methods
 
-#region API_CALLS
+        #region API_CALLS
         [HttpPost]
         public IActionResult SendMessageContactUs([FromBody] ContactUsViewModel model)
         {

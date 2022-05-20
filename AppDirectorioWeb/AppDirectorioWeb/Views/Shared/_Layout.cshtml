@@ -157,7 +157,7 @@
                                 </li>
 
                                 <li class="">
-                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                                 </li>
 
 
@@ -189,7 +189,7 @@
                         <li class="">
                             <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mis Negocios</a>
                         </li>
-              
+
 
 
                         <li class="">
@@ -200,8 +200,9 @@
                                     <a href="javascript:0">Blog</a>
                                 </li>
                                 <li class="">
-                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                                 </li>
+
                                 <li class="">
                                     <a href="javascript:0">Categorías</a>
                                     <ul class="dropdown">
@@ -231,8 +232,8 @@
                     @if (User.IsInRole(SP.Role_Customer))
                     {
                         @*<li class="">
-                            <a href="javascript:0">Mis Negocios Favoritos</a>
-                        </li>*@
+                <a href="javascript:0">Mis Negocios Favoritos</a>
+            </li>*@
                         <li class="">
                             <a href="javascript:0">Categorías</a>
                             <ul class="dropdown">
@@ -259,8 +260,9 @@
 
 
                                 <li class="">
-                                    <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                                 </li>
+
                                 <li class="">
                                     <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
                                 </li>
@@ -274,11 +276,12 @@
                     @if (!SignInManager.IsSignedIn(User))
                     {
 
-                     
+
 
                         <li class="">
-                            <a href="javascript:0">¿Qué es Brújula Pyme?</a>
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                         </li>
+
 
                         <li class="">
                             <a href="javascript:0">Más</a>
@@ -397,16 +400,16 @@
                         <li class="mb-3">
                             <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
                         </li>
-                        <li class="mb-3">
-                            <a href="terms-of-services.html">Terminos y condiciones</a>
-                        </li>
-                        <li class="mb-3">
-                            <a href="how-it-works.html">¿Que es Brújula digital?</a>
-                        </li>
 
+                        <li class="mb-3">
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Que es Brújula digital?</a>
+                        </li>
+                        <li class="mb-3">
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetTermsAndConditions">Terminos y Condiciones de Uso</a>
+                        </li>
                         @*<li class="mb-3">
-                            <a href="pricing-table.html">Precios planes</a>
-                        </li>*@
+            <a href="pricing-table.html">Precios planes</a>
+        </li>*@
                     </ul>
                 </div>
 
