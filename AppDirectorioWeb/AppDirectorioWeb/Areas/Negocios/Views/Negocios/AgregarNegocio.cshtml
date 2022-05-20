@@ -122,7 +122,7 @@
                         </div>
 
                         <div class="form-group col-md-12 mb-6">
-                            <label for="addTags">Tags</label>
+                            <label for="addTags">Tags (Los tags son como palabras claves con las cuales el usuario te puede buscar)</label>
                             <input asp-for="Business.Tags" class="form-control" />
                             <span asp-validation-for="Business.Tags" class="text-danger"></span>
                         </div>
@@ -327,7 +327,7 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Horario de atención</h3>
-                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm </p>
+                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer check en cada día, los días que no tengan el check saldrán como cerrados)</p>
 
                     <div class="row">
                         @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
