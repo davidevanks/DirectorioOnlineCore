@@ -14,7 +14,7 @@ namespace Models.ViewModels
         public InputUserViewModel User { get; set; }
         public List<FeatureNegocioViewModel> FeatureNegocios { get; set; }
         public List<HorarioNegocioViewModel> HorarioNegocios { get; set; }
-        //public List<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
+        public List<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
 
         public IFormFile Logo { get; set; }
         public List<IFormFile> PicturesBusiness { get; set; }

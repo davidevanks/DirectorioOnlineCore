@@ -14,5 +14,7 @@ namespace Models.ViewModels
         public string Comments { get; set; }
         public int Stars { get; set; }
         public bool Active { get; set; }
+        public string UserNameComments { get; set; }
+        public string PictureUser { get; set; }
     }
 }

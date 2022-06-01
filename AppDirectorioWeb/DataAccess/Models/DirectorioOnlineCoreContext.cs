@@ -271,6 +271,10 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.Comments).IsUnicode(false);
 
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.IdUser)
                     .IsRequired()
                     .HasMaxLength(450);

@@ -1,0 +1,99 @@
+﻿@model List<Models.ViewModels.BusinessSearchResult>;
+<section class="bg-light py-7 pt-md-10 pb-md-9">
+    <div class="container">
+        <div class="search-result-bar mb-0">
+            <p>Encontramos <span> @Model.Count() </span> resultados para <span>@ViewBag.Search </span> en <span> @ViewBag.DepartmentName </span> </p>
+            @*<div class="ml-md-auto d-flex align-items-center justify-content-between">
+                    <div class="select-bg-transparent select-border">
+                        <select class="select-location">
+                            <option>Popular</option>
+                            <option>Nearest</option>
+                            <option>Recent</option>
+                        </select>
+                    </div>
+                    <div class="icons">
+                        <a class="mr-2" href="listing-grid-fullwidth-without-map.html">
+                            <i class="fa fa-th" aria-hidden="true"></i>
+                        </a>
+                        <a class="active" href="listing-list-fullwidth-without-map.html">
+                            <i class="fa fa-th-list" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>*@
+        </div>
+        @foreach (var Business in Model)
+        {
+
+<div class="card card-list">
+    <div class="row">
+        <div class="col-md-4 col-xl-3">
+            <div class="card-list-img">
+                @if (!string.IsNullOrEmpty(Business.BusinessLogo))
+                {
+<img data-src="/ImagesBusiness/@Business.BusinessLogo" src="/ImagesBusiness/@Business.BusinessLogo" alt="things-4"> }
+else
+{
+<img data-src="/img/listing/listing-4.jpg" src="/img/listing/listing-4.jpg" alt="things-4">}
+
+                @*<span class="badge badge-primary">Verified</span>*@
+            </div>
+        </div>
+
+        <div class="col-md-8 col-xl-9">
+            <div class="card-body p-0">
+                <ul class="list-inline list-inline-rating">
+                    @for (int i = 0; i < Business.BusinessStars; i++)
+                    {
+
+    <li class="list-inline-item">
+        <i class="fa fa-star" aria-hidden="true"></i>
+    </li>}
+                </ul>
+
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h3 class="card-title mb-0">
+                        <a target="_blank" asp-area="Negocios" asp-controller="Negocios" asp-action="GetDetailByBussinesId" asp-route-id="@Business.BusinessId"> @Business.BusinessName </a>
+                    </h3>
+                    @*<button class="btn-like px-2" data-toggle="tooltip" data-placement="top" title="Favourite this listing">
+                            <i class="far fa-heart text-primary" aria-hidden="true"></i>
+                            <span>8 k</span>
+                        </button>*@
+                </div>
+            </div>
+            <span class="d-block mb-4">@Business.DepartmentName </span>
+            <p class="mb-4">
+                @Business.BusinessDescription
+            </p>
+            <div>
+                <a href="#">@Business.CategoryName</a>
+            </div>
+        </div>
+    </div>
+</div>}
+
+        <!-- ====================================
+        ———	pagination
+        ===================================== -->
+        @*<section class="my-5">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item mr-2">
+                            <a class="page-link" href="javascript:void(0)">
+                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active mr-2"><a class="page-link" href="javascript:void(0)">1</a></li>
+                        <li class="page-item mr-2"><a class="page-link" href="javascript:void(0)">2</a></li>
+                        <li class="page-item mr-2"><a class="page-link" href="javascript:void(0)">3</a></li>
+                        <li class="page-item mr-2"><a class="page-link" href="javascript:void(0)">4</a></li>
+                        <li class="page-item mr-2"><a class="page-link" href="javascript:void(0)">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)">
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>*@
+    </div>
+</section>

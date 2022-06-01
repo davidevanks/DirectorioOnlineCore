@@ -43,15 +43,20 @@ namespace Models.ViewModels
         [EmailAddress(ErrorMessage = "Email no valido")]
         [Display(Name = "Email Negocio")]
         public string EmailNegocio { get; set; }
-        [Display(Name = "Sitio Web")]
+        [Url(ErrorMessage ="Dirección web no válida")]
+        [Display(Name = "Sitio Web", Prompt = @"Ej: https://www.sitio.com")]
         public string SitioWebNegocio { get; set; }
-        [Display(Name = "Linkedin")]
+        [Url(ErrorMessage = "Dirección web no válida")]
+        [Display(Name = "Linkedin", Prompt = @"Ej:https://www.linkedin.com/in/usuario/")]
         public string LinkedInUrl { get; set; }
-        [Display(Name = "Facebook")]
+        [Url(ErrorMessage = "Dirección web no válida")]
+        [Display(Name = "Facebook", Prompt = @"Ej:https://www.facebook.com/usuario")]
         public string FacebookUrl { get; set; }
-        [Display(Name = "Instagram")]
+        [Url(ErrorMessage = "Dirección web no válida")]
+        [Display(Name = "Instagram", Prompt = @"Ej:https://www.instagram.com/usuario")]
         public string InstagramUrl { get; set; }
-        [Display(Name = "Twitter")]
+        [Display(Name = "Twitter", Prompt = @"Ej:https://www.twitter.com/usuario")]
+        [Url(ErrorMessage = "Dirección web no válida")]
         public string TwitterUrl { get; set; }
         public bool HasDelivery { get; set; }
         public bool PedidosYa { get; set; }

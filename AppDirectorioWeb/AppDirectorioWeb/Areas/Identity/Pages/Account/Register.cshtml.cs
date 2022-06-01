@@ -151,10 +151,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                   _unitOfWork.UserDetail.Add(userDetail);
                 if (result.Succeeded)
                 {
-                    //_logger.LogInformation("User created a new account with password.");
-
                    
-
                     if (! await _roleManager.RoleExistsAsync(SP.Role_Admin))
                     {
                        await _roleManager.CreateAsync(new IdentityRole(SP.Role_Admin));
@@ -171,8 +168,6 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                    
                         await _userManager.AddToRoleAsync(user, Input.Role);
 
-
-                
 
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

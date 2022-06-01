@@ -1,28 +1,90 @@
-﻿////$('.ti').inputmask({
-////    alias: "datetime",
-////    placeholder: "12:00 AM",
-////    inputFormat: "hh:MM TT",
-////    insertMode: false,
-////    showMaskOnHover: false,
-////    hourFormat: 12
-////});
-
-
-
-
+﻿
 $('#btnCrearCuenta').attr("disabled", true);
+
+$('.cfiinvisible').attr("disabled", true);
+$('.cfisinvisible').attr("disabled", true);
+
 
 $('#chkTerm').click(function () {
     if (document.getElementById('chkTerm').checked) {
-        $(":submit").removeAttr("disabled");
+        $('#btnCrearCuenta').removeAttr("disabled");
     } else {
         $('#btnCrearCuenta').attr("disabled", true);
     }
 });
 
+
+function DeleteLogo(Id) {
+   
+    swal({
+        title: "Estas seguro que desea eliminar este logo?",
+        text: "Una vez borrado, no puedes recuperar el registro",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+
+    }).then((willDelete) => {
+        if (willDelete) {
+
+            
+            $.ajax({
+                type: "GET",
+                url: '/Negocios/Negocios/DeleteLogo/'+Id,
+                success: function (data) {
+                   
+                    if (data.success) {
+                        /*toastr.success(data.message);*/
+                        swal({ title: data.message, icon: "success" });
+                        $('.cfiinvisible').removeAttr("disabled");
+                        $('#adellogo').text('');
+                     
+                    } else {
+                        /*toastr.error(data.message);*/
+                        swal({ title: data.message, icon: "info" });
+                    }
+                }
+            });
+        }
+    });
+}
+
+
+function DeletePictures(Id) {
+   
+    swal({
+        title: "Estas seguro que desea todas las fotos?",
+        text: "Una vez borrado, no puedes recuperar los registros",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+
+    }).then((willDelete) => {
+        if (willDelete) {
+
+            $.ajax({
+                type: "GET",
+                url: '/Negocios/Negocios/DeletePictures/' + Id,
+                success: function (data) {
+
+                    if (data.success) {
+                        /*toastr.success(data.message);*/
+                        swal({ title: data.message, icon: "success" });
+                        $('.cfisinvisible').removeAttr("disabled");
+                        $('#adelpictures').text('');
+                      
+                    } else {
+                        /*toastr.error(data.message);*/
+                        swal({ title: data.message, icon: "info" });
+                    }
+                }
+            });
+        }
+    });
+}
+
 $(document).ready(function () {
 
-    $('.ti').inputmask("99-9999999");
+  
     $('.cfi').on("change", function () {
         $('#logoVal').html('');
         var filename = $(this).val().split("\\").pop();
@@ -57,14 +119,11 @@ $(document).ready(function () {
         var files = $(this)[0].files;
 
 
-        if (files.length > 5) {
-            $('#galVal').html('La cantidad máxima de imagenes son 5');
+        if (files.length > 6) {
+            $('#galVal').html('La cantidad máxima de imagenes son 6');
             fileLabel.html('Selecciona fotos de tus productos/servicios...');
             this.value = '';
         } else {
-
-
-
 
 
 
@@ -83,14 +142,13 @@ $(document).ready(function () {
                 // la extensión del archivo puede estar en mayúscula
                 ext = ext.toLowerCase();
 
-                // console.log(ext);
+              
                 switch (ext) {
                     case 'jpg':
                     case 'jpeg':
                     case 'png': break;
                     default:
 
-                        // alert('El archivo no tiene la extensión adecuada');
                         this.value = ''; // reset del valor
                         $('#galVal').html('Solo se permiten imagenes, favor intentar de nuevo');
                         fileLabel.html('Selecciona fotos de tus productos/servicios...');

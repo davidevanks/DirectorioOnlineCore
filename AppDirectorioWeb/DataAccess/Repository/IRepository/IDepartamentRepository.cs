@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccess.Models;
-using Models.ViewModels;
+﻿using DataAccess.Models;
 
 namespace DataAccess.Repository.IRepository
 {
-   public  interface IDepartamentRepository : IRepository<CatDepartamento>
+    public interface IDepartamentRepository : IRepository<CatDepartamento>
     {
+        #region Public Methods
+
         void Update(CatDepartamento department);
+
+        #endregion Public Methods
     }
 }

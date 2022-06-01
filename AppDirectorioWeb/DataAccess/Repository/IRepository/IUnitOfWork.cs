@@ -1,25 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        ICategoryRepository Category { get; }
-        ISP_Call SP_CALL { get; }
-
-        public IUserDetailsRepository UserDetail { get;  }
-
-        public IDepartamentRepository Departament { get; }
+        #region Public Properties
 
         public IBusinessRepository Business { get; }
-
+        ICategoryRepository Category { get; }
+        public IDepartamentRepository Departament { get; }
         public IFeatureNegocioRepository Feature { get; }
-        public IScheduleBusinessRepository ScheduleBusiness { get; }
         public IImagesBusinessRepository ImageBusiness { get; }
+        public IReviewRepository Review { get; }
+        public IScheduleBusinessRepository ScheduleBusiness { get; }
+        ISP_Call SP_CALL { get; }
+
+        public IUserDetailsRepository UserDetail { get; }
+
+        #endregion Public Properties
+
+        #region Public Methods
+
         void Save();
+
+        #endregion Public Methods
     }
 }

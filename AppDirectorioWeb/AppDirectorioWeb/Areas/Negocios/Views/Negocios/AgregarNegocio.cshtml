@@ -1,4 +1,7 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @model Models.ViewModels.AddUpdBusinessViewModel;
 
 
@@ -14,83 +17,89 @@
             </ul>
         </nav>
 
-        <form enctype="multipart/form-data" id="form_atencion" asp-action="AgregarNegocio" asp-controller="Negocios" asp-antiforgery="true" method="post">
-            <div class="card">
-                <div class="card-body px-6 pt-6 pb-1">
-                    <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
-                    <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
-
-                    <div class="row">
-
-                        <div class="form-group col-md-6 mb-4">
-                            @*<label for="inputAddress">Dirección Email*</label>
-                                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
-
-                            <label asp-for="User.Email"></label>
-                            <input  asp-for="User.Email" class="form-control" />
-                            <span asp-validation-for="User.Email" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-6 mb-4"></div>
-                        <div class="form-group col-md-6 mb-4">
-                            @*<label for="inputAddress">Dirección Email*</label>
-                                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
-
-                            <label asp-for="User.FullName"></label>
-                            <input asp-for="User.FullName" class="form-control" />
-                            <span asp-validation-for="User.FullName" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-6 mb-4"></div>
-                        <div class="form-group col-md-6 mb-4">
-                            @*<label for="inputAddress">Dirección Email*</label>
-                                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
-
-                            <label asp-for="User.Telefono"></label>
-                            <input asp-for="User.Telefono" class="form-control" />
-                            <span asp-validation-for="User.Telefono" class="text-danger"></span>
-                        </div>
+        <form enctype="multipart/form-data" id="form_atencion"  asp-controller="Negocios" asp-antiforgery="true" method="post">
+            @if (!SignInManager.IsSignedIn(User))
+            {
 
 
-                        <div class="form-group col-md-6 mb-4"></div>
-                        <div class="form-group col-md-4 mb-4">
-                            @*<label for="inputPassword">Contraseña*</label>
-                                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <div class="card">
+                    <div class="card-body px-6 pt-6 pb-1">
+                        <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
+                        <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
 
-                            <label asp-for="User.Password"></label>
-                            <input asp-for="User.Password" class="form-control" />
-                            <span asp-validation-for="User.Password" class="text-danger"></span>
-                        </div>
+                        <div class="row">
 
-                        <div class="form-group col-md-4 mb-4">
-                            @*<label for="inputPassword">Contraseña*</label>
-                                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                            <div class="form-group col-md-6 mb-4">
+                                @*<label for="inputAddress">Dirección Email*</label>
+                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
-                            <label asp-for="User.ConfirmPassword"></label>
-                            <input asp-for="User.ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col-md-4 mb-4">
-
-
-                        </div>
-                        <div class="form-group col-md-6 mb-4">
-                            <div class="checkbox">
-                                <label>
-                                    <input id="chkTerm" type="checkbox">
-                                    Estoy de acuerdo con los <a href="terms-of-services.html">Terminos de uso</a> &amp; <a href="#">Política de privacidad</a>.
-                                </label>
+                                <label asp-for="User.Email"></label>
+                                <input asp-for="User.Email" class="form-control" />
+                                <span asp-validation-for="User.Email" class="text-danger"></span>
                             </div>
+                            <div class="form-group col-md-6 mb-4"></div>
+                            <div class="form-group col-md-6 mb-4">
+                                @*<label for="inputAddress">Dirección Email*</label>
+                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+
+                                <label asp-for="User.FullName"></label>
+                                <input asp-for="User.FullName" class="form-control" />
+                                <span asp-validation-for="User.FullName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6 mb-4"></div>
+                            <div class="form-group col-md-6 mb-4">
+                                @*<label for="inputAddress">Dirección Email*</label>
+                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+
+                                <label asp-for="User.Telefono"></label>
+                                <input asp-for="User.Telefono" class="form-control" />
+                                <span asp-validation-for="User.Telefono" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group col-md-6 mb-4"></div>
+                            <div class="form-group col-md-4 mb-4">
+                                @*<label for="inputPassword">Contraseña*</label>
+                                    <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+
+                                <label asp-for="User.Password"></label>
+                                <input asp-for="User.Password" class="form-control" />
+                                <span asp-validation-for="User.Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group col-md-4 mb-4">
+                                @*<label for="inputPassword">Contraseña*</label>
+                                    <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+
+                                <label asp-for="User.ConfirmPassword"></label>
+                                <input asp-for="User.ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4 mb-4">
+
+
+                            </div>
+                            <div class="form-group col-md-6 mb-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="chkTerm" type="checkbox">
+                                        Estoy de acuerdo con los <a target="_blank" asp-area="Home" asp-controller="Home" asp-action="GetTermsAndConditions">Terminos y Condiciones de uso</a>.
+                                    </label>
+                                </div>
+                            </div>
+
+
                         </div>
-
-
                     </div>
-                </div>
-            </div>
 
+                </div>
+            }
             <div class="card">
                 <div class="card-body px-6 pt-6 pb-1">
                     <h3 class="h4 mb-4">Información del negocio</h3>
                     <p class="mb-5">No somos responsables de ningún daño causado por el uso de este sitio web o por publicar listados de negocios aquí. Utilice nuestro sitio a su propia discreción y ejerza el buen juicio, así como el sentido común al anunciar negocios aquí.</p>
-
+                    <input asp-for="Business.Id" type="hidden"/>
+                    <input asp-for="Business.IdUserOwner" type="hidden"/>
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="listingTitle">Nombre del negocio</label>
@@ -108,12 +117,12 @@
 
                         <div class="form-group col-md-12 mb-6">
                             <label for="discribeTheListing">Descripción del negocio</label>
-                            <textarea asp-for="Business.DescripcionNegocio" class="form-control" rows="6"  required></textarea>
+                            <textarea asp-for="Business.DescripcionNegocio" class="form-control" rows="6" required></textarea>
                             <span asp-validation-for="Business.DescripcionNegocio" class="text-danger"></span>
                         </div>
 
                         <div class="form-group col-md-12 mb-6">
-                            <label for="addTags">Tags</label>
+                            <label for="addTags">Tags (Los tags son como palabras claves con las cuales el usuario te puede buscar)</label>
                             <input asp-for="Business.Tags" class="form-control" />
                             <span asp-validation-for="Business.Tags" class="text-danger"></span>
                         </div>
@@ -151,7 +160,7 @@
 
                             <div class="form-group mb-6">
                                 <label for="discribeTheListing">Dirección del negocio</label>
-                                <textarea asp-for="Business.DireccionNegocio" class="form-control" rows="3"  required></textarea>
+                                <textarea asp-for="Business.DireccionNegocio" class="form-control" rows="3" required></textarea>
                                 <span asp-validation-for="Business.DireccionNegocio" class="text-danger"></span>
                             </div>
 
@@ -293,13 +302,14 @@
                         <div class="col-md-6">
                             <div class="form-group form-check mb-6 ">
                                 <div class="row align-items-center form-check-readonly">
-                                    @for(int i = 0; i < Model.FeatureNegocios.Count; i++)
+                                    @for (int i = 0; i < Model.FeatureNegocios.Count; i++)
                                     {
-                                        <div class="col-6">
-                                            <input type="hidden" asp-for="@Model.FeatureNegocios[i].IdFeature" />
-                                            <input asp-for="@Model.FeatureNegocios[i].Activo" type="checkbox" class="form-check-input" >
-                                            <label class="form-check-label">@Model.FeatureNegocios[i].Feature</label>
-                                        </div>
+                                    <div class="col-6">
+                                        <input type="hidden" asp-for="@Model.FeatureNegocios[i].Id" />
+                                        <input type="hidden" asp-for="@Model.FeatureNegocios[i].IdFeature" />
+                                        <input asp-for="@Model.FeatureNegocios[i].Activo" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label">@Model.FeatureNegocios[i].Feature</label>
+                                    </div>
                                     }
 
 
@@ -313,22 +323,23 @@
                 </div>
             </div>
 
-            
+
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Horario de atención</h3>
-                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm </p>
+                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer check en cada día, los días que no tengan el check saldrán como cerrados)</p>
 
                     <div class="row">
-                        @for(int i = 0; i < Model.HorarioNegocios.Count; i++ )
+                        @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
                         {
                             <div class="col-md-6">
                                 <div class="form-group form-check mb-6 ">
                                     <div class="row align-items-center form-check-readonly">
                                         <div class="col-3">
+                                            <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
                                             <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
                                             <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
-                                            <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia"/>
+                                            <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
                                         </div>
                                         <div class="col-3 pr-0">
                                             <input asp-for="@Model.HorarioNegocios[i].HoraDesde" type="time" class="form-control form-control-sm ti" placeholder="10:00am">
@@ -356,13 +367,30 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
+                    <input asp-for="@Model.Business.LogoNegocio" type="hidden"/>
 
-                    <div class="form-group col-md-5">
 
-                        <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
-                        <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
-                        <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
-                    </div>
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && Model.ImagenesNegocios!=null)
+                    {
+                        <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
+
+                        <div class="form-group col-md-5">
+
+                            <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PicturesBusiness" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-5">
+
+                            <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        </div>
+                    }
 
 
                 </div>
@@ -371,13 +399,27 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Logo de negocio</h3>
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && !string.IsNullOrEmpty(Model.Business.LogoNegocio))
+                    {
+                        <a id="adellogo" onclick="DeleteLogo(@Model.Business.Id)"  class="text-danger">@Model.Business.LogoNegocio     Eliminar <span class="fa fa-close"></span></a>
 
-                    <div class="form-group col-md-5">
+                        <div class="form-group col-md-5">
+                            <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi cfiinvisible">
+                            <label class="custom-file-label cfl ">Selecciona el logo de tu negocio...</label>
+                            <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
+                        </div>
 
-                        <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
-                        <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
-                        <span class="text-danger field-validation-error" ><span id="logoVal" class=""></span></span>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-5">
+                            <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
+                            <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
+                            <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
+                        </div>
+                    }
+
+
 
 
                 </div>
@@ -388,7 +430,15 @@
             <div class="row justify-content-center">
                 <div class="col-md-7 col-lg-6 col-xl-5">
                     <div class="mb-6">
-                        <button id="btnCrearCuenta" type="submit" class="btn btn-lg btn-primary btn-block">Crear Negocio</button>
+                        @if (Model.Business.Id == 0 || Model.Business.Id == null)
+                        {
+                            <button formaction="AgregarNegocio" id="btnCrearCuenta" type="submit" class="btn btn-lg btn-primary btn-block">Crear Negocio</button>
+                        }
+                        else
+                        {
+                            <button formaction="AgregarNegocio" id="btnUpdateNegocio" type="submit" class="btn btn-lg btn-primary btn-block">Actualizar Negocio</button>
+                        }
+
                     </div>
                 </div>
             </div>

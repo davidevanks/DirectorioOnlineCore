@@ -1,16 +1,13 @@
-﻿
+﻿using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-
+using Microsoft.AspNetCore.Mvc;
+using Models.ViewModels;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -19,119 +16,58 @@ namespace AppDirectorioWeb.Controllers
     {
         #region Private Fields
 
-       
-        private readonly string _backendApiUrlSeguridad;
-        private readonly string _backendApiUrlNegocio;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IWebHostEnvironment hostingEnvironment;
+
         #endregion Private Fields
 
         #region Public Constructors
 
-        public AccountController( IConfiguration configuration, SignInManager<IdentityUser> signInManager)
+        public AccountController(SignInManager<IdentityUser> signInManager, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, IWebHostEnvironment hostingEnvironment)
         {
-          
-            _backendApiUrlSeguridad= configuration["BackendApiUrlSeguridad"];
             _signInManager = signInManager;
-            _backendApiUrlNegocio = configuration["BackendApiUrlNegocio"];
+            _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         #endregion Public Constructors
 
         #region Public Methods
 
-        [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        [Authorize]
+        public IActionResult ChangePassword(UserViewModel userProfile)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+            var user = _userManager.FindByNameAsync(userProfile.UserName).Result;
+            var changePasswordResult = _userManager.ChangePasswordAsync(user, userProfile.ChangePassword.OldPassword, userProfile.ChangePassword.NewPassword).Result;
+            if (!changePasswordResult.Succeeded)
+            {
+                return View(nameof(GetMyProfile), userProfileUpdated);
+            }
+
+            _signInManager.RefreshSignInAsync(user);
+
+            ViewBag.UpdatedPass = "1";
+
+            return View(nameof(GetMyProfile), userProfileUpdated);
         }
 
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login()
+        [Authorize]
+        public IActionResult GetMyProfile(string userName)
         {
-            ////returnUrl = context.Result;
-            //ReturnUrl ??= Url.Content("~/");
-            //ViewData["MessageErrorLogin"] = "";
-            //ViewData["ReturnUrl"] = ReturnUrl;
-            //if (ModelState.IsValid)
-            //{
-            //    var response = await _backendHelper.PostAsync<ResponseViewModel>(_backendApiUrlSeguridad+"/api/Account/api/Login", model);
+            var user = _userManager.FindByNameAsync(userName);
 
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.Success && !String.IsNullOrEmpty(response.Token.Token))
-            //    {
-            //        var token = _decode.DecodeToken(response.Token.Token);
-            //        int expiration = Convert.ToInt32(token.Claims.First(c => c.Type == "DurationToken").Value);
-            //        HttpContext.Session.SetString("Token", response.Token.Token);
-                 
-            //        if (String.IsNullOrEmpty(ReturnUrl))
-            //        {
-            //            return RedirectToAction("Index", "Home");
-            //        }
-            //        return LocalRedirect(ReturnUrl);
-            //    }
-
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.IncorrectPassword || response.MessageResponseCode == ResponseViewModel.MessageCode.UserNotExist || response.MessageResponseCode == ResponseViewModel.MessageCode.InvalidInformation)
-            //    {
-            //        ViewData["MessageErrorLogin"] = "Email o password inválidos";
-            //    }
-
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.EmailNotConfirmed)
-            //    {
-            //        ViewData["MessageErrorLogin"] = "Por favor revise su correo y confirme su cuenta para poder ingresar";
-            //    }
-            //    if (response.MessageResponseCode == ResponseViewModel.MessageCode.Failed)
-            //    {
-            //        ViewData["MessageErrorLogin"] = "Ha ocurrido un error.";
-            //    }
-            //}
-
-            return View();
+            UserViewModel userProfile = _unitOfWork.UserDetail.GetAUsersDetails(user.Result.Id).FirstOrDefault();
+            return View(userProfile);
         }
 
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register(string IsBussines)
+        public IActionResult Logout(string returnUrl = null)
         {
-          
-            return View();
-        }
+            _signInManager.SignOutAsync();
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register()
-        {
-           
-            return View();
-        }
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult RegisterSuccess()
-        {
-           
-            return View();
-        }
-
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
-        {
-            
-           
-            return View();
-        }
-
-    
-
-        public async Task<IActionResult> Logout(string returnUrl = null)
-        {
-            await _signInManager.SignOutAsync();
-           
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
@@ -140,6 +76,44 @@ namespace AppDirectorioWeb.Controllers
             {
                 return Redirect("~/Home/Index");
             }
+        }
+
+        [Authorize]
+        public IActionResult UpdateMyPictureProfile(UserViewModel userProfile)
+        {
+            string uniqueFileName = "";
+            if (userProfile.Picture != null)
+            {
+                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                uniqueFileName = Guid.NewGuid().ToString() + "_picprofile_" + userProfile.Picture.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                FileStream s = new FileStream(filePath, FileMode.Create);
+                userProfile.Picture.CopyTo(s);
+
+                s.Close();
+                s.Dispose();
+            }
+            userProfile.ProfilePicture = uniqueFileName;
+            _unitOfWork.UserDetail.UpdateProfilePicture(userProfile);
+            _unitOfWork.Save();
+            var user = _userManager.FindByNameAsync(userProfile.UserName).Result;
+            _signInManager.RefreshSignInAsync(user);
+            UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+
+            return View(nameof(GetMyProfile), userProfileUpdated);
+        }
+
+        [Authorize]
+        public IActionResult UpdateMyProfile(UserViewModel userProfile)
+        {
+            userProfile.UpdateUser = HttpContext.Session.GetString("UserId");
+            userProfile.UpdateDate = DateTime.Now;
+            userProfile.UserName = userProfile.Email;
+            _unitOfWork.UserDetail.Update(userProfile);
+            _unitOfWork.Save();
+            UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
+            ViewBag.Updated = "1";
+            return View(nameof(GetMyProfile), userProfileUpdated);
         }
 
         #endregion Public Methods

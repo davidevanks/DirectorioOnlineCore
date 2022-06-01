@@ -1,15 +1,23 @@
 ﻿using DataAccess.Models;
-using System;
+using Models.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repository.IRepository
 {
     public interface IScheduleBusinessRepository : IRepository<HorarioNegocio>
     {
-        void Update(HorarioNegocio schedule);
+        #region Public Methods
+
+        List<HorarioNegocioViewModel> GetScheduleListByBusinessId(int id);
+
+        List<HorarioNegocioViewModel> GetScheduleListToEditByBusinessId(int id);
+
         void InsertList(List<HorarioNegocio> schedules);
+
+        void Update(HorarioNegocio schedule);
+
+        void UpdateList(List<HorarioNegocio> schedules);
+
+        #endregion Public Methods
     }
 }

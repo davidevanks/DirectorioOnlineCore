@@ -1,4 +1,7 @@
-﻿@{
+﻿@using DataAccess.Repository.IRepository;
+@inject IUnitOfWork _unitOfWork;
+@model Models.ViewModels.LookForBusinessViewModel;
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -12,32 +15,25 @@
                         Explora. Descubre. Comparte
                     </h1>
                     <p class="lead text-white">
-                        Brújula Pyme te ayuda a encontrar increibles negocios a tu alrededor
+                        Brújula Pyme te ayuda a encontrar negocios locales a tu alrededor
                     </p>
                 </div>
 
                 <!-- Search Box -->
                 <div class="search-box-2">
-                    <form class="row g-2 justify-content-center" asp-controller="Home" asp-action="SeachBussines" method="GET">
+                    <form class="row g-2 justify-content-center" asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusiness" method="POST">
 
                         <div class="form-group col-md-5 col-lg-4 mb-0">
                             <div class="input-group mb-2">
                                 <div class="input-group-text">Buscar</div>
-                                <input  type="text" class="form-control" placeholder="Que estas buscando?">
+                                <input asp-for="Search" type="text" class="form-control" placeholder="Que estas buscando?">
                             </div>
                         </div>
 
                         <div class="form-group prepend-append col-md-5 col-lg-4 mb-0">
                             <div class="input-group mb-2">
                                 <div class="input-group-text">Cerca de</div>
-                                <input  type="text" id="txtplaces" class="form-control" placeholder="Ubicación">
-                                @*<span  class="input-group-text bg-white ps-1" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Usar mi ubicación">
-                                        <i class="icon-listy icon-target" aria-hidden="true"></i>
-                                    </span>*@
-                                <button  type="button" class="input-group-text bg-white ps-1" data-bs-toggle="tooltip" data-bs-placement="left" title="" data-bs-original-title="Usar mi ubicación">
-
-                                    <i class="icon-listy icon-target" aria-hidden="true"></i>
-                                </button>
+                                @Html.DropDownListFor(m => m.IdDepartamento, Model.Departamentos, "- SELECCIONA UN DEPARTAMENTO -", new { @class = "form-control" })
                             </div>
                         </div>
 
@@ -47,8 +43,8 @@
                                 <i class="fas fa-search" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <input  type="hidden" id="lonF" />
-                        <input  type="hidden" id="latF" />
+                        <input type="hidden" id="lonF" />
+                        <input type="hidden" id="latF" />
                     </form>
                 </div>
             </div>
@@ -56,9 +52,34 @@
     </div>
 
 </section>
+<section class="pt-md-10 sec-pb-70 pt-8 pb-6 bg-light">
+    <div class="container">
+        <div class="section-title">
+            <h2>Que te interesa encontrar?</h2>
+            <p>Explora y conecta con negocios locales</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-lg-3 col-xs-12">
+                <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">
+                    <div class="card-body text-center">
+                        @*<div class="icon-md">
+                        <i class="icon-listy icon-more"></i>
+                    </div>*@
+                        <span class="h5">Ver todo</span>
+                    </div>
+                </a>
+            </div>
+            @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness().ToList())
+            {
+                <div class="col-md-4 col-lg-3 col-xs-12">
+                    <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">
+                        <div class="card-body text-center">
+                            <span class="h5">@item.Nombre</span>
+                        </div>
+                    </a>
+                </div>
+            }
 
-
-
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpu1uIOHN3nx3y6dzStDmtSZD83-Jebx0&sensor=false&libraries=places"></script>
-@*<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpu1uIOHN3nx3y6dzStDmtSZD83-Jebx0&callback=initMap"></script>*@
-
+        </div>
+    </div>
+</section>

@@ -35,5 +35,7 @@ namespace Models.ViewModels
         [Display(Name = "Confirmar password")]
         [Compare("Password", ErrorMessage = "El password y la confirmación de password no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        public string PictureProfile { get; set; }
     }
 }

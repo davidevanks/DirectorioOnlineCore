@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic.CompilerServices;
-
-namespace Utiles
+﻿namespace Utiles
 {
     public class SP
     {
-        public const string Proc_GetAllCatTest = "usp_GetAllCategoriesTest";
+        #region Public Fields
 
+        public const string Proc_GetAllBusinessBySearch = "usp_GetAllBusinessBySearch";
+        public const string Proc_GetAllCatTest = "usp_GetAllCategoriesTest";
         public const string Role_Admin = "Admin";
-        public const string Role_Customer = "Soy Cliente";
         public const string Role_BusinesAdmin = "Soy Emprendedor";
+        public const string Role_Customer = "Soy Cliente";
+
+        #endregion Public Fields
     }
 }

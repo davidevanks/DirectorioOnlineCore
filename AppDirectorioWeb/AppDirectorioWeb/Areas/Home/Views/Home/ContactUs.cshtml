@@ -1,0 +1,87 @@
+﻿@model Models.ViewModels.ContactUsViewModel;
+<section class="py-7 py-md-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-lg-4">
+          
+            <ul class="list-unstyled">
+                    @*<li class="d-flex align-items-start mb-3">
+                        <i class="fas fa-map-marker-alt mr-3 mt-1" aria-hidden="true"></i>
+                        <span>2880 Broadway, New York, NY 10025, USA</span>
+                    </li>*@
+                    <li class="d-flex align-items-start mb-3">
+                        <i class="fas fa-phone-alt mr-3 mt-1" aria-hidden="true"></i>
+                        <div>
+                            <a class="text-muted" href="tel:+55 654 545 122">+55 654 545 122</a> <br>
+                            <a class="text-muted" href="tel:+55 654 545 123">+55 654 545 123</a>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-start mb-3">
+                        <i class="fa fa-envelope mr-3 mt-1" aria-hidden="true"></i>
+                        <div>
+                            <a class="text-muted" href="mailto:info@example.com">info@example.com</a>
+                            <a class="text-muted" href="mailto:info@startravelbangladesh.com">info@startravelbangladesh.com</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- Get inTouch -->
+            <div class="col-md-7 col-lg-8">
+                <h2 class="font-weight-normal my-4 mt-md-0">Contáctenos</h2>
+                <p class="mb-6">No dude en contactarnos si tiene consultas, necesita más información o tiene cualquier otra solicitud.</p>
+                <hr>
+
+                <form id="frmContactUs" class="pt-4">
+                <div class="row">
+                    <!-- Subject -->
+                    <div class="form-group col-md-6 mb-6">
+                        <label asp-for="Subject"></label>
+                        <input id="txtSubject" asp-for="Subject" class="form-control" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
+                    </div>
+
+                    <!-- Company Name -->
+                    <div class="form-group col-md-6 mb-6">
+                        <label asp-for="CompanyName"></label>
+                        <input id="txtCompanyName" asp-for="CompanyName" class="form-control" />
+                        <span asp-validation-for="CompanyName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Your Name -->
+                <div class="form-group mb-6">
+                    <label asp-for="PersonName"></label>
+                    <input id="txtPersonName" asp-for="PersonName" class="form-control" />
+                    <span asp-validation-for="PersonName" class="text-danger"></span>
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group mb-6">
+                    <label asp-for="Email"></label>
+                    <input id="txtEmail" asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-6">
+                    <label asp-for="Phone"></label>
+                    <input id="txtPhone"  asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <!-- Text -->
+                <div class="form-group mb-6">
+                    <label asp-for="Message"></label>
+                    <textarea id="txtMessage"  asp-for="Message" class="form-control" rows="6"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <!-- Button -->
+                <button id="btnSendMessage" class="btn btn-primary text-uppercase px-5 py-3">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Handlers/ContactUsHandler.js"></script>
+}
