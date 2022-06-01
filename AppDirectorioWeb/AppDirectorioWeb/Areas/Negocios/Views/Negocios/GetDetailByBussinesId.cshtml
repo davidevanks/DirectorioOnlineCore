@@ -21,31 +21,36 @@
                     <p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
                     <p class="text-muted mb-1"> <i class="fas fa-phone-alt text-primary mr-1"></i> @Model.Business.TelefonoNegocio1</p>
                     <p class="text-muted mb-1"> <i class="fas fa-mail-bulk text-primary mr-1"></i> @Model.Business.EmailNegocio</p>
+                    @if (!string.IsNullOrEmpty(Model.Business.SitioWebNegocio))
+                    {
+                       <a target="_blank" href="@Model.Business.SitioWebNegocio"><p class="text-muted mb-1"> <i class="fas fa-globe  text-primary mr-1"></i> @Model.Business.SitioWebNegocio</p></a> 
+                    }
+
 
 
                     <div class="d-flex align-items-center">
                         <ul id="mainStarsUl" class="list-inline list-inline-rating mr-2">
                             @*<li class="list-inline-item">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </li>
-                        <li class="list-inline-item">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                        </li>*@
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </li>
+                <li class="list-inline-item">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </li>*@
                         </ul>
                         <span id="spanReviewCount" class="d-inline-block mr-2">(5 Reseñas)</span>
                         @*<button class="btn-like px-2" data-toggle="tooltip" data-placement="top" title="Favourite this listing">
-                        <i class="far fa-heart text-primary" aria-hidden="true"></i>
-                        <span>5 k</span>
-                    </button>*@
+                <i class="far fa-heart text-primary" aria-hidden="true"></i>
+                <span>5 k</span>
+            </button>*@
                     </div>
                 </div>
             </div>
@@ -121,32 +126,32 @@
                             @if (!String.IsNullOrEmpty(Model.Business.FacebookUrl))
                             {
                                 <li class="list-inline-item">
-                                    <a class="mr-2" href="@Model.Business.FacebookUrl">
+                                    <a target="_blank" class="mr-2" href="@Model.Business.FacebookUrl">
                                         <i class="fab fa-facebook-square" aria-hidden="true"></i>
                                     </a>
                                 </li>
                             }
                             @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
                             {
-                                <li class="list-inline-item">
-                                    <a class="mr-2" href="@Model.Business.InstagramUrl">
-                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                <li  class="list-inline-item">
+                                    <a target="_blank" class="mr-2" href="@Model.Business.InstagramUrl">
+                                        <i class="fab  fa-instagram" aria-hidden="true"></i>
                                     </a>
                                 </li>
                             }
                             @if (!String.IsNullOrEmpty(Model.Business.TwitterUrl))
                             {
                                 <li class="list-inline-item">
-                                    <a class="mr-2" href="@Model.Business.TwitterUrl">
-                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    <a target="_blank" class="mr-2" href="@Model.Business.TwitterUrl">
+                                        <i class="fab fa-twitter" aria-hidden="true"></i>
                                     </a>
                                 </li>
                             }
                             @if (!String.IsNullOrEmpty(Model.Business.LinkedInUrl))
                             {
                                 <li class="list-inline-item">
-                                    <a class="mr-2" href="@Model.Business.LinkedInUrl">
-                                        <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                                    <a target="_blank" class="mr-2" href="@Model.Business.LinkedInUrl">
+                                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
                                     </a>
                                 </li>
                             }

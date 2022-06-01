@@ -47,6 +47,7 @@ namespace DataAccess.Repository
                              FacebookUrl = b.FacebookUrl,
                              InstagramUrl = b.InstagramUrl,
                              LinkedInUrl = b.LinkedInUrl,
+                             SitioWebNegocio=b.SitioWebNegocio,
                              HasDelivery = (bool)b.HasDelivery,
                              PedidosYa = (bool)b.PedidosYa,
                              Piki = (bool)b.Piki,
