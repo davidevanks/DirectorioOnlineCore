@@ -19,6 +19,7 @@ namespace AppDirectorioWeb.Controllers
         #region Private Fields
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger<HomeController> _logger;
 
         #endregion Private Fields
 
@@ -28,22 +29,33 @@ namespace AppDirectorioWeb.Controllers
         {
             _unitOfWork = unitOfWork;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         #endregion Public Constructors
 
         #region Public Methods
-
-        public IActionResult Error()
+       
+        public IActionResult Error(int? statusCode = null)
         {
             var exceptionHandlerPathFeature =
             HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+        
+            switch (statusCode)
+            {
+                case 404:
+                    _logger.LogError("Esta página no existe!");
+                    break;
+            
+
+            }
 
             return View();
         }
 
         public IActionResult Index()
         {
+            
             LookForBusinessViewModel model = new LookForBusinessViewModel();
             model.IdDepartamento = "10";
 
