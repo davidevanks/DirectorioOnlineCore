@@ -68,9 +68,16 @@ function float2int(value) {
 
 jQuery.extend(jQuery.validator.messages, {
     required: "Este campo es requerido.",
+    email: "Por favor ingresar un email válido."
   
 });
+
 $('#btnSendReview').click(function () {
+
+    //if ($('#fnEmail').val() == '')
+    //{
+    //    $('#fnEmail').focus();
+    //}
 
     if ($('#reviewForm').valid() == false || ratingToSave===0) {
     
@@ -86,7 +93,7 @@ $('#btnSendReview').click(function () {
             e.preventDefault();
         });
 
-        var model = { IdBusiness: $('#IBusinessId').val(), IdUser: $('#iUserId').val(), FullName: $('#fnComplete').val(), Comments: $('#txtAreaComments').val(), Stars: ratingToSave, Active: true};
+        var model = { IdBusiness: $('#IBusinessId').val(), IdUser: $('#iUserId').val(), FullName: $('#fnComplete').val(), Comments: $('#txtAreaComments').val(), Stars: ratingToSave, Active: true, EmailComment: $('#fnEmail').val()};
 
         $.ajax({
             type: "POST",
@@ -99,7 +106,7 @@ $('#btnSendReview').click(function () {
                     loadReviews();
                     $('#txtAreaComments').val('');
                     $('#txtErrorStarsRev').text('');
-
+                    $('#fnEmail').val('');
                     $("#starsToAdd").rateYo("destroy");
 
 

@@ -332,28 +332,29 @@
                     <form id="reviewForm">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <div class="form-check form-check-inline mb-6 mr-lg-7">
-                                <input id="iUserId" type="hidden" value="@UserManager.FindByNameAsync(User.Identity.Name).Result.Id" />
-                                <input type="hidden" value="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName" id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" />
-                                <input readonly class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"
-                                       checked>
-                                <label class="form-check-label" for="inlineRadio1">
-                                    <div class="media media-xs align-items-center">
-                                        @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
-                                        {
-                                            <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
-                                        }
-                                        else
-                                        {
-                                            <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/avatar-01.png" alt="Image">
-                                        }
-                                        @*<img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-2 media-object rounded-circle lazyestload" alt="Image User">*@
-                                        <div class="media-body">
-                                            <h5 class="media-heading mb-0">@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName</h5>
-                                        </div>
+                        <div class="form-check form-check-inline mb-6 mr-lg-7">
+                            <input id="iUserId" type="hidden" value="@UserManager.FindByNameAsync(User.Identity.Name).Result.Id" />
+                            <input type="hidden" value="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName" id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" />
+                            <input readonly class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"
+                                   checked>
+                            <input type="hidden" value="-" id="fnEmail" class="form-control" />
+                            <label class="form-check-label" for="inlineRadio1">
+                                <div class="media media-xs align-items-center">
+                                    @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
+                                    {
+                                        <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                    }
+                                    else
+                                    {
+                                        <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/avatar-01.png" alt="Image">
+                                    }
+                                    @*<img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-2 media-object rounded-circle lazyestload" alt="Image User">*@
+                                    <div class="media-body">
+                                        <h5 class="media-heading mb-0">@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName</h5>
                                     </div>
-                                </label>
-                            </div>
+                                </div>
+                            </label>
+                        </div>
                         }
                         else
                         {
@@ -362,19 +363,23 @@
 
                                 <input id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" required />
                             </div>
+                            <div class="form-group mb-6">
+
+                                <input type="email" name="email" id="fnEmail" class="form-control" placeholder="Escribe tu correo"  required/>
+                            </div>
                         }
 
                         @*<div class="form-check form-check-inline mb-6">
-                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                <label class="form-check-label" for="inlineRadio2">
-                    <div class="media media-xs align-items-center">
-                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
-                        <div class="media-body">
-                            <h5 class="media-heading mb-0">Anonymous</h5>
-                        </div>
+            <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            <label class="form-check-label" for="inlineRadio2">
+                <div class="media media-xs align-items-center">
+                    <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
+                    <div class="media-body">
+                        <h5 class="media-heading mb-0">Anonymous</h5>
                     </div>
-                </label>
-            </div>*@
+                </div>
+            </label>
+        </div>*@
                         <div class="form-group mb-6">
                             <textarea id="txtAreaComments" name="reviewDescription" class="form-control" rows="6" placeholder="Escribe tu reseña" required></textarea>
                         </div>
