@@ -44,14 +44,14 @@
                 <div class="card card-list">
                     <div class="row">
                         <div class="col-md-4 col-xl-3">
-                            <div class="card-list-img">
+                            <div class="card-list-img" style=" width: 280px !important; ">
                                 <a target="_blank" asp-area="Negocios" asp-controller="Negocios" asp-action="GetDetailByBussinesId" asp-route-id="@Business.BusinessId">
                                     @if (!string.IsNullOrEmpty(Business.BusinessLogo))
                                     {
-                                        <img height="210" width="262" data-src="/ImagesBusiness/@Business.BusinessLogo" src="/ImagesBusiness/@Business.BusinessLogo" alt="things-4"> }
+                                        <img height="210" width="270" data-src="/ImagesBusiness/@Business.BusinessLogo" src="/ImagesBusiness/@Business.BusinessLogo" alt="things-4"> }
                                     else
                                     {
-                                        <img height="210" width="262" data-src="/img/listing/listing-4.jpg" src="/img/listing/listing-4.jpg" alt="things-4">}
+                                        <img height="210" width="270" data-src="/img/listing/defaultImage1.png" src="/img/listing/defaultImage1.png" alt="things-4">}
                                 </a>
                                 @*<span class="badge badge-primary">Verified</span>*@
                             </div>
