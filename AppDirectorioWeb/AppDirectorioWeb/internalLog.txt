@@ -1,0 +1,25 @@
+2022-06-07 14:32:46.6857 Info Message Template Auto Format enabled
+2022-06-07 14:32:46.7249 Info Loading assembly: NLog.Web.AspNetCore
+2022-06-07 14:32:46.7381 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: EventLog
+ ---> System.ArgumentException: Target symbol-name is unknown: 'EventLog'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-06-07 14:32:46.8663 Info Adding target FileTarget(Name=file)
+2022-06-07 14:32:46.8837 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'eventlog' not found for logging rule: *.
+2022-06-07 14:32:46.8837 Info Closing old configuration.
+2022-06-07 14:32:46.9032 Info Validating config: TargetNames=file, ConfigItems=24, FilePath=D:\Personal Kenneth\Proyecto Directorio en linea\Proyecto net Core\AppDirectorio\DirectorioOnlineCore\AppDirectorioWeb\AppDirectorioWeb\NLog.config
+2022-06-07 14:32:47.2693 Info Shutdown() called. Logger closing...
+2022-06-07 14:32:47.2693 Info Closing old configuration.
+2022-06-07 14:32:47.2843 Info Logger has been closed down.
+2022-06-07 14:33:31.2587 Info Message Template Auto Format enabled
+2022-06-07 14:33:31.2825 Info Loading assembly: NLog.Web.AspNetCore
+2022-06-07 14:33:31.2955 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: EventLog
+ ---> System.ArgumentException: Target symbol-name is unknown: 'EventLog'
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-06-07 14:33:31.3910 Info Adding target FileTarget(Name=file)
+2022-06-07 14:33:31.3910 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'eventlog' not found for logging rule: *.
+2022-06-07 14:33:31.3910 Info Closing old configuration.
+2022-06-07 14:33:31.4141 Info Validating config: TargetNames=file, ConfigItems=24, FilePath=D:\Personal Kenneth\Proyecto Directorio en linea\Proyecto net Core\AppDirectorio\DirectorioOnlineCore\AppDirectorioWeb\AppDirectorioWeb\NLog.config

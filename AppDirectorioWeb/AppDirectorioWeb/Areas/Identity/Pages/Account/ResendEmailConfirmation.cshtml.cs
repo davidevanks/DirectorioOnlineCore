@@ -31,8 +31,8 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage ="Email es requerido!")]
+            [EmailAddress(ErrorMessage ="Email no válido!")]
             public string Email { get; set; }
         }
 

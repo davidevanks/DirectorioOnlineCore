@@ -9,8 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
+using NLog;
 using Utiles;
+using NLog.Extensions.Logging;
 
 namespace AppDirectorioWeb
 {
@@ -44,6 +47,7 @@ namespace AppDirectorioWeb
             else
             {
                 app.UseExceptionHandler("/Home/Home/Error");
+                app.UseStatusCodePagesWithRedirects("/Home/Home/Error?statusCode={0}");
 
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -63,6 +67,9 @@ namespace AppDirectorioWeb
                     pattern: "{area=Home}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+ 
+
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

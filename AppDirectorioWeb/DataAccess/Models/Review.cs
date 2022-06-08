@@ -12,6 +12,7 @@ namespace DataAccess.Models
         public string IdUser { get; set; }
         public string FullName { get; set; }
         public string Comments { get; set; }
+        public string EmailComment { get; set; }
         public int Stars { get; set; }
         public bool Active { get; set; }
 
