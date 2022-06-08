@@ -143,3 +143,18 @@ $("#starsToAdd").rateYo({
         ratingToSave= rating;
     }
 });
+
+
+$(".more").on("click", function () {
+  
+    $("#divContentMainReview").toggle();
+  
+    if ($('.more').text() ==="Ver menos comentarios...")
+    {
+        $('.more').text("Ver todos los comentarios...");
+      
+    } else if ($('.more').text() === 'Ver todos los comentarios...') {
+        $('.more').text("Ver menos comentarios...");
+       
+    }
+});
