@@ -6,13 +6,9 @@
 
   <ItemGroup>
     <Compile Remove="logs\**" />
-    <Compile Remove="wwwroot\ImagesBusiness\**" />
     <Content Remove="logs\**" />
-    <Content Remove="wwwroot\ImagesBusiness\**" />
     <EmbeddedResource Remove="logs\**" />
-    <EmbeddedResource Remove="wwwroot\ImagesBusiness\**" />
     <None Remove="logs\**" />
-    <None Remove="wwwroot\ImagesBusiness\**" />
   </ItemGroup>
 
   <ItemGroup>
