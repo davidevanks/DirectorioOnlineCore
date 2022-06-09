@@ -17,3 +17,6 @@ luego agregar esto en la primer linea luego del método OnModelCreating:
   protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+# Carpeta para imagenes
+En el proyecto no inclui las imagenes que guardan los usuarios. como parte de la configuracion se debe crear siempre la carpeta en el wwwroot del
+proyecto llamada "ImagesBusiness"
