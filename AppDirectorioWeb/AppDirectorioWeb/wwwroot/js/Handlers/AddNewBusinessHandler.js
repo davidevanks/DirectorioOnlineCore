@@ -83,7 +83,7 @@ function DeletePictures(Id) {
 }
 
 $(document).ready(function () {
-
+    $('input.timepicker').timepicker({});
   
     $('.cfi').on("change", function () {
         $('#logoVal').html('');
