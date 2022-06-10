@@ -23,11 +23,15 @@
                         <h3 class="h4 font-weight-normal mb-4">Información de cuenta</h3>
           
                         <div class="form-group mb-8">
-                           
+
 
                             <label asp-for="Input.Email"></label>
                             <input asp-for="Input.Email" class="form-control" />
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            @*@if (!string.IsNullOrEmpty(ViewData["UsuarioExiste"].ToString()))
+                            {
+                                <span  class="text-danger">@ViewData["UsuarioExiste"].ToString()</span>
+                            }*@
                         </div>
                         <div class="form-group mb-8">
                            

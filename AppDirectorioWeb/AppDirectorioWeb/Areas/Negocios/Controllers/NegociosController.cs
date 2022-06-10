@@ -171,6 +171,58 @@ namespace AppDirectorioWeb.Controllers
                     //registro negocio nuevo y usuario nuevo
                     var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
 
+                    var userExist = await _userManager.FindByEmailAsync(model.User.Email);
+                    if (userExist != null)
+                    {
+                        //Se agrega cataegorias y departamentos
+
+                        model.Business.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                        {
+                            Text = i.Nombre,
+                            Value = i.Id.ToString()
+                        });
+
+                        model.Business.Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                        {
+                            Text = i.Nombre,
+                            Value = i.Id.ToString()
+                        });
+                        //Se agrega data de días
+                        var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
+
+                        List<HorarioNegocioViewModel> ScheduleDayList = new List<HorarioNegocioViewModel>();
+                        foreach (var d in Days)
+                        {
+                            HorarioNegocioViewModel ScheduleDay = new HorarioNegocioViewModel();
+                            ScheduleDay.Day = d.Nombre;
+                            ScheduleDay.IdDia = d.Id;
+                            ScheduleDay.CreateDate = DateTime.Now;
+                            ScheduleDay.IdUserCreate = "0";
+                            ScheduleDayList.Add(ScheduleDay);
+                        }
+
+                        model.HorarioNegocios = ScheduleDayList;
+
+                        //Se agrega data para mostrar features
+                        List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
+                        var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20 && x.Activo == true).ToList();
+                        foreach (var fn in Features)
+                        {
+                            FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
+                            feature.IdFeature = fn.Id;
+                            feature.Feature = fn.Nombre;
+                            feature.CreateDate = DateTime.Now;
+                            feature.IdUserCreate = "0";
+                            FeatureNegocios.Add(feature);
+                        }
+
+                        model.FeatureNegocios = FeatureNegocios;
+
+                        ViewBag.MessageUserExist = "Este email ya esta siendo ocupado, intente con otro email!";
+                        return View(model);
+
+                    }
+
                     var result = await _userManager.CreateAsync(user, model.User.Password);
 
                     string idUserCreate = "";

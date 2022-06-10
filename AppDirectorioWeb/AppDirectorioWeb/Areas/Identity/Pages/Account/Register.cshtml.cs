@@ -48,6 +48,8 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
         }
+        //[ViewData]
+        //public string UsuarioExiste { get; set; } = "";
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -90,6 +92,8 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
            
             public IEnumerable<SelectListItem> RoleList { get; set; }
             public bool NotificationsPromo { get; set; }
+
+          
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -133,7 +137,40 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email,PhoneNumber=Input.Telefono };
-              
+                var userExist =await _userManager.FindByEmailAsync(Input.Email);
+                //usuario ya existe
+                if (userExist!=null)
+                {
+                  
+                    //UsuarioExiste = "Este email ya esta usado, inicie sesión o pruebe con otro email!";
+                    ModelState.AddModelError("Input.Email", "Este email ya esta siendo usado, inicie sesión o pruebe con otro email!");
+                    if (User.IsInRole(SP.Role_Admin))
+                    {
+
+                       Input.RoleList =  _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                        {
+                            Text = i,
+                            Value = i
+                        }).ToList();
+                       
+                    }
+                    else
+                    {
+
+                        Input.RoleList = _roleManager.Roles.Where(x => x.Name == SP.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
+                        {
+                            Text = i,
+                            Value = i
+                        }).ToList();
+                    
+
+                        
+                    }
+
+
+
+                    return Page();
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                
