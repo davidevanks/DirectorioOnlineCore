@@ -35,7 +35,7 @@ namespace Utiles
                 MailText = MailText.Replace("[username]", email).Replace("[email]", email);
                 var emailMime = new MimeMessage();
                 emailMime.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-                emailMime.From.Add(new MailboxAddress("INFO BRUJULA PYME", _mailSettings.Mail));
+                emailMime.From.Add(new MailboxAddress("Notificaciones Brújula Pyme","notificaciones@brujulapyme.com"));
                 emailMime.To.Add(MailboxAddress.Parse(email));
                 emailMime.Subject = subject;
                 var builder = new BodyBuilder();
