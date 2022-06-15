@@ -105,7 +105,7 @@ namespace AppDirectorioWeb.Controllers
                 StreamReader str = new StreamReader(FilePath);
                 MailText = str.ReadToEnd();
                 str.Close();
-
+              
                 MailText = MailText.Replace("%asunto%", model.Subject).Replace("%NombreCompania%",model.CompanyName).Replace("%NombreCompleto%", model.PersonName).Replace("%Email%", model.Email).Replace("%NumeroTelefono%", model.Phone).Replace("%Mensaje%", model.Message);
               
                 //cambiar correo cuando tengamos los reales
