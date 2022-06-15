@@ -108,8 +108,8 @@ namespace AppDirectorioWeb.Controllers
               
                 MailText = MailText.Replace("%asunto%", model.Subject).Replace("%NombreCompania%",model.CompanyName).Replace("%NombreCompleto%", model.PersonName).Replace("%Email%", model.Email).Replace("%NumeroTelefono%", model.Phone).Replace("%Mensaje%", model.Message);
               
-                //cambiar correo cuando tengamos los reales
-               var t= _emailSender.SendEmailAsync("davidevanks@gmail.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
+               
+               var t= _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
 
                 return Json(new { success = true, message = "Mensaje Enviado!" });
             }
