@@ -602,7 +602,7 @@ namespace AppDirectorioWeb.Controllers
             if (model.Logo != null)
             {
                 string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                uniqueFileName = Guid.NewGuid().ToString() + "_logoBusiness_" + model.Logo.FileName;
+                uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 FileStream s = new FileStream(filePath, FileMode.Create);
                 model.Logo.CopyTo(s);
@@ -624,7 +624,7 @@ namespace AppDirectorioWeb.Controllers
                 {
                     ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
                     string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                    uniqueFileNames = Guid.NewGuid().ToString() + "_picturesBusiness_" + picture.FileName;
+                    uniqueFileNames = Guid.NewGuid().ToString() + "_PB_" + picture.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
                     FileStream s = new FileStream(filePath, FileMode.Create);
                     picture.CopyTo(s);
