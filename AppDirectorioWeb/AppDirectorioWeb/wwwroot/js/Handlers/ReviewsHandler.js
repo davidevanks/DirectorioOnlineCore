@@ -144,6 +144,8 @@ $("#starsToAdd").rateYo({
     }
 });
 
+$("#divContentMainReview").toggle();
+$('.more').text("Ver todos los comentarios...");
 
 $(".more").on("click", function () {
   
