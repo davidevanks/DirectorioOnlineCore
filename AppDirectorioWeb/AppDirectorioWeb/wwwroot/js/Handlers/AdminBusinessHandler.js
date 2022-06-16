@@ -91,7 +91,7 @@ function loadDataTableAdmin() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Negocios/Negocios/GetDetailByBussinesId/${data}" class="btn btn-primary text-white" id="btnVerDetalle"><i class="fa fa-eye"></i></a>`
+                    return ` <a target="_blank" href="/Negocios/Negocios/GetDetailByBussinesId/${data}" class="btn btn-primary text-white" id="btnVerDetalle"><i class="fa fa-eye"></i></a>`
                            
                         ;
                 }, "width": "10%"
