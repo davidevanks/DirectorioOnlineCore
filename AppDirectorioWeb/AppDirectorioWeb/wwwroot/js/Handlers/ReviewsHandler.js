@@ -121,9 +121,10 @@ $('#btnSendReview').click(function () {
                         }
                     });
 
+                    swal({ title: "Reseña enviada!", icon: "info" });
                 } else {
                     /*toastr.error(data.message);*/
-                   /* swal({ title: data.message, icon: "info" });*/
+                    swal({ title: "Error al enviar reseña", icon: "warning" });
                 }
             }
         });
