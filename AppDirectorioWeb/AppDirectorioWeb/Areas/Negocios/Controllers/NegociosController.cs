@@ -344,6 +344,12 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult GetPlanScreen()
+        {
+            return View();
+        }
+
         public IActionResult GetDetailByBussinesId(int id)
         {
             DetailsBusinessViewModel BusinessDetails = new DetailsBusinessViewModel();

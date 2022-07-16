@@ -48,7 +48,7 @@ namespace Utiles
                 using var smtp = new SmtpClient();
                 smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
                 smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-                await smtp.SendAsync(emailMime);
+               var t= await smtp.SendAsync(emailMime);
                 smtp.Disconnect(true);
             }
             catch (System.Exception ex)
