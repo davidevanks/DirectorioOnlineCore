@@ -79,9 +79,10 @@ namespace AppDirectorioWeb.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult AgregarNegocio(int? Id)
+        public IActionResult AgregarNegocio(int? Id,int? IdPlan)
         {
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
+            ViewBag.IdPlan = IdPlan;
 
             if (Id != null)
             {

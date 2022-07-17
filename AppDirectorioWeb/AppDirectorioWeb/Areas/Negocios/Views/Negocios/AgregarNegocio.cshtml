@@ -24,6 +24,29 @@
 
                 <div class="card">
                     <div class="card-body px-6 pt-6 pb-1">
+
+                        <div class="bg-light p-5 mb-8 rounded">
+                            <h3 class="h4 font-weight-normal mb-4">Subscripción</h3>
+                            <div class="row justify-content-between">
+                                <div class="col-md-6">
+                                   
+                                        <div>
+                                            <select id="cboPlanSus" class="form-control" >
+                                                <option value="1">Gratis</option>
+                                                <option value="2">Profesional 54.99 USD/AÑO</option>
+                                 
+                                            </select>
+                                           <input id="inputPlanType" type="hidden" value="@ViewBag.IdPlan"/>
+                                        </div>
+                           
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="d-flex ">
+                                        <a class="btn btn-link pl-0" asp-area="Negocios" asp-controller="Negocios" asp-action="GetPlanScreen" target="_blank">Ver detalle de precios</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
                         <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
 
@@ -31,7 +54,7 @@
 
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-        <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Email"></label>
                                 <input asp-for="User.Email" class="form-control" />
@@ -44,7 +67,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.FullName"></label>
                                 <input asp-for="User.FullName" class="form-control" />
@@ -53,7 +76,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Telefono"></label>
                                 <input asp-for="User.Telefono" class="form-control" />
@@ -64,7 +87,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                                    <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.Password"></label>
                                 <input asp-for="User.Password" class="form-control" />
@@ -73,7 +96,7 @@
 
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                                    <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.ConfirmPassword"></label>
                                 <input asp-for="User.ConfirmPassword" class="form-control" />
