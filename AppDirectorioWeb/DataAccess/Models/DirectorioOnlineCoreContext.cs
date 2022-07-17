@@ -21,6 +21,7 @@ namespace DataAccess.Models
         public virtual DbSet<CatCategorium> CatCategoria { get; set; }
         public virtual DbSet<CatDepartamento> CatDepartamentos { get; set; }
         public virtual DbSet<CatPai> CatPais { get; set; }
+        public virtual DbSet<CatPlan> CatPlans { get; set; }
         public virtual DbSet<FeatureNegocio> FeatureNegocios { get; set; }
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
@@ -39,6 +40,7 @@ namespace DataAccess.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AI");
 
             modelBuilder.Entity<CatCategorium>(entity =>
@@ -101,6 +103,15 @@ namespace DataAccess.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<CatPlan>(entity =>
+            {
+                entity.ToTable("CatPlan", "bs");
+
+                entity.Property(e => e.PlanName)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<FeatureNegocio>(entity =>
@@ -298,9 +309,13 @@ namespace DataAccess.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.IdPlan).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.IdUserCreate).HasMaxLength(450);
 
                 entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.PlanExpirationDate).HasColumnType("date");
 
                 entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
 
@@ -309,6 +324,11 @@ namespace DataAccess.Models
                 entity.Property(e => e.UserId).HasMaxLength(450);
 
                 entity.Property(e => e.UserPicture).IsUnicode(false);
+
+                entity.HasOne(d => d.IdPlanNavigation)
+                    .WithMany(p => p.UserDetails)
+                    .HasForeignKey(d => d.IdPlan)
+                    .HasConstraintName("FK_UserDetails_CatPlan");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -1,6 +1,12 @@
 ﻿
 var valorPlanType = $('#inputPlanType').val();
 $("#cboPlanSus option[value=" + valorPlanType + "]").attr("selected", true);
+$('#cboPlanSus').change(function () {
+    $('#inputPlanType').val($(this).val());
+});
+
+
+
 $('#btnCrearCuenta').attr("disabled", true);
 
 $('.cfiinvisible').attr("disabled", true);

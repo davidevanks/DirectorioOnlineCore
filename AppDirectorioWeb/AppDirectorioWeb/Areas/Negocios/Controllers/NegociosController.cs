@@ -240,7 +240,7 @@ namespace AppDirectorioWeb.Controllers
 
                     //guardamos el detalle del usuario.
 
-                    var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate };
+                    var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate,IdPlan = model.User.IdPlan };
                     _unitOfWork.UserDetail.Add(userDetail);
 
                     //asignamos el id del usuario a su negocio(idUserCreate)
@@ -268,12 +268,22 @@ namespace AppDirectorioWeb.Controllers
 
                     //codigo para envio de correo de verificación de cuenta
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    string MailText = GetEmailActivationUserAdminBusiness(user, code);
+                    string MailText = "";
+                    if (model.User.IdPlan!=1)
+                    {
+                        MailText = GetEmailActivationUserPlanAdminBusiness(user, code, model.User.IdPlan);
+                    }
+                    else
+                    {
+                         MailText = GetEmailActivationUserAdminBusiness(user, code);
+                    }
+                  
+                    
                     await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
 
                     //
-
-                    return RedirectToAction(nameof(ConfirmationBusinessRegistration));
+                    ViewBag.IdPlan = model.User.IdPlan;
+                    return View(nameof(ConfirmationBusinessRegistration));
                 }
                 else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
                 {
@@ -588,6 +598,34 @@ namespace AppDirectorioWeb.Controllers
             str.Close();
 
             return MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
+        }
+
+        public string GetEmailActivationUserPlanAdminBusiness(IdentityUser user, string codeG,int? IdPlan)
+        {
+            string MailText = "";
+            string returnUrl = null;
+            returnUrl ??= Url.Content("~/");
+            var code = codeG;
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                protocol: Request.Scheme);
+
+            string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateConfirmEmailPlanes.html";
+            StreamReader str = new StreamReader(FilePath);
+            MailText = str.ReadToEnd();
+            str.Close();
+
+            string planCosto = "";
+
+            if (IdPlan==1)
+            {
+                planCosto = "54.99 DÓLARES";
+            }
+
+            return MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl)).Replace("[planCosto]", planCosto).Replace("[numCuenta]", "365245240").Replace("[nombreCuenta]", "Kenneth David Gaitán Evanks").Replace("[numWhatsApp]","58634478");
         }
 
         public void SaveFeaturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)
