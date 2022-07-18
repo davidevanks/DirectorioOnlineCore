@@ -1,8 +1,16 @@
-﻿
+﻿var maxImageValidPerPlan = 0;
 var valorPlanType = $('#inputPlanType').val();
 $("#cboPlanSus option[value=" + valorPlanType + "]").attr("selected", true);
 $('#cboPlanSus').change(function () {
     $('#inputPlanType').val($(this).val());
+
+
+    if ($('#inputPlanType').val() == 1) {
+        maxImageValidPerPlan = 5;
+    }
+    else if ($('#inputPlanType').val() == 2) {
+        maxImageValidPerPlan = 30;
+    }
 });
 
 
@@ -91,6 +99,19 @@ function DeletePictures(Id) {
 }
 
 $(document).ready(function () {
+
+ 
+
+    if ($('#inputPlanType').val() == 1) {
+        maxImageValidPerPlan = 5;
+    }
+    else if ($('#inputPlanType').val() == 2)
+    {
+        maxImageValidPerPlan = 30;
+    }
+    
+
+
     $('input.timepicker').timepicker({});
   
     $('.cfi').on("change", function () {
@@ -127,8 +148,8 @@ $(document).ready(function () {
         var files = $(this)[0].files;
 
 
-        if (files.length > 6) {
-            $('#galVal').html('La cantidad máxima de imagenes son 6');
+        if (files.length > maxImageValidPerPlan) {
+            $('#galVal').html('La cantidad máxima de imagenes son ' + maxImageValidPerPlan);
             fileLabel.html('Selecciona fotos de tus productos/servicios...');
             this.value = '';
         } else {
