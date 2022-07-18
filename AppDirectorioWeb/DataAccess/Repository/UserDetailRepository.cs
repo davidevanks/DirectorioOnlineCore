@@ -1,6 +1,7 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
 using Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +32,8 @@ namespace DataAccess.Repository
             var roleUser = _db.UserRoles.AsQueryable();
             var user = _db.Users.AsQueryable();
             var userDetail = _db.UserDetails.AsQueryable();
+            var facturas = _db.Facturas.AsQueryable();
+            var catPlan = _db.CatPlans.AsQueryable();
 
             var query = (from u in user
                          join ud in userDetail on u.Id equals ud.UserId into uddef
@@ -41,6 +44,7 @@ namespace DataAccess.Repository
                          from urrdf in urrdef.DefaultIfEmpty()
                          join urup in user on udff.IdUserUpdate equals urup.Id into urupdef
                          from urupdf in urupdef.DefaultIfEmpty()
+                         join plan in catPlan on udff.IdPlan equals plan.Id
                          select new UserViewModel
                          {
                              Id = u.Id,
@@ -54,9 +58,11 @@ namespace DataAccess.Repository
                              UpdateUser = urupdf.UserName,
                              NotificationsPromo = udff.NotificationsPromo == null ? false : (bool)udff.NotificationsPromo,
                              LockoutEnd = u.LockoutEnd,
-                             UserName = u.UserName
-                         });
-
+                             UserName = u.UserName,
+                             Subscripcion = plan.PlanName,
+                             PlanExpirationDate = (udff.PlanExpirationDate!=null)? Convert.ToDateTime(udff.PlanExpirationDate).ToShortDateString():""
+                         }) ;
+            
             if (!string.IsNullOrEmpty(userId))
             {
                 query = query.Where(x => x.Id == userId);
