@@ -36,6 +36,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DirectorioOnlineCoreContext context;
         private readonly IWebHostEnvironment hostingEnvironment;
+        
 
         #endregion Private Fields
 
@@ -272,6 +273,9 @@ namespace AppDirectorioWeb.Controllers
                     if (model.User.IdPlan!=1)
                     {
                         MailText = GetEmailActivationUserPlanAdminBusiness(user, code, model.User.IdPlan);
+                        //Guardamos la factura
+                        SaveInvoice(model.User, user.Id);
+
                     }
                     else
                     {
@@ -579,6 +583,27 @@ namespace AppDirectorioWeb.Controllers
 
         #region MetodosAuxiliares
 
+        public void SaveInvoice(InputUserViewModel User,string UserId)
+        {
+            Factura factura = new Factura();
+
+            factura.FacturaEnviada = false;
+            factura.FacturaPagada = false;
+            factura.FechaCreacion = DateTime.Now;
+            factura.IdPlan = (int)User.IdPlan;
+            factura.UserId = UserId;
+            factura.IdUserCreate = "094fa88d-626c-4c0a-ac4e-908d9e4ddedb";
+            if (User.IdPlan==2)
+            {
+                factura.MontoPagado = (decimal)PlanesPrecios.PlanProfesional;
+            }
+           
+
+            _unitOfWork.Factura.Add(factura);
+            _unitOfWork.Save();
+
+        }
+
         public string GetEmailActivationUserAdminBusiness(IdentityUser user, string codeG)
         {
             string MailText = "";
@@ -622,7 +647,7 @@ namespace AppDirectorioWeb.Controllers
 
             if (IdPlan==1)
             {
-                planCosto = "54.99 DÓLARES";
+                planCosto = PlanesPrecios.PlanProfesional.ToString();
             }
 
             return MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl)).Replace("[planCosto]", planCosto).Replace("[numCuenta]", "365245240").Replace("[nombreCuenta]", "Kenneth David Gaitán Evanks").Replace("[numWhatsApp]","58634478");

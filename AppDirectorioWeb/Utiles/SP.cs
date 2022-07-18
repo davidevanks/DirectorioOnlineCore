@@ -9,6 +9,7 @@
         public const string Role_Admin = "Admin";
         public const string Role_BusinesAdmin = "Soy Emprendedor";
         public const string Role_Customer = "Soy Cliente";
+        
 
         #endregion Public Fields
     }

@@ -25,6 +25,7 @@ namespace DataAccess.Repository
             ScheduleBusiness = new ScheduleBusinessRepository(_db);
             ImageBusiness = new ImagesBusinessRepository(_db);
             Review = new ReviewRepository(_db);
+            Factura = new FacturaRepository(_db);
         }
 
         #endregion Public Constructors
@@ -40,6 +41,7 @@ namespace DataAccess.Repository
         public IScheduleBusinessRepository ScheduleBusiness { get; private set; }
         public ISP_Call SP_CALL { get; private set; }
         public IUserDetailsRepository UserDetail { get; private set; }
+        public IFacturaRepository Factura { get; private set; }
 
         #endregion Public Properties
 

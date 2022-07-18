@@ -17,6 +17,8 @@ namespace DataAccess.Repository.IRepository
 
         public IUserDetailsRepository UserDetail { get; }
 
+        public IFacturaRepository Factura { get; }
+
         #endregion Public Properties
 
         #region Public Methods

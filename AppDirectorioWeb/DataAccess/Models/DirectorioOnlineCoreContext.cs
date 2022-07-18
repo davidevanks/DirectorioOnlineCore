@@ -22,6 +22,7 @@ namespace DataAccess.Models
         public virtual DbSet<CatDepartamento> CatDepartamentos { get; set; }
         public virtual DbSet<CatPai> CatPais { get; set; }
         public virtual DbSet<CatPlan> CatPlans { get; set; }
+        public virtual DbSet<Factura> Facturas { get; set; }
         public virtual DbSet<FeatureNegocio> FeatureNegocios { get; set; }
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
@@ -40,7 +41,6 @@ namespace DataAccess.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AI");
 
             modelBuilder.Entity<CatCategorium>(entity =>
@@ -112,6 +112,29 @@ namespace DataAccess.Models
                 entity.Property(e => e.PlanName)
                     .HasMaxLength(250)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Factura>(entity =>
+            {
+                entity.ToTable("Factura", "bs");
+
+                entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaPago).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.MontoPagado).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
             });
 
             modelBuilder.Entity<FeatureNegocio>(entity =>
