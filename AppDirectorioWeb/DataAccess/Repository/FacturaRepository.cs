@@ -18,6 +18,39 @@ namespace DataAccess.Repository
             _db = db;
         }
 
+        public FacturaViewModel GetDetailInvoice(int id)
+        {
+
+            var userDetail = _db.UserDetails.AsQueryable();
+            var factura = _db.Facturas.AsQueryable();
+            var plan = _db.CatPlans.AsQueryable();
+            var user = _db.Users.AsQueryable();
+
+            var query = (
+                from f in factura
+                join u in user on f.UserId equals u.Id
+                join ud in userDetail on u.Id equals ud.UserId
+                join p in plan on f.IdPlan equals p.Id
+                where f.Id==id
+                select new FacturaViewModel
+                {
+                    UserId = u.Id,
+                    User = u.UserName,
+                    IdFactura = f.Id,
+                    NoAutorizacion = f.NoAutorizacionPago,
+                    FacturaPagada = f.FacturaPagada,
+                    FacturaEnviada = f.FacturaEnviada,
+                    FechaPago = f.FechaPago,
+                    IdPlan = p.Id,
+                    PlanSuscripcion = p.PlanName,
+                    UserEmail=u.Email
+
+                });
+
+          
+            return query.FirstOrDefault();
+        }
+
         public List<FacturaViewModel> GetInvoice(string userId)
         {
             var userDetail = _db.UserDetails.AsQueryable();
@@ -50,6 +83,19 @@ namespace DataAccess.Repository
             }
 
             return query.ToList();
+        }
+        public void Update(Factura factura)
+        {
+            var objFromDb = _db.Facturas.FirstOrDefault(s => s.Id == factura.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.FechaActualizacion = DateTime.Now;
+                objFromDb.IdUserUpdate = factura.IdUserUpdate;
+                objFromDb.FechaPago = factura.FechaPago;
+                objFromDb.FacturaEnviada = factura.FacturaEnviada;
+                objFromDb.FacturaPagada = factura.FacturaPagada;
+                objFromDb.NoAutorizacionPago = factura.NoAutorizacionPago;
+            }
         }
     }
 }

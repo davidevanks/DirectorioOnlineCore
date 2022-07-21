@@ -13,38 +13,80 @@ function loadDataTable() {
             "url": "/Ventas/Facturacion/GetInvoices"
         },
         "columns": [
+            { "data": "idFactura", "width": "15%", "className": "t" },
             { "data": "user", "width": "15%", "className": "t" },
             { "data": "planSuscripcion", "width": "15%", "className": "t" },
             { "data": "noAutorizacion", "width": "15%", "className": "t" },
             { "data": "fechaPago", "width": "15%", "className": "t" },
-            { "data": "facturaPagada", "width": "15%", "className": "t" },
-            { "data": "facturaEnviada", "width": "15%", "className": "t" },
-            //{
-            //    "data": {
-            //        id: "id", lockoutEnd: "lockoutEnd"
-            //    },
-            //    "render": function (data) {
-            //        var today = new Date().getTime();
-            //        var lockout = new Date(data.lockoutEnd).getTime();
-            //        if (lockout > today) {
-            //            //user is currently locked
-            //            return ` 
-            //                 <a onclick=LockUnlock('${data.id}'); class="btn btn-danger text-white" style="cursor:pointer;width:200px;" >
-            //                 <i class="fa fa-lock"></i> Activar</a>`
+            {
+                "data": {
+                    facturaPagada: "facturaPagada"
+                },
+                "render": function (data) {
+                    var fp = data.facturaPagada;
+                    if (fp == true) {
+                        //user is currently locked
+                        return ` 
+                             <a  class="btn btn-primary text-white" style="cursor:pointer;width:80px;" >
+                              Si</a>`
 
-            //                ;
-            //        } else {
+                            ;
+                    } else {
 
-            //            return ` 
-            //                 <a onclick=LockUnlock('${data.id}'); class="btn btn-success text-white" style="cursor:pointer;width:200px;">
-            //                 <i class="fa fa-unlock"></i> Desactivar</a>`
+                        return ` 
+                              <a  class="btn btn-danger text-white" style="cursor:pointer;width:80px;" >
+                              No</a>`
 
-            //                ;
-            //        }
+                            ;
+                    }
 
 
-            //    }, "width": "25%"
-            //}
+                }, "width": "15%"
+            },
+            {
+                "data": {
+                    facturaEnviada: "facturaEnviada"
+                },
+                "render": function (data) {
+                    var fp = data.facturaPagada;
+                    if (fp == true) {
+                       
+                        return ` 
+                             <a  class="btn btn-primary text-white" style="cursor:pointer;width:80px;" >
+                              Si</a>`
+
+                            ;
+                    } else {
+
+                        return ` 
+                              <a  class="btn btn-danger text-white" style="cursor:pointer;width:80px;" >
+                              No</a>`
+
+                            ;
+                    }
+
+
+                }, "width": "15%"
+            },
+            {
+             
+                "data": {
+                    idFactura: "idFactura", facturaPagada: "facturaPagada", facturaEnviada: "facturaEnviada"
+                },
+                "render": function (data) {
+                    var fp = data.facturaPagada;
+                    var ef = data.facturaEnviada;
+                    if (fp == false || ef==false)
+                    {
+                        return ` 
+                            <a href="/Ventas/Facturacion/UpInvoice/${data.idFactura}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>`
+                    }
+                    
+
+                        ;
+                }, "width": "40%"
+            }
+          
         ]
 
     });

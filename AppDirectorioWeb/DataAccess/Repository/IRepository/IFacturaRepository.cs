@@ -11,5 +11,9 @@ namespace DataAccess.Repository.IRepository
     public interface IFacturaRepository : IRepository<Factura>
     {
         List<FacturaViewModel> GetInvoice(string userId);
+
+        FacturaViewModel GetDetailInvoice(int id);
+
+        void Update(Factura factura);
     }
 }

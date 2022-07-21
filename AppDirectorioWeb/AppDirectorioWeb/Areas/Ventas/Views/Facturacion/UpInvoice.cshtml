@@ -1,0 +1,64 @@
+﻿@model Models.ViewModels.FacturaViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Detalle Factura";
+}
+
+<section class="py-7 py-md-10 bg-light height100vh">
+    <div class="container">
+        <div class="border p-6 p-lg-9 bg-white">
+            <div class="row">
+                <div class="col-md-6 col-xs-12 pr-md-6 pr-lg-9">
+                    <form asp-action="UpInvoice" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                       
+                        <input asp-for="IdPlan" type="hidden">
+                        <input asp-for="UserId" type="hidden">
+                        <h2 class="h3 mb-6">@title</h2>
+                        <div class="form-group mb-6">
+                            <label asp-for="IdFactura"></label>
+                            <input asp-for="IdFactura" type="text" class="form-control border" readonly>
+                            <span asp-validation-for="IdFactura" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-6">
+                            <label asp-for="User"></label>
+                            <input asp-for="User" type="text" class="form-control border" readonly>
+                            <span asp-validation-for="User" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group mb-6">
+                            <label asp-for="PlanSuscripcion"></label>
+                            <input asp-for="PlanSuscripcion" type="text" class="form-control border" readonly>
+                            <span asp-validation-for="PlanSuscripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-6">
+                            <label asp-for="NoAutorizacion"></label>
+                            <input asp-for="NoAutorizacion" type="text" class="form-control border">
+                            <span asp-validation-for="NoAutorizacion" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-0">
+
+
+                            <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+
+                            <a asp-area="Ventas" asp-action="Index" asp-controller="Facturacion" class="btn btn-warning text-white text-uppercase py-2 px-4">Regresar</a>
+                        </div>
+
+                        <hr class="my-7 d-md-none">
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
