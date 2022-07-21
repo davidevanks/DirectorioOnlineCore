@@ -85,5 +85,7 @@
     <Build Include="dbo\Stored Procedures\usp_GetAllCategoriesTest.sql" />
     <Build Include="dbo\Functions\fnc_GetStarsBusiness.sql" />
     <Build Include="dbo\Stored Procedures\usp_GetAllBusinessBySearch.sql" />
+    <Build Include="bs\Tables\Factura.sql" />
+    <Build Include="bs\Tables\CatPlan.sql" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@ namespace DataAccess.Models
         public int Id { get; set; }
         public string UserId { get; set; }
         public int IdPlan { get; set; }
+        public string NoAutorizacionPago { get; set; }
         public decimal MontoPagado { get; set; }
         public DateTime? FechaPago { get; set; }
         public bool FacturaPagada { get; set; }

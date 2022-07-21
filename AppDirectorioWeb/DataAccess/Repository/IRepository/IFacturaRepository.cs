@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace DataAccess.Repository.IRepository
 {
     public interface IFacturaRepository : IRepository<Factura>
     {
-
+        List<FacturaViewModel> GetInvoice(string userId);
     }
 }

@@ -132,6 +132,10 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.MontoPagado).HasColumnType("decimal(18, 2)");
 
+                entity.Property(e => e.NoAutorizacionPago)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(450);
