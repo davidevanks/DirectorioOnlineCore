@@ -26,7 +26,8 @@ namespace Models.ViewModels
       
         public string PlanExpirationDate { get; set; }
 
-       
+        public DateTime? PlanExpirationDateD { get; set; }
+        public int? IdPlan { get; set; }
 
         public ChangePassowrdViewModel ChangePassword { get; set; }
 

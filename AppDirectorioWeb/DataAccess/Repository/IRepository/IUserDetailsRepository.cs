@@ -14,6 +14,8 @@ namespace DataAccess.Repository.IRepository
 
         void UpdateProfilePicture(UserViewModel userProfile);
 
+        void UpdatePlanSuscripcionUser(UserViewModel userProfile);
+
         #endregion Public Methods
     }
 }

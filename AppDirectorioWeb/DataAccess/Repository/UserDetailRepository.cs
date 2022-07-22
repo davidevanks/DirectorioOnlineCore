@@ -91,6 +91,16 @@ namespace DataAccess.Repository
             }
         }
 
+        public void UpdatePlanSuscripcionUser(UserViewModel userProfile)
+        {
+            var objFromDb = _db.UserDetails.FirstOrDefault(s => s.UserId == userProfile.Id);
+            if (objFromDb != null)
+            {
+                objFromDb.IdPlan = userProfile.IdPlan;
+                objFromDb.PlanExpirationDate = userProfile.PlanExpirationDateD;
+            }
+        }
+
         public void UpdateProfilePicture(UserViewModel userProfile)
         {
             var objFromDb = _db.UserDetails.FirstOrDefault(s => s.UserId == userProfile.Id);

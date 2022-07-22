@@ -40,10 +40,11 @@ namespace DataAccess.Repository
                     NoAutorizacion = f.NoAutorizacionPago,
                     FacturaPagada = f.FacturaPagada,
                     FacturaEnviada = f.FacturaEnviada,
-                    FechaPago = f.FechaPago,
+                    FechaPago = f.FechaPago.Value.ToShortDateString(),
                     IdPlan = p.Id,
                     PlanSuscripcion = p.PlanName,
-                    UserEmail=u.Email
+                    UserEmail=u.Email,
+                    MontoPago=f.MontoPagado.ToString()
 
                 });
 
@@ -71,7 +72,7 @@ namespace DataAccess.Repository
                     NoAutorizacion=f.NoAutorizacionPago,
                     FacturaPagada=f.FacturaPagada,
                     FacturaEnviada=f.FacturaEnviada,
-                    FechaPago=f.FechaPago,
+                    FechaPago=f.FechaPago.Value.ToShortDateString(),
                     IdPlan=p.Id,
                     PlanSuscripcion=p.PlanName
 

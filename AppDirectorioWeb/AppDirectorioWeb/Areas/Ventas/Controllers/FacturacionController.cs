@@ -55,7 +55,7 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
             invoice.NoAutorizacion = fac.NoAutorizacion;
             invoice.PlanSuscripcion = fac.PlanSuscripcion;
             invoice.IdFactura = fac.IdFactura;
-
+            invoice.IdPlan = fac.IdPlan;
             return View(invoice);
         }
 
@@ -70,46 +70,65 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
                 Factura updFact = new Factura();
                 updFact.Id = model.IdFactura;
                 updFact.FechaPago = DateTime.Now;
-                updFact.FacturaEnviada = true;
+                
                 updFact.FacturaPagada = true;
                 updFact.FechaActualizacion = DateTime.Now;
                 updFact.IdUserUpdate = HttpContext.Session.GetString("UserId");
                 updFact.NoAutorizacionPago = model.NoAutorizacion;
 
-
-
-
-
-
-                _unitOfWork.Factura.Update(updFact);
                 
+
+                updFact.FacturaEnviada = SendInvoiceAsync(updFact).Result;
+                _unitOfWork.Factura.Update(updFact);
+
+                UserViewModel userProfile = new UserViewModel();
+                userProfile.Id = model.UserId;
+                userProfile.IdPlan = model.IdPlan;
+                userProfile.PlanExpirationDateD = updFact.FechaPago.Value.AddYears(1);
+                _unitOfWork.UserDetail.UpdatePlanSuscripcionUser(userProfile);
 
 
                 _unitOfWork.Save();
+
+
                 return RedirectToAction(nameof(Index));
             }
 
             return View(model);
         }
 
-        public async Task<bool> SendInvoiceAsync(int idFactura)
+        public async Task<bool> SendInvoiceAsync(Factura updFact)
         {
-            string MailText = "";
-            string returnUrl = null;
-            returnUrl ??= Url.Content("~/");
 
-            FacturaViewModel factura = new FacturaViewModel();
-            factura = _unitOfWork.Factura.GetDetailInvoice(idFactura);
-            //aqui quede
-            string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\html_invoice_email_template.html";
-            StreamReader str = new StreamReader(FilePath);
-            MailText = str.ReadToEnd();
-            str.Close();
-            MailText = MailText.Replace("[negocioName]", business.NombreNegocio);
+            try
+            {
+                FacturaViewModel detailsFactura = new FacturaViewModel();
+                detailsFactura = _unitOfWork.Factura.GetDetailInvoice(updFact.Id);
+
+                string MailText = "";
+                string returnUrl = null;
+                returnUrl ??= Url.Content("~/");
 
 
+                //aqui quede
+                string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\html_invoice_email_template.html";
+                StreamReader str = new StreamReader(FilePath);
+                MailText = str.ReadToEnd();
+                str.Close();
+                MailText = MailText.Replace("[NumFactura]", detailsFactura.IdFactura.ToString()).Replace("[FechaPago]", updFact.FechaPago.Value.ToShortDateString()).Replace("[PrecioPagado]", detailsFactura.MontoPago).Replace("[NoAutorizacion]", updFact.NoAutorizacionPago).Replace("[PlanDescripcion]", detailsFactura.PlanSuscripcion);
 
-            await _emailSender.SendEmailAsync(user.Email, "Factura suscripción Brujula Pyme", MailText);
+
+
+                await _emailSender.SendEmailAsync(detailsFactura.UserEmail, "Factura suscripción Brujula Pyme", MailText);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
+      
         }
 
         #region API_CALLS

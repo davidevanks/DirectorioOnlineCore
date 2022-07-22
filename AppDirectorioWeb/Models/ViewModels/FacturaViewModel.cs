@@ -9,7 +9,7 @@ namespace Models.ViewModels
         public string UserEmail { get; set; }
         public bool FacturaEnviada { get; set; }
         public bool FacturaPagada { get; set; }
-        public DateTime? FechaPago { get; set; }
+        public string FechaPago { get; set; }
         [Display(Name = "No. Factura")]
         public int IdFactura { get; set; }
         public int IdPlan { get; set; }
@@ -23,6 +23,7 @@ namespace Models.ViewModels
         [Display(Name = "Usuario")]
         public string User { get; set; }
         public string UserId { get; set; }
+        public string MontoPago { get; set; }
 
         #endregion Public Properties
     }

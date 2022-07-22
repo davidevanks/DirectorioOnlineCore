@@ -48,7 +48,7 @@ function loadDataTable() {
                     facturaEnviada: "facturaEnviada"
                 },
                 "render": function (data) {
-                    var fp = data.facturaPagada;
+                    var fp = data.facturaEnviada;
                     if (fp == true) {
                        
                         return ` 
@@ -76,10 +76,13 @@ function loadDataTable() {
                 "render": function (data) {
                     var fp = data.facturaPagada;
                     var ef = data.facturaEnviada;
-                    if (fp == false || ef==false)
-                    {
+                    if (fp == false || ef == false) {
                         return ` 
                             <a href="/Ventas/Facturacion/UpInvoice/${data.idFactura}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>`
+                    } else
+                    {
+                        return ` 
+                            `
                     }
                     
 
