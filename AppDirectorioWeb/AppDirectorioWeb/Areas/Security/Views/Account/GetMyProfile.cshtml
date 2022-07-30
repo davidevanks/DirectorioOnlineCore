@@ -35,9 +35,13 @@
 
                     <div class="card-body text-center">
                         <p>Tu Plan Actual</p>
-                        <h3 class="font-weight-normal mb-4">Gratis</h3>
-                        @*<span class="d-block mb-4">Next Payment: <span class="text-primary" id="current_date"></span> </span>
-                            <a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
+                        <h3 class="font-weight-normal mb-4">@Model.Subscripcion</h3>
+                        @if(!String.IsNullOrEmpty(Model.PlanExpirationDate))
+                        {
+                            <span class="d-block mb-4">Plan vence: <span class="text-primary" id="current_date">@Model.PlanExpirationDate</span> </span>
+                            @*<a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
+                        }
+
                     </div>
                 </div>
 
@@ -66,7 +70,7 @@
 
                                 <div class="form-group col-md-6 mb-6">
                                     <label for="emailProfile">Email(Usuario)</label>
-                                    <input asp-for="Email" class="form-control" />
+                                    <input asp-for="Email" class="form-control" readonly/>
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6 mb-6">
