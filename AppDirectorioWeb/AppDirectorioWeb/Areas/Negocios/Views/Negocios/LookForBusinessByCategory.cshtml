@@ -31,7 +31,7 @@
                                 <a target="_blank" asp-area="Negocios" asp-controller="Negocios" asp-action="GetDetailByBussinesId" asp-route-id="@Business.BusinessId">
                                     @if (!string.IsNullOrEmpty(Business.BusinessLogo))
                                     {
-                                        <img height="210" width="270" data-src="/ImagesBusiness/@Business.BusinessLogo" src="/ImagesBusiness/@Business.BusinessLogo" alt="things-4"> }
+                                        <img height="210" width="270"  data-src="@Business.BusinessLogo" src="@Business.BusinessLogo" alt="things-4"> }
                                     else
                                     {
                                         <img height="210" width="270" data-src="/img/listing/defaultImage1.png" src="/img/listing/defaultImage1.png" alt="things-4">}

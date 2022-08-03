@@ -2,6 +2,8 @@
 using Dapper;
 using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
 using Utiles;
 
@@ -88,7 +91,7 @@ namespace AppDirectorioWeb.Controllers
             if (Id != null)
             {
                 model.Business = _unitOfWork.Business.GetBusinessToEditById((int)Id);
-
+                ViewBag.IdPlan = _unitOfWork.UserDetail.GetAUsersDetails(HttpContext.Session.GetString("UserId")).FirstOrDefault().IdPlan;
                 if (model.Business == null)
                 {
                     return NotFound();
@@ -251,7 +254,7 @@ namespace AppDirectorioWeb.Controllers
                     model.Business.Status = 19;
 
                     //logica para logo
-                    string uniqueFileName = SaveLogoPicture(model);
+                    string uniqueFileName = SaveLogoPicture(model).Result;
                     model.Business.LogoNegocio = uniqueFileName;
 
                     var negocio = _mapper.Map<Negocio>(model.Business);
@@ -263,7 +266,7 @@ namespace AppDirectorioWeb.Controllers
                     SaveSchedulesBusiness(model, negocio, idUserCreate);
 
                     //logica para galerias de imagenes
-                    SavePicturesBusiness(model, negocio, idUserCreate);
+                    await SavePicturesBusiness(model, negocio, idUserCreate);
 
                     _unitOfWork.Save();
 
@@ -304,7 +307,7 @@ namespace AppDirectorioWeb.Controllers
                     model.Business.LogoNegocio = logB.LogoNegocio;
                     if (model.Logo != null)
                     {
-                        string uniqueFileName = SaveLogoPicture(model);
+                        string uniqueFileName = SaveLogoPicture(model).Result;
                         model.Business.LogoNegocio = uniqueFileName;
                     }
 
@@ -317,7 +320,7 @@ namespace AppDirectorioWeb.Controllers
                     UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
                     //logica para galerias de imagenes
-                    SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                    await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
                     _unitOfWork.Save();
                     return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
@@ -331,7 +334,7 @@ namespace AppDirectorioWeb.Controllers
                     model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
                     //logica para logo
-                    string uniqueFileName = SaveLogoPicture(model);
+                    string uniqueFileName = SaveLogoPicture(model).Result;
                     model.Business.LogoNegocio = uniqueFileName;
 
                     var negocio = _mapper.Map<Negocio>(model.Business);
@@ -343,7 +346,7 @@ namespace AppDirectorioWeb.Controllers
                     SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
                     //logica para galerias de imagenes
-                    SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                    await SavePicturesBusiness (model, negocio, HttpContext.Session.GetString("UserId"));
 
                     _unitOfWork.Save();
                     return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
@@ -373,13 +376,13 @@ namespace AppDirectorioWeb.Controllers
             BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
             BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);
 
-            foreach (var item in BusinessDetails.ImagenesNegocios)
-            {
-                string uploadsFolder = "/ImagesBusiness/";
-                string uniqueFileNames = item.Image;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-                item.Image = filePath;
-            }
+            //foreach (var item in BusinessDetails.ImagenesNegocios)
+            //{
+            //    string uploadsFolder = "/ImagesBusiness/";
+            //    string uniqueFileNames = item.Image;
+            //    string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
+            //    item.Image = filePath;
+            //}
 
             return View(BusinessDetails);
         }
@@ -666,52 +669,120 @@ namespace AppDirectorioWeb.Controllers
             _unitOfWork.Feature.InsertList(features);
         }
 
-        public string SaveLogoPicture(AddUpdBusinessViewModel model)
+        public async Task<string> SaveLogoPicture(AddUpdBusinessViewModel model)
         {
             string uniqueFileName = "";
-            if (model.Logo != null)
+            try
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                FileStream s = new FileStream(filePath, FileMode.Create);
-                model.Logo.CopyTo(s);
 
-                s.Close();
-                s.Dispose();
+                if (model.Logo.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
+                   
+                    Stream stream = model.Logo.OpenReadStream();
+                    //firebase logic to upload file
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                    var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+
+                    //cancellation token
+                    var cancellation = new CancellationTokenSource();
+
+                    var upload = new FirebaseStorage(
+                        FirebaseSetting.Bucket,
+                        new FirebaseStorageOptions
+                        {
+                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                            ThrowOnCancel = true
+                            
+                        }
+                        ).Child("businessLogo")
+                        .Child($"{uniqueFileName}")
+                        .PutAsync(stream, cancellation.Token);
+
+
+
+                    uniqueFileName = await upload;
+                    //s.Close();
+                    //s.Dispose();
+                    //System.IO.File.Delete(filePath);
+                }
+
             }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
+            
+           
+          
             return uniqueFileName;
         }
 
-        public void SavePicturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)
+        public async Task SavePicturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)
         {
-            string uniqueFileNames = null;
-            List<ImagenesNegocioViewModel> lstPictures = new List<ImagenesNegocioViewModel>();
-            if (model.PicturesBusiness != null && model.PicturesBusiness.Count > 0)
+            try
             {
-                foreach (IFormFile picture in model.PicturesBusiness)
+                List<ImagenesNegocioViewModel> lstPictures = new List<ImagenesNegocioViewModel>();
+                if (model.PicturesBusiness != null && model.PicturesBusiness.Count > 0)
                 {
-                    ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                    uniqueFileNames = Guid.NewGuid().ToString() + "_PB_" + picture.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-                    FileStream s = new FileStream(filePath, FileMode.Create);
-                    picture.CopyTo(s);
+                    foreach (IFormFile picture in model.PicturesBusiness)
+                    {
+                        string uniqueFileNames = "";
+                        ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
+                        //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                        uniqueFileNames = Guid.NewGuid().ToString() + "_PB_" + picture.FileName;
+                        //string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
+                        //FileStream s = new FileStream(filePath, FileMode.Create);
+                        //picture.CopyTo(s);
 
-                    pic.IdNegocio = negocio.Id;
-                    pic.IdUserCreate = idUserCreate;
-                    pic.CreateDate = DateTime.Now;
-                    pic.Image = uniqueFileNames;
-                    lstPictures.Add(pic);
 
-                    s.Close();
-                    s.Dispose();
+                        //firebase logic--------------------------
+                        Stream stream = picture.OpenReadStream();
+                        //firebase logic to upload file
+                        var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                        var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+
+                        //cancellation token
+                        var cancellation = new CancellationTokenSource();
+
+                        var upload = new FirebaseStorage(
+                            FirebaseSetting.Bucket,
+                            new FirebaseStorageOptions
+                            {
+                                AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                                ThrowOnCancel = true
+
+                            }
+                            ).Child("businessGallery")
+                            .Child($"{uniqueFileNames}")
+                            .PutAsync(stream, cancellation.Token);
+
+                        uniqueFileNames = await upload;
+
+                        //fin firebase logic----------------------
+                        pic.IdNegocio = negocio.Id;
+                        pic.IdUserCreate = idUserCreate;
+                        pic.CreateDate = DateTime.Now;
+                        pic.Image = uniqueFileNames;
+                        lstPictures.Add(pic);
+
+
+                    }
+
+                    var picturesBusiness = _mapper.Map<List<ImagenesNegocio>>(lstPictures);
+                    _unitOfWork.ImageBusiness.InsertList(picturesBusiness);
                 }
-
-                var picturesBusiness = _mapper.Map<List<ImagenesNegocio>>(lstPictures);
-                _unitOfWork.ImageBusiness.InsertList(picturesBusiness);
             }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                throw;
+            }
+          
         }
 
         public void SaveSchedulesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)

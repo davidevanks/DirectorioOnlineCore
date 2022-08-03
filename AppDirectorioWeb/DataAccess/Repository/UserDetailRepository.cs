@@ -60,6 +60,7 @@ namespace DataAccess.Repository
                              LockoutEnd = u.LockoutEnd,
                              UserName = u.UserName,
                              Subscripcion = plan.PlanName,
+                             IdPlan= udff.IdPlan,
                              PlanExpirationDate = (udff.PlanExpirationDate!=null)? Convert.ToDateTime(udff.PlanExpirationDate).ToShortDateString():""
                          }) ;
             

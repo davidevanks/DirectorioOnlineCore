@@ -1,17 +1,22 @@
 ﻿var maxImageValidPerPlan = 0;
 var valorPlanType = $('#inputPlanType').val();
-$("#cboPlanSus option[value=" + valorPlanType + "]").attr("selected", true);
-$('#cboPlanSus').change(function () {
-    $('#inputPlanType').val($(this).val());
+var typeUserMode = $('#inputTypeUserMode').val();
+
+if (typeUserMode === "n") {
+    $("#cboPlanSus option[value=" + valorPlanType + "]").attr("selected", true);
+    $('#cboPlanSus').change(function () {
+        $('#inputPlanType').val($(this).val());
 
 
-    if ($('#inputPlanType').val() == 1) {
-        maxImageValidPerPlan = 5;
-    }
-    else if ($('#inputPlanType').val() == 2) {
-        maxImageValidPerPlan = 30;
-    }
-});
+        if ($('#inputPlanType').val() == 1) {
+            maxImageValidPerPlan = 5;
+        }
+        else if ($('#inputPlanType').val() == 2) {
+            maxImageValidPerPlan = 30;
+        }
+    });
+} 
+
 
 
 
