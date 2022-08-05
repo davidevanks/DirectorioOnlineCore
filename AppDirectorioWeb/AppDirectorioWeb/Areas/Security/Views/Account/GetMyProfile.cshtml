@@ -15,7 +15,7 @@
                     <div class="card-profile-img py-6">
                         @if (!string.IsNullOrEmpty(Model.ProfilePicture))
                         {
-                              <img class="rounded-circle " data-src="/ImagesBusiness/@Model.ProfilePicture" src="/ImagesBusiness/@Model.ProfilePicture" alt="Image"> }
+                              <img class="rounded-circle " data-src="@Model.ProfilePicture" src="@Model.ProfilePicture" alt="Image"> }
                         else
                         {
                               <img class="rounded-circle " data-src="/img/user/avatar-01.png" src="/img/user/avatar-01.png" alt="Image">
