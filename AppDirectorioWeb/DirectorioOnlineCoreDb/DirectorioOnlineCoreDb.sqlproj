@@ -87,5 +87,7 @@
     <Build Include="dbo\Stored Procedures\usp_GetAllBusinessBySearch.sql" />
     <Build Include="bs\Tables\Factura.sql" />
     <Build Include="bs\Tables\CatPlan.sql" />
+    <Build Include="bs\Tables\CuponRedencionUsuario.sql" />
+    <Build Include="bs\Tables\CuponNegocio.sql" />
   </ItemGroup>
 </Project>

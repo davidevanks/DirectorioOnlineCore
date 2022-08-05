@@ -22,6 +22,8 @@ namespace DataAccess.Models
         public virtual DbSet<CatDepartamento> CatDepartamentos { get; set; }
         public virtual DbSet<CatPai> CatPais { get; set; }
         public virtual DbSet<CatPlan> CatPlans { get; set; }
+        public virtual DbSet<CuponNegocio> CuponNegocios { get; set; }
+        public virtual DbSet<CuponRedencionUsuario> CuponRedencionUsuarios { get; set; }
         public virtual DbSet<Factura> Facturas { get; set; }
         public virtual DbSet<FeatureNegocio> FeatureNegocios { get; set; }
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
@@ -112,6 +114,48 @@ namespace DataAccess.Models
                 entity.Property(e => e.PlanName)
                     .HasMaxLength(250)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CuponNegocio>(entity =>
+            {
+                entity.ToTable("CuponNegocio", "bs");
+
+                entity.Property(e => e.DescripcionPromocion)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaExpiracionCupon).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.IdUsuarioModificacion).HasMaxLength(300);
+
+                entity.Property(e => e.ImagenCupon).IsUnicode(false);
+
+                entity.Property(e => e.ValorCupon).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<CuponRedencionUsuario>(entity =>
+            {
+                entity.ToTable("CuponRedencionUsuario", "bs");
+
+                entity.Property(e => e.FechaRedencion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuario)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.HasOne(d => d.IdCuponNavigation)
+                    .WithMany(p => p.CuponRedencionUsuarios)
+                    .HasForeignKey(d => d.IdCupon)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CuponRedencionUsuario_CuponNegocio");
             });
 
             modelBuilder.Entity<Factura>(entity =>
