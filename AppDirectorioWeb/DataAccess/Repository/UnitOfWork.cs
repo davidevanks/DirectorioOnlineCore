@@ -26,6 +26,7 @@ namespace DataAccess.Repository
             ImageBusiness = new ImagesBusinessRepository(_db);
             Review = new ReviewRepository(_db);
             Factura = new FacturaRepository(_db);
+            Cuponera = new CuponeraRepository(_db);
         }
 
         #endregion Public Constructors
@@ -42,6 +43,8 @@ namespace DataAccess.Repository
         public ISP_Call SP_CALL { get; private set; }
         public IUserDetailsRepository UserDetail { get; private set; }
         public IFacturaRepository Factura { get; private set; }
+
+        public ICuponeraRepository Cuponera { get; private set; }
 
         #endregion Public Properties
 
