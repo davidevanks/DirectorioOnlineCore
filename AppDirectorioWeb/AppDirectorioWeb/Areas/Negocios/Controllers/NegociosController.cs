@@ -436,7 +436,7 @@ namespace AppDirectorioWeb.Controllers
 
         [HttpGet]
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
-        public IActionResult DeleteLogo(int id)
+        public async Task<IActionResult> DeleteLogo(int id)
         {
             var Business = _unitOfWork.Business.Get(id);
             if (Business == null)
@@ -444,31 +444,53 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Error al borrar" });
             }
 
-            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, Business.LogoNegocio);
+            //firebase logic
 
-            if (System.IO.File.Exists(path))
+
+            try
             {
-                System.IO.File.Delete(path);
-            }
-            else
-            {
-                Business.LogoNegocio = "";
+                string fileName = Business.LogoNegocio.Replace("https://firebasestorage.googleapis.com/v0/b/brujulapyme-1bb75.appspot.com/o/businessLogo%2F", "");
+
+
+                fileName = fileName.Substring(0, fileName.IndexOf('?'));
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+                //cancellation token
+                var cancellation = new CancellationTokenSource();
+
+                var del = new FirebaseStorage(
+                    FirebaseSetting.Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+
+                    }
+                    ).Child("businessLogo").Child(fileName).DeleteAsync();
+
+
+                //firebaselogic
+
+                 Business.LogoNegocio = "";
                 _unitOfWork.Business.Update(Business);
                 _unitOfWork.Save();
-                return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+
+                return Json(new { success = true, message = "Se borro logo exitosamente" });
             }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+                throw;
+            }
+           
 
-            Business.LogoNegocio = "";
-            _unitOfWork.Business.Update(Business);
-            _unitOfWork.Save();
-
-            return Json(new { success = true, message = "Se borro logo exitosamente" });
+           
         }
 
         [HttpGet]
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
-        public IActionResult DeletePictures(int id)
+        public async Task<IActionResult> DeletePictures(int id)
         {
             var pictures = _unitOfWork.ImageBusiness.GetRangeImagesToDeleteByBusinessId(id);
             if (pictures == null)
@@ -476,25 +498,51 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Error al borrar" });
             }
 
-            foreach (var item in pictures)
-            {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
 
-                if (System.IO.File.Exists(path))
+            try
+            {
+                foreach (var item in pictures)
                 {
-                    System.IO.File.Delete(path);
+                    
+                    
+                       
+                    string fileName = item.Image.Replace("https://firebasestorage.googleapis.com/v0/b/brujulapyme-1bb75.appspot.com/o/businessGallery%2F", "");
+                   
+                    
+                    fileName = fileName.Substring(0, fileName.IndexOf('?'));
+
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                    var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+                    //cancellation token
+                    var cancellation = new CancellationTokenSource();
+
+                    var del = new FirebaseStorage(
+                        FirebaseSetting.Bucket,
+                        new FirebaseStorageOptions
+                        {
+                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                            ThrowOnCancel = true
+
+                        }
+                        ).Child("businessGallery").Child(fileName).DeleteAsync();
+
+
+                    
                 }
-                else
-                {
-                    return Json(new { success = false, message = "Error al borrar, directorio no existe" });
-                }
+
+                _unitOfWork.ImageBusiness.RemoveRange(pictures);
+                _unitOfWork.Save();
+
+                return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+                throw;
             }
 
-            _unitOfWork.ImageBusiness.RemoveRange(pictures);
-            _unitOfWork.Save();
-
-            return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
+         
         }
 
         [HttpGet]
