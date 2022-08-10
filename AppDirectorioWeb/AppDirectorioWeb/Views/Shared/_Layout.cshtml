@@ -201,12 +201,12 @@
                             <li class="">
                                 <a href="javascript:0">Más</a>
                                 <ul class="dropdown">
-                                    @if (_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().IdPlan == 2)
-                                    {
+                                    @*@if (_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().IdPlan == 2)
+                                    {*@
                                         <li class="">
                                             <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
                                         </li>
-                                    }
+                                        //}
 
 
                                     <li class="">
