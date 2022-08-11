@@ -39,10 +39,42 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         }
 
         [Authorize(Roles = SP.Role_BusinesAdmin)]
-        public IActionResult Add()
+        public IActionResult Add(int? id)
         {
+            //quede en la creacion del cupon
             CuponeraViewModel model = new CuponeraViewModel();
-            model.Id = 0;
+            if (id==null)
+            {
+                model.Id = 0;
+                return View(model);
+            }
+
+            var c = _unitOfWork.Cuponera.GetCuponById((int)id);
+
+            if (c == null)
+            {
+                return NotFound();
+            }
+
+            model = c;
+
+            return View(model);
+        }
+
+        [Authorize(Roles = SP.Role_BusinesAdmin)]
+        [HttpPost]
+        public IActionResult Add(CuponeraViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id==0)
+                {
+
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+              
             return View(model);
         }
 

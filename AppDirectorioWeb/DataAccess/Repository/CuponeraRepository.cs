@@ -17,6 +17,46 @@ namespace DataAccess.Repository
             _db = db;
         }
 
+        public CuponeraViewModel GetCuponById(int id)
+        {
+            var userDetails = _db.UserDetails.AsQueryable();
+            var cupons = _db.CuponNegocios.AsQueryable();
+            var business = _db.Negocios.AsQueryable();
+
+            var query = (from c in cupons
+                         join b in business on c.IdNegocio equals b.Id
+                         join us in userDetails on b.IdUserOwner equals us.UserId
+                         where c.Id==id
+                         select new CuponeraViewModel
+                         {
+                             Id = c.Id,
+                             IdNegocio = b.Id,
+                             IdUsuarioCreacion = c.IdUsuarioCreacion,
+                             IdUsuarioModificacion = c.IdUsuarioModificacion,
+                             DescripcionPromocion = c.DescripcionPromocion,
+                             DescuentoMonto = c.DescuentoMonto,
+                             DescuentoPorcentaje = c.DescuentoPorcentaje,
+                             CantidadCuponDisponible = c.CantidadCuponDisponible,
+                             CantidadCuponUsados = c.CantidadCuponUsados,
+                             FechaCreacion = c.FechaCreacion.ToShortDateString(),
+                             FechaExpiracionCupon = c.FechaExpiracionCupon.ToShortDateString(),
+                             FechaModificacion = c.FechaModificacion == null ? "" : c.FechaModificacion.Value.ToShortDateString(),
+                             ImagenCupon = c.ImagenCupon,
+                             MonedaMonto = c.MonedaMonto,
+                             Status = c.Status,
+                             ValorCupon = c.ValorCupon,
+                             NombreNegocio = b.NombreNegocio,
+                             IdUserOwner = b.IdUserOwner,
+                             TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
+                             StatusDescripcion = c.Status == true ? "Activo" : "Inactivo"
+
+                         });
+
+           
+
+            return query.FirstOrDefault();
+        }
+
         public List<CuponeraViewModel> GetCupons(string userId)
         {
             var userDetails = _db.UserDetails.AsQueryable();

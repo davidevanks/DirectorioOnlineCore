@@ -13,5 +13,7 @@ namespace DataAccess.Repository.IRepository
         void Update(CuponNegocio cuponNegocio);
 
         List<CuponeraViewModel> GetCupons(string userId);
+
+        CuponeraViewModel GetCuponById(int id);
     }
 }
