@@ -13,6 +13,7 @@ namespace Models.ViewModels
     {
         public int Id { get; set; }
         public int IdNegocio { get; set; }
+        public string IdUserOwner { get; set; }
         public string NombreNegocio { get; set; }
         public int? IdUsuarioRedencion { get; set; }
         public string NombreUsuarioRedencion { get; set; }
@@ -25,6 +26,7 @@ namespace Models.ViewModels
         [DisplayName("Monto en efectivo de descuento")]
         [Required(ErrorMessage = "Campo requerido")]
         public bool DescuentoMonto { get; set; }
+        public string TipoDescuento { get; set; }
         [DisplayName("Moneda cupón")]
         public int? MonedaMonto { get; set; }
         [DisplayName("Valor cupón")]
@@ -41,11 +43,12 @@ namespace Models.ViewModels
         [DisplayName("Estado cupón")]
         [Required(ErrorMessage = "Campo requerido")]
         public bool Status { get; set; }
+        public string StatusDescripcion { get; set; }
         public IFormFile PictureCupon { get; set; }
 
-        public DateTime FechaCreacion { get; set; }
+        public string FechaCreacion { get; set; }
         public string IdUsuarioCreacion { get; set; }
-        public DateTime? FechaModificacion { get; set; }
+        public string FechaModificacion { get; set; }
         public string IdUsuarioModificacion { get; set; }
     }
 }
