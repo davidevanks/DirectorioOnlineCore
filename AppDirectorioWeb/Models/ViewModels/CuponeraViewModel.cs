@@ -31,9 +31,11 @@ namespace Models.ViewModels
         public int? MonedaMonto { get; set; }
         [DisplayName("Valor cupón")]
         [Required(ErrorMessage = "Campo requerido")]
+        [Range( 1, double.MaxValue, ErrorMessage = "Valor inválido")]
         public decimal ValorCupon { get; set; }
         [DisplayName("Cantidad de cupones disponibles")]
         [Required(ErrorMessage = "Campo requerido")]
+        [Range( 1, int.MaxValue,ErrorMessage ="Valor inválido")]
         public int CantidadCuponDisponible { get; set; }
         public int? CantidadCuponUsados { get; set; }
         public string ImagenCupon { get; set; }

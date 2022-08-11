@@ -123,225 +123,232 @@
 
 
 
-                    <ul class="menuzord-menu menuzord-right">
+                <ul class="menuzord-menu menuzord-right">
 
 
-                        <li>
-                            <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
+                    <li>
+                        <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
 
+                    </li>
+
+                    @if (User.IsInRole(SP.Role_Admin))
+                    {
+                        <li class="">
+                            <a href="javascript:0">Administración</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Admin. Negocios</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
+                                </li>
+
+                                <li class="">
+                                    <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Ventas" asp-controller="Facturacion" asp-action="Index">Facturación</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
+                                </li>
+                            </ul>
                         </li>
 
-                        @if (User.IsInRole(SP.Role_Admin))
-                        {
-                            <li class="">
-                                <a href="javascript:0">Administración</a>
-                                <ul class="dropdown">
-                                    <li class="">
-                                        <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Admin. Negocios</a>
-                                    </li>
-                                    <li class="">
-                                        <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
-                                    </li>
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
+                                </li>
 
-                                    <li class="">
-                                        <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
-                                    </li>
-                                    <li class="">
-                                        <a asp-area="Ventas" asp-controller="Facturacion" asp-action="Index">Facturación</a>
-                                    </li>
-                                    <li class="">
-                                        <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="">
-                                <a href="javascript:0">Más</a>
-                                <ul class="dropdown">
-                                    <li class="">
-                                        <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
-                                    </li>
-
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
-                                    </li>
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
+                                </li>
 
 
-                                    <li class="">
-                                        <a href="javascript:0">Categorías</a>
-                                        <ul class="dropdown">
-                                            <li class="">
-                                                <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
-                                            </li>
-                                            @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
-                                            {
-                                                <li class="">
-                                                    <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
-                                                </li>
-                                            }
-
-                                        </ul>
-                                    </li>
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                        }
-
-                        @if (User.IsInRole(SP.Role_BusinesAdmin))
-                        {
-                            <li class="">
-                                <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mis Negocios</a>
-                            </li>
-
-
-
-                            <li class="">
-                                <a href="javascript:0">Más</a>
-                                <ul class="dropdown">
-                                    @*@if (_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().IdPlan == 2)
-                                    {*@
+                                <li class="">
+                                    <a href="javascript:0">Categorías</a>
+                                    <ul class="dropdown">
                                         <li class="">
-                                            <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
+                                            <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
                                         </li>
-                                        //}
-
-
-                                    <li class="">
-                                        <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
-                                    </li>
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
-                                    </li>
-
-                                    <li class="">
-                                        <a href="javascript:0">Categorías</a>
-                                        <ul class="dropdown">
+                                        @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
+                                        {
                                             <li class="">
-                                                <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
+                                                <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
                                             </li>
-                                            @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
-                                            {
-                                                <li class="">
-                                                    <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
-                                                </li>
-                                            }
+                                        }
+
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    }
+
+                    @if (User.IsInRole(SP.Role_BusinesAdmin))
+                    {
+                       
+
+                        <li class="">
+                            <a href="javascript:0">Administración</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mis Negocios</a>
+                                </li>
+                                @*@if (_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().IdPlan == 2)
+        {*@
+                                <li class="">
+                                    <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
+                                </li>
+                                //}
+
+                            </ul>
+                        </li>
 
 
-                                        </ul>
-                                    </li>
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
-                                    </li>
 
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+                     
+                                <li class="">
+                                    <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
+                                </li>
 
-
-                                </ul>
-                            </li>
-                        }
-
-                        @if (User.IsInRole(SP.Role_Customer))
-                        {
-                            @*<li class="">
-                    <a href="javascript:0">Mis Negocios Favoritos</a>
-                </li>*@
-                            <li class="">
-                                <a href="javascript:0">Categorías</a>
-                                <ul class="dropdown">
-                                    <li class="">
-                                        <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
-                                    </li>
-                                    @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
-                                    {
+                                <li class="">
+                                    <a href="javascript:0">Categorías</a>
+                                    <ul class="dropdown">
                                         <li class="">
-                                            <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
+                                            <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
                                         </li>
-                                    }
-
-                                </ul>
-                            </li>
-
-
-                            <li class="">
-                                <a href="javascript:0">Más</a>
-                                <ul class="dropdown">
-                                    <li class="">
-                                        <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
-                                    </li>
-
-
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
-                                    </li>
-
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                        }
-
-
-
-                        @if (!SignInManager.IsSignedIn(User))
-                        {
-
-
-
-                            <li class="">
-                                <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
-                            </li>
-
-
-                            <li class="">
-                                <a href="javascript:0">Más</a>
-                                <ul class="dropdown">
-                                    <li class="">
-                                        <a href="javascript:0">Categorías</a>
-                                        <ul class="dropdown">
+                                        @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
+                                        {
                                             <li class="">
-                                                <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
+                                                <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
                                             </li>
-                                            @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
-                                            {
-                                                <li class="">
-                                                    <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
-                                                </li>
-                                            }
+                                        }
 
-                                        </ul>
-                                    </li>
+
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
+                                </li>
+
+
+
+                            </ul>
+                        </li>
+                    }
+
+                    @if (User.IsInRole(SP.Role_Customer))
+                    {
+                        @*<li class="">
+                <a href="javascript:0">Mis Negocios Favoritos</a>
+            </li>*@
+                        <li class="">
+                            <a href="javascript:0">Categorías</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
+                                </li>
+                                @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
+                                {
                                     <li class="">
-                                        <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
+                                        <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
                                     </li>
-                                    <li class="">
-                                        <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
-                                    </li>
+                                }
+
+                            </ul>
+                        </li>
+
+
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
+                                </li>
+
+
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
+                                </li>
+
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    }
 
 
 
-                                </ul>
-                            </li>
-
-
-                        }
-
-
-                        @if (!SignInManager.IsSignedIn(User))
-                        {
-
-                            <li class="">
-                                <a asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
-
-                            </li>
-                        }
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
 
 
 
-                    </ul>
+                        <li class="">
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
+                        </li>
+
+
+                        <li class="">
+                            <a href="javascript:0">Más</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a href="javascript:0">Categorías</a>
+                                    <ul class="dropdown">
+                                        <li class="">
+                                            <a asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">Todas</a>
+                                        </li>
+                                        @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness())
+                                        {
+                                            <li class="">
+                                                <a asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">@item.Nombre</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </li>
+                                <li class="">
+                                    <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
+                                </li>
+
+
+
+                            </ul>
+                        </li>
+
+
+                    }
+
+
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+
+                        <li class="">
+                            <a asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
+
+                        </li>
+                    }
+
+
+
+                </ul>
 
                 </div>
             </div>

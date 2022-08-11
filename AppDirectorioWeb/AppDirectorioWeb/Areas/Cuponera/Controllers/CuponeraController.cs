@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +41,9 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         [Authorize(Roles = SP.Role_BusinesAdmin)]
         public IActionResult Add()
         {
-
-            return View();
+            CuponeraViewModel model = new CuponeraViewModel();
+            model.Id = 0;
+            return View(model);
         }
 
 

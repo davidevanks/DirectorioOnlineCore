@@ -18,6 +18,7 @@
                         }
                         <h2 class="h3 mb-6">@title</h2>
                         <div class="form-group mb-6">
+                            <label asp-for="DescripcionPromocion"></label>
                             <input asp-for="DescripcionPromocion" type="text" class="form-control border" placeholder="Descripción promoción">
                             <span asp-validation-for="DescripcionPromocion" class="text-danger"></span>
                         </div>
@@ -26,48 +27,55 @@
                         <div class="form-group mb-6">
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TypeCupon" id="flexRadioDefault1" checked />
+                                <input class="form-check-input" value="Per" type="radio" name="TypeCupon" id="TypeCupon" checked="" />
                                 <label class="form-check-label" asp-for="DescuentoPorcentaje"></label>
                             </div>
 
 
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="TypeCupon" id="flexRadioDefault2" />
-                                <label class="form-check-label" asp-for="DescuentoMonto"> Default checked radio </label>
+                                <input class="form-check-input" value="Mon" type="radio" name="TypeCupon" id="TypeCupon" />
+                                <label class="form-check-label" asp-for="DescuentoMonto">  </label>
                             </div>
+                            <input type="hidden" asp-for="DescuentoMonto" />
+                            <input type="hidden" asp-for="DescuentoPorcentaje" />
                         </div>
                         @*control opcional cuando se elija tipo descuento por monto efectivo para elegir moneda*@
-                        <div class="form-group mb-6">
+                        <div id="divTipoMoneda" class="form-group mb-6">
+                            <label>Tipo Moneda</label>
                             <select id="cboIdMoneda" class="form-control">
                                 <option value="1">(C$) Córdobas</option>
                                 <option value="2">($) Dólares</option>
 
                             </select>
-                            <input asp-for="MonedaMonto" id="IdMonedaMonto" type="hidden" />
+                            <input asp-for="MonedaMonto" type="hidden" />
+
                         </div>
 
                         <div class="form-group mb-6">
-                            <input asp-for="ValorCupon" type="text" class="form-control border" placeholder="Valor del cupón">
+                            <label asp-for="ValorCupon"></label>
+                            <input asp-for="ValorCupon" class="form-control border" placeholder="Valor del cupón">
                             <span asp-validation-for="ValorCupon" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-6">
-                            <input asp-for="CantidadCuponDisponible" type="text" class="form-control border" placeholder="Cantidad de cupones disponibles">
+                            <label asp-for="CantidadCuponDisponible"></label>
+                            <input asp-for="CantidadCuponDisponible" class="form-control border" placeholder="Cantidad de cupones disponibles">
                             <span asp-validation-for="CantidadCuponDisponible" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-6">
+                            <label asp-for="FechaExpiracionCupon"></label>
                             <input asp-for="FechaExpiracionCupon" type="date" class="form-control border" placeholder="Fecha de expiración cupón">
                             <span asp-validation-for="FechaExpiracionCupon" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group mb-6">
-                            <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PictureCupon" />
-                            <label class="custom-file-label cfls">Selecciona la foto de tu cupón...</label>
-                            @*recordar poner recordatorio que si no tiene no pasa nada, ponemos una por defecto*@
-                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        <div class="form-group col-md-12">
+                            <input accept="image/*" asp-for="PictureCupon" class="form-control custom-file-input cfi">
+                            <label class="custom-file-label cfl">Selecciona imagen para el cupón...</label>
+                            <span class="text-danger field-validation-error"><span id="picVal" class=""></span></span>
                         </div>
 
                         <div class="form-group mb-6">
                             <div class="form-check">
+
                                 <input asp-for="Status" class="form-check-input" type="checkbox" id="chkboxActivo">
                                 <label class="form-check-label" for="gridCheck">
                                     Activo
@@ -102,4 +110,5 @@
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Handlers/addCuponHandler.js"></script>
 }

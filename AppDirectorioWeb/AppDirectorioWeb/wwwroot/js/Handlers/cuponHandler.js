@@ -2,7 +2,15 @@
 
 $(document).ready(function () {
     loadDataTable();
+    checkTypeCupon();
 });
+
+
+function checkTypeCupon() {
+
+//TypeCupon
+    console.log('TypeCupon');
+}
 
 function loadDataTable() {
 
