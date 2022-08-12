@@ -72,6 +72,15 @@ namespace DataAccess.Repository
             return query;
         }
 
+        public Negocio GetBusinessByIdOwner(string idOwner)
+        {
+            var business = _db.Negocios.AsQueryable();
+            var query = (from b in business where b.IdUserOwner == idOwner select
+                          b).FirstOrDefault();
+
+            return query;
+        }
+
         public BussinesViewModel GetBusinessToEditById(int id)
         {
             var business = _db.Negocios.AsQueryable();

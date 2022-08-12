@@ -1,5 +1,7 @@
-﻿using DataAccess.Repository.IRepository;
+﻿using DataAccess.Models;
+using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels;
@@ -14,6 +16,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
     [Area("Cuponera")]
     public class CuponeraController : Controller
     {
+        
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -29,8 +32,9 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             _signInManager = signInManager;
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
-        }
-
+           
+    }
+        
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult Index()
         {
@@ -41,11 +45,13 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         [Authorize(Roles = SP.Role_BusinesAdmin)]
         public IActionResult Add(int? id)
         {
-            //quede en la creacion del cupon
+           
             CuponeraViewModel model = new CuponeraViewModel();
             if (id==null)
             {
+                string ownerId = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
                 model.Id = 0;
+                model.IdNegocio = _unitOfWork.Business.GetBusinessByIdOwner(ownerId).Id;
                 return View(model);
             }
 
@@ -65,13 +71,34 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         [HttpPost]
         public IActionResult Add(CuponeraViewModel model)
         {
+            string urlImageCupon = "";
             if (ModelState.IsValid)
             {
                 if (model.Id==0)
                 {
-
+                    //creación
+                    _unitOfWork.Cuponera.Add(new CuponNegocio
+                    {
+                         IdNegocio=model.IdNegocio,
+                         DescripcionPromocion=model.DescripcionPromocion,
+                         DescuentoPorcentaje=model.DescuentoPorcentaje,
+                         DescuentoMonto=model.DescuentoMonto,
+                         MonedaMonto=model.MonedaMonto,
+                         ValorCupon=model.ValorCupon,
+                         CantidadCuponDisponible=model.CantidadCuponDisponible,
+                         ImagenCupon= urlImageCupon,
+                         FechaExpiracionCupon=Convert.ToDateTime(model.FechaExpiracionCupon),
+                         Status=model.Status,
+                         FechaCreacion=DateTime.Now,
+                         IdUsuarioCreacion= HttpContext.Session.GetString("UserId")
+                    });
+                }
+                else
+                {
+                    //update
                 }
 
+                _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
               

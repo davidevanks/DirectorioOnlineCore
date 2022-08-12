@@ -12,6 +12,7 @@
                 <div class="col-md-6 col-xs-12 pr-md-6 pr-lg-9">
                     <form enctype="multipart/form-data" asp-action="Add" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="IdNegocio"/>
                         @if (Model.Id != 0)
                         {
                             title = "Actualizar Cupón";

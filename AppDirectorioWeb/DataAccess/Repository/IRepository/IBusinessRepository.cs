@@ -13,6 +13,7 @@ namespace DataAccess.Repository.IRepository
         BussinesViewModel GetBusinessToEditById(int id);
 
         List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner);
+        Negocio GetBusinessByIdOwner(string idOwner);
 
         void Update(Negocio negocio);
 
