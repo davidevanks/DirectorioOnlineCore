@@ -1,5 +1,7 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 using Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Utiles;
 
@@ -86,7 +90,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                          MonedaMonto=model.MonedaMonto,
                          ValorCupon=model.ValorCupon,
                          CantidadCuponDisponible=model.CantidadCuponDisponible,
-                         ImagenCupon= urlImageCupon,
+                         ImagenCupon=  SaveCuponPicture(model).Result,
                          FechaExpiracionCupon=Convert.ToDateTime(model.FechaExpiracionCupon),
                          Status=model.Status,
                          FechaCreacion=DateTime.Now,
@@ -105,7 +109,57 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             return View(model);
         }
 
+        #region ExtraFunctions
+        public async Task<string> SaveCuponPicture(CuponeraViewModel model)
+        {
+            string uniqueFileName = "";
+            try
+            {
 
+                if (model.PictureCupon.Length > 0)
+                {
+                    
+                    uniqueFileName = Guid.NewGuid().ToString() +  model.PictureCupon.FileName;
+
+                    Stream stream = model.PictureCupon.OpenReadStream();
+                    //firebase logic to upload file
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                    var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+
+                    //cancellation token
+                    var cancellation = new CancellationTokenSource();
+
+                    var upload = new FirebaseStorage(
+                        FirebaseSetting.Bucket,
+                        new FirebaseStorageOptions
+                        {
+                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                            ThrowOnCancel = true
+
+                        }
+                        ).Child("businessCupon")
+                        .Child($"{uniqueFileName}")
+                        .PutAsync(stream, cancellation.Token);
+
+
+
+                    uniqueFileName = await upload;
+                    
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+
+
+            return uniqueFileName;
+        }
+        #endregion
         #region Api
         [HttpGet]
         public IActionResult GetCupons()

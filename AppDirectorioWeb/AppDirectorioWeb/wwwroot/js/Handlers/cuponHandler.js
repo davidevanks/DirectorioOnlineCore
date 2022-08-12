@@ -27,7 +27,7 @@ function loadDataTable() {
             { "data": "valorCupon", "width": "15%", "className": "t" },
             { "data": "cantidadCuponDisponible", "width": "15%", "className": "t" },
             { "data": "cantidadCuponUsados", "width": "15%", "className": "t" },
-            { "data": "FechaExpiracionCupon", "width": "15%", "className": "t" },
+            { "data": "fechaExpiracionCupon", "width": "15%", "className": "t" },
             { "data": "statusDescripcion", "width": "15%", "className": "t" },
             {
                 "data": "id",
