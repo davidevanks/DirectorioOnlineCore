@@ -48,7 +48,8 @@ namespace DataAccess.Repository
                              NombreNegocio = b.NombreNegocio,
                              IdUserOwner = b.IdUserOwner,
                              TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
-                             StatusDescripcion = c.Status == true ? "Activo" : "Inactivo"
+                             StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
+                             FechaExpiracionCuponDate=c.FechaExpiracionCupon
 
                          });
 
@@ -117,6 +118,20 @@ namespace DataAccess.Repository
                 objFromDb.MonedaMonto = cuponNegocio.MonedaMonto;
                 objFromDb.Status = cuponNegocio.Status;
             }
+        }
+
+        public bool VerifyActiveCupon(int idNegocio)
+        {
+            var cupon = _db.CuponNegocios.AsQueryable();
+            bool ban = false;
+            int count = (from c in cupon where c.IdNegocio == idNegocio && c.Status == true select c).Count();
+
+            if (count>0)
+            {
+                ban = true;
+            }
+
+            return ban;
         }
     }
 }

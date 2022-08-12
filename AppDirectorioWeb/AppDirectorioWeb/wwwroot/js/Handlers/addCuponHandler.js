@@ -2,10 +2,19 @@
   
     checkTypeCupon();
     image();
+
+    var esUpdate = $('#Id').val();
+
+    if (esUpdate != 0)
+    {
+        //falta setear valores del tipo de descuento y moneda cuando se hace update
+    }
 });
 
 function image()
 {
+    $('.cfiinvisible').attr("disabled", true);
+
     $('.cfi').on("change", function () {
         $('#picVal').html('');
         var filename = $(this).val().split("\\").pop();
@@ -34,6 +43,41 @@ function image()
     });
 
 }
+
+function DeleteCuponPic(Id) {
+
+    swal({
+        title: "Estas seguro que desea eliminar esta imagén?",
+        text: "Una vez borrado, no puedes recuperar el registro",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+
+    }).then((willDelete) => {
+        if (willDelete) {
+
+
+            $.ajax({
+                type: "GET",
+                url: '/Cuponera/Cuponera/DeleteCuponPic/' + Id,
+                success: function (data) {
+
+                    if (data.success) {
+                        /*toastr.success(data.message);*/
+                        swal({ title: data.message, icon: "success" });
+                        $('.cfiinvisible').removeAttr("disabled");
+                        $('#adelpiccupon').text('');
+
+                    } else {
+                        /*toastr.error(data.message);*/
+                        swal({ title: data.message, icon: "info" });
+                    }
+                }
+            });
+        }
+    });
+}
+
 
 function checkTypeCupon() {
 

@@ -40,8 +40,11 @@ namespace Models.ViewModels
         public int? CantidadCuponUsados { get; set; }
         public string ImagenCupon { get; set; }
         [DisplayName("Fecha de expiración del cupón")]
-        [Required(ErrorMessage = "Campo requerido")]
+        
         public string FechaExpiracionCupon { get; set; }
+        [DisplayName("Fecha de expiración del cupón")]
+        [Required(ErrorMessage = "Campo requerido")]
+        public DateTime FechaExpiracionCuponDate { get; set; }
         [DisplayName("Estado cupón")]
         [Required(ErrorMessage = "Campo requerido")]
         public bool Status { get; set; }

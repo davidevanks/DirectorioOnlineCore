@@ -12,7 +12,8 @@
                 <div class="col-md-6 col-xs-12 pr-md-6 pr-lg-9">
                     <form enctype="multipart/form-data" asp-action="Add" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="IdNegocio"/>
+                        <input type="hidden" asp-for="IdNegocio" />
+                        <input type="hidden" asp-for="Id" />
                         @if (Model.Id != 0)
                         {
                             title = "Actualizar Cupón";
@@ -62,17 +63,35 @@
                             <input asp-for="CantidadCuponDisponible" class="form-control border" placeholder="Cantidad de cupones disponibles">
                             <span asp-validation-for="CantidadCuponDisponible" class="text-danger"></span>
                         </div>
-                        <div class="form-group mb-6">
-                            <label asp-for="FechaExpiracionCupon"></label>
-                            <input asp-for="FechaExpiracionCupon" type="date" class="form-control border" placeholder="Fecha de expiración cupón">
-                            <span asp-validation-for="FechaExpiracionCupon" class="text-danger"></span>
-                        </div>
 
-                        <div class="form-group col-md-12">
-                            <input accept="image/*" asp-for="PictureCupon" class="form-control custom-file-input cfi">
-                            <label class="custom-file-label cfl">Selecciona imagen para el cupón...</label>
-                            <span class="text-danger field-validation-error"><span id="picVal" class=""></span></span>
-                        </div>
+                     
+                            <div class="form-group mb-6">
+                                <label asp-for="FechaExpiracionCuponDate"></label>
+                                <input asp-for="FechaExpiracionCuponDate" type="date" class="form-control border" placeholder="Fecha de expiración cupón">
+                                <span asp-validation-for="FechaExpiracionCuponDate" class="text-danger"></span>
+                            </div>
+                      
+
+                        <input type="hidden" asp-for="ImagenCupon"/>
+                        @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImagenCupon))
+                        {
+                            <a id="adelpiccupon" onclick="DeleteCuponPic(@Model.Id)" class="text-danger">@Model.ImagenCupon  Eliminar <span class="fa fa-close"></span></a>
+
+                            <div class="form-group col-md-12">
+                                <input accept="image/*" asp-for="PictureCupon" class="form-control custom-file-input cfi cfiinvisible">
+                                <label class="custom-file-label cfl">Selecciona imagen para el cupón...</label>
+                                <span class="text-danger field-validation-error"><span id="picVal" class=""></span></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-12">
+                                <input accept="image/*" asp-for="PictureCupon" class="form-control custom-file-input cfi">
+                                <label class="custom-file-label cfl">Selecciona imagen para el cupón...</label>
+                                <span class="text-danger field-validation-error"><span id="picVal" class=""></span></span>
+                            </div>
+                        }
+
 
                         <div class="form-group mb-6">
                             <div class="form-check">
@@ -95,7 +114,7 @@
                                 <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Guardar</button>
                             }
 
-                            <a asp-area="Catalogos" asp-action="Index" asp-controller="CatCategory" class="btn btn-warning text-white text-uppercase py-2 px-4">Regresar</a>
+                            <a asp-area="Cuponera" asp-action="Index" asp-controller="Cuponera" class="btn btn-warning text-white text-uppercase py-2 px-4">Regresar</a>
                         </div>
 
                         <hr class="my-7 d-md-none">

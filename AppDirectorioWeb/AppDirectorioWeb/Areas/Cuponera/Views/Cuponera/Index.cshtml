@@ -9,8 +9,11 @@
         <!-- Breadcrumb -->
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
             <h3 class="font-weight-normal mb-4 mb-md-0">Administración de Cupones</h3>
+            @if (ViewBag.CuponActive == false)
+            {
+                <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Add" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i> Agregar nuevo cupon</a>
+            }
 
-            <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Add" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i> Agregar nuevo cupon</a>
 
         </nav>
 

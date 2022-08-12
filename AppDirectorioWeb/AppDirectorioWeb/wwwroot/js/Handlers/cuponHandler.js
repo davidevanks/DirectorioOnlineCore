@@ -32,7 +32,7 @@ function loadDataTable() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Catalogos/CatCategory/Upsert/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>`
+                    return ` <a href="/Cuponera/Cuponera/Add/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>`
 
                         ;
                 }, "width": "40%"
