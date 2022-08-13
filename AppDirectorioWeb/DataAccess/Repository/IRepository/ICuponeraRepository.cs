@@ -15,6 +15,7 @@ namespace DataAccess.Repository.IRepository
         List<CuponeraViewModel> GetCupons(string userId);
 
         bool VerifyActiveCupon(int idNegocio);
+        CuponeraViewModel GetCuponByIdNegocio(int idNegocio);
 
         CuponeraViewModel GetCuponById(int id);
     }

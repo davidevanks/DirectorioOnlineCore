@@ -375,15 +375,7 @@ namespace AppDirectorioWeb.Controllers
             BusinessDetails.FeatureNegocios = _unitOfWork.Feature.GetListFeaturesByBusinessId(id);
             BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
             BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);
-
-            //foreach (var item in BusinessDetails.ImagenesNegocios)
-            //{
-            //    string uploadsFolder = "/ImagesBusiness/";
-            //    string uniqueFileNames = item.Image;
-            //    string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-            //    item.Image = filePath;
-            //}
-
+            BusinessDetails.CuponNegocio = _unitOfWork.Cuponera.GetCuponByIdNegocio(id);
             return View(BusinessDetails);
         }
 

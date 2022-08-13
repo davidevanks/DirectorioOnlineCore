@@ -58,6 +58,37 @@ namespace DataAccess.Repository
             return query.FirstOrDefault();
         }
 
+        public CuponeraViewModel GetCuponByIdNegocio(int idNegocio)
+        {
+            var cupon = _db.CuponNegocios.AsQueryable();
+
+            CuponeraViewModel cuponByBusinessId = (from c in cupon where c.IdNegocio == idNegocio && c.Status == true select new CuponeraViewModel {
+                Id = c.Id,
+                IdNegocio = c.IdNegocio,
+                IdUsuarioCreacion = c.IdUsuarioCreacion,
+                IdUsuarioModificacion = c.IdUsuarioModificacion,
+                DescripcionPromocion = c.DescripcionPromocion,
+                DescuentoMonto = c.DescuentoMonto,
+                DescuentoPorcentaje = c.DescuentoPorcentaje,
+                CantidadCuponDisponible = c.CantidadCuponDisponible,
+                CantidadCuponUsados = c.CantidadCuponUsados,
+                FechaCreacion = c.FechaCreacion.ToShortDateString(),
+                FechaExpiracionCupon = c.FechaExpiracionCupon.ToShortDateString(),
+                FechaModificacion = c.FechaModificacion == null ? "" : c.FechaModificacion.Value.ToShortDateString(),
+                ImagenCupon = c.ImagenCupon,
+                MonedaMonto = c.MonedaMonto,
+                Status = c.Status,
+                ValorCupon = c.ValorCupon,
+                TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
+                StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
+                FechaExpiracionCuponDate = c.FechaExpiracionCupon,
+                MontoConMonedaDescripcion = c.DescuentoMonto == true ? ((c.MonedaMonto == 1 ? "C$" : "$") + c.ValorCupon) : "%" + c.ValorCupon
+
+            }).FirstOrDefault();
+
+            return cuponByBusinessId;
+        }
+
         public List<CuponeraViewModel> GetCupons(string userId)
         {
             var userDetails = _db.UserDetails.AsQueryable();

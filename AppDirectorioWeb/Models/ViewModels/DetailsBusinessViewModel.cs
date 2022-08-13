@@ -12,7 +12,7 @@ namespace Models.ViewModels
         public List<FeatureNegocioViewModel> FeatureNegocios { get; set; }
         public List<HorarioNegocioViewModel> HorarioNegocios { get; set; }
         public List<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
-
+        public CuponeraViewModel CuponNegocio { get; set; }
         public List<ReviewViewModel> Reviews { get; set; }
     }
 }
