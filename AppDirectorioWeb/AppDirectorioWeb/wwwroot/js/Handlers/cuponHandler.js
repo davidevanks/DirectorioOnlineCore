@@ -16,6 +16,7 @@ function loadDataTable() {
 
     dataTable = $('#tblCupon').DataTable({
         "bSortClasses": false,
+        order: [[7, 'asc']],
         "stripeClasses": [],
         "ajax": {
             "url": "/Cuponera/Cuponera/GetCupons"
@@ -24,7 +25,7 @@ function loadDataTable() {
             { "data": "id", "width": "15%", "className": "t" },
             { "data": "descripcionPromocion", "width": "15%", "className": "t" },
             { "data": "tipoDescuento", "width": "15%", "className": "t" },
-            { "data": "valorCupon", "width": "15%", "className": "t" },
+            { "data": "montoConMonedaDescripcion", "width": "15%", "className": "t" },
             { "data": "cantidadCuponDisponible", "width": "15%", "className": "t" },
             { "data": "cantidadCuponUsados", "width": "15%", "className": "t" },
             { "data": "fechaExpiracionCupon", "width": "15%", "className": "t" },

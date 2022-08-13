@@ -88,8 +88,8 @@ namespace DataAccess.Repository
                              NombreNegocio = b.NombreNegocio,
                              IdUserOwner = b.IdUserOwner,
                              TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
-                             StatusDescripcion = c.Status == true ? "Activo" : "Inactivo"
-
+                             StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
+                             MontoConMonedaDescripcion= c.DescuentoMonto == true?((c.MonedaMonto == 1 ? "C$" : "$")+c.ValorCupon  ):"%"+c.ValorCupon
                          }); 
 
             if (!string.IsNullOrEmpty(userId))
@@ -97,7 +97,7 @@ namespace DataAccess.Repository
                 query = query.Where(x=>x.IdUserOwner==userId);
             }
 
-            return query.ToList();
+            return query.OrderByDescending(x=>x.StatusDescripcion).ToList();
         }
 
         public void Update(CuponNegocio cuponNegocio)

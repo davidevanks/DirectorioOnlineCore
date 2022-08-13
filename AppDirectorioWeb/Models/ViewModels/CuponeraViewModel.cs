@@ -55,5 +55,6 @@ namespace Models.ViewModels
         public string IdUsuarioCreacion { get; set; }
         public string FechaModificacion { get; set; }
         public string IdUsuarioModificacion { get; set; }
+        public string MontoConMonedaDescripcion { get; set; }
     }
 }

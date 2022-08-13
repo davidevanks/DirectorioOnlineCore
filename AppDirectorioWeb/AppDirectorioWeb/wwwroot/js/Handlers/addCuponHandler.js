@@ -1,14 +1,25 @@
 ﻿$(document).ready(function () {
   
-    checkTypeCupon();
+   
     image();
+    //si estamos en modo edición
+            var esUpdate = $('#Id').val();
 
-    var esUpdate = $('#Id').val();
-
-    if (esUpdate != 0)
-    {
-        //falta setear valores del tipo de descuento y moneda cuando se hace update
+    if (esUpdate != 0) {
+        console.log('es update');
+        console.log($('#DescuentoMonto').val());
+        if ($('#DescuentoMonto').val() == 'True') {
+            console.log('es monto');
+            $("input[name=TypeCupon][value='Mon']").prop("checked", true);
+            $('#divTipoMoneda').show();
+            $('#cboIdMoneda').val($('#MonedaMonto').val());
+        } else {
+            console.log('no es monto');
+            $("input[name=TypeCupon][value='Per']").prop("checked", true);
+        }
     }
+     //fin
+    checkTypeCupon();
 });
 
 function image()
@@ -110,7 +121,7 @@ function checkTypeCupon() {
         }
 
     });
-
+   
     //capturar tipo de moneda
     var tipoMoneda = $('#cboIdMoneda').val();
 

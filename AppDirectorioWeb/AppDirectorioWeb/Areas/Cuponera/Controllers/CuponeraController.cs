@@ -57,6 +57,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                 string ownerId = _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
                 model.Id = 0;
                 model.IdNegocio = _unitOfWork.Business.GetBusinessByIdOwner(ownerId).Id;
+                model.FechaExpiracionCuponDate = DateTime.Now;
                 return View(model);
             }
 
@@ -100,6 +101,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                 }
                 else
                 {
+                    var imageStateActual = _unitOfWork.Cuponera.Get(model.Id).ImagenCupon;
                     //update
                     _unitOfWork.Cuponera.Update(new CuponNegocio
                     {
@@ -111,7 +113,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                         MonedaMonto = model.MonedaMonto,
                         ValorCupon = model.ValorCupon,
                         CantidadCuponDisponible = model.CantidadCuponDisponible,
-                        ImagenCupon = model.PictureCupon!=null? SaveCuponPicture(model).Result:model.ImagenCupon,
+                        ImagenCupon = (model.PictureCupon!=null && model.PictureCupon.Length>0) ? SaveCuponPicture(model).Result: imageStateActual,
                         FechaExpiracionCupon = Convert.ToDateTime(model.FechaExpiracionCuponDate),
                         Status = model.Status,
                         FechaModificacion = DateTime.Now,
