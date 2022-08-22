@@ -51,16 +51,17 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             ViewBag.CuponActive = _unitOfWork.Cuponera.VerifyActiveCupon(Convert.ToInt32(HttpContext.Session.GetString("idNegocioUser")));
                 return View();
         }
-
-        public IActionResult DownloadCupon()
+        
+        public IActionResult DownloadCupon(int idCupon)
         {
             string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateDownLoadCupon.html";
             StreamReader str = new StreamReader(FilePath);
            var MailText = str.ReadToEnd();
             var converter = new HtmlConverter();
             var bytes = converter.FromHtmlString(MailText);
-            //var bytes = converter.FromUrl("http://google.com");
+            
             return File(bytes, "image/jpeg","test.jpg");
+            
         }
 
         [Authorize(Roles = SP.Role_BusinesAdmin)]
