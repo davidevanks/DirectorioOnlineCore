@@ -13,6 +13,10 @@
         text-decoration: none;
         background-color: transparent;
     }
+
+    .textConditionCupon{
+        font-size:smaller;
+    }
 </style>
 <!-- ====================================
 ———	LISTING SINGLE HEADING
@@ -437,11 +441,18 @@
                         <img class="card-img-top" src="@Model.CuponNegocio.ImagenCupon" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">Cupón de descuento</h5>
-                            <p class="card-text">@Model.CuponNegocio.NombrePromocion</p>
+
+                            <p class="card-text"><strong>@Model.CuponNegocio.NombrePromocion</strong></p>
+
                             <p class="card-text">@Model.CuponNegocio.DescripcionPromocion</p>
                             <p class="card-text">Valor:@Model.CuponNegocio.MontoConMonedaDescripcion</p>
+                            <p class="card-text">Cupones disponibles: 20</p>
                             <p class="card-text">Vence:@Model.CuponNegocio.FechaExpiracionCupon</p>
-                            <a href="#" class="btn btn-primary">Obtener cupón</a>
+
+
+                            <a asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
+
+
                         </div>
 
                     </div>

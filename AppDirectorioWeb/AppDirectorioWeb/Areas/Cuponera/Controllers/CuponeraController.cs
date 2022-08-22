@@ -14,6 +14,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Utiles;
+using System.Drawing.Imaging;
+using CoreHtmlToImage;
 
 namespace AppDirectorioWeb.Areas.Cuponera.Controllers
 {
@@ -42,9 +44,23 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult Index()
         {
+
+         
+
             //mandamos una viriable para indicarnos que si hay un cupon activo (por el momento solo se permite un cupo activo)
-                ViewBag.CuponActive = _unitOfWork.Cuponera.VerifyActiveCupon(Convert.ToInt32(HttpContext.Session.GetString("idNegocioUser")));
+            ViewBag.CuponActive = _unitOfWork.Cuponera.VerifyActiveCupon(Convert.ToInt32(HttpContext.Session.GetString("idNegocioUser")));
                 return View();
+        }
+
+        public IActionResult DownloadCupon()
+        {
+            string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateDownLoadCupon.html";
+            StreamReader str = new StreamReader(FilePath);
+           var MailText = str.ReadToEnd();
+            var converter = new HtmlConverter();
+            var bytes = converter.FromHtmlString(MailText);
+            //var bytes = converter.FromUrl("http://google.com");
+            return File(bytes, "image/jpeg","test.jpg");
         }
 
         [Authorize(Roles = SP.Role_BusinesAdmin)]
