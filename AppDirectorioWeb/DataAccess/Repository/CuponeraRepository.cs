@@ -33,6 +33,7 @@ namespace DataAccess.Repository
                              IdNegocio = b.Id,
                              IdUsuarioCreacion = c.IdUsuarioCreacion,
                              IdUsuarioModificacion = c.IdUsuarioModificacion,
+                             NombrePromocion=c.NombrePromocion,
                              DescripcionPromocion = c.DescripcionPromocion,
                              DescuentoMonto = c.DescuentoMonto,
                              DescuentoPorcentaje = c.DescuentoPorcentaje,
@@ -67,6 +68,7 @@ namespace DataAccess.Repository
                 IdNegocio = c.IdNegocio,
                 IdUsuarioCreacion = c.IdUsuarioCreacion,
                 IdUsuarioModificacion = c.IdUsuarioModificacion,
+                NombrePromocion = c.NombrePromocion,
                 DescripcionPromocion = c.DescripcionPromocion,
                 DescuentoMonto = c.DescuentoMonto,
                 DescuentoPorcentaje = c.DescuentoPorcentaje,
@@ -104,6 +106,7 @@ namespace DataAccess.Repository
                              IdNegocio = b.Id,
                              IdUsuarioCreacion = c.IdUsuarioCreacion,
                              IdUsuarioModificacion = c.IdUsuarioModificacion,
+                             NombrePromocion = c.NombrePromocion,
                              DescripcionPromocion = c.DescripcionPromocion,
                              DescuentoMonto = c.DescuentoMonto,
                              DescuentoPorcentaje = c.DescuentoPorcentaje,
@@ -136,6 +139,7 @@ namespace DataAccess.Repository
             var objFromDb = _db.CuponNegocios.FirstOrDefault(s => s.Id == cuponNegocio.Id);
             if (objFromDb != null)
             {
+                objFromDb.NombrePromocion = cuponNegocio.NombrePromocion;
                 objFromDb.DescripcionPromocion = cuponNegocio.DescripcionPromocion;
                 objFromDb.CantidadCuponDisponible = cuponNegocio.CantidadCuponDisponible;
                 objFromDb.CantidadCuponUsados = cuponNegocio.CantidadCuponUsados;

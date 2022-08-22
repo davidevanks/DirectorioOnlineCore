@@ -87,6 +87,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                     {
                          IdNegocio=model.IdNegocio,
                          DescripcionPromocion=model.DescripcionPromocion,
+                         NombrePromocion=model.NombrePromocion,
                          DescuentoPorcentaje=model.DescuentoPorcentaje,
                          DescuentoMonto=model.DescuentoMonto,
                          MonedaMonto=model.MonedaMonto,
@@ -107,6 +108,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                     {
                         Id=model.Id,
                         IdNegocio = model.IdNegocio,
+                        NombrePromocion = model.NombrePromocion,
                         DescripcionPromocion = model.DescripcionPromocion,
                         DescuentoPorcentaje = model.DescuentoPorcentaje,
                         DescuentoMonto = model.DescuentoMonto,

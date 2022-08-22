@@ -14,6 +14,9 @@ namespace Models.ViewModels
         public int Id { get; set; }
         public int IdNegocio { get; set; }
         public string IdUserOwner { get; set; }
+        [DisplayName("Nombre cupón")]
+        [Required(ErrorMessage = "Campo requerido")]
+        public string NombrePromocion { get; set; }
         public string NombreNegocio { get; set; }
         public int? IdUsuarioRedencion { get; set; }
         public string NombreUsuarioRedencion { get; set; }

@@ -14,6 +14,7 @@ namespace DataAccess.Models
 
         public int Id { get; set; }
         public int IdNegocio { get; set; }
+        public string NombrePromocion { get; set; }
         public string DescripcionPromocion { get; set; }
         public bool DescuentoPorcentaje { get; set; }
         public bool DescuentoMonto { get; set; }

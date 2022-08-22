@@ -23,7 +23,7 @@ function loadDataTable() {
         },
         "columns": [
             { "data": "id", "width": "15%", "className": "t" },
-            { "data": "descripcionPromocion", "width": "15%", "className": "t" },
+            { "data": "nombrePromocion", "width": "15%", "className": "t" },
             { "data": "tipoDescuento", "width": "15%", "className": "t" },
             { "data": "montoConMonedaDescripcion", "width": "15%", "className": "t" },
             { "data": "cantidadCuponDisponible", "width": "15%", "className": "t" },

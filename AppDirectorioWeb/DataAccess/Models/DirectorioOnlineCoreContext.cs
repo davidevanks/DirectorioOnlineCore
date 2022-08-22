@@ -138,6 +138,10 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.ImagenCupon).IsUnicode(false);
 
+                entity.Property(e => e.NombrePromocion)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.ValorCupon).HasColumnType("decimal(18, 2)");
             });
 
