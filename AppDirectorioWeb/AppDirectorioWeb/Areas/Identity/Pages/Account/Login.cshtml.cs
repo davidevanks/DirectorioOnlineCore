@@ -64,6 +64,8 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
+        
+
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -75,6 +77,12 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+
+            //validacion solo para casos unicos
+            if (returnUrl.Contains("/Cuponera/Cuponera/DownloadCupon"))
+            {
+                returnUrl = "/Negocios/Negocios/GetDetailByBussinesId?id=" + HttpContext.Session.GetString("idNegocioForDownLoadCupon");
+            }
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

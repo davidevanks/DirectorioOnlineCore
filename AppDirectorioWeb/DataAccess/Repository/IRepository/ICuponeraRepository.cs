@@ -18,5 +18,7 @@ namespace DataAccess.Repository.IRepository
         CuponeraViewModel GetCuponByIdNegocio(int idNegocio);
 
         CuponeraViewModel GetCuponById(int id);
+        void UpdateCuponesUsados(int idCupon);
+        void SaveCuponRedencionUsuario(int idCupon, string userId);
     }
 }

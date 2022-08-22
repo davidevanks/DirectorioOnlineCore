@@ -370,6 +370,7 @@ namespace AppDirectorioWeb.Controllers
 
         public IActionResult GetDetailByBussinesId(int id)
         {
+            HttpContext.Session.SetString("idNegocioForDownLoadCupon", id.ToString());
             DetailsBusinessViewModel BusinessDetails = new DetailsBusinessViewModel();
             BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
             BusinessDetails.FeatureNegocios = _unitOfWork.Feature.GetListFeaturesByBusinessId(id);

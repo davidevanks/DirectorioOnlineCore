@@ -52,16 +52,34 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
                 return View();
         }
         
-        public IActionResult DownloadCupon(int idCupon)
+        [Authorize]
+        public IActionResult DownloadCupon(int idCupon,int idNegocio)
         {
             string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateDownLoadCupon.html";
             StreamReader str = new StreamReader(FilePath);
-           var MailText = str.ReadToEnd();
+           var templateCupon = str.ReadToEnd();
+
+            CuponeraViewModel cupon = new CuponeraViewModel(); 
+            cupon = _unitOfWork.Cuponera.GetCuponById(idCupon);
+            var user = _unitOfWork.UserDetail.GetAUsersDetails(HttpContext.Session.GetString("UserId")).FirstOrDefault();
+
+          
+
+
+                
+
             var converter = new HtmlConverter();
-            var bytes = converter.FromHtmlString(MailText);
-            
+            templateCupon= templateCupon.Replace("%NombreNegocio%", cupon.NombreNegocio).Replace("%NombrePromocion%", cupon.NombrePromocion)
+                .Replace("%DescripcionPromocion%", cupon.DescripcionPromocion).Replace("%ValorPromocion%", cupon.MontoConMonedaDescripcion).Replace("%NombreUsuario%", user.FullName)
+                .Replace("%FechaExpiracionCupon%",cupon.FechaExpiracionCupon).Replace("%URLImagenCupon%",cupon.ImagenCupon) ;
+
+            var bytes = converter.FromHtmlString(templateCupon);
+            _unitOfWork.Cuponera.UpdateCuponesUsados(cupon.Id);
+            _unitOfWork.Cuponera.SaveCuponRedencionUsuario(cupon.Id, HttpContext.Session.GetString("UserId"));
+            _unitOfWork.Save();
             return File(bytes, "image/jpeg","test.jpg");
-            
+
+          
         }
 
         [Authorize(Roles = SP.Role_BusinesAdmin)]

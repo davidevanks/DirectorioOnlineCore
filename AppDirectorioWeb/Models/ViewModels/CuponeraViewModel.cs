@@ -41,6 +41,8 @@ namespace Models.ViewModels
         [Range( 1, int.MaxValue,ErrorMessage ="Valor inválido")]
         public int CantidadCuponDisponible { get; set; }
         public int? CantidadCuponUsados { get; set; }
+
+        public int CuponeaDisponibles { get; set; }
         public string ImagenCupon { get; set; }
         [DisplayName("Fecha de expiración del cupón")]
         

@@ -17,6 +17,15 @@ namespace DataAccess.Repository
             _db = db;
         }
 
+        public void SaveCuponRedencionUsuario(int idCupon, string userId)
+        {
+            _db.CuponRedencionUsuarios.Add(new CuponRedencionUsuario { 
+            IdCupon=idCupon,
+            IdUsuario=userId,
+            FechaRedencion=DateTime.Now
+            });
+        }
+
         public CuponeraViewModel GetCuponById(int id)
         {
             var userDetails = _db.UserDetails.AsQueryable();
@@ -50,8 +59,9 @@ namespace DataAccess.Repository
                              IdUserOwner = b.IdUserOwner,
                              TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
                              StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
-                             FechaExpiracionCuponDate=c.FechaExpiracionCupon
-
+                             FechaExpiracionCuponDate=c.FechaExpiracionCupon,
+                             MontoConMonedaDescripcion = c.DescuentoMonto == true ? ((c.MonedaMonto == 1 ? "C$" : "$") + c.ValorCupon) : "%" + c.ValorCupon,
+                             CuponeaDisponibles = c.CantidadCuponDisponible - c.CantidadCuponUsados
                          });
 
            
@@ -84,8 +94,9 @@ namespace DataAccess.Repository
                 TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
                 StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
                 FechaExpiracionCuponDate = c.FechaExpiracionCupon,
-                MontoConMonedaDescripcion = c.DescuentoMonto == true ? ((c.MonedaMonto == 1 ? "C$" : "$") + c.ValorCupon) : "%" + c.ValorCupon
-
+                MontoConMonedaDescripcion = c.DescuentoMonto == true ? ((c.MonedaMonto == 1 ? "C$" : "$") + c.ValorCupon) : "%" + c.ValorCupon,
+                CuponeaDisponibles=c.CantidadCuponDisponible-c.CantidadCuponUsados
+                
             }).FirstOrDefault();
 
             return cuponByBusinessId;
@@ -123,7 +134,8 @@ namespace DataAccess.Repository
                              IdUserOwner = b.IdUserOwner,
                              TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
                              StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
-                             MontoConMonedaDescripcion= c.DescuentoMonto == true?((c.MonedaMonto == 1 ? "C$" : "$")+c.ValorCupon  ):"%"+c.ValorCupon
+                             MontoConMonedaDescripcion= c.DescuentoMonto == true?((c.MonedaMonto == 1 ? "C$" : "$")+c.ValorCupon  ):"%"+c.ValorCupon,
+                             CuponeaDisponibles = c.CantidadCuponDisponible - c.CantidadCuponUsados
                          }); 
 
             if (!string.IsNullOrEmpty(userId))
@@ -152,6 +164,17 @@ namespace DataAccess.Repository
                 objFromDb.ValorCupon = cuponNegocio.ValorCupon;
                 objFromDb.MonedaMonto = cuponNegocio.MonedaMonto;
                 objFromDb.Status = cuponNegocio.Status;
+            }
+        }
+
+        public void UpdateCuponesUsados(int idCupon)
+        {
+            var objFromDb = _db.CuponNegocios.FirstOrDefault(s => s.Id == idCupon);
+            if (objFromDb != null)
+            {
+               
+                objFromDb.CantidadCuponUsados++;
+              
             }
         }
 
