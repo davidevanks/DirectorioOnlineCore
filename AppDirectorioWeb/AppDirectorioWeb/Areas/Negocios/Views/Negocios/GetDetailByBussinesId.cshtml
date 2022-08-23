@@ -449,13 +449,14 @@
                             <p class="card-text">Cupones disponibles: @Model.CuponNegocio.CuponeaDisponibles</p>
                             <p class="card-text">Vence: @Model.CuponNegocio.FechaExpiracionCupon</p>
 
-
-                            <a asp-route-idNegocio="@Model.Business.Id" asp-route-idCupon="2" asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
+                            <input type="hidden" value="t" />
+                            <a id="btnDowloandCupon" asp-route-idNegocio="@Model.Business.Id" asp-route-idCupon="@Model.CuponNegocio.Id" asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
                             @if (!SignInManager.IsSignedIn(User))
                             {
                                 <br /><br /><span class="text-danger">*Para descargar el cupón debes iniciar sesión</span>
                             }
-                            </div>
+                            <br /><br /><span class="text-danger">*Recuerda solo puedes obtener un cupón por promoción</span>
+                        </div>
 
                     </div>
                 }
@@ -606,6 +607,7 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/Handlers/ReviewsHandler.js"></script>
+
 
 
 }

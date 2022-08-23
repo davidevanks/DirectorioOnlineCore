@@ -191,5 +191,11 @@ namespace DataAccess.Repository
 
             return ban;
         }
+
+        public int ContadorCuponRedimidoXusuario(int idCupon, string userId)
+        {
+            int contador = _db.CuponRedencionUsuarios.Where(x=>x.IdCupon==idCupon && x.IdUsuario==userId).Count();
+            return contador;
+        }
     }
 }

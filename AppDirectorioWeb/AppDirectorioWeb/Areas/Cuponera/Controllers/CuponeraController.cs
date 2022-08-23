@@ -55,6 +55,12 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         [Authorize]
         public IActionResult DownloadCupon(int idCupon,int idNegocio)
         {
+            var count = _unitOfWork.Cuponera.ContadorCuponRedimidoXusuario(idCupon, HttpContext.Session.GetString("UserId"));
+            if (count>0)
+            {
+                return LocalRedirect("/Negocios/Negocios/GetDetailByBussinesId?id=" + idNegocio);
+            }
+
             string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateDownLoadCupon.html";
             StreamReader str = new StreamReader(FilePath);
            var templateCupon = str.ReadToEnd();
@@ -62,11 +68,6 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             CuponeraViewModel cupon = new CuponeraViewModel(); 
             cupon = _unitOfWork.Cuponera.GetCuponById(idCupon);
             var user = _unitOfWork.UserDetail.GetAUsersDetails(HttpContext.Session.GetString("UserId")).FirstOrDefault();
-
-          
-
-
-                
 
             var converter = new HtmlConverter();
             templateCupon= templateCupon.Replace("%NombreNegocio%", cupon.NombreNegocio).Replace("%NombrePromocion%", cupon.NombrePromocion)
@@ -77,8 +78,9 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             _unitOfWork.Cuponera.UpdateCuponesUsados(cupon.Id);
             _unitOfWork.Cuponera.SaveCuponRedencionUsuario(cupon.Id, HttpContext.Session.GetString("UserId"));
             _unitOfWork.Save();
-            return File(bytes, "image/jpeg","test.jpg");
 
+            return File(bytes, "image/jpeg","test.jpg");
+            
           
         }
 
