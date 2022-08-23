@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model List<Models.ViewModels.CuponeraViewModel>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<style>
+
+
+</style>
+<section class="pt-md-10 sec-pb-70 pt-8 pb-6 bg-light">
+    <div class="container">
+        <div class="section-title">
+            <h2>Qué promoción o descuento necesitas?</h2>
+            <p>Descarga cupones y ahorra en tus compras</p>
+        </div>
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 col-lg-3 col-xs-12">
+                    <div class="card">
+                       
+                            <img class="card-img-top " src="@item.ImagenCupon" alt="Card image cap" >
+                    
+                       
+                        <div class="card-body">
+                            <h5 class="card-title">Cupón de descuento</h5>
+                            <p class="card-text"><strong>Negocio: @item.NombreNegocio</strong></p>
+                            <p class="card-text"><strong>@item.NombrePromocion</strong></p>
+
+                            <p class="card-text">@item.DescripcionPromocion</p>
+                            <p class="card-text">Valor: @item.MontoConMonedaDescripcion</p>
+                            <p class="card-text">Cupones disponibles: @item.CuponeaDisponibles</p>
+                            <p class="card-text">Vence: @item.FechaExpiracionCupon</p>
+
+                            <input type="hidden" value="t" />
+                            <a id="btnDowloandCupon" asp-route-idNegocio="@item.IdNegocio" asp-route-idCupon="@item.Id" asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
+                            @if (!SignInManager.IsSignedIn(User))
+                            {
+                                <br /><br /><span class="text-danger">*Para descargar el cupón debes iniciar sesión</span>
+                            }
+                            <br /><br /><span class="text-danger">*Recuerda solo puedes obtener un cupón por promoción</span>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>

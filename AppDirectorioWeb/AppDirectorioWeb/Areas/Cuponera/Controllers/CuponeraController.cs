@@ -44,12 +44,15 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult Index()
         {
-
-         
-
             //mandamos una viriable para indicarnos que si hay un cupon activo (por el momento solo se permite un cupo activo)
             ViewBag.CuponActive = _unitOfWork.Cuponera.VerifyActiveCupon(Convert.ToInt32(HttpContext.Session.GetString("idNegocioUser")));
                 return View();
+        }
+
+        public IActionResult GetCuponsActive()
+        {
+            var cuponesActivos = _unitOfWork.Cuponera.GetCuponsActive();
+            return View(cuponesActivos);
         }
         
         [Authorize]

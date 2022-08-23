@@ -197,5 +197,47 @@ namespace DataAccess.Repository
             int contador = _db.CuponRedencionUsuarios.Where(x=>x.IdCupon==idCupon && x.IdUsuario==userId).Count();
             return contador;
         }
+
+        public List<CuponeraViewModel> GetCuponsActive()
+        {
+            var userDetails = _db.UserDetails.AsQueryable();
+            var cupons = _db.CuponNegocios.AsQueryable();
+            var business = _db.Negocios.AsQueryable();
+
+            var query = (from c in cupons
+                         join b in business on c.IdNegocio equals b.Id
+                         join us in userDetails on b.IdUserOwner equals us.UserId
+                         where c.Status==true
+                         select new CuponeraViewModel
+                         {
+                             Id = c.Id,
+                             IdNegocio = b.Id,
+                             IdUsuarioCreacion = c.IdUsuarioCreacion,
+                             IdUsuarioModificacion = c.IdUsuarioModificacion,
+                             NombrePromocion = c.NombrePromocion,
+                             DescripcionPromocion = c.DescripcionPromocion,
+                             DescuentoMonto = c.DescuentoMonto,
+                             DescuentoPorcentaje = c.DescuentoPorcentaje,
+                             CantidadCuponDisponible = c.CantidadCuponDisponible,
+                             CantidadCuponUsados = c.CantidadCuponUsados,
+                             FechaCreacion = c.FechaCreacion.ToShortDateString(),
+                             FechaExpiracionCupon = c.FechaExpiracionCupon.ToShortDateString(),
+                             FechaModificacion = c.FechaModificacion == null ? "" : c.FechaModificacion.Value.ToShortDateString(),
+                             ImagenCupon = c.ImagenCupon,
+                             MonedaMonto = c.MonedaMonto,
+                             Status = c.Status,
+                             ValorCupon = c.ValorCupon,
+                             NombreNegocio = b.NombreNegocio,
+                             IdUserOwner = b.IdUserOwner,
+                             TipoDescuento = c.DescuentoMonto == true ? "Monetario" : "Porcentual",
+                             StatusDescripcion = c.Status == true ? "Activo" : "Inactivo",
+                             MontoConMonedaDescripcion = c.DescuentoMonto == true ? ((c.MonedaMonto == 1 ? "C$" : "$") + c.ValorCupon) : "%" + c.ValorCupon,
+                             CuponeaDisponibles = c.CantidadCuponDisponible - c.CantidadCuponUsados
+                         });
+
+         
+
+            return query.OrderByDescending(x => x.StatusDescripcion).ToList();
+        }
     }
 }
