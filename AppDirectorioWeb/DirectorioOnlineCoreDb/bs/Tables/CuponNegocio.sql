@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [bs].[CuponNegocio] (
     [Id]                      INT             IDENTITY (1, 1) NOT NULL,
     [IdNegocio]               INT             NOT NULL,
+    [NombrePromocion]         VARCHAR (500)   NULL,
     [DescripcionPromocion]    VARCHAR (MAX)   NOT NULL,
     [DescuentoPorcentaje]     BIT             NOT NULL,
     [DescuentoMonto]          BIT             NOT NULL,
@@ -17,4 +18,6 @@
     [IdUsuarioModificacion]   NVARCHAR (300)  NULL,
     CONSTRAINT [PK_CuponNegocio] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
