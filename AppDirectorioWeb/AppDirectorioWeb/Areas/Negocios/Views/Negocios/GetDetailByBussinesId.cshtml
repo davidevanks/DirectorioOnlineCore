@@ -435,18 +435,25 @@
                 {
                     <div class="map-sidebar border rounded mb-5">
 
-                        <img class="card-img-top" src="@Model.CuponNegocio.ImagenCupon" alt="Card image cap" >
+                        <img class="card-img-top" src="@Model.CuponNegocio.ImagenCupon" alt="Card image cap" style="width: 100%; height: 350px;" >
                         <div class="card-body">
                             <h5 class="card-title">Cupón de descuento</h5>
 
-                            <p class="card-text"><strong>@Model.CuponNegocio.NombrePromocion</strong></p>
+                            <p class="card-text">
+                                <strong>@Model.CuponNegocio.NombrePromocion</strong>
+                                <br />
+                                @Model.CuponNegocio.DescripcionPromocion
+                                <br />
+                                Valor: @Model.CuponNegocio.MontoConMonedaDescripcion
+                                <br />
+                                Cupones disponibles: @Model.CuponNegocio.CuponeaDisponibles
+                                <br />
+                                Vence: @Model.CuponNegocio.FechaExpiracionCupon
+                            </p>
 
-                            <p class="card-text">@Model.CuponNegocio.DescripcionPromocion</p>
-                            <p class="card-text">Valor: @Model.CuponNegocio.MontoConMonedaDescripcion</p>
-                            <p class="card-text">Cupones disponibles: @Model.CuponNegocio.CuponeaDisponibles</p>
-                            <p class="card-text">Vence: @Model.CuponNegocio.FechaExpiracionCupon</p>
+                          
 
-                            <input type="hidden" value="t" />
+                            
                             <a id="btnDowloandCupon" asp-route-idNegocio="@Model.Business.Id" asp-route-idCupon="@Model.CuponNegocio.Id" asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
                             @if (!SignInManager.IsSignedIn(User))
                             {
