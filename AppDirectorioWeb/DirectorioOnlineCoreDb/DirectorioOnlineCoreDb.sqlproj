@@ -89,5 +89,7 @@
     <Build Include="bs\Tables\CatPlan.sql" />
     <Build Include="bs\Tables\CuponRedencionUsuario.sql" />
     <Build Include="bs\Tables\CuponNegocio.sql" />
+    <Build Include="bs\Tables\ItemCatalogo.sql" />
+    <Build Include="bs\Tables\ConfigCatalogo.sql" />
   </ItemGroup>
 </Project>
