@@ -83,6 +83,11 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             {
                 returnUrl = "/Negocios/Negocios/GetDetailByBussinesId?id=" + HttpContext.Session.GetString("idNegocioForDownLoadCupon");
             }
+            
+            if (returnUrl.Contains("/Cuponera/Cuponera/GetCuponFromCuponsActive"))
+            {
+                returnUrl = "/Cuponera/Cuponera/GetCuponsActive";
+            }
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

@@ -28,29 +28,32 @@
                             <img class="card-img-top " src="@item.ImagenCupon" alt="Card image cap" style="width: 100%; height: 350px;" >
                     
                        
-                        <div class="card-body">
-                            <h5 class="card-title">Cupón de descuento</h5>
-                            
-                            <p class="card-text">
-                                
-                                <strong>Negocio: @item.NombreNegocio</strong>
-                                <br />
-                                <strong>@item.NombrePromocion</strong>
-                                <br />
-                                @item.DescripcionPromocion
-                                <br />
-                                Valor: @item.MontoConMonedaDescripcion
-                                <br />
-                                Cupones disponibles: @item.CuponeaDisponibles
-                                <br />
-                                Vence: @item.FechaExpiracionCupon
-                            </p>
-                            
+                            <div class="card-body">
+                                <h5 class="card-title">Cupón de descuento</h5>
 
-                            <input type="hidden" value="t" />
-                            <a id="btnDowloandCupon" asp-route-idNegocio="@item.IdNegocio" asp-route-idCupon="@item.Id" asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
-                         
-                        </div>
+                                <p class="card-text">
+
+                                    <strong>Negocio: @item.NombreNegocio</strong>
+                                    <br />
+                                    <strong>@item.NombrePromocion</strong>
+                                    <br />
+                                    @item.DescripcionPromocion
+                                    <br />
+                                    Valor: @item.MontoConMonedaDescripcion
+                                    <br />
+                                    Cupones disponibles: @item.CuponeaDisponibles
+                                    <br />
+                                    Vence: @item.FechaExpiracionCupon
+                                </p>
+
+
+                                <input type="hidden" value="t" />
+                                <a id="btnDowloandCupon" asp-route-idNegocio="@item.IdNegocio" asp-route-idCupon="@item.Id" asp-area="Cuponera" asp-action="GetCuponFromCuponsActive" style="width:195px" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
+                               <br />
+                                <br />
+                                <a  asp-area="Negocios" asp-controller="Negocios" asp-action="GetDetailByBussinesId" asp-route-id="@item.IdNegocio" class="btn btn-primary">Ver info negocio</a>
+
+                            </div>
 
                     </div>
                 </div>
