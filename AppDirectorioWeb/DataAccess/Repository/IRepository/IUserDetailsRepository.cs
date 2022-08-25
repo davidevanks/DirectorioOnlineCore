@@ -10,6 +10,8 @@ namespace DataAccess.Repository.IRepository
 
         List<UserViewModel> GetAUsersDetails(string userId);
 
+        int VerifyUserIdPlan(string userId);
+
         void Update(UserViewModel userProfile);
 
         void UpdateProfilePicture(UserViewModel userProfile);

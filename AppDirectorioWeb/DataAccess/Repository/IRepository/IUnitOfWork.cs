@@ -19,6 +19,7 @@ namespace DataAccess.Repository.IRepository
 
         public IFacturaRepository Factura { get; }
         public ICuponeraRepository Cuponera { get; }
+        public ICatConfigProdServRepository CatConfigPordServ { get; }
 
         #endregion Public Properties
 

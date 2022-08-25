@@ -27,6 +27,7 @@ namespace DataAccess.Repository
             Review = new ReviewRepository(_db);
             Factura = new FacturaRepository(_db);
             Cuponera = new CuponeraRepository(_db);
+            CatConfigPordServ = new CatConfigProdServRepository(_db);
         }
 
         #endregion Public Constructors
@@ -45,6 +46,7 @@ namespace DataAccess.Repository
         public IFacturaRepository Factura { get; private set; }
 
         public ICuponeraRepository Cuponera { get; private set; }
+        public ICatConfigProdServRepository CatConfigPordServ { get; private set; }
 
         #endregion Public Properties
 

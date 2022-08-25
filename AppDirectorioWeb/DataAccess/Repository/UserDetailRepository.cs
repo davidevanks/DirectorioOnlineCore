@@ -111,6 +111,11 @@ namespace DataAccess.Repository
             }
         }
 
+        public int VerifyUserIdPlan(string userId)
+        {
+            return (int)_db.UserDetails.Where(x=>x.UserId==userId).FirstOrDefault().IdPlan;
+        }
+
         #endregion Public Methods
     }
 }

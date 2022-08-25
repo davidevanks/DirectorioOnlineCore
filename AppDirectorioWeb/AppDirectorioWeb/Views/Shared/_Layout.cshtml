@@ -148,6 +148,9 @@
                                     <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Admin. Negocios</a>
                                 </li>
                                 <li class="">
+                                    <a asp-area="Ventas" asp-controller="CatalogoProductServiceController" asp-action="Index">Admin Catalogos Producto/Servicio</a>
+                                </li>
+                                <li class="">
                                     <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
                                 </li>
 
@@ -208,12 +211,16 @@
                                 <li class="">
                                     <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mis Negocios</a>
                                 </li>
-                                @*@if (_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().IdPlan == 2)
-                    {*@
+
                                 <li class="">
                                     <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
                                 </li>
-                                //}
+                                @if (_unitOfWork.UserDetail.VerifyUserIdPlan(UserManager.FindByNameAsync(User.Identity.Name).Result.Id) !=1)
+                                {
+                                    <li class="">
+                                        <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="Index">Admin Catalogos Producto/Servicio</a>
+                                    </li>
+                                }
 
                             </ul>
                         </li>

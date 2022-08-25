@@ -22,12 +22,15 @@ namespace DataAccess.Models
         public virtual DbSet<CatDepartamento> CatDepartamentos { get; set; }
         public virtual DbSet<CatPai> CatPais { get; set; }
         public virtual DbSet<CatPlan> CatPlans { get; set; }
+        public virtual DbSet<CatTipoPagoXcatalogoConfig> CatTipoPagoXcatalogoConfigs { get; set; }
+        public virtual DbSet<ConfigCatalogo> ConfigCatalogos { get; set; }
         public virtual DbSet<CuponNegocio> CuponNegocios { get; set; }
         public virtual DbSet<CuponRedencionUsuario> CuponRedencionUsuarios { get; set; }
         public virtual DbSet<Factura> Facturas { get; set; }
         public virtual DbSet<FeatureNegocio> FeatureNegocios { get; set; }
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
+        public virtual DbSet<ItemCatalogo> ItemCatalogos { get; set; }
         public virtual DbSet<Negocio> Negocios { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
@@ -113,6 +116,36 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.PlanName)
                     .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CatTipoPagoXcatalogoConfig>(entity =>
+            {
+                entity.ToTable("CatTipoPagoXcatalogoConfig", "bs");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<ConfigCatalogo>(entity =>
+            {
+                entity.ToTable("ConfigCatalogo", "bs");
+
+                entity.HasComment("para saber si el catalogo es para prductos o servicios");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuarioActualizacion).HasMaxLength(500);
+
+                entity.Property(e => e.IdUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.NombreCatalogo)
+                    .IsRequired()
                     .IsUnicode(false);
             });
 
@@ -262,6 +295,46 @@ namespace DataAccess.Models
                     .WithMany(p => p.ImagenesNegocios)
                     .HasForeignKey(d => d.IdNegocio)
                     .HasConstraintName("FK_ImagenesNegocio_Negocio");
+            });
+
+            modelBuilder.Entity<ItemCatalogo>(entity =>
+            {
+                entity.ToTable("ItemCatalogo", "bs");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.CodigoItemRef)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DescripcionItem)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuarioActualizacion).HasMaxLength(500);
+
+                entity.Property(e => e.IdUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.ImagenItem)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreItem)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.IdConfigCatalogoNavigation)
+                    .WithMany(p => p.ItemCatalogos)
+                    .HasForeignKey(d => d.IdConfigCatalogo)
+                    .HasConstraintName("FK_ItemCatalogo_ConfigCatalogo");
             });
 
             modelBuilder.Entity<Negocio>(entity =>
