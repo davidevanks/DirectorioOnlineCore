@@ -122,8 +122,6 @@ namespace DataAccess.Models
             modelBuilder.Entity<CatTipoPagoXcatalogoConfig>(entity =>
             {
                 entity.ToTable("CatTipoPagoXcatalogoConfig", "bs");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<ConfigCatalogo>(entity =>
@@ -131,8 +129,6 @@ namespace DataAccess.Models
                 entity.ToTable("ConfigCatalogo", "bs");
 
                 entity.HasComment("para saber si el catalogo es para prductos o servicios");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
 
@@ -300,8 +296,6 @@ namespace DataAccess.Models
             modelBuilder.Entity<ItemCatalogo>(entity =>
             {
                 entity.ToTable("ItemCatalogo", "bs");
-
-                entity.Property(e => e.Id).ValueGeneratedNever();
 
                 entity.Property(e => e.CodigoItemRef)
                     .IsRequired()

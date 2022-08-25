@@ -91,6 +91,6 @@
     <Build Include="bs\Tables\CuponNegocio.sql" />
     <Build Include="bs\Tables\ItemCatalogo.sql" />
     <Build Include="bs\Tables\ConfigCatalogo.sql" />
-    <Build Include="dbo\Tables\CatTipoPagoXcatalogoConfig.sql" />
+    <Build Include="bs\Tables\CatTipoPagoXcatalogoConfig.sql" />
   </ItemGroup>
 </Project>

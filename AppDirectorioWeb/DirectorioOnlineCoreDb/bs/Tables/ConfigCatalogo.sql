@@ -1,10 +1,9 @@
 ﻿CREATE TABLE [bs].[ConfigCatalogo] (
-    [Id]                        INT            NOT NULL,
+    [Id]                        INT            IDENTITY (1, 1) NOT NULL,
     [IdNegocio]                 INT            NOT NULL,
     [NombreCatalogo]            VARCHAR (MAX)  NOT NULL,
     [IdTipoCatalogo]            INT            NULL,
     [IdMoneda]                  INT            NOT NULL,
-    [IdTipoPago]                INT            NOT NULL,
     [DescuentoMasivo]           BIT            NULL,
     [PorcentajeDescuentoMasivo] INT            NULL,
     [Activo]                    BIT            NOT NULL,
@@ -14,6 +13,8 @@
     [IdUsuarioActualizacion]    NVARCHAR (500) NULL,
     CONSTRAINT [PK_ConfigCatalogo] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 GO

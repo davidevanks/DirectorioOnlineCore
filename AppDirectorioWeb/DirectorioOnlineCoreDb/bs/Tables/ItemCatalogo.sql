@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [bs].[ItemCatalogo] (
-    [Id]                     INT             NOT NULL,
+    [Id]                     INT             IDENTITY (1, 1) NOT NULL,
     [IdConfigCatalogo]       INT             NULL,
     [CodigoItemRef]          VARCHAR (MAX)   NOT NULL,
     [NombreItem]             VARCHAR (MAX)   NOT NULL,
@@ -16,4 +16,6 @@
     CONSTRAINT [PK_ItemCatalogo] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_ItemCatalogo_ConfigCatalogo] FOREIGN KEY ([IdConfigCatalogo]) REFERENCES [bs].[ConfigCatalogo] ([Id])
 );
+
+
 

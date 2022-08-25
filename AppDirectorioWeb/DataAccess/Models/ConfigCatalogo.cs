@@ -17,7 +17,6 @@ namespace DataAccess.Models
         public string NombreCatalogo { get; set; }
         public int? IdTipoCatalogo { get; set; }
         public int IdMoneda { get; set; }
-        public int IdTipoPago { get; set; }
         public bool? DescuentoMasivo { get; set; }
         public int? PorcentajeDescuentoMasivo { get; set; }
         public bool Activo { get; set; }

@@ -1,5 +1,5 @@
-﻿CREATE TABLE [dbo].[CatTipoPagoXcatalogoConfig] (
-    [Id]                  INT NOT NULL,
+﻿CREATE TABLE [bs].[CatTipoPagoXcatalogoConfig] (
+    [Id]                  INT IDENTITY (1, 1) NOT NULL,
     [IdCatConfigProdServ] INT NULL,
     [IdTipoPago]          INT NULL,
     [Active]              BIT NULL,

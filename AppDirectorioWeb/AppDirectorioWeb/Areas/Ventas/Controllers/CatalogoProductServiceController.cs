@@ -13,5 +13,12 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
         {
             return View();
         }
+
+        public IActionResult AddUpdCatConfig(int? id)
+        {
+
+            //agregar logica para agregar, guardar catalogo config. viewmodels ya listos.
+            return View();
+        }
     }
 }

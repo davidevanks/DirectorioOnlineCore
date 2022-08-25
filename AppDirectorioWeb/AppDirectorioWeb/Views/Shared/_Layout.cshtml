@@ -148,7 +148,7 @@
                                     <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Admin. Negocios</a>
                                 </li>
                                 <li class="">
-                                    <a asp-area="Ventas" asp-controller="CatalogoProductServiceController" asp-action="Index">Admin Catalogos Producto/Servicio</a>
+                                    <a asp-area="Ventas" asp-controller="CatalogoProductServiceController" asp-action="Index">Admin Catálogos Producto/Servicio</a>
                                 </li>
                                 <li class="">
                                     <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
@@ -218,7 +218,7 @@
                                 @if (_unitOfWork.UserDetail.VerifyUserIdPlan(UserManager.FindByNameAsync(User.Identity.Name).Result.Id) !=1)
                                 {
                                     <li class="">
-                                        <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="Index">Admin Catalogos Producto/Servicio</a>
+                                        <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="Index">Admin Catálogos Producto/Servicio</a>
                                     </li>
                                 }
 
