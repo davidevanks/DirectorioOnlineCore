@@ -141,7 +141,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             }
 
             model = c;
-
+            ViewBag.CuponActive = _unitOfWork.Cuponera.VerifyActiveCupon(c.IdNegocio);
             return View(model);
         }
 

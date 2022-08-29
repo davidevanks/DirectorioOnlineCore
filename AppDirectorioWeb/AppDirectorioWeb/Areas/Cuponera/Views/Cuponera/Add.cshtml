@@ -112,7 +112,19 @@
                         <div class="form-group mb-0">
                             @if (Model.Id != 0)
                             {
-                                <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+                                if (ViewBag.CuponActive == true && Model.Status == true)
+                                {
+                                    <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+                                }
+                                else if (ViewBag.CuponActive == false && Model.Status == false)
+                                {
+                                    <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary text-uppercase py-2 px-4" disabled>Actualizar</button>
+                                }
+
                             }
                             else
                             {
