@@ -36,7 +36,7 @@ namespace DataAccess.Repository
                          join dep in deparment on b.IdDepartamento equals dep.Id
                          join u in users on b.IdUserOwner equals u.Id
                          join ud in usersDetails on u.Id equals ud.UserId
-                         where b.Id == id
+                         where b.Id == id && b.Status==17
                          select new BusinessOwnerViewModel
                          {
                              Id = b.Id,

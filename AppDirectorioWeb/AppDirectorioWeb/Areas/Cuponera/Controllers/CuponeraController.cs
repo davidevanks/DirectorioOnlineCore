@@ -119,7 +119,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
           
         }
 
-        [Authorize(Roles = SP.Role_BusinesAdmin)]
+        [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult Add(int? id)
         {
            
@@ -145,7 +145,7 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = SP.Role_BusinesAdmin)]
+        [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         [HttpPost]
         public IActionResult Add(CuponeraViewModel model)
         {

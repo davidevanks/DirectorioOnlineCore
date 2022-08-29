@@ -373,6 +373,10 @@ namespace AppDirectorioWeb.Controllers
             HttpContext.Session.SetString("idNegocioForDownLoadCupon", id.ToString());
             DetailsBusinessViewModel BusinessDetails = new DetailsBusinessViewModel();
             BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
+            if (BusinessDetails.Business ==null)
+            {
+                return NotFound();
+            }
             BusinessDetails.FeatureNegocios = _unitOfWork.Feature.GetListFeaturesByBusinessId(id);
             BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
             BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);

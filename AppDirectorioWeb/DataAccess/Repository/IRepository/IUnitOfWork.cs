@@ -21,6 +21,8 @@ namespace DataAccess.Repository.IRepository
         public ICuponeraRepository Cuponera { get; }
         public ICatConfigProdServRepository CatConfigPordServ { get; }
 
+        public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get;  }
+
         #endregion Public Properties
 
         #region Public Methods

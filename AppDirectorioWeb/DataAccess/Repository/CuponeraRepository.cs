@@ -207,7 +207,7 @@ namespace DataAccess.Repository
             var query = (from c in cupons
                          join b in business on c.IdNegocio equals b.Id
                          join us in userDetails on b.IdUserOwner equals us.UserId
-                         where c.Status==true
+                         where c.Status==true && b.Status==17
                          select new CuponeraViewModel
                          {
                              Id = c.Id,
