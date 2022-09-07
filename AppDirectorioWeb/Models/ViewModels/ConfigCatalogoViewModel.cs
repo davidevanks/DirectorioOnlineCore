@@ -17,7 +17,7 @@ namespace Models.ViewModels
         public string NombreCatalogo { get; set; }
         [Required(ErrorMessage = "El tipo cátalogo es requerido")]
         [Display(Name = "Tipo catálogo", Prompt = "Tipo del catálogo")]
-        public int IdTipoCatalogo { get; set; }//1 productos, 2 servicio
+        public int? IdTipoCatalogo { get; set; }//1 productos, 2 servicio
         [Display(Name = "Tipo catálogo", Prompt = "Tipo del catálogo")]
         public string NombreTipoCatalogo { get; set; }
         [Required(ErrorMessage = "El tipo moneda es requerido")]
@@ -25,7 +25,7 @@ namespace Models.ViewModels
         [Display(Name = "Móneda", Prompt = "Móneda")]
         public string NombreMoneda { get; set; }
         [Display(Name = "Aplicar descuento másivo?", Prompt = "Aplicar descuento másivo?")]
-        public bool DescuentoMasivo { get; set; }
+        public bool? DescuentoMasivo { get; set; }
 
         public string NombreDescuentoMasivo { get; set; }
         [Display(Name = "Cuál es el porcentaje del descuento másivo?", Prompt = "Cuál es el porcentaje del descuento másivo?")]

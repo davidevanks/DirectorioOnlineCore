@@ -17,5 +17,7 @@ namespace DataAccess.Repository.IRepository
         void UpdateCatConfig(ConfigCatalogo configCatalogo);
         bool VerifyActiveCatConfig(int idNegocio);
         List<CatTipoPagoXcatalogoConfigViewModel> GetLstTipoPagoByIdCatConfig(int? id);
+
+        string GetStringNamesTipoPago(int idCatConfig);
     }
 }

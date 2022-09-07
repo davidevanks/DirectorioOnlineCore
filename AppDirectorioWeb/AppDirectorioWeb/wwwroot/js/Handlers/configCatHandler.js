@@ -12,7 +12,7 @@ function loadDataTable() {
         order: [[7, 'asc']],
         "stripeClasses": [],
         "ajax": {
-            "url": "/Cuponera/Cuponera/GetCupons"
+            "url": "/Ventas/CatalogoProductService/GetLstConfigCat"
         },
         "columns": [
             { "data": "nombreCatalogo", "width": "15%", "className": "t" },

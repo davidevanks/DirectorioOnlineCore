@@ -165,6 +165,11 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
 
             var configCat = _unitOfWork.CatConfigPordServ.lstConfigCat(idNegocio);
 
+            foreach (var item in configCat)
+            {
+                item.NombreTipoPagos = _unitOfWork.CatConfigPordServ.GetStringNamesTipoPago(item.Id);
+            }
+
             return Json(new { data = configCat });
         }
     }

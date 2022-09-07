@@ -35,15 +35,15 @@ namespace DataAccess.Repository
                              IdMoneda=cc.IdMoneda,
                              NombreNegocio=b.NombreNegocio,
                              NombreTipoCatalogo= cc.IdTipoCatalogo == 1 ? "Productos" : "Servicios",
-                             IdTipoCatalogo=(int)cc.IdTipoCatalogo,
-                             DescuentoMasivo=(bool)cc.DescuentoMasivo,
+                             IdTipoCatalogo=cc.IdTipoCatalogo,
+                             DescuentoMasivo=cc.DescuentoMasivo,
                              PorcentajeDescuentoMasivo=cc.PorcentajeDescuentoMasivo,
                              Activo=cc.Activo,
                              DescripcionActivo = cc.Activo == true ? "Activo" : "Inactivo",
                              FechaCreacion=cc.FechaCreacion,
                              IdUsuarioCreacion=cc.IdUsuarioCreacion,
                              FechaActualizacion=cc.FechaActualizacion,
-                             IdUsuarioActualizacion=cc.IdUsuarioActualizacion,
+                             IdUsuarioActualizacion=cc.IdUsuarioActualizacion
 
 
                          });
@@ -79,7 +79,7 @@ namespace DataAccess.Repository
                          select new CatTipoPagoXcatalogoConfigViewModel
                          {
                              Id = 0,
-                             IdCatConfigProdServ = null,
+                             IdCatConfigProdServ = 0,
                              IdTipoPago = cat.Id,
                              NombreTipoPago = cat.Nombre,
                              Active = true
@@ -91,13 +91,31 @@ namespace DataAccess.Repository
             return query.ToList();
         }
 
+        public string GetStringNamesTipoPago(int idCatConfig)
+        {
+            var catTipoPagoXconfigCat = _db.CatTipoPagoXcatalogoConfigs.AsQueryable();
+            var catCategories = _db.CatCategoria.AsQueryable();
+
+            var query = (from tp in catTipoPagoXconfigCat
+                         join cat in catCategories on tp.IdTipoPago equals cat.Id
+                         where tp.IdCatConfigProdServ==idCatConfig
+                         select new { 
+                           TipoPagoName=cat.Nombre
+                         
+                         }).ToList();
+
+           
+            string names = string.Join(", ", query);
+
+            return names;
+        }
+
         public List<ConfigCatalogoViewModel> lstConfigCat(int? idNegocio)
         {
 
             var catConfig = _db.ConfigCatalogos.AsQueryable();
             var business = _db.Negocios.AsQueryable();
-            var catTipoPagoXconfigCat = _db.CatTipoPagoXcatalogoConfigs.AsQueryable();
-            var catCategories = _db.CatCategoria.AsQueryable();
+          
 
             var query = (from cc in catConfig
                          join b in business on cc.IdNegocio equals b.Id
@@ -108,9 +126,10 @@ namespace DataAccess.Repository
                              NombreMoneda = cc.IdMoneda == 1 ? "Córdobas" : "Dólares",
                              IdMoneda = cc.IdMoneda,
                              NombreNegocio = b.NombreNegocio,
+                             IdNegocio=b.Id,
                              NombreTipoCatalogo = cc.IdTipoCatalogo == 1 ? "Productos" : "Servicios",
-                             IdTipoCatalogo = (int)cc.IdTipoCatalogo,
-                             DescuentoMasivo = (bool)cc.DescuentoMasivo,
+                             IdTipoCatalogo = cc.IdTipoCatalogo,
+                             DescuentoMasivo = cc.DescuentoMasivo,
                              NombreDescuentoMasivo = cc.DescuentoMasivo == true ? "Si" : "No",
                              PorcentajeDescuentoMasivo = cc.PorcentajeDescuentoMasivo,
                              Activo = cc.Activo,
@@ -118,8 +137,7 @@ namespace DataAccess.Repository
                              FechaCreacion = cc.FechaCreacion,
                              IdUsuarioCreacion = cc.IdUsuarioCreacion,
                              FechaActualizacion = cc.FechaActualizacion,
-                             IdUsuarioActualizacion = cc.IdUsuarioActualizacion,
-
+                             IdUsuarioActualizacion = cc.IdUsuarioActualizacion
 
                          });
 
@@ -152,6 +170,7 @@ namespace DataAccess.Repository
 
         public bool VerifyActiveCatConfig(int idNegocio)
         {
+            //me falta
             throw new NotImplementedException();
         }
     }
