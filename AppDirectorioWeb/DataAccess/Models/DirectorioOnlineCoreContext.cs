@@ -297,10 +297,6 @@ namespace DataAccess.Models
             {
                 entity.ToTable("ItemCatalogo", "bs");
 
-                entity.Property(e => e.CodigoItemRef)
-                    .IsRequired()
-                    .IsUnicode(false);
-
                 entity.Property(e => e.DescripcionItem)
                     .IsRequired()
                     .IsUnicode(false);
@@ -325,9 +321,16 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(18, 2)");
 
+                entity.HasOne(d => d.IdCategoriaItemNavigation)
+                    .WithMany(p => p.ItemCatalogos)
+                    .HasForeignKey(d => d.IdCategoriaItem)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ItemCatalogo_CatCategoria");
+
                 entity.HasOne(d => d.IdConfigCatalogoNavigation)
                     .WithMany(p => p.ItemCatalogos)
                     .HasForeignKey(d => d.IdConfigCatalogo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ItemCatalogo_ConfigCatalogo");
             });
 

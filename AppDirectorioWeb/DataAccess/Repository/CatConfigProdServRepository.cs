@@ -34,9 +34,10 @@ namespace DataAccess.Repository
                              NombreMoneda = cc.IdMoneda == 1 ? "Córdobas" : "Dólares",
                              IdMoneda=cc.IdMoneda,
                              NombreNegocio=b.NombreNegocio,
+                             IdNegocio=b.Id,
                              NombreTipoCatalogo= cc.IdTipoCatalogo == 1 ? "Productos" : "Servicios",
                              IdTipoCatalogo=cc.IdTipoCatalogo,
-                             DescuentoMasivo=cc.DescuentoMasivo,
+                             DescuentoMasivo=(bool)cc.DescuentoMasivo,
                              PorcentajeDescuentoMasivo=cc.PorcentajeDescuentoMasivo,
                              Activo=cc.Activo,
                              DescripcionActivo = cc.Activo == true ? "Activo" : "Inactivo",
@@ -98,14 +99,14 @@ namespace DataAccess.Repository
 
             var query = (from tp in catTipoPagoXconfigCat
                          join cat in catCategories on tp.IdTipoPago equals cat.Id
-                         where tp.IdCatConfigProdServ==idCatConfig
+                         where tp.IdCatConfigProdServ==idCatConfig && tp.Active==true
                          select new { 
                            TipoPagoName=cat.Nombre
                          
                          }).ToList();
 
            
-            string names = string.Join(", ", query);
+            string names = string.Join(", ", query.Select(x=>x.TipoPagoName).ToList());
 
             return names;
         }
@@ -129,7 +130,7 @@ namespace DataAccess.Repository
                              IdNegocio=b.Id,
                              NombreTipoCatalogo = cc.IdTipoCatalogo == 1 ? "Productos" : "Servicios",
                              IdTipoCatalogo = cc.IdTipoCatalogo,
-                             DescuentoMasivo = cc.DescuentoMasivo,
+                             DescuentoMasivo = (bool)cc.DescuentoMasivo,
                              NombreDescuentoMasivo = cc.DescuentoMasivo == true ? "Si" : "No",
                              PorcentajeDescuentoMasivo = cc.PorcentajeDescuentoMasivo,
                              Activo = cc.Activo,

@@ -21,11 +21,11 @@ namespace Models.ViewModels
         [Display(Name = "Tipo catálogo", Prompt = "Tipo del catálogo")]
         public string NombreTipoCatalogo { get; set; }
         [Required(ErrorMessage = "El tipo moneda es requerido")]
-        public int IdMoneda { get; set; } //1 cordobas, 2 dólares
+        public int? IdMoneda { get; set; } //1 cordobas, 2 dólares
         [Display(Name = "Móneda", Prompt = "Móneda")]
         public string NombreMoneda { get; set; }
         [Display(Name = "Aplicar descuento másivo?", Prompt = "Aplicar descuento másivo?")]
-        public bool? DescuentoMasivo { get; set; }
+        public bool DescuentoMasivo { get; set; }
 
         public string NombreDescuentoMasivo { get; set; }
         [Display(Name = "Cuál es el porcentaje del descuento másivo?", Prompt = "Cuál es el porcentaje del descuento másivo?")]

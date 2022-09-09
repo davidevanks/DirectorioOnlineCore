@@ -1,5 +1,19 @@
 ﻿$(document).ready(function () {
 
+    checkIsDescuentoMasivo();
+
+
+    $('#cboIdTipoCat').on('change', function () {
+
+        var tipoSer = $('#cboIdTipoCat').val();
+        $('#IdTipoCatalogo').val(tipoSer);
+    });
+
+    $('#cboIdMoneda').on('change', function () {
+
+        var tipoMoneda = $('#cboIdMoneda').val();
+        $('#IdMoneda').val(tipoMoneda);
+    });
 
   
     //si estamos en modo edición
@@ -8,34 +22,39 @@
     if (esUpdate != 0) {
         console.log('es update');
   
-        if ($('#DescuentoMasivo').val() == 'True') {
+        if ($('input[name=DescuentoMasivo]').is(':checked') == true) {
             $('#divMtoDctoMasivo').show();
-           
+            $("#PorcentajeDescuentoMasivo").attr("required", true);
 
         } else {
             $('#divMtoDctoMasivo').hide();
+            $("#PorcentajeDescuentoMasivo").attr("required", false);
         }
+
+        checkTypeCatalogo();
+        chechTypeMoneda();
+      
     }
     //fin
 
-    $('input[name=TypeCupon]').on('change', function () {
+    $('input[name=DescuentoMasivo]').on('change', function () {
 
-        var isTypePorcent = $('#chkboxDescMasivo').val();
+        var isTypePorcent = $('input[name=DescuentoMasivo]').is(':checked') ;
         console.log(isTypePorcent);
-        if (isTypePorcent === "False") {
+        if (isTypePorcent == false) {
            
             $('#divMtoDctoMasivo').hide();
+            $("#PorcentajeDescuentoMasivo").attr("required", false);
         }
         else {
           
             $('#divMtoDctoMasivo').show();
+            $("#PorcentajeDescuentoMasivo").attr("required", true);
         }
 
     });
 
 
-    checkTypeCatalogo();
-    chechTypeMoneda();
 
 });
 
@@ -50,8 +69,23 @@ function chechTypeMoneda(){
     });
 }
 
+function checkIsDescuentoMasivo()
+{
+    var isTypePorcent = $('input[name=DescuentoMasivo]').is(':checked');
+    console.log(isTypePorcent);
+    if (isTypePorcent == false) {
 
+        $('#divMtoDctoMasivo').hide();
+        $("#PorcentajeDescuentoMasivo").attr("required", false);
+    }
+    else {
+
+        $('#divMtoDctoMasivo').show();
+        $("#PorcentajeDescuentoMasivo").attr("required", true);
+    }
+}
 function checkTypeCatalogo() {
+
 
     //TypeCupon,DescuentoMonto
     var isType = $('#IdTipoCatalogo').val();
@@ -59,9 +93,6 @@ function checkTypeCatalogo() {
 
     $('#cboIdTipoCat').val(isType);
   
-  
-
-    
     $('#cboIdTipoCat').on('change', function () {
 
         var tipoSer = $('#cboIdTipoCat').val();

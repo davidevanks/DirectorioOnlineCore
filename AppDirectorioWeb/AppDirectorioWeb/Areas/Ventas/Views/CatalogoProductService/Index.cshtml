@@ -9,8 +9,12 @@
         <!-- Breadcrumb -->
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
             <h3 class="font-weight-normal mb-4 mb-md-0">Administración de Cátalogos de productos/servicios</h3>
-           <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="AddUpdCatConfig" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i> Agregar Cat Config</a>
-      
+            @if (ViewBag.ExistenCatCinfig == 0)
+            {
+                <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="AddUpdCatConfig" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i> Agregar Cat Config</a>
+
+
+            }
 
 
         </nav>

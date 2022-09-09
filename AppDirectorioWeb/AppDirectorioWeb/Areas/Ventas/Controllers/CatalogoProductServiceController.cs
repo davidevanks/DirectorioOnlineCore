@@ -36,6 +36,20 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
         }
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("UserId", _userManager.FindByNameAsync(User.Identity.Name).Result.Id);
+
+            if (_unitOfWork.Business.GetBusinessByIdOwner(HttpContext.Session.GetString("UserId")) != null)
+            {
+                //temporal hasta que se cambie la funcionalidad y se permitan más negocios por usuario
+                var idNegocios = _unitOfWork.Business.GetBusinessByIdOwner(HttpContext.Session.GetString("UserId")).Id;
+                HttpContext.Session.SetString("idNegocioUser", idNegocios.ToString());
+            }
+            else
+            {
+                HttpContext.Session.SetString("idNegocioUser", "0");
+            }
+
+            ViewBag.ExistenCatCinfig = _unitOfWork.CatConfigPordServ.lstConfigCat(Convert.ToInt32(HttpContext.Session.GetString("idNegocioUser"))).Count();
             return View();
         }
 
@@ -48,6 +62,7 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
             {
             
                 model.Id = 0;
+                model.Activo = true;
                 model.IdNegocio = _unitOfWork.Business.GetBusinessByIdOwner(ownerId).Id;
                 model.IdUsuarioCreacion = ownerId;
                 model.FechaCreacion = DateTime.Now;
@@ -82,20 +97,22 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
                 if (model.Id == 0)
                 {
                     //creación
-                   _unitOfWork.CatConfigPordServ.Add(new ConfigCatalogo
+                    ConfigCatalogo nCatConfig = new ConfigCatalogo
                     {
-                        Id=model.Id,
-                        IdMoneda=model.IdMoneda,
-                        IdNegocio=model.IdNegocio,
-                        IdTipoCatalogo=model.IdTipoCatalogo,
-                        IdUsuarioCreacion=model.IdUsuarioCreacion,
-                        FechaCreacion=model.FechaCreacion,
-                        NombreCatalogo=model.NombreCatalogo,
-                        DescuentoMasivo=model.DescuentoMasivo,
-                        PorcentajeDescuentoMasivo=model.PorcentajeDescuentoMasivo,
-                        Activo=model.Activo,
-                        
-                    });
+                        Id = model.Id,
+                        IdMoneda = (int)model.IdMoneda,
+                        IdNegocio = model.IdNegocio,
+                        IdTipoCatalogo = model.IdTipoCatalogo,
+                        IdUsuarioCreacion = model.IdUsuarioCreacion,
+                        FechaCreacion = model.FechaCreacion,
+                        NombreCatalogo = model.NombreCatalogo,
+                        DescuentoMasivo = model.DescuentoMasivo,
+                        PorcentajeDescuentoMasivo = model.PorcentajeDescuentoMasivo,
+                        Activo = model.Activo,
+
+                    };
+
+                   _unitOfWork.CatConfigPordServ.Add(nCatConfig);
 
                     _unitOfWork.Save();
 
@@ -103,7 +120,7 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
                     {
                         _unitOfWork.TipoPagoXcatConfig.Add(new CatTipoPagoXcatalogoConfig
                         {
-                            IdCatConfigProdServ=model.Id,
+                            IdCatConfigProdServ= nCatConfig.Id,
                             IdTipoPago=item.IdTipoPago,
                             Active=item.Active
                         });
@@ -118,7 +135,7 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
                     _unitOfWork.CatConfigPordServ.UpdateCatConfig(new ConfigCatalogo
                     {
                         Id = model.Id,
-                        IdMoneda = model.IdMoneda,
+                        IdMoneda = (int)model.IdMoneda,
                         IdNegocio = model.IdNegocio,
                         IdTipoCatalogo = model.IdTipoCatalogo,
                         IdUsuarioCreacion = model.IdUsuarioCreacion,
@@ -133,9 +150,11 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
                     {
                         _unitOfWork.TipoPagoXcatConfig.Update(new CatTipoPagoXcatalogoConfig
                         {
-                          
-                            Active = item.Active
-                        });
+
+                            Active = item.Active,
+                            Id=item.Id
+
+                        }) ;
 
                         _unitOfWork.Save();
                     }
@@ -160,6 +179,20 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
             //hacer logica para traer los cupones, lgica para bussinesAdmin y Admin site
             if (User.IsInRole(SP.Role_BusinesAdmin))
             {
+               
+                HttpContext.Session.SetString("UserId", _userManager.FindByNameAsync(User.Identity.Name).Result.Id);
+
+                if (_unitOfWork.Business.GetBusinessByIdOwner(HttpContext.Session.GetString("UserId")) != null)
+                {
+                    //temporal hasta que se cambie la funcionalidad y se permitan más negocios por usuario
+                    var idNegocios = _unitOfWork.Business.GetBusinessByIdOwner(HttpContext.Session.GetString("UserId")).Id;
+                    HttpContext.Session.SetString("idNegocioUser", idNegocios.ToString());
+                }
+                else
+                {
+                    HttpContext.Session.SetString("idNegocioUser", "0");
+                }
+
                 idNegocio =Convert.ToInt32(HttpContext.Session.GetString("idNegocioUser"));
             }
 

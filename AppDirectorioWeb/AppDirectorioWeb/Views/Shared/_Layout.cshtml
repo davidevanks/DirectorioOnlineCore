@@ -82,6 +82,7 @@
                                     @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
                                     {
                                         <img class="avatar-img" src="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                    
                                     }
                                     else
                                     {
