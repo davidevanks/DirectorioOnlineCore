@@ -22,6 +22,7 @@ namespace DataAccess.Repository.IRepository
         public ICatConfigProdServRepository CatConfigPordServ { get; }
 
         public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get;  }
+        public IItemCatalogoRepository ItemCatalogo { get; }
 
         #endregion Public Properties
 

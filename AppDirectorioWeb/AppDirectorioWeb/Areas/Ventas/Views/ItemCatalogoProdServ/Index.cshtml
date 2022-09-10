@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<section class="bg-light pb-8 pt-5 height100vh">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
+            <h3 class="font-weight-normal mb-4 mb-md-0">Administración de Cupones</h3>
+            <input id="idConfigCat" type="hidden" value="@ViewBag.idConfigCat"/>
+            <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Add" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i>Agregar nuevo producto/servicio</a>
+        
+
+
+        </nav>
+
+
+        <div id="my-listing_wrapper" class="dataTables_wrapper no-footer">
+            <table id="tblCupon" class="  cell-border  table-data-default dataTable no-footer dtr-inline" style="width: 100%;" role="grid">
+                <thead>
+                    <tr class="table-row-bg-white" role="row">
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">#Codigo Item</th>
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">Nombre producto/servicio</th>
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">Tiene descuento</th>
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">Valor descuento (%)</th>
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">Moneda</th>
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">Precio Unitario</th>
+                        <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">Disponible</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+            </table>
+            @*<div class="dataTables_paginate paging_simple_numbers" id="my-listing_paginate">
+                    <a class="paginate_button previous disabled" aria-controls="my-listing" data-dt-idx="0" tabindex="0" id="my-listing_previous">Prev</a><span><a class="paginate_button current" aria-controls="my-listing" data-dt-idx="1" tabindex="0">1</a></span><a class="paginate_button next disabled" aria-controls="my-listing" data-dt-idx="2" tabindex="0" id="my-listing_next">Next</a>
+                </div>*@
+        </div>
+
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/js/Handlers/cuponHandler.js"></script>
+}

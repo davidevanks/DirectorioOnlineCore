@@ -13,6 +13,8 @@ namespace DataAccess.Repository.IRepository
         void Update(ItemCatalogo itemCatalogo);
 
         List<ItemCatalogoViewModel> GetItemsCatalogo(int idConfigCatalogo);
+        List<ItemCatalogoViewModel> GetItemsCatalogoForBueyrs(int idConfigCatalogo);
+        ItemCatalogoViewModel GetItemCatalogoByIdForBueyrs(int id);
 
         ItemCatalogoViewModel GetItemCatalogoById(int id);
         

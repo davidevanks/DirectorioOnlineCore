@@ -32,6 +32,7 @@ namespace Models.ViewModels
         public bool TieneDescuento { get; set; }
         public string DescripcionTieneDescuento { get; set; }
         public int PorcentajeDescuento { get; set; }
+        public decimal PrecioUnitarioConDescuento { get; set; }
         public string ImagenItem { get; set; }
         [Display(Name = "Disponible")]
         public bool Activo { get; set; }
@@ -41,6 +42,10 @@ namespace Models.ViewModels
         public string IdUsuarioCreacion { get; set; }
         public DateTime? FechaActualizacion { get; set; }
         public string IdUsuarioActualizacion { get; set; }
+
+        public int? IdMoneda { get; set; }
+
+        public string NombreMoneda { get; set; }
 
         public IEnumerable<SelectListItem> Categories { get; set; }
 

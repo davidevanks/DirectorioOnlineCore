@@ -29,6 +29,7 @@ namespace DataAccess.Repository
             Cuponera = new CuponeraRepository(_db);
             CatConfigPordServ = new CatConfigProdServRepository(_db);
             TipoPagoXcatConfig = new TipoPagoXcatConfigRepository(_db);
+            ItemCatalogo = new ItemCatalogoRepository(_db);
         }
 
         #endregion Public Constructors
@@ -49,6 +50,7 @@ namespace DataAccess.Repository
         public ICuponeraRepository Cuponera { get; private set; }
         public ICatConfigProdServRepository CatConfigPordServ { get; private set; }
         public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get; private set; }
+        public IItemCatalogoRepository ItemCatalogo { get; private set; }
 
         #endregion Public Properties
 
