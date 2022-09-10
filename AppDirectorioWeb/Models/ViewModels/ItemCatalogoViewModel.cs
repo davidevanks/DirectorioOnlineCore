@@ -36,7 +36,10 @@ namespace Models.ViewModels
         public string ImagenItem { get; set; }
         [Display(Name = "Disponible")]
         public bool Activo { get; set; }
+
+        
         public string DescripcionActivo { get; set; }
+      
         public IFormFile PictureItem { get; set; }
         public DateTime FechaCreacion { get; set; }
         public string IdUsuarioCreacion { get; set; }

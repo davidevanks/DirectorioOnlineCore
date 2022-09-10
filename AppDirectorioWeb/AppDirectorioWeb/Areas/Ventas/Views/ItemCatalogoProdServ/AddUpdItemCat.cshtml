@@ -1,0 +1,128 @@
+﻿@model Models.ViewModels.ItemCatalogoViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Agregar producto/servicio";
+}
+
+<section class="py-7 py-md-10 bg-light height100vh">
+    <div class="container">
+        <div class="border p-6 p-lg-9 bg-white">
+            <div class="row">
+                <div class="col-md-6 col-xs-12 pr-md-6 pr-lg-9">
+                    <form enctype="multipart/form-data" asp-action="AddUpdItemCat" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="IdConfigCatalogo" />
+                        <input type="hidden" asp-for="Id" />
+                        @if (Model.Id != 0)
+                        {
+                            title = "Actualizar producto/servicio";
+                        }
+                        <h2 class="h3 mb-6">@title</h2>
+                        <div class="form-group mb-6">
+                            <label asp-for="NombreItem"></label>
+                            <input asp-for="NombreItem" type="text" class="form-control border" placeholder="Nombre producto/servicio">
+                            <span asp-validation-for="NombreItem" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-6">
+                            <label for="discribeTheListing">Descripción del producto/servicio</label>
+                            <textarea asp-for="DescripcionItem" class="form-control" rows="8" required></textarea>
+                            <span asp-validation-for="DescripcionItem" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-6">
+                            <label for="exampleFormControlSelect1">Departamento</label>
+                            <div class="select-default bg-white">
+                                @Html.DropDownListFor(m => m.IdCategoriaItem, Model.Categories, "- SELECCIONA UNA CATEGORIA -", new { @class = "form-control " })
+                                <span asp-validation-for="IdCategoriaItem" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-6">
+                            <div class="form-check">
+
+                                <input asp-for="TieneDescuento" class="form-check-input" type="checkbox" id="chkboxDescMasivo">
+                                <label class="form-check-label" for="gridCheck">
+                                    Tiene descuento?
+
+                                </label>
+                            </div>
+                        </div>
+                        <div id="divMtoDctoMasivo" class="form-group mb-6">
+                            <label asp-for="PorcentajeDescuento"></label>
+                            <input asp-for="PorcentajeDescuento" type="text" class="form-control border" placeholder="Porcentaje de descuento">
+                            <span asp-validation-for="PorcentajeDescuento" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group mb-6">
+                            <label asp-for="PrecioUnitario"></label>
+                            <input asp-for="PrecioUnitario" class="form-control border" placeholder="Precio">
+                            <span asp-validation-for="PrecioUnitario" class="text-danger"></span>
+                        </div>
+
+                        <input type="hidden" asp-for="ImagenItem" />
+                        @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImagenItem))
+                        {
+                            <a id="adelpiccupon" onclick="DeleteItemPic(@Model.Id)" class="text-danger">@Model.ImagenItem  Eliminar <span class="fa fa-close"></span></a>
+
+                            <div class="form-group col-md-12">
+                                <input accept="image/*" asp-for="PictureItem" class="form-control custom-file-input cfi cfiinvisible">
+                                <label class="custom-file-label cfl">Selecciona imagen para el producto/servicio...</label>
+                                <span class="text-danger field-validation-error"><span id="picVal" class=""></span></span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group col-md-12">
+                                <input accept="image/*" asp-for="PictureItem" class="form-control custom-file-input cfi">
+                                <label class="custom-file-label cfl">Selecciona imagen para el producto/servicio...</label>
+                                <span class="text-danger field-validation-error"><span id="picVal" class=""></span></span>
+                            </div>
+                        }
+
+
+
+                        <div class="form-group mb-6">
+                            <div class="form-check">
+
+                                <input asp-for="Activo" class="form-check-input" type="checkbox" id="chkboxActivo">
+                                <label class="form-check-label" for="gridCheck">
+                                    Disponible
+
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group mb-0">
+                            @if (Model.Id != 0)
+                            {
+
+                                <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+
+
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Guardar</button>
+                            }
+
+                            <a asp-area="Ventas" asp-action="Index" asp-controller="ItemCatalogoProdServ" class="btn btn-warning text-white text-uppercase py-2 px-4">Regresar</a>
+                        </div>
+
+                        <hr class="my-7 d-md-none">
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Handlers/AddUpdtItemCatHandler.js"></script>
+}

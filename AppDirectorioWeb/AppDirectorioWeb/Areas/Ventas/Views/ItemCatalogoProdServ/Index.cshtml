@@ -8,17 +8,18 @@
     <div class="container">
         <!-- Breadcrumb -->
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
-            <h3 class="font-weight-normal mb-4 mb-md-0">Administración de Cupones</h3>
-            <input id="idConfigCat" type="hidden" value="@ViewBag.idConfigCat"/>
-            <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Add" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i>Agregar nuevo producto/servicio</a>
-        
+            <h3 class="font-weight-normal mb-4 mb-md-0">Administración de Productos/Servicios</h3>
+            <input id="idConfigCat" type="hidden" value="@ViewBag.idConfigCat" />
 
+            <a asp-area="Ventas" asp-controller="ItemCatalogoProdServ" asp-action="AddUpdItemCat" id="btnCrear" class="btn btn-primary text-white"><i class="fa fa-plus"></i>Agregar nuevo producto/servicio</a>
+
+            <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="Index" class="btn btn-success text-white"><i class="fa fa-plus"></i>Regresar</a>
 
         </nav>
 
 
         <div id="my-listing_wrapper" class="dataTables_wrapper no-footer">
-            <table id="tblCupon" class="  cell-border  table-data-default dataTable no-footer dtr-inline" style="width: 100%;" role="grid">
+            <table id="tblItems" class="  cell-border  table-data-default dataTable no-footer dtr-inline" style="width: 100%;" role="grid">
                 <thead>
                     <tr class="table-row-bg-white" role="row">
                         <th rowspan="1" colspan="1" style="width: 10px;" aria-label="Views">#Codigo Item</th>
@@ -42,5 +43,5 @@
 </section>
 
 @section scripts{
-    <script src="~/js/Handlers/cuponHandler.js"></script>
+    <script src="~/js/Handlers/ItemsCatalogoHandler.js"></script>
 }

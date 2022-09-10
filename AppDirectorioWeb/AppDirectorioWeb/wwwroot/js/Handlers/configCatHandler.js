@@ -20,15 +20,16 @@ function loadDataTable() {
             { "data": "nombreTipoCatalogo", "width": "15%", "className": "t" },
             { "data": "nombreTipoPagos", "width": "15%", "className": "t" },
             { "data": "nombreDescuentoMasivo", "width": "15%", "className": "t" },
-            { "data": "porcentajeDescuentoMasivo", "width": "15%", "className": "t" },
-            { "data": "descripcionActivo", "width": "15%", "className": "t" },
+            { "data": "porcentajeDescuentoMasivo", "width": "5%", "className": "t" },
+            { "data": "descripcionActivo", "width": "5%", "className": "t" },
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Ventas/CatalogoProductService/AddUpdCatConfig/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>`
+                    return ` <a href="/Ventas/CatalogoProductService/AddUpdCatConfig/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>
+                             <a href="/Ventas/ItemCatalogoProdServ/Index?idConfigCat=${data}" class="btn btn-primary text-white" id="btnEditar"><i class="fa fa-plus"></i></a>`
 
                         ;
-                }, "width": "40%"
+                }, "width": "60%"
             }
         ]
 

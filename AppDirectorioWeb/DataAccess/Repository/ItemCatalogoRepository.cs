@@ -112,7 +112,7 @@ namespace DataAccess.Repository
                           NombreItem=ic.NombreItem,
                           DescripcionItem=ic.DescripcionItem,
                           Activo=ic.Activo,
-                          DescripcionActivo= ic.Activo == true ? "Activo" : "Inactivo",
+                          DescripcionActivo= ic.Activo == true ? "Sí" : "No",
                           PorcentajeDescuento=ic.PorcentajeDescuento,
                           TieneDescuento=ic.TieneDescuento,
                           DescripcionTieneDescuento= ic.TieneDescuento == true ? "Sí" : "No",
@@ -170,7 +170,7 @@ namespace DataAccess.Repository
             if (objFromDb != null)
             {
                 objFromDb.IdConfigCatalogo = itemCatalogo.IdConfigCatalogo;
-                objFromDb.IdCategoriaItem = itemCatalogo.IdConfigCatalogo;
+                objFromDb.IdCategoriaItem = itemCatalogo.IdCategoriaItem;
                 objFromDb.NombreItem = itemCatalogo.NombreItem;
                 objFromDb.DescripcionItem = itemCatalogo.DescripcionItem;
                 objFromDb.PrecioUnitario = itemCatalogo.PrecioUnitario;
