@@ -1,0 +1,46 @@
+﻿@model List<Models.ViewModels.ItemCatalogoViewModel>
+
+
+<section class="bg-light pb-8 pt-5 height100vh">
+    <div class="container">
+        @foreach (var item in Model)
+        {
+            <div class="row pb-3 backgroundWhite">
+                <div class="col-lg-3 col-md-6">
+                    <div class="row p-2">
+                        <div class="col-12  p-1" style="border:1px solid #008cba; border-radius: 5px;">
+                            <div class="card" style="border:0px;">
+                                <img src="@item.ImagenItem" class="card-img-top rounded" />
+                                <div class="pl-1">
+                                    <p class="card-title h5"><b style="color:#2c3e50">@item.NombreItem</b></p>
+                                    @*<p class="card-title text-primary">by <b>Author</b></p>*@
+                                </div>
+                                @if (item.TieneDescuento == true || item.TieneDescuentoMasivo == true)
+                                {
+                                    <div style="padding-left:5px;">
+                                        <p>Precio: <strike><b class="">@item.NombreMoneda@item.PrecioUnitario</b></strike></p>
+                                    </div>
+                                    <div style="padding-left:5px;">
+                                        <p style="color:maroon">Precio con descuento del @item.PorcentajeDescuento%: <b class="">@item.PrecioUnitarioConDescuento</b></p>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div style="padding-left:5px;">
+                                        <p>Precio: <b class="">@item.NombreMoneda@item.PrecioUnitario</b></p>
+                                    </div>
+                                }
+
+                            </div>
+                            <div>
+                            
+                                <a href="#add-review" class="btn btn-primary ">Ver detalle</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>

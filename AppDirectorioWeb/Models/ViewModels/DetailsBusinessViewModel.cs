@@ -14,5 +14,8 @@ namespace Models.ViewModels
         public List<ImagenesNegocioViewModel> ImagenesNegocios { get; set; }
         public CuponeraViewModel CuponNegocio { get; set; }
         public List<ReviewViewModel> Reviews { get; set; }
+
+        public ConfigCatalogoViewModel configCatalogoViewModel { get; set; }
+        public List<ItemCatalogoViewModel> itemCatalogoViewModel { get; set; }
     }
 }

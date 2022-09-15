@@ -30,6 +30,7 @@ namespace Models.ViewModels
         public decimal PrecioUnitario { get; set; }
         [Required]
         public bool TieneDescuento { get; set; }
+        public bool TieneDescuentoMasivo  { get; set; }
         public string DescripcionTieneDescuento { get; set; }
         public int PorcentajeDescuento { get; set; }
         public decimal PrecioUnitarioConDescuento { get; set; }

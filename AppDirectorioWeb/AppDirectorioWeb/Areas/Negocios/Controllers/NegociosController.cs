@@ -381,6 +381,11 @@ namespace AppDirectorioWeb.Controllers
             BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
             BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);
             BusinessDetails.CuponNegocio = _unitOfWork.Cuponera.GetCuponByIdNegocio(id);
+            BusinessDetails.configCatalogoViewModel = _unitOfWork.CatConfigPordServ.lstConfigCat(id).FirstOrDefault();
+            if (BusinessDetails.configCatalogoViewModel!=null)
+            {
+                BusinessDetails.itemCatalogoViewModel = _unitOfWork.ItemCatalogo.GetItemsCatalogoForBueyrs(BusinessDetails.configCatalogoViewModel.Id);
+            }
             return View(BusinessDetails);
         }
 

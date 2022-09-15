@@ -66,7 +66,19 @@
                 </div>
             </div>
             <div class="col-lg-4 d-lg-flex justify-content-end align-items-end">
-                <a href="#add-review" class="btn btn-primary scrolling">Escribe una reseña</a>
+                @*<a href="#add-review" class="btn btn-primary scrolling">Escribe una reseña</a>*@
+                @if (Model.itemCatalogoViewModel != null && Model.itemCatalogoViewModel.Count() > 0)
+                {
+                    if (Model.configCatalogoViewModel.IdTipoCatalogo == 1)
+                    {
+                        <a asp-area="Ventas" asp-route-idConfigCat="@Model.configCatalogoViewModel.Id" asp-action="SeeCatProd" asp-controller="ItemCatalogoProdServ" class="btn btn-primary">Ver productos</a>
+                    }
+                    else
+                    {
+                        <a href="#add-review" class="btn btn-primary scrolling">Ver servicios</a>
+                    }
+
+                }
 
             </div>
 

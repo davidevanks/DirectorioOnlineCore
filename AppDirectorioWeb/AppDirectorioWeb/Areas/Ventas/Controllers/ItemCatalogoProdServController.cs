@@ -57,6 +57,14 @@ namespace AppDirectorioWeb.Areas.Ventas.Controllers
             return View();
         }
 
+        public IActionResult SeeCatProd(int idConfigCat)
+        {
+            //revisar descuento y mejorar UI
+            List<ItemCatalogoViewModel> model = new List<ItemCatalogoViewModel>();
+            model = _unitOfWork.ItemCatalogo.GetItemsCatalogoForBueyrs(idConfigCat);
+            return View(model);
+        }
+
 
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
         public IActionResult AddUpdItemCat(int? id)
