@@ -2,44 +2,51 @@
 
 
 <section class="bg-light pb-8 pt-5 height100vh">
-    <div class="container">
+    <div class="row">
         @foreach (var item in Model)
         {
-            <div class="row pb-3 backgroundWhite">
-                <div class="col-lg-3 col-md-6">
-                    <div class="row p-2">
+           
+                <div class="col-lg-3">
+                    <div class="p-2">
                         <div class="col-12  p-1" style="border:1px solid #008cba; border-radius: 5px;">
                             <div class="card" style="border:0px;">
-                                <img src="@item.ImagenItem" class="card-img-top rounded" />
-                                <div class="pl-1">
+                                <a href="#">
+                                    <img src="@item.ImagenItem" class="card-img-top rounded" />
+                                </a>
+
+                            </div>
+                            <div class="pl-1">
+                                <a  href="#">
                                     <p class="card-title h5"><b style="color:#2c3e50">@item.NombreItem</b></p>
-                                    @*<p class="card-title text-primary">by <b>Author</b></p>*@
-                                </div>
+                                </a> 
+                               
+                            </div>
+                            <div>
                                 @if (item.TieneDescuento == true || item.TieneDescuentoMasivo == true)
                                 {
                                     <div style="padding-left:5px;">
-                                        <p>Precio: <strike><b class="">@item.NombreMoneda@item.PrecioUnitario</b></strike></p>
+                                        <p>Precio: <strike><b class="">@item.PrecioUnitario  @item.NombreMoneda </b></strike></p>
                                     </div>
                                     <div style="padding-left:5px;">
-                                        <p style="color:maroon">Precio con descuento del @item.PorcentajeDescuento%: <b class="">@item.PrecioUnitarioConDescuento</b></p>
+                                        <p style="color:maroon">Precio con descuento del @item.PorcentajeDescuento%: <b class=""><br />@item.PrecioUnitarioConDescuento.ToString("0.00") @item.NombreMoneda</b></p>
                                     </div>
                                 }
                                 else
                                 {
                                     <div style="padding-left:5px;">
-                                        <p>Precio: <b class="">@item.NombreMoneda@item.PrecioUnitario</b></p>
+                                        <p>Precio: <b class="">@item.PrecioUnitario @item.NombreMoneda</b></p>
                                     </div>
                                 }
-
-                            </div>
-                            <div>
+                       
+                   
+                                <a href="#add-review" class="btn btn-primary ">Agregar a carrito</a>
                             
-                                <a href="#add-review" class="btn btn-primary ">Ver detalle</a>
+                             
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+          
         }
 
     </div>
