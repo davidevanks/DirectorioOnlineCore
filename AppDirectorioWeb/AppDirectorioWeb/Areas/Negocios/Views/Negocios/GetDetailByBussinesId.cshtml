@@ -29,7 +29,7 @@
                     <h1 class="single-listing-title">@Model.Business.NombreNegocio</h1>
                     <input id="IBusinessId" type="hidden" asp-for="@Model.Business.Id" />
                     <p class="text-muted mb-1"> <i class="fas fa-map-marker-alt text-primary mr-1"></i> @Model.Business.DireccionNegocio </p>
-                    <p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
+                    <strong> <a href='https://wa.me/@Model.Business.TelefonoWhatsApp.Insert(0,"505")'><p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p></a></strong>
                     <p class="text-muted mb-1"> <i class="fas fa-phone-alt text-primary mr-1"></i> @Model.Business.TelefonoNegocio1</p>
                     <p class="text-muted mb-1"> <i class="fas fa-mail-bulk text-primary mr-1"></i> @Model.Business.EmailNegocio</p>
                     @if (!string.IsNullOrEmpty(Model.Business.SitioWebNegocio))
