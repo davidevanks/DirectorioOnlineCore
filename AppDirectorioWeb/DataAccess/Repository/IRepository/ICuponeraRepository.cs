@@ -22,6 +22,8 @@ namespace DataAccess.Repository.IRepository
         void SaveCuponRedencionUsuario(int idCupon, string userId);
         int ContadorCuponRedimidoXusuario(int idCupon, string userId);
 
-        List<CuponeraViewModel> GetCuponsActive(); 
+        List<CuponeraViewModel> GetCuponsActive();
+
+        void DeactivateCuponExpired();
     }
 }

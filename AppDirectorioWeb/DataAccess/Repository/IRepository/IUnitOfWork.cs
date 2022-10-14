@@ -23,6 +23,7 @@ namespace DataAccess.Repository.IRepository
 
         public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get;  }
         public IItemCatalogoRepository ItemCatalogo { get; }
+        public IlogErrorRepository Log { get; }
 
         #endregion Public Properties
 

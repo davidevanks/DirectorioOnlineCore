@@ -31,6 +31,7 @@ namespace DataAccess.Models
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
         public virtual DbSet<ItemCatalogo> ItemCatalogos { get; set; }
+        public virtual DbSet<LogError> LogErrors { get; set; }
         public virtual DbSet<Negocio> Negocios { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
@@ -46,6 +47,7 @@ namespace DataAccess.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AI");
 
             modelBuilder.Entity<CatCategorium>(entity =>
@@ -332,6 +334,19 @@ namespace DataAccess.Models
                     .HasForeignKey(d => d.IdConfigCatalogo)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ItemCatalogo_ConfigCatalogo");
+            });
+
+            modelBuilder.Entity<LogError>(entity =>
+            {
+                entity.ToTable("LogError", "bs");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.MessageError).IsUnicode(false);
+
+                entity.Property(e => e.Observation).IsUnicode(false);
             });
 
             modelBuilder.Entity<Negocio>(entity =>

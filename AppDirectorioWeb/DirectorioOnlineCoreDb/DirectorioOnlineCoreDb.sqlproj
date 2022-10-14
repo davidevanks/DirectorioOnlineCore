@@ -92,5 +92,6 @@
     <Build Include="bs\Tables\ItemCatalogo.sql" />
     <Build Include="bs\Tables\ConfigCatalogo.sql" />
     <Build Include="bs\Tables\CatTipoPagoXcatalogoConfig.sql" />
+    <Build Include="bs\Tables\LogError.sql" />
   </ItemGroup>
 </Project>

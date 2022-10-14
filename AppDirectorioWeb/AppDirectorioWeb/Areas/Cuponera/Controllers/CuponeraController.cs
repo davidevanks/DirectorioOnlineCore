@@ -269,6 +269,30 @@ namespace AppDirectorioWeb.Areas.Cuponera.Controllers
 
             return Json(new { data = cupons });
         }
+        //este metodo se llamara en una tarea programada a las 12 de la noche
+        [HttpGet]
+        public IActionResult DeactivateCuponsExpired()
+        {
+            try
+            {
+                _unitOfWork.Cuponera.DeactivateCuponExpired();
+
+                return Json(new { data = "Cupones desactivados" });
+            }
+            catch (Exception ex)
+            {
+                LogError log = new LogError();
+                log.Date = DateTime.Now;
+                log.MessageError = ex.Message;
+                log.Status = true;
+                log.Observation = "";
+
+                _unitOfWork.Log.Add(log);
+                _unitOfWork.Save();
+                return Json(new { data = ex.Message });
+            }
+           
+        }
 
         [HttpGet]
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]

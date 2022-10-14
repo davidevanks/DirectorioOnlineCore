@@ -239,5 +239,20 @@ namespace DataAccess.Repository
 
             return query.OrderByDescending(x => x.StatusDescripcion).ToList();
         }
+
+        public void DeactivateCuponExpired()
+        {
+            var cuponsExpired = _db.CuponNegocios.AsQueryable();
+                                                 // 26/08/2022<14/10/2022
+            var query = cuponsExpired.Where(x=>x.FechaExpiracionCupon<DateTime.Now).ToList();
+
+            foreach (var item in query)
+            {
+                var cupon=_db.CuponNegocios.FirstOrDefault(s => s.Id == item.Id);
+                cupon.Status = false;
+                _db.CuponNegocios.Update(cupon);
+                _db.SaveChanges();
+            }
+        }
     }
 }

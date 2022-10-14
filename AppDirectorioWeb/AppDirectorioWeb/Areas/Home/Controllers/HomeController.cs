@@ -1,4 +1,5 @@
-﻿using DataAccess.Repository.IRepository;
+﻿using DataAccess.Models;
+using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -47,6 +48,19 @@ namespace AppDirectorioWeb.Controllers
                     _logger.LogError("Esta página no existe!");
                     break;
             
+
+            }
+
+            if (exceptionHandlerPathFeature!=null && exceptionHandlerPathFeature.Error!=null)
+            {
+                LogError log = new LogError();
+                log.Date = DateTime.Now;
+                log.MessageError = exceptionHandlerPathFeature.Error.Message;
+                log.Status = true;
+                log.Observation = "";
+
+                _unitOfWork.Log.Add(log);
+                _unitOfWork.Save();
 
             }
 

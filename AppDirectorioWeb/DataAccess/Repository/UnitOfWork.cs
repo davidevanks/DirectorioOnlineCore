@@ -30,6 +30,7 @@ namespace DataAccess.Repository
             CatConfigPordServ = new CatConfigProdServRepository(_db);
             TipoPagoXcatConfig = new TipoPagoXcatConfigRepository(_db);
             ItemCatalogo = new ItemCatalogoRepository(_db);
+            Log = new logErrorRepository(_db);
         }
 
         #endregion Public Constructors
@@ -51,6 +52,7 @@ namespace DataAccess.Repository
         public ICatConfigProdServRepository CatConfigPordServ { get; private set; }
         public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get; private set; }
         public IItemCatalogoRepository ItemCatalogo { get; private set; }
+        public IlogErrorRepository Log { get; private set; }
 
         #endregion Public Properties
 
