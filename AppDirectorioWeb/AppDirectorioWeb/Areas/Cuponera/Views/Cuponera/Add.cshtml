@@ -78,6 +78,7 @@
 
 
                         <input type="hidden" asp-for="ImagenCupon" />
+
                         @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImagenCupon))
                         {
                             <a id="adelpiccupon" onclick="DeleteCuponPic(@Model.Id)" class="text-danger">@Model.ImagenCupon  Eliminar <span class="fa fa-close"></span></a>
@@ -97,7 +98,7 @@
                             </div>
                         }
 
-
+                        <span class="text-danger ">Altura máxima de imagen recomendada 350px*</span>
                         <div class="form-group mb-6">
                             <div class="form-check">
 

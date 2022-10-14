@@ -118,6 +118,32 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Error Al Enviar Mensaje!" });
             }
         }
-#endregion
+
+        [HttpPost]
+        public IActionResult SendMessageToOwner([FromBody] ContactOwnerViewModel model)
+        {
+            try
+            {
+                string MailText;
+                string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateEmailToOwner.html";
+                StreamReader str = new StreamReader(FilePath);
+                MailText = str.ReadToEnd();
+                str.Close();
+
+                var nameBusiness = _unitOfWork.Business.GetBusinessById(model.BusinessId);
+
+                MailText = MailText.Replace("[NameOwner]", nameBusiness.NombreNegocio).Replace("[NamePerson]", model.PersonName).Replace("[EmailCustomer]", model.Email).Replace("[PhoneCustomer]", model.Phone).Replace("[MessageCustomer]", model.Message);
+
+
+                var t = _emailSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brujula Pyme", MailText);
+
+                return Json(new { success = true, message = "Mensaje Enviado!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error Al Enviar Mensaje!" });
+            }
+        }
+        #endregion
     }
 }
