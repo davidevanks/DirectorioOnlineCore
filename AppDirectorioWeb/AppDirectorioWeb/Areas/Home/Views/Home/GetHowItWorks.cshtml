@@ -3,13 +3,20 @@
         <div class="d-flex flex-column justify-content-center align-items-center">
             <nav aria-label="breadcrumb">
                 <h2 class="breadcrumb-title text-center mb-4">¿Qué es Brújula Pyme?</h2>
-                <ul class="breadcrumb bg-transparent justify-content-center p-0 m-0">
+                @*<ul class="breadcrumb bg-transparent justify-content-center p-0 m-0">
                     <li class="breadcrumb-item"><a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a></li>
                     <li class="breadcrumb-item active" aria-current="page">¿Qué es Brújula Pyme?</li>
-                </ul>
+                </ul>*@
             </nav>
+
         </div>
+        <p style="text-align:center;">
+            Brújula Pyme es un directorio digital online que tiene como objetivo darte un espacio en internet a
+            través de nuestras fichas digitales para que llegues a más clientes, asi como
+            también ayudar a nuestros usuarios a contactar y conocer negocios locales
+        </p>
     </div>
+ 
 </section>
 
 <!-- Grid wrapper for ell elements -->
@@ -20,80 +27,67 @@
     ———	How It Works
     ===================================== -->
     <section class="py-7 py-md-10">
+       
         <div class="container">
+          
             <div class="row pb-6 pb-md-9">
-                @*<div class="col-sm-4 col-xs-12 order-md-1">
+                <div class="col-sm-4 col-xs-12 order-md-1">
                     <div class="text-center text-md-right my-5 my-md-0">
-                        <img  data-src="assets/img/works/works-big-1.png" src="assets/img/works/works-big-1.png" alt="Image Works">
+                        <img class="lazyestload" srcset="/img/works/works-big-1.png" data-src="/img/works/works-big-1.png" src="" alt="Image Works">
                     </div>
-                </div>*@
-                <div class="col-sm-12 col-xs-12">
+                </div>
+                <div class="col-sm-8 col-xs-12">
                     <div>
-                       
-                        <h2 class="h4 mb-4">Brújula Pyme es un directorio digital online para tu negocio/servicio</h2>
 
-                        <p>Tenemos como objetivo poner en contacto a nuestros usuarios con negocios locales. Cada negocio registrado cuenta con una ficha digital donde detalla su oferta comercial
-                        y los servicios que ofrece, así como tambíen la información centralizada que usted necesita para contactarlos, sea vía internet o acudiendo fisicamente a sus localidades.</p>
-                   
+                        <span class="mb-2 d-inline-block">Paso 1</span>
+                        <h2 class="h4 mb-4">Encuentra lo que necesitas</h2>
                         <p>
-                            Como negocio o profesional, Brújula Pyme te ofrece un forma adicional para llegar a tus clientes de manera rápida y sencilla,
-                            <strong>totalmente gratis</strong>, <a target="_blank" asp-area="Negocios" asp-controller="Negocios" asp-action="AgregarNegocio">solo registrando tu negocio en nuestro directorio online</a>,
-                            de esta manera puedes aumentar la visibilidad de tu negocio en internet y llegar a más clientes, no sólo a través de una computadora sino también a través del celular, ya que nuestra página web
-                            esta optimizada para dispositivos móviles.
-                        </p>
-
-                        <p><strong>Beneficios para usuarios:</strong></p>
-
-                        <p>
-                            <ul>
-                                <li>Buscador integrado en la p&aacute;gina principal para buscar por palabras claves o por categor&iacute;as.</li>
-                                <li>Puedes dejar tu rese&ntilde;a del negocio que conoces o has usado para calificar el servicio y tambi&eacute;n poder guiar&nbsp; a otros usuarios en su elecci&oacute;n de servicios/negocios.</li>
-                                <li>Informaci&oacute;n de cada negocio centralizada, todo en un solo lugar.</li>
-                                <li>En cada ficha digital del negocio tienes la opción <strong>Compartir</strong>, para que compartas cualquier negocio con tus amigos, familiares o conocidos.</li>
-
-                            </ul>
-                        </p>
-                        <p><strong>Beneficios para Negocios:</strong></p>
-
-                        <p>
-                            <ul>
-                                <li>Te ofrecemos de manera gratuita un nuevo canal para llegar a m&aacute;s clientes a trav&eacute;s del internet.</li>
-                                <li>Invertimos en publicidad a traves de redes sociales para dar a conocer los negocios registrados en nuestra plataforma. (Nota: Es publicidad general de todos los negocios en nuestra plataforma).</li>
-                            </ul>
-
-                        </p>
-
-                        <p>Como <strong>Brujula Pyme</strong> queremos crecer como una herramienta que ayude a los propietarios de negocios/Pymes a potenciar sus negocios con el
-                        poder del internet y la tecnología. Estaremos trabajando para futuras mejoras y mantener actualizado la plataforma para hacerla mejor, asi que queremos trabajar
-                        de la mano de los usuarios y pymes para crecer juntos, si tienes alguna idea o necesidad como usuario o propietario de negocio que crees que podriamos ayudarte e incluirlo en
-                        la plataforma no dudes en <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">contactarnos</a>, será un placer escucharte.
-
-                        
+                            Busca entre todas las opciones de negocios locales que tenemos. Estamos trabajando para agregar más negocios locales para que conozcas.
                         </p>
                     </div>
                 </div>
             </div>
 
-            @*<hr class="my-5">*@
+            <hr class="my-5">
 
-            @*<div class="row py-5 py-md-9">
+            <div class="row py-5 py-md-9">
                 <div class="col-sm-4 col-xs-12">
                     <div class="text-center text-md-left mb-5 mb-md-0">
-                        <img class="lazyestload" data-src="assets/img/works/works-big-2.png" src="assets/img/works/works-big-2.png" alt="Image Works">
+                        <img style="width: 230px; border-radius: 130px; height: 219px; background: #070744;" class="lazyestload" data-src="/img/works/plan_yor_day.png" src="/img/works/plan_yor_day.png" alt="Image Works">
                     </div>
                 </div>
                 <div class="col-sm-8 col-xs-12">
                     <div class="text-left text-md-right">
-                        <span class="mb-2 d-inline-block">Step 2</span>
-                        <h2 class="h4 mb-4">Review & Plan Your Day</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem</p>
+                        <span class="mb-2 d-inline-block">Paso 2</span>
+                        <h2 class="h4 mb-4">Revisa y planea tu día</h2>
+                        <p>
+                            Tenemos toda la información de los negocios centralizada en un solo lugar, también podrás contactarte con
+                            ellos desde su ficha digital a través del boton de contacto.
+                        </p>
+                        @*Revisa los cupones de descuento que algunos negocios tienen habilitado .*@
                     </div>
                 </div>
-            </div>*@
+            </div>
 
-       
+            <hr class="my-5">
+
+            <div class="row pt-5 pt-md-9">
+                <div class="col-sm-4 col-xs-12 order-md-1">
+                    <div class="text-center text-md-right mb-5 mb-md-0">
+                        <img class="lazyestload" data-src="/img/works/works-big-2.png" src="/img/works/works-big-2.png" alt="Image Works">
+                    </div>
+                </div>
+                <div class="col-sm-8 col-xs-12">
+                    <div>
+                        <span class="mb-2 d-inline-block">Paso 3</span>
+                        <h2 class="h4 mb-4">Comparte</h2>
+                        <p>Deja un comentario acerca del servicio de cada negocio para ayudar a otros usuarios a elegir. Ayuda a otros usuarios a conocer negocios locales y tener más opciones de compra.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 
-</div> <!-- element wrapper ends -->
-
+</div> 
