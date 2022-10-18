@@ -131,11 +131,25 @@
                         <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
 
                     </li>
+                    @if (User.IsInRole(SP.Role_BusinesAdmin))
+                    {
 
-                    <li>
-                        <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
+                        <li class="">
+                            <a href="javascript:0">Aprende</a>
+                            <ul class="dropdown">
 
-                    </li>
+                                <li>
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
+
+                                </li>
+
+
+
+                            </ul>
+                        </li>
+                     
+                    }
+
 
                     @if (_unitOfWork.Cuponera.GetAll(x => x.Status == true).Count() > 0)
                     {
@@ -428,7 +442,10 @@
                         <li class="mb-3">
                             <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
                         </li>
+                        <li>
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
 
+                        </li>
                     </ul>
                 </div>
 
