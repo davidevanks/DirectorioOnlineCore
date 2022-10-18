@@ -100,6 +100,12 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
+        public IActionResult GetCourses()
+        {
+
+            return View();
+        }
+
         public IActionResult GetTermsAndConditions()
         {
 

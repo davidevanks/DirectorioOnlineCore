@@ -132,10 +132,15 @@
 
                     </li>
 
+                    <li>
+                        <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
+
+                    </li>
+
                     @if (_unitOfWork.Cuponera.GetAll(x => x.Status == true).Count() > 0)
                     {
                         <li>
-                            <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="GetCuponsActive">Promociones y descuentos</a>
+                            <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="GetCuponsActive">Descuentos</a>
 
                         </li>
                     }
@@ -216,7 +221,7 @@
                                 <li class="">
                                     <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
                                 </li>
-                                @if (_unitOfWork.UserDetail.VerifyUserIdPlan(UserManager.FindByNameAsync(User.Identity.Name).Result.Id) !=1)
+                                @if (_unitOfWork.UserDetail.VerifyUserIdPlan(UserManager.FindByNameAsync(User.Identity.Name).Result.Id) != 1)
                                 {
                                     <li class="">
                                         <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="Index">Admin Catálogos Producto/Servicio</a>
