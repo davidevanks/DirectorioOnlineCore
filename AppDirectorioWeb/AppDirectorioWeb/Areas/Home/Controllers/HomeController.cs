@@ -106,6 +106,12 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
+        public IActionResult GetWhoWeAre()
+        {
+
+            return View();
+        }
+
         public IActionResult GetTermsAndConditions()
         {
 
