@@ -14,6 +14,7 @@ using System;
 using NLog;
 using Utiles;
 using NLog.Extensions.Logging;
+using System.Web.Mvc;
 
 namespace AppDirectorioWeb
 {
@@ -65,6 +66,7 @@ namespace AppDirectorioWeb
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{area=Home}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
 

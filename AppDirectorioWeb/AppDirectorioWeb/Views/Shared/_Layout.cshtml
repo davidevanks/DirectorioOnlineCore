@@ -133,8 +133,8 @@
                     </li>
                     @if (User.IsInRole(SP.Role_BusinesAdmin))
                     {
-
-                        <li class="">
+                        //activar cuandi hayan cursos
+                        @*<li class="">
                             <a href="javascript:0">Aprende</a>
                             <ul class="dropdown">
 
@@ -146,17 +146,17 @@
 
 
                             </ul>
-                        </li>
+                        </li>*@
                      
                     }
 
 
                     @if (_unitOfWork.Cuponera.GetAll(x => x.Status == true).Count() > 0)
                     {
-                        <li>
+                        @*<li>
                             <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="GetCuponsActive">Descuentos</a>
 
-                        </li>
+                        </li>*@
                     }
 
                     @if (User.IsInRole(SP.Role_Admin))
@@ -442,10 +442,11 @@
                         <li class="mb-3">
                             <a href="http://blog.brujulapyme.com" target="_blank">Blog</a>
                         </li>
-                        <li>
+                        
+                        @*<li>
                             <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
 
-                        </li>
+                        </li>*@
                     </ul>
                 </div>
 
