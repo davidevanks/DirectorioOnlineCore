@@ -67,6 +67,7 @@ namespace AppDirectorioWeb
                     name: "default",
                     pattern: "{area=Home}/{controller=Home}/{action=Index}/{id?}");
 
+              
                 endpoints.MapRazorPages();
             });
 

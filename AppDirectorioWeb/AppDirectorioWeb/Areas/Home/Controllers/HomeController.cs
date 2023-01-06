@@ -108,7 +108,7 @@ namespace AppDirectorioWeb.Controllers
 
         public IActionResult GetWhoWeAre()
         {
-
+          
             return View();
         }
 
