@@ -55,6 +55,22 @@ namespace AppDirectorioWeb
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+           
+            app.Use(async (context, next) => {
+                int countValuePath = context.Request.Path.Value.Split('/').Length;
+                string[] vRoute = context.Request.Path.Value.Split('/');
+
+                var urlPersonal = vRoute[1];
+
+                if (countValuePath==2 && (urlPersonal!=""  && urlPersonal != null))
+                {
+                    context.Request.Path = $"/Index/Index/{urlPersonal}";
+                }
+               
+
+                await next();
+            });
+
 
             app.UseRouting();
 
@@ -67,7 +83,11 @@ namespace AppDirectorioWeb
                     name: "default",
                     pattern: "{area=Home}/{controller=Home}/{action=Index}/{id?}");
 
-              
+                endpoints.MapControllerRoute(
+               name: "StaticPage-Default",
+                pattern: "{controller=Index}/{action=Index}/{personalUrl}");
+             
+
                 endpoints.MapRazorPages();
             });
 

@@ -66,7 +66,8 @@ namespace DataAccess.Repository
                              IdDepartamento = dep.Id.ToString(),
                              departmentName = dep.Nombre,
                              CreateDateString = b.CreateDate.ToShortDateString(),
-                             IdUserOwner = b.IdUserOwner
+                             IdUserOwner = b.IdUserOwner,
+                             PersonalUrl=b.PersonalUrl
                          }).FirstOrDefault();
 
             return query;
@@ -79,6 +80,17 @@ namespace DataAccess.Repository
                           b).FirstOrDefault();
 
             return query;
+        }
+
+        public int? GetBusinessIdByPersonalUrl(string personalUrl)
+        {
+            var business = _db.Negocios.AsQueryable();
+
+            var query = (from b in business where b.PersonalUrl== personalUrl
+                         select b.Id).FirstOrDefault();
+
+            return query;
+
         }
 
         public BussinesViewModel GetBusinessToEditById(int id)
@@ -123,8 +135,20 @@ namespace DataAccess.Repository
                              LogoNegocio = b.LogoNegocio,
                              Tags = b.Tags,
                              IdUserCreate = b.IdUserCreate,
-                             CreateDate = b.CreateDate
+                             CreateDate = b.CreateDate,
+                             PersonalUrl=b.PersonalUrl
                          }).FirstOrDefault();
+
+            return query;
+        }
+
+        public int GetCountBusinessIdByPersonalUrl(string personalUrl)
+        {
+            var business = _db.Negocios.AsQueryable();
+
+            var query = (from b in business
+                         where b.PersonalUrl == personalUrl
+                         select b.Id).Count();
 
             return query;
         }
@@ -201,6 +225,7 @@ namespace DataAccess.Repository
                 objFromDb.Status = negocio.Status;
                 objFromDb.IdUserUpdate = negocio.IdUserUpdate;
                 objFromDb.UpdateDate = negocio.UpdateDate;
+                objFromDb.PersonalUrl = negocio.PersonalUrl;
             }
         }
 

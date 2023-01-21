@@ -124,7 +124,28 @@
                 </div>
             }
             <input type="hidden" id="inputTypeUserMode" value="e" />
-            <input  id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
+            <input id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
+            <div class="card  p-5 mb-8 rounded">
+                <h3 class="h4 font-weight-normal mb-4">Url personalizada para tu negocio (Comparte este link con tus clientes o redes sociales)</h3>
+                <div class="row ">
+                    <div class="col-md-2">
+                        <div class="d-flex ">
+                            <a class="btn btn-link pl-0" href="#">www.brujulapyme.com/</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <div>
+                            <input asp-for="Business.PersonalUrl" class="form-control" />
+
+                            <span id="PersonalUrlMessageError" asp-validation-for="Business.PersonalUrl" class="text-danger"></span>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-2"><button type="button" id="btnCopiarLink" class="btn btn-primary">Copiar link</button></div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-body px-6 pt-6 pb-1">
                     <h3 class="h4 mb-4">Información del negocio</h3>
@@ -137,6 +158,7 @@
                             <input asp-for="Business.NombreNegocio" class="form-control" />
                             <span asp-validation-for="Business.NombreNegocio" class="text-danger"></span>
                         </div>
+
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="exampleFormControlSelect1">Categoria</label>

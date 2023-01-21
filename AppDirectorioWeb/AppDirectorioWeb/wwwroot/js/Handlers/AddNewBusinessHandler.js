@@ -105,6 +105,52 @@ function DeletePictures(Id) {
 
 $(document).ready(function () {
 
+    $('#btnCopiarLink').click(function () {
+        // Crea un campo de texto "oculto"
+        var aux = document.createElement("input");
+
+        // Asigna el contenido del elemento especificado al valor del campo
+        aux.setAttribute("value", "www.brujulapyme.com/" + $('#Business_PersonalUrl').val());
+
+        // Añade el campo a la página
+        document.body.appendChild(aux);
+
+        // Selecciona el contenido del campo
+        aux.select();
+
+        // Copia el texto seleccionado
+        document.execCommand("copy");
+
+        // Elimina el campo de la página
+        document.body.removeChild(aux);
+
+        alert('Link copiado al portapapeles!');
+
+    });
+
+    //validar url personaliada si existe
+    $('#Business_PersonalUrl').change(function () {
+
+        $.ajax({
+            type: "GET",
+            url: '/Negocios/Negocios/VerifyUrlPersonalExist?personalUrl=' + $('#Business_PersonalUrl').val(),
+            success: function (data) {
+                console.log('gfgfgfgf');
+                console.log(data);
+                if (data.success) {
+                    $('#PersonalUrlMessageError').text('');
+
+                } else {
+                    $('#Business_PersonalUrl').val('');
+                    $('#Business_PersonalUrl').focus();
+                    $('#PersonalUrlMessageError').text(data.message);
+                }
+            }
+        });
+        
+      
+
+    });
  
 
     if ($('#inputPlanType').val() == 1) {

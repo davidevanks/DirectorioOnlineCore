@@ -15,6 +15,7 @@ using System.Linq;
 namespace AppDirectorioWeb.Controllers
 {
     [Area("Home")]
+   
     public class HomeController : Controller
     {
         #region Private Fields
@@ -94,6 +95,7 @@ namespace AppDirectorioWeb.Controllers
            
             return View();
         }
+        
         public IActionResult GetHowItWorks()
         {
 

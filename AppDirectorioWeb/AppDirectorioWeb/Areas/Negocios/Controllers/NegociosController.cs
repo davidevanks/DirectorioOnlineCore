@@ -632,6 +632,31 @@ namespace AppDirectorioWeb.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult VerifyUrlPersonalExist( string personalUrl)
+                {
+            try
+            {
+               var countValue= _unitOfWork.Business.GetCountBusinessIdByPersonalUrl(personalUrl);
+
+
+                if (countValue>0)
+                {
+                    return Json(new { success = false, message = "Url ya ocupada, seleccione otra!" });
+                }
+                else
+                {
+                    return Json(new { success = true, message = "Exito" });
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error!" });
+            }
+        }
+
         #endregion API_CALLS
 
         #region MetodosAuxiliares

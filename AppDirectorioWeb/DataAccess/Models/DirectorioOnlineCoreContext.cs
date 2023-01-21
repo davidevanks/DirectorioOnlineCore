@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace DataAccess.Models
 {
     public partial class DirectorioOnlineCoreContext : IdentityDbContext
+
     {
         public DirectorioOnlineCoreContext()
         {
@@ -47,7 +48,6 @@ namespace DataAccess.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.HasAnnotation("Relational:Collation", "Latin1_General_CI_AI");
 
             modelBuilder.Entity<CatCategorium>(entity =>
@@ -395,6 +395,10 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.NombreNegocio)
                     .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PersonalUrl)
+                    .HasMaxLength(500)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SitioWebNegocio)
