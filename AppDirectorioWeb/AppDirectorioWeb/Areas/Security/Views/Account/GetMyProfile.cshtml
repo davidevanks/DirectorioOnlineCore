@@ -35,12 +35,18 @@
 
                     <div class="card-body text-center">
                         <p>Tu Plan Actual</p>
-                        <h3 class="font-weight-normal mb-4">@Model.Subscripcion</h3>
+                        @*<h3 class="font-weight-normal mb-4">@Model.Subscripcion</h3>*@
+                        <h3 class="font-weight-normal mb-4">Gratis</h3>
                         @*@if(!String.IsNullOrEmpty(Model.PlanExpirationDate))
-                        {*@
-                            @*<span class="d-block mb-4">Plan vence: <span class="text-primary" id="current_date">@Model.PlanExpirationDate</span> </span>*@
-                            @*<a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
-                            @*}*@
+        {*@
+                        @*<span class="d-block mb-4">Plan vence: <span class="text-primary" id="current_date">@Model.PlanExpirationDate</span> </span>*@
+                        @*<a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
+                        @*}*@
+                        @if (Model.Role == "Soy Emprendedor")
+                        {
+                            <p>Código descuento para cursos en Brujula Academy</p>
+                            <h4>PROMOBRUJULA2026</h4>
+                        }
 
                     </div>
                 </div>
