@@ -60,26 +60,46 @@
             <p>Explora y conecta con negocios locales</p>
         </div>
         <div class="row">
-            <div class="col-md-4 col-lg-3 col-xs-12">
-                <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">
-                    <div class="card-body text-center">
-                        @*<div class="icon-md">
-                        <i class="icon-listy icon-more"></i>
-                    </div>*@
-                        <span class="h5">Ver todo</span>
-                    </div>
-                </a>
-            </div>
-            @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness().ToList())
+            @if (_unitOfWork.Category.GetCatUsedByBusiness().Count() > 0)
             {
                 <div class="col-md-4 col-lg-3 col-xs-12">
-                    <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">
+                    <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-action="LookForBusinessByAllCategory">
                         <div class="card-body text-center">
-                            <span class="h5">@item.Nombre</span>
+                            @*<div class="icon-md">
+                            <i class="icon-listy icon-more"></i>
+                        </div>*@
+                            <span class="h5">Ver todo</span>
+                        </div>
+                    </a>
+                </div>
+                @foreach (var item in _unitOfWork.Category.GetCatUsedByBusiness().ToList())
+                {
+                    <div class="col-md-4 col-lg-3 col-xs-12">
+                        <a class="card py-5 hover-bg-primary bg-transparent" asp-area="Negocios" asp-controller="Negocios" asp-route-categoryId="@item.Id" asp-action="LookForBusinessByCategory">
+                            <div class="card-body text-center">
+                                <span class="h5">@item.Nombre</span>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+
+
+            }
+            else
+            {
+                <div class="col-md-4 col-lg-3 col-xs-12">
+                    <a class="card py-5 hover-bg-primary bg-transparent" href="#">
+                        <div class="card-body text-center">
+                            @*<div class="icon-md">
+                            <i class="icon-listy icon-more"></i>
+                        </div>*@
+                            <span class="h5">Por el momento no hay negocios registrados</span>
                         </div>
                     </a>
                 </div>
             }
+
 
         </div>
     </div>
