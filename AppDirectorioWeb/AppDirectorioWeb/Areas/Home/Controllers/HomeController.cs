@@ -52,18 +52,18 @@ namespace AppDirectorioWeb.Controllers
 
             }
 
-            if (exceptionHandlerPathFeature!=null && exceptionHandlerPathFeature.Error!=null)
-            {
-                LogError log = new LogError();
-                log.Date = DateTime.Now;
-                log.MessageError = exceptionHandlerPathFeature.Error.Message;
-                log.Status = true;
-                log.Observation = "";
+            //if (exceptionHandlerPathFeature!=null && exceptionHandlerPathFeature.Error!=null)
+            //{
+            //    LogError log = new LogError();
+            //    log.Date = DateTime.Now;
+            //    log.MessageError = exceptionHandlerPathFeature.Error.Message;
+            //    log.Status = true;
+            //    log.Observation = "";
 
-                _unitOfWork.Log.Add(log);
-                _unitOfWork.Save();
+            //    _unitOfWork.Log.Add(log);
+            //    _unitOfWork.Save();
 
-            }
+            //}
 
             return View();
         }

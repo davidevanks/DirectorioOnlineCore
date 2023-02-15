@@ -11,10 +11,10 @@
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
             <h2 class="font-weight-normal mb-4 mb-md-0">Agregar un negocio</h2>
             @*<ul class="list-unstyled d-flex p-0 m-0">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
-            </ul>*@
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
+                </ul>*@
         </nav>
 
         <form enctype="multipart/form-data" id="form_atencion" asp-controller="Negocios" asp-antiforgery="true" method="post">
@@ -51,12 +51,13 @@
                         </div>
                         <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
                         <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
-
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
+
 
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Email"></label>
                                 <input asp-for="User.Email" class="form-control" />
@@ -69,7 +70,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.FullName"></label>
                                 <input asp-for="User.FullName" class="form-control" />
@@ -78,7 +79,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Telefono"></label>
                                 <input asp-for="User.Telefono" class="form-control" />
@@ -89,16 +90,20 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.Password"></label>
                                 <input asp-for="User.Password" class="form-control" />
                                 <span asp-validation-for="User.Password" class="text-danger"></span>
+                                @if (!string.IsNullOrEmpty(ViewBag.errorPass))
+                                {
+                                    <span class="text-danger">@ViewBag.errorPass</span>
+                                }
                             </div>
 
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.ConfirmPassword"></label>
                                 <input asp-for="User.ConfirmPassword" class="form-control" />
@@ -195,13 +200,13 @@
                         <div class="col-md-6">
 
                             @*<div class="form-group mb-6">
-                            <label for="exampleFormControlSelect1">Pais</label>
-                            <div class="select-default bg-white">
-                                <select class="form-control" id="IdPais" required>
-                                    <option value="">Eliga una opción</option>
-                                </select>
-                            </div>
-                        </div>*@
+                                    <label for="exampleFormControlSelect1">Pais</label>
+                                    <div class="select-default bg-white">
+                                        <select class="form-control" id="IdPais" required>
+                                            <option value="">Eliga una opción</option>
+                                        </select>
+                                    </div>
+                                </div>*@
 
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Departamento</label>
@@ -236,27 +241,27 @@
 
 
                         @*<div class="col-md-6 map-place-search-wrapper">
-                        <div class="form-group mb-0 ">
-                            <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
+                                <div class="form-group mb-0 ">
+                                    <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
 
-                        </div>
-                        <div style=" height: 90%; " class="map-container" id="mapholder"></div>
-                        <div>
+                                </div>
+                                <div style=" height: 90%; " class="map-container" id="mapholder"></div>
+                                <div>
 
-                            <div class="form-group col-md-6">
+                                    <div class="form-group col-md-6">
 
-                                <input id="inputlat" style="visibility:hidden;" type="text" class="form-control" />
+                                        <input id="inputlat" style="visibility:hidden;" type="text" class="form-control" />
 
-                            </div>
-                            <div class="form-group col-md-6">
+                                    </div>
+                                    <div class="form-group col-md-6">
 
-                                <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" />
+                                        <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" />
 
-                            </div>
+                                    </div>
 
-                        </div>
+                                </div>
 
-                    </div>*@
+                            </div>*@
 
                     </div>
                 </div>
@@ -505,4 +510,6 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/Handlers/AddNewBusinessHandler.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

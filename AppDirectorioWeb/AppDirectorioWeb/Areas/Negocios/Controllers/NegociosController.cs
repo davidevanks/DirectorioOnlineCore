@@ -169,16 +169,141 @@ namespace AppDirectorioWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AgregarNegocio(AddUpdBusinessViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                if ((model.Business.Id == 0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
+          
+            
+         
+
+
+                if (ModelState.IsValid)
                 {
+                    if ((model.Business.Id == 0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
+                    {
+                    
+                      ViewBag.IdPlan = model.User.IdPlan;
                     //registro negocio nuevo y usuario nuevo
                     var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
 
-                    var userExist = await _userManager.FindByEmailAsync(model.User.Email);
-                    if (userExist != null)
+                        var userExist = await _userManager.FindByEmailAsync(model.User.Email);
+                        if (userExist != null)
+                        {
+                            //Se agrega cataegorias y departamentos
+
+                            model.Business.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                            {
+                                Text = i.Nombre,
+                                Value = i.Id.ToString()
+                            });
+
+                            model.Business.Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                            {
+                                Text = i.Nombre,
+                                Value = i.Id.ToString()
+                            });
+                            //Se agrega data de días
+                            var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
+
+                            List<HorarioNegocioViewModel> ScheduleDayList = new List<HorarioNegocioViewModel>();
+                            foreach (var d in Days)
+                            {
+                                HorarioNegocioViewModel ScheduleDay = new HorarioNegocioViewModel();
+                                ScheduleDay.Day = d.Nombre;
+                                ScheduleDay.IdDia = d.Id;
+                                ScheduleDay.CreateDate = DateTime.Now;
+                                ScheduleDay.IdUserCreate = "0";
+                                ScheduleDayList.Add(ScheduleDay);
+                            }
+
+                            model.HorarioNegocios = ScheduleDayList;
+
+                            //Se agrega data para mostrar features
+                            List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
+                            var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20 && x.Activo == true).ToList();
+                            foreach (var fn in Features)
+                            {
+                                FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
+                                feature.IdFeature = fn.Id;
+                                feature.Feature = fn.Nombre;
+                                feature.CreateDate = DateTime.Now;
+                                feature.IdUserCreate = "0";
+                                FeatureNegocios.Add(feature);
+                            }
+
+                            model.FeatureNegocios = FeatureNegocios;
+
+                            ViewBag.MessageUserExist = "Este email ya esta siendo ocupado, intente con otro email!";
+                            return View(model);
+
+                        }
+
+                    var createUserResult = await _userManager.CreateAsync(user, model.User.Password);
+
+                    if (createUserResult.Succeeded)
                     {
+                        string idUserCreate = "";
+                        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                        {
+                            idUserCreate = user.Id;
+                        }
+                        else
+                        {
+                            idUserCreate = HttpContext.Session.GetString("UserId");
+                        }
+                        //asignar rol
+                        await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
+
+                        //guardamos el detalle del usuario.
+
+                        var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate, IdPlan = model.User.IdPlan };
+                        _unitOfWork.UserDetail.Add(userDetail);
+
+                        //asignamos el id del usuario a su negocio(idUserCreate)
+                        model.Business.IdUserCreate = idUserCreate;
+                        model.Business.CreateDate = DateTime.Now;
+                        model.Business.IdUserOwner = user.Id;
+                        model.Business.Status = 19;
+
+                        //logica para logo
+                        string uniqueFileName = SaveLogoPicture(model).Result;
+                        model.Business.LogoNegocio = uniqueFileName;
+
+                        var negocio = _mapper.Map<Negocio>(model.Business);
+                        _unitOfWork.Business.Add(negocio);
+                        _unitOfWork.Save();
+
+                        SaveFeaturesBusiness(model, negocio, idUserCreate);
+
+                        SaveSchedulesBusiness(model, negocio, idUserCreate);
+
+                        //logica para galerias de imagenes
+                        await SavePicturesBusiness(model, negocio, idUserCreate);
+
+                        _unitOfWork.Save();
+
+                        //codigo para envio de correo de verificación de cuenta
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        string MailText = "";
+                        if (model.User.IdPlan != 1)
+                        {
+                            MailText = GetEmailActivationUserPlanAdminBusiness(user, code, model.User.IdPlan);
+                            //Guardamos la factura
+                            SaveInvoice(model.User, user.Id);
+
+                        }
+                        else
+                        {
+                            MailText = GetEmailActivationUserAdminBusiness(user, code);
+                        }
+
+
+                        await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
+
+                        //
+                        ViewBag.IdPlan = model.User.IdPlan;
+                        return View(nameof(ConfirmationBusinessRegistration));
+                    }
+                    else
+                    {
+                        
                         //Se agrega cataegorias y departamentos
 
                         model.Business.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
@@ -223,138 +348,85 @@ namespace AppDirectorioWeb.Controllers
 
                         model.FeatureNegocios = FeatureNegocios;
 
-                        ViewBag.MessageUserExist = "Este email ya esta siendo ocupado, intente con otro email!";
+
+                        foreach (var error in createUserResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+
+
                         return View(model);
-
                     }
+                   
 
-                    var result = await _userManager.CreateAsync(user, model.User.Password);
+                        
 
-                    string idUserCreate = "";
-                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
-                    {
-                        idUserCreate = user.Id;
+              
                     }
-                    else
+                    else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
                     {
-                        idUserCreate = HttpContext.Session.GetString("UserId");
+                        //actualización negocio
+                        //asignamos el id del usuario a su negocio(idUserCreate)
+
+                        model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
+                        model.Business.UpdateDate = DateTime.Now;
+                        model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
+
+                        //logica para logo
+                        //volvemos a consultar negocio para reeactualizar estado de logo actual
+                        var logB = _unitOfWork.Business.GetBusinessToEditById((int)model.Business.Id);
+                        model.Business.LogoNegocio = logB.LogoNegocio;
+                        if (model.Logo != null)
+                        {
+                            string uniqueFileName = SaveLogoPicture(model).Result;
+                            model.Business.LogoNegocio = uniqueFileName;
+                        }
+
+                        var negocio = _mapper.Map<Negocio>(model.Business);
+                        _unitOfWork.Business.Update(negocio);
+
+                        //update features
+                        UpdateFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        //logica para galerias de imagenes
+                        await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        _unitOfWork.Save();
+                        return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
                     }
-                    //asignar rol
-                    await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
-
-                    //guardamos el detalle del usuario.
-
-                    var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate,IdPlan = model.User.IdPlan };
-                    _unitOfWork.UserDetail.Add(userDetail);
-
-                    //asignamos el id del usuario a su negocio(idUserCreate)
-                    model.Business.IdUserCreate = idUserCreate;
-                    model.Business.CreateDate = DateTime.Now;
-                    model.Business.IdUserOwner = user.Id;
-                    model.Business.Status = 19;
-
-                    //logica para logo
-                    string uniqueFileName = SaveLogoPicture(model).Result;
-                    model.Business.LogoNegocio = uniqueFileName;
-
-                    var negocio = _mapper.Map<Negocio>(model.Business);
-                    _unitOfWork.Business.Add(negocio);
-                    _unitOfWork.Save();
-
-                    SaveFeaturesBusiness(model, negocio, idUserCreate);
-
-                    SaveSchedulesBusiness(model, negocio, idUserCreate);
-
-                    //logica para galerias de imagenes
-                    await SavePicturesBusiness(model, negocio, idUserCreate);
-
-                    _unitOfWork.Save();
-
-                    //codigo para envio de correo de verificación de cuenta
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    string MailText = "";
-                    if (model.User.IdPlan!=1)
+                    else if ((model.Business.Id == 0 || model.Business.Id == null) && _signInManager.IsSignedIn(User))
                     {
-                        MailText = GetEmailActivationUserPlanAdminBusiness(user, code, model.User.IdPlan);
-                        //Guardamos la factura
-                        SaveInvoice(model.User, user.Id);
+                        //negocio nuevo pero con usuario ya registrado
+                        //asignamos el id del usuario a su negocio(idUserCreate)
+                        model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
+                        model.Business.UpdateDate = DateTime.Now;
+                        model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
-                    }
-                    else
-                    {
-                         MailText = GetEmailActivationUserAdminBusiness(user, code);
-                    }
-                  
-                    
-                    await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
-
-                    //
-                    ViewBag.IdPlan = model.User.IdPlan;
-                    return View(nameof(ConfirmationBusinessRegistration));
-                }
-                else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
-                {
-                    //actualización negocio
-                    //asignamos el id del usuario a su negocio(idUserCreate)
-
-                    model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
-                    model.Business.UpdateDate = DateTime.Now;
-                    model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
-
-                    //logica para logo
-                    //volvemos a consultar negocio para reeactualizar estado de logo actual
-                    var logB = _unitOfWork.Business.GetBusinessToEditById((int)model.Business.Id);
-                    model.Business.LogoNegocio = logB.LogoNegocio;
-                    if (model.Logo != null)
-                    {
+                        //logica para logo
                         string uniqueFileName = SaveLogoPicture(model).Result;
                         model.Business.LogoNegocio = uniqueFileName;
+
+                        var negocio = _mapper.Map<Negocio>(model.Business);
+                        _unitOfWork.Business.Add(negocio);
+                        _unitOfWork.Save();
+
+                        SaveFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        //logica para galerias de imagenes
+                        await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                       
+                        _unitOfWork.Save();
+                        return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
                     }
-
-                    var negocio = _mapper.Map<Negocio>(model.Business);
-                    _unitOfWork.Business.Update(negocio);
-
-                    //update features
-                    UpdateFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    //logica para galerias de imagenes
-                    await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    _unitOfWork.Save();
-                    return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
                 }
-                else if ((model.Business.Id == 0 || model.Business.Id == null) && _signInManager.IsSignedIn(User))
-                {
-                    //negocio nuevo pero con usuario ya registrado
-                    //asignamos el id del usuario a su negocio(idUserCreate)
-                    model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
-                    model.Business.UpdateDate = DateTime.Now;
-                    model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
-                    //logica para logo
-                    string uniqueFileName = SaveLogoPicture(model).Result;
-                    model.Business.LogoNegocio = uniqueFileName;
-
-                    var negocio = _mapper.Map<Negocio>(model.Business);
-                    _unitOfWork.Business.Add(negocio);
-                    _unitOfWork.Save();
-
-                    SaveFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    //logica para galerias de imagenes
-                    await SavePicturesBusiness (model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    _unitOfWork.Save();
-                    return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
-                }
-            }
-
-            return View(model);
-        }
+                return View(model);
+     
+}
 
         [AllowAnonymous]
         public IActionResult ConfirmationBusinessRegistration()

@@ -105,7 +105,8 @@ namespace AppDirectorioWeb
 
             services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DirectorioOnlineCoreContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddErrorDescriber<MyErrorDescriber>();
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -128,5 +129,13 @@ namespace AppDirectorioWeb
         }
 
         #endregion Public Methods
+    }
+
+    public class MyErrorDescriber: IdentityErrorDescriber
+    {
+        public override IdentityError PasswordRequiresNonAlphanumeric() { return new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "Las contraseñas deben tener al menos un carácter no alfanumérico.(Como *)" }; }
+        public override IdentityError PasswordRequiresDigit() { return new IdentityError { Code = nameof(PasswordRequiresDigit), Description = "Las contraseñas deben tener al menos un dígito ('0'-'9')." }; }
+        public override IdentityError PasswordRequiresLower() { return new IdentityError { Code = nameof(PasswordRequiresLower), Description = "Las contraseñas deben tener al menos una minúscula ('a'-'z')." }; }
+        public override IdentityError PasswordRequiresUpper() { return new IdentityError { Code = nameof(PasswordRequiresUpper), Description = "Las contraseñas deben tener al menos una mayúscula ('A'-'Z')." }; }
     }
 }
