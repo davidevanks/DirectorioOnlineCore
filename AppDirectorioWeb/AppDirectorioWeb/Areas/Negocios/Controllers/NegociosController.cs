@@ -444,7 +444,17 @@ namespace AppDirectorioWeb.Controllers
         {
             HttpContext.Session.SetString("idNegocioForDownLoadCupon", id.ToString());
             DetailsBusinessViewModel BusinessDetails = new DetailsBusinessViewModel();
-            BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
+            if (User.IsInRole(SP.Role_Admin))
+            {
+                BusinessDetails.Business = _unitOfWork.Business.GetBusinessByIdAdmin(id);
+            }
+            else
+            {
+                BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
+            }
+
+
+          
             if (BusinessDetails.Business ==null)
             {
                 return NotFound();

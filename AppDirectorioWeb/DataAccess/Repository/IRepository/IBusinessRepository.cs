@@ -9,6 +9,10 @@ namespace DataAccess.Repository.IRepository
         #region Public Methods
 
         BusinessOwnerViewModel GetBusinessById(int id);
+
+        BusinessOwnerViewModel GetBusinessByIdAdmin(int id);
+
+        
         int? GetBusinessIdByPersonalUrl(string personalUrl);
 
         int GetCountBusinessIdByPersonalUrl(string personalUrl);
