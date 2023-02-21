@@ -834,7 +834,7 @@ namespace AppDirectorioWeb.Controllers
 
                 if (model.Logo.Length > 0)
                 {
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                    //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
                     uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
                    
                     Stream stream = model.Logo.OpenReadStream();
