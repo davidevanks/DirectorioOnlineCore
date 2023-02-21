@@ -10,6 +10,7 @@ namespace DataAccess.Models
         public CatCategorium()
         {
             FeatureNegocios = new HashSet<FeatureNegocio>();
+            ItemCatalogos = new HashSet<ItemCatalogo>();
             Negocios = new HashSet<Negocio>();
         }
 
@@ -23,6 +24,7 @@ namespace DataAccess.Models
         public DateTime? UpdateDate { get; set; }
 
         public virtual ICollection<FeatureNegocio> FeatureNegocios { get; set; }
+        public virtual ICollection<ItemCatalogo> ItemCatalogos { get; set; }
         public virtual ICollection<Negocio> Negocios { get; set; }
     }
 }

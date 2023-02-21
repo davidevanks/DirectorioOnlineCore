@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,18 +21,20 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-
+        private readonly IUnitOfWork _unitOfWork;
         #endregion Private Fields
 
         #region Public Constructors
 
         public LoginModel(SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         #endregion Public Constructors
@@ -61,6 +64,8 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
+        
+
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -73,6 +78,17 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
 
+            //validacion solo para casos unicos
+            if (returnUrl.Contains("/Cuponera/Cuponera/DownloadCupon"))
+            {
+                returnUrl = "/Negocios/Negocios/GetDetailByBussinesId?id=" + HttpContext.Session.GetString("idNegocioForDownLoadCupon");
+            }
+            
+            if (returnUrl.Contains("/Cuponera/Cuponera/GetCuponFromCuponsActive"))
+            {
+                returnUrl = "/Cuponera/Cuponera/GetCuponsActive";
+            }
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
@@ -83,7 +99,21 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    HttpContext.Session.SetString("UserId", _userManager.Users.Select(x => x.Id).FirstOrDefault());
+                   
+                   
+                    HttpContext.Session.SetString("UserId", _userManager.FindByNameAsync(Input.Email).Result.Id);
+                   
+                    if (_unitOfWork.Business.GetBusinessByIdOwner(HttpContext.Session.GetString("UserId"))!=null)
+                    {
+                        //temporal hasta que se cambie la funcionalidad y se permitan más negocios por usuario
+                        var idNegocio = _unitOfWork.Business.GetBusinessByIdOwner(HttpContext.Session.GetString("UserId")).Id;
+                        HttpContext.Session.SetString("idNegocioUser", idNegocio.ToString());
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("idNegocioUser", "0");
+                    }
+                
 
                     return LocalRedirect(returnUrl);
                 }

@@ -5,42 +5,72 @@
 @model Models.ViewModels.AddUpdBusinessViewModel;
 
 
-
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 <section class="bg-light py-5 height100vh">
     <div class="container">
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
             <h2 class="font-weight-normal mb-4 mb-md-0">Agregar un negocio</h2>
-            <ul class="list-unstyled d-flex p-0 m-0">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
-            </ul>
+            @*<ul class="list-unstyled d-flex p-0 m-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
+                </ul>*@
         </nav>
 
-        <form enctype="multipart/form-data" id="form_atencion"  asp-controller="Negocios" asp-antiforgery="true" method="post">
+        <form enctype="multipart/form-data" id="form_atencion" asp-controller="Negocios" asp-antiforgery="true" method="post">
             @if (!SignInManager.IsSignedIn(User))
             {
 
 
                 <div class="card">
                     <div class="card-body px-6 pt-6 pb-1">
+
+                        <div class="bg-light p-5 mb-8 rounded">
+                            <h3 class="h4 font-weight-normal mb-4">Subscripción</h3>
+                            <div class="row justify-content-between">
+                                <div class="col-md-6">
+
+                                    <div>
+                                        <select id="cboPlanSus" class="form-control">
+                                            <option value="1">Gratis</option>
+                                            @*<option value="2">Profesional 44.99 USD/AÑO</option>*@
+
+                                        </select>
+                                        <input asp-for="User.IdPlan" id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
+                                        <input type="hidden" id="inputTypeUserMode" value="n" />
+                                        <span asp-validation-for="User.IdPlan" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="d-flex ">
+                                        <a class="btn btn-link pl-0" asp-area="Negocios" asp-controller="Negocios" asp-action="GetPlanScreen" target="_blank">Ver detalle de precios</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
                         <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
-
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
+
 
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Email"></label>
                                 <input asp-for="User.Email" class="form-control" />
                                 <span asp-validation-for="User.Email" class="text-danger"></span>
+                                @if (!string.IsNullOrEmpty(ViewBag.MessageUserExist))
+                                {
+                                    <span class="text-danger">@ViewBag.MessageUserExist</span>
+                                }
                             </div>
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.FullName"></label>
                                 <input asp-for="User.FullName" class="form-control" />
@@ -49,7 +79,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                                    <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Telefono"></label>
                                 <input asp-for="User.Telefono" class="form-control" />
@@ -60,16 +90,20 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                                    <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.Password"></label>
                                 <input asp-for="User.Password" class="form-control" />
                                 <span asp-validation-for="User.Password" class="text-danger"></span>
+                                @if (!string.IsNullOrEmpty(ViewBag.errorPass))
+                                {
+                                    <span class="text-danger">@ViewBag.errorPass</span>
+                                }
                             </div>
 
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                                    <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.ConfirmPassword"></label>
                                 <input asp-for="User.ConfirmPassword" class="form-control" />
@@ -94,18 +128,42 @@
 
                 </div>
             }
+            <input type="hidden" id="inputTypeUserMode" value="e" />
+            <input id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
+            <div class="card  p-5 mb-8 rounded">
+                <h3 class="h4 font-weight-normal mb-4">Url personalizada para tu negocio (Comparte este link con tus clientes o redes sociales)</h3>
+                <div class="row ">
+                    <div class="col-md-2">
+                        <div class="d-flex ">
+                            <a class="btn btn-link pl-0" href="#">www.brujulapyme.com/</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <div>
+                            <input asp-for="Business.PersonalUrl" class="form-control" />
+
+                            <span id="PersonalUrlMessageError" asp-validation-for="Business.PersonalUrl" class="text-danger"></span>
+                        </div>
+
+
+                    </div>
+                    <div class="col-md-2"><button type="button" id="btnCopiarLink" class="btn btn-primary">Copiar link</button></div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-body px-6 pt-6 pb-1">
                     <h3 class="h4 mb-4">Información del negocio</h3>
                     <p class="mb-5">No somos responsables de ningún daño causado por el uso de este sitio web o por publicar listados de negocios aquí. Utilice nuestro sitio a su propia discreción y ejerza el buen juicio, así como el sentido común al anunciar negocios aquí.</p>
-                    <input asp-for="Business.Id" type="hidden"/>
-                    <input asp-for="Business.IdUserOwner" type="hidden"/>
+                    <input asp-for="Business.Id" type="hidden" />
+                    <input asp-for="Business.IdUserOwner" type="hidden" />
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="listingTitle">Nombre del negocio</label>
                             <input asp-for="Business.NombreNegocio" class="form-control" />
                             <span asp-validation-for="Business.NombreNegocio" class="text-danger"></span>
                         </div>
+
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="exampleFormControlSelect1">Categoria</label>
@@ -304,12 +362,12 @@
                                 <div class="row align-items-center form-check-readonly">
                                     @for (int i = 0; i < Model.FeatureNegocios.Count; i++)
                                     {
-                                    <div class="col-6">
-                                        <input type="hidden" asp-for="@Model.FeatureNegocios[i].Id" />
-                                        <input type="hidden" asp-for="@Model.FeatureNegocios[i].IdFeature" />
-                                        <input asp-for="@Model.FeatureNegocios[i].Activo" type="checkbox" class="form-check-input">
-                                        <label class="form-check-label">@Model.FeatureNegocios[i].Feature</label>
-                                    </div>
+                                        <div class="col-6">
+                                            <input type="hidden" asp-for="@Model.FeatureNegocios[i].Id" />
+                                            <input type="hidden" asp-for="@Model.FeatureNegocios[i].IdFeature" />
+                                            <input asp-for="@Model.FeatureNegocios[i].Activo" type="checkbox" class="form-check-input">
+                                            <label class="form-check-label">@Model.FeatureNegocios[i].Feature</label>
+                                        </div>
                                     }
 
 
@@ -342,11 +400,11 @@
                                             <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
                                         </div>
                                         <div class="col-3 pr-0">
-                                            <input asp-for="@Model.HorarioNegocios[i].HoraDesde" type="time" class="form-control form-control-sm ti" placeholder="10:00am">
+                                            <input asp-for="@Model.HorarioNegocios[i].HoraDesde" class="form-control form-control-sm timepicker" placeholder="10:00am">
                                         </div>
                                         <div class="col-1 text-center px-0">-</div>
                                         <div class="col-3 pl-0">
-                                            <input asp-for="@Model.HorarioNegocios[i].HoraHasta" type="time" class="form-control form-control-sm ti" placeholder="05:00pm">
+                                            <input asp-for="@Model.HorarioNegocios[i].HoraHasta" class="form-control form-control-sm timepicker" placeholder="05:00pm">
                                         </div>
                                     </div>
                                 </div>
@@ -367,10 +425,10 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
-                    <input asp-for="@Model.Business.LogoNegocio" type="hidden"/>
+                    <input asp-for="@Model.Business.LogoNegocio" type="hidden" />
 
 
-                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && Model.ImagenesNegocios!=null)
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && (Model.ImagenesNegocios != null && Model.ImagenesNegocios.Count > 0))
                     {
                         <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
 
@@ -401,7 +459,7 @@
                     <h3 class="h4 mb-4">Logo de negocio</h3>
                     @if ((Model.Business.Id != 0 || Model.Business.Id != null) && !string.IsNullOrEmpty(Model.Business.LogoNegocio))
                     {
-                        <a id="adellogo" onclick="DeleteLogo(@Model.Business.Id)"  class="text-danger">@Model.Business.LogoNegocio     Eliminar <span class="fa fa-close"></span></a>
+                        <a id="adellogo" onclick="DeleteLogo(@Model.Business.Id)" class="text-danger">@Model.Business.LogoNegocio     Eliminar <span class="fa fa-close"></span></a>
 
                         <div class="form-group col-md-5">
                             <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi cfiinvisible">
@@ -451,4 +509,7 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/Handlers/AddNewBusinessHandler.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 }

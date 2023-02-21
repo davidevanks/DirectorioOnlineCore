@@ -63,7 +63,8 @@ namespace Models.ViewModels
         public DateTime? CreateDate { get; set; }
         public string IdUserUpdate { get; set; }
         public DateTime? UpdateDate { get; set; }
-
+        [Required(ErrorMessage = "Url Personalizada es requerida")]
+        public string PersonalUrl { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
         public IEnumerable<SelectListItem> Departamentos { get; set; }
         public string statusName { get; set; }

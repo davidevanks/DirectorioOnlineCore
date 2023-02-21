@@ -21,6 +21,58 @@ namespace DataAccess.Repository
             _db = db;
         }
 
+        public BusinessOwnerViewModel GetBusinessByIdAdmin(int id)
+        {
+            var business = _db.Negocios.AsQueryable();
+            var businessCategory = _db.CatCategoria.AsQueryable();
+            var businessStatus = _db.CatCategoria.AsQueryable();
+            var deparment = _db.CatDepartamentos.AsQueryable();
+            var users = _db.Users.AsQueryable();
+            var usersDetails = _db.UserDetails.AsQueryable();
+
+            var query = (from b in business
+                         join bc in businessCategory on b.IdCategoria equals bc.Id
+                         join bStatus in businessStatus on b.Status equals bStatus.Id
+                         join dep in deparment on b.IdDepartamento equals dep.Id
+                         join u in users on b.IdUserOwner equals u.Id
+                         join ud in usersDetails on u.Id equals ud.UserId
+                         where b.Id == id 
+                         select new BusinessOwnerViewModel
+                         {
+                             Id = b.Id,
+                             FullName = ud.FullName,
+                             PictureProfile = ud.UserPicture,
+                             TelefonoWhatsApp = b.TelefonoWhatsApp,
+                             TwitterUrl = b.TwitterUrl,
+                             FacebookUrl = b.FacebookUrl,
+                             InstagramUrl = b.InstagramUrl,
+                             LinkedInUrl = b.LinkedInUrl,
+                             SitioWebNegocio = b.SitioWebNegocio,
+                             HasDelivery = (bool)b.HasDelivery,
+                             PedidosYa = (bool)b.PedidosYa,
+                             Piki = (bool)b.Piki,
+                             Hugo = (bool)b.Hugo,
+                             EmailNegocio = b.EmailNegocio,
+                             Email = u.UserName,
+                             NombreNegocio = b.NombreNegocio,
+                             DireccionNegocio = b.DireccionNegocio,
+                             TelefonoNegocio1 = b.TelefonoNegocio1,
+                             TelefonoNegocio2 = b.TelefonoNegocio2,
+                             DescripcionNegocio = b.DescripcionNegocio,
+                             IdCategoria = bc.Id.ToString(),
+                             categoryBusinessName = bc.Nombre,
+                             Status = bStatus.Id,
+                             statusName = bStatus.Nombre,
+                             IdDepartamento = dep.Id.ToString(),
+                             departmentName = dep.Nombre,
+                             CreateDateString = b.CreateDate.ToShortDateString(),
+                             IdUserOwner = b.IdUserOwner,
+                             PersonalUrl = b.PersonalUrl
+                         }).FirstOrDefault();
+
+            return query;
+        }
+
         public BusinessOwnerViewModel GetBusinessById(int id)
         {
             var business = _db.Negocios.AsQueryable();
@@ -36,7 +88,7 @@ namespace DataAccess.Repository
                          join dep in deparment on b.IdDepartamento equals dep.Id
                          join u in users on b.IdUserOwner equals u.Id
                          join ud in usersDetails on u.Id equals ud.UserId
-                         where b.Id == id
+                         where b.Id == id && b.Status==17
                          select new BusinessOwnerViewModel
                          {
                              Id = b.Id,
@@ -66,10 +118,31 @@ namespace DataAccess.Repository
                              IdDepartamento = dep.Id.ToString(),
                              departmentName = dep.Nombre,
                              CreateDateString = b.CreateDate.ToShortDateString(),
-                             IdUserOwner = b.IdUserOwner
+                             IdUserOwner = b.IdUserOwner,
+                             PersonalUrl=b.PersonalUrl
                          }).FirstOrDefault();
 
             return query;
+        }
+
+        public Negocio GetBusinessByIdOwner(string idOwner)
+        {
+            var business = _db.Negocios.AsQueryable();
+            var query = (from b in business where b.IdUserOwner == idOwner select
+                          b).FirstOrDefault();
+
+            return query;
+        }
+
+        public int? GetBusinessIdByPersonalUrl(string personalUrl)
+        {
+            var business = _db.Negocios.AsQueryable();
+
+            var query = (from b in business where b.PersonalUrl== personalUrl
+                         select b.Id).FirstOrDefault();
+
+            return query;
+
         }
 
         public BussinesViewModel GetBusinessToEditById(int id)
@@ -114,8 +187,20 @@ namespace DataAccess.Repository
                              LogoNegocio = b.LogoNegocio,
                              Tags = b.Tags,
                              IdUserCreate = b.IdUserCreate,
-                             CreateDate = b.CreateDate
+                             CreateDate = b.CreateDate,
+                             PersonalUrl=b.PersonalUrl
                          }).FirstOrDefault();
+
+            return query;
+        }
+
+        public int GetCountBusinessIdByPersonalUrl(string personalUrl)
+        {
+            var business = _db.Negocios.AsQueryable();
+
+            var query = (from b in business
+                         where b.PersonalUrl == personalUrl
+                         select b.Id).Count();
 
             return query;
         }
@@ -192,6 +277,7 @@ namespace DataAccess.Repository
                 objFromDb.Status = negocio.Status;
                 objFromDb.IdUserUpdate = negocio.IdUserUpdate;
                 objFromDb.UpdateDate = negocio.UpdateDate;
+                objFromDb.PersonalUrl = negocio.PersonalUrl;
             }
         }
 

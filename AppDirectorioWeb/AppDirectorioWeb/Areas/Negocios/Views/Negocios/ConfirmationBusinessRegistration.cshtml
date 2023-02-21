@@ -12,8 +12,28 @@
            
                 <div class="py-7 py-md-9">
                     <h1>Registro exitoso!</h1>
-                    <p>Su registro fue completado con exito, se le envio un correo a su usuario admin para verificar la cuenta. Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar la información, una vez verificada, revise el status en el menú "Mis Negocios"".</p>
-                  <br />
+                    @if (ViewBag.IdPlan == 1)
+                    {
+                        <p>
+                            Su registro fue completado con exito, se le envio un correo a su usuario admin para verificar la cuenta.
+                            Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar
+                            la información, una vez verificada se le da de alta en Brujula Pyme, revise el status en el menú "Mis Negocios".
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            Su registro fue completado con exito, se le envio un correo a su usuario admin para verificar la cuenta y
+                            con las instrucciones para que proceda con el pago anual.
+                        </p>
+                        <p>
+                            Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar
+                            la información y comprobar el pago anual, una vez verificado todo se le da de alta en Brujula Pyme, revise el status en el menú "Mis Negocios".
+                        </p>
+                       
+                    }
+
+                    <br />
                     <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
                 </div>
 

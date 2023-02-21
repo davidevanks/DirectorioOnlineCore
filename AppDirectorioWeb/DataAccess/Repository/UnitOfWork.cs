@@ -25,6 +25,12 @@ namespace DataAccess.Repository
             ScheduleBusiness = new ScheduleBusinessRepository(_db);
             ImageBusiness = new ImagesBusinessRepository(_db);
             Review = new ReviewRepository(_db);
+            Factura = new FacturaRepository(_db);
+            Cuponera = new CuponeraRepository(_db);
+            CatConfigPordServ = new CatConfigProdServRepository(_db);
+            TipoPagoXcatConfig = new TipoPagoXcatConfigRepository(_db);
+            ItemCatalogo = new ItemCatalogoRepository(_db);
+            Log = new logErrorRepository(_db);
         }
 
         #endregion Public Constructors
@@ -40,6 +46,13 @@ namespace DataAccess.Repository
         public IScheduleBusinessRepository ScheduleBusiness { get; private set; }
         public ISP_Call SP_CALL { get; private set; }
         public IUserDetailsRepository UserDetail { get; private set; }
+        public IFacturaRepository Factura { get; private set; }
+
+        public ICuponeraRepository Cuponera { get; private set; }
+        public ICatConfigProdServRepository CatConfigPordServ { get; private set; }
+        public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get; private set; }
+        public IItemCatalogoRepository ItemCatalogo { get; private set; }
+        public IlogErrorRepository Log { get; private set; }
 
         #endregion Public Properties
 

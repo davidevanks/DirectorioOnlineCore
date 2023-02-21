@@ -1,4 +1,25 @@
-﻿
+﻿var maxImageValidPerPlan = 0;
+var valorPlanType = $('#inputPlanType').val();
+var typeUserMode = $('#inputTypeUserMode').val();
+
+if (typeUserMode === "n") {
+    $("#cboPlanSus option[value=" + valorPlanType + "]").attr("selected", true);
+    $('#cboPlanSus').change(function () {
+        $('#inputPlanType').val($(this).val());
+
+
+        if ($('#inputPlanType').val() == 1) {
+            maxImageValidPerPlan = 5;
+        }
+        else if ($('#inputPlanType').val() == 2) {
+            maxImageValidPerPlan = 30;
+        }
+    });
+} 
+
+
+
+
 $('#btnCrearCuenta').attr("disabled", true);
 
 $('.cfiinvisible').attr("disabled", true);
@@ -84,6 +105,65 @@ function DeletePictures(Id) {
 
 $(document).ready(function () {
 
+    $('#btnCopiarLink').click(function () {
+        // Crea un campo de texto "oculto"
+        var aux = document.createElement("input");
+
+        // Asigna el contenido del elemento especificado al valor del campo
+        aux.setAttribute("value", "www.brujulapyme.com/" + $('#Business_PersonalUrl').val());
+
+        // Añade el campo a la página
+        document.body.appendChild(aux);
+
+        // Selecciona el contenido del campo
+        aux.select();
+
+        // Copia el texto seleccionado
+        document.execCommand("copy");
+
+        // Elimina el campo de la página
+        document.body.removeChild(aux);
+
+        alert('Link copiado al portapapeles!');
+
+    });
+
+    //validar url personaliada si existe
+    $('#Business_PersonalUrl').change(function () {
+
+        $.ajax({
+            type: "GET",
+            url: '/Negocios/Negocios/VerifyUrlPersonalExist?personalUrl=' + $('#Business_PersonalUrl').val(),
+            success: function (data) {
+                console.log('gfgfgfgf');
+                console.log(data);
+                if (data.success) {
+                    $('#PersonalUrlMessageError').text('');
+
+                } else {
+                    $('#Business_PersonalUrl').val('');
+                    $('#Business_PersonalUrl').focus();
+                    $('#PersonalUrlMessageError').text(data.message);
+                }
+            }
+        });
+        
+      
+
+    });
+ 
+
+    if ($('#inputPlanType').val() == 1) {
+        maxImageValidPerPlan = 5;
+    }
+    else if ($('#inputPlanType').val() == 2)
+    {
+        maxImageValidPerPlan = 30;
+    }
+    
+
+
+    $('input.timepicker').timepicker({});
   
     $('.cfi').on("change", function () {
         $('#logoVal').html('');
@@ -119,8 +199,8 @@ $(document).ready(function () {
         var files = $(this)[0].files;
 
 
-        if (files.length > 6) {
-            $('#galVal').html('La cantidad máxima de imagenes son 6');
+        if (files.length > maxImageValidPerPlan) {
+            $('#galVal').html('La cantidad máxima de imagenes son ' + maxImageValidPerPlan);
             fileLabel.html('Selecciona fotos de tus productos/servicios...');
             this.value = '';
         } else {

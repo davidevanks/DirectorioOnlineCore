@@ -1,22 +1,5 @@
 ﻿@model List<Models.ViewModels.BusinessSearchResult>;
-    <style>
-        /*para mostrar solo una parte de la descripción del negocio */
-        .module {
-            width: 450px;
-            margin: 0 0 1em 0;
-            overflow: hidden;
-        }
 
-            .module p {
-                margin: 0;
-            }
-
-        .line-clamp {
-            display: -webkit-box;
-            -webkit-line-clamp: 6;
-            -webkit-box-orient: vertical;
-        }
-    </style>
     <section class="bg-light py-7 pt-md-10 pb-md-9">
         <div class="container">
             <div class="search-result-bar mb-0">
@@ -48,7 +31,7 @@
                                 <a target="_blank" asp-area="Negocios" asp-controller="Negocios" asp-action="GetDetailByBussinesId" asp-route-id="@Business.BusinessId">
                                     @if (!string.IsNullOrEmpty(Business.BusinessLogo))
                                     {
-                                        <img height="210" width="270" data-src="/ImagesBusiness/@Business.BusinessLogo" src="/ImagesBusiness/@Business.BusinessLogo" alt="things-4"> }
+                                        <img height="210" width="270"  data-src="@Business.BusinessLogo" src="@Business.BusinessLogo" alt="things-4"> }
                                     else
                                     {
                                         <img height="210" width="270" data-src="/img/listing/defaultImage1.png" src="/img/listing/defaultImage1.png" alt="things-4">}
@@ -82,11 +65,11 @@
 
                             </div>
                             <span class="d-block mb-4">@Business.DepartmentName </span>
-                            <div class="module line-clamp">
+                            
                                 <p class="mb-4">
                                     @Business.BusinessDescription
                                 </p>
-                            </div>
+                         
                                 <div>
                                     <a href="#">@Business.CategoryName</a>
                                 </div>

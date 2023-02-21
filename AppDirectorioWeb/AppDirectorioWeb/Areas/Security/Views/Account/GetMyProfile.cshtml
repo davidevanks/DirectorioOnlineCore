@@ -15,7 +15,7 @@
                     <div class="card-profile-img py-6">
                         @if (!string.IsNullOrEmpty(Model.ProfilePicture))
                         {
-                              <img class="rounded-circle " data-src="/ImagesBusiness/@Model.ProfilePicture" src="/ImagesBusiness/@Model.ProfilePicture" alt="Image"> }
+                              <img class="rounded-circle " data-src="@Model.ProfilePicture" src="@Model.ProfilePicture" alt="Image"> }
                         else
                         {
                               <img class="rounded-circle " data-src="/img/user/avatar-01.png" src="/img/user/avatar-01.png" alt="Image">
@@ -35,9 +35,19 @@
 
                     <div class="card-body text-center">
                         <p>Tu Plan Actual</p>
+                        @*<h3 class="font-weight-normal mb-4">@Model.Subscripcion</h3>*@
                         <h3 class="font-weight-normal mb-4">Gratis</h3>
-                        @*<span class="d-block mb-4">Next Payment: <span class="text-primary" id="current_date"></span> </span>
-                            <a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
+                        @*@if(!String.IsNullOrEmpty(Model.PlanExpirationDate))
+        {*@
+                        @*<span class="d-block mb-4">Plan vence: <span class="text-primary" id="current_date">@Model.PlanExpirationDate</span> </span>*@
+                        @*<a href="pricing-table.html" class="btn btn-secondary btn-sm mb-3">Change</a>*@
+                        @*}*@
+                        @if (Model.Role == "Soy Emprendedor")
+                        {
+                            <p>Código descuento para cursos en Brujula Academy</p>
+                            <h4>PROMOEMPBRUJULA2026</h4>
+                        }
+
                     </div>
                 </div>
 
@@ -66,7 +76,7 @@
 
                                 <div class="form-group col-md-6 mb-6">
                                     <label for="emailProfile">Email(Usuario)</label>
-                                    <input asp-for="Email" class="form-control" />
+                                    <input asp-for="Email" class="form-control" readonly/>
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                                 <div class="form-group col-md-6 mb-6">

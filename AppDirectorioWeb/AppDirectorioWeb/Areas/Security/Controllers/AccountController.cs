@@ -1,4 +1,6 @@
 ﻿using DataAccess.Repository.IRepository;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +10,9 @@ using Models.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Utiles;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -79,25 +84,50 @@ namespace AppDirectorioWeb.Controllers
         }
 
         [Authorize]
-        public IActionResult UpdateMyPictureProfile(UserViewModel userProfile)
+        public async Task<IActionResult> UpdateMyPictureProfile(UserViewModel userProfile)
         {
             string uniqueFileName = "";
             if (userProfile.Picture != null)
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                
                 uniqueFileName = Guid.NewGuid().ToString() + "_picprofile_" + userProfile.Picture.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                FileStream s = new FileStream(filePath, FileMode.Create);
-                userProfile.Picture.CopyTo(s);
+                //--------firebaselogic
+                Stream stream = userProfile.Picture.OpenReadStream();
+                //firebase logic to upload file
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
 
-                s.Close();
-                s.Dispose();
+
+                //cancellation token
+                var cancellation = new CancellationTokenSource();
+
+                var upload = new FirebaseStorage(
+                    FirebaseSetting.Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+
+                    }
+                    ).Child("profilePicture")
+                    .Child($"{uniqueFileName}")
+                    .PutAsync(stream, cancellation.Token);
+
+
+
+                uniqueFileName = await upload;
+
+                //--------------------
             }
+
+
+
+
             userProfile.ProfilePicture = uniqueFileName;
             _unitOfWork.UserDetail.UpdateProfilePicture(userProfile);
             _unitOfWork.Save();
             var user = _userManager.FindByNameAsync(userProfile.UserName).Result;
-            _signInManager.RefreshSignInAsync(user);
+            await _signInManager.RefreshSignInAsync(user);
             UserViewModel userProfileUpdated = _unitOfWork.UserDetail.GetAUsersDetails(userProfile.Id).FirstOrDefault();
 
             return View(nameof(GetMyProfile), userProfileUpdated);

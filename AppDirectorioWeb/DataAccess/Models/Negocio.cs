@@ -37,6 +37,7 @@ namespace DataAccess.Models
         public bool? Hugo { get; set; }
         public bool? Piki { get; set; }
         public string LogoNegocio { get; set; }
+        public string PersonalUrl { get; set; }
         public int Status { get; set; }
         public string IdUserCreate { get; set; }
         public DateTime CreateDate { get; set; }

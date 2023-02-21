@@ -1,0 +1,65 @@
+﻿var dataTable;
+
+$(document).ready(function () {
+    loadDataTable();
+    checkTypeCupon();
+});
+
+
+function checkTypeCupon() {
+
+//TypeCupon
+    console.log('TypeCupon');
+}
+
+function loadDataTable() {
+
+    dataTable = $('#tblCupon').DataTable({
+        "bSortClasses": false,
+        order: [[7, 'asc']],
+        "stripeClasses": [],
+        "ajax": {
+            "url": "/Cuponera/Cuponera/GetCupons"
+        },
+        "columns": [
+            { "data": "id", "width": "15%", "className": "t" },
+            { "data": "nombrePromocion", "width": "15%", "className": "t" },
+            { "data": "tipoDescuento", "width": "15%", "className": "t" },
+            { "data": "montoConMonedaDescripcion", "width": "15%", "className": "t" },
+            { "data": "cantidadCuponDisponible", "width": "15%", "className": "t" },
+            { "data": "cuponeaDisponibles", "width": "15%", "className": "t" },
+            { "data": "fechaExpiracionCupon", "width": "15%", "className": "t" },
+            { "data": "statusDescripcion", "width": "15%", "className": "t" },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return ` <a href="/Cuponera/Cuponera/Add/${data}" class="btn btn-warning text-white" id="btnEditar"><i class="fa fa-edit"></i></a>`
+
+                        ;
+                }, "width": "40%"
+            }
+        ]
+
+    });
+}
+
+function LockUnlock(id) {
+
+    $.ajax({
+        type: "POST",
+        url: "/Security/User/LockUnlock",
+        data: JSON.stringify(id),
+        contentType: "application/json",
+        success: function (data) {
+            if (data.success) {
+                /*toastr.success(data.message);*/
+                swal({ title: data.message, icon: "success" });
+                dataTable.ajax.reload();
+            } else {
+                /*toastr.error(data.message);*/
+                swal({ title: data.message, icon: "info" });
+            }
+        }
+    });
+
+}

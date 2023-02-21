@@ -21,6 +21,7 @@
     [Hugo]               BIT            NULL,
     [Piki]               BIT            NULL,
     [LogoNegocio]        VARCHAR (MAX)  NULL,
+    [PersonalUrl]        VARCHAR (500)  NULL,
     [Status]             INT            NOT NULL,
     [IdUserCreate]       NVARCHAR (450) NOT NULL,
     [CreateDate]         DATETIME       NOT NULL,
@@ -30,6 +31,8 @@
     CONSTRAINT [FK_Negocio_CatCategoria] FOREIGN KEY ([IdCategoria]) REFERENCES [bs].[CatCategoria] ([Id]),
     CONSTRAINT [FK_Negocio_CatDepartamento] FOREIGN KEY ([IdDepartamento]) REFERENCES [bs].[CatDepartamento] ([Id])
 );
+
+
 
 
 

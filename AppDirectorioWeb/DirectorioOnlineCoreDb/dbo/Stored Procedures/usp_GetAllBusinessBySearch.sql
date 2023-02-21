@@ -12,7 +12,7 @@ BEGIN
 	
 	IF @Search='' OR @Search=NULL
 	BEGIN
-			select B.Id AS BusinessId, B.NombreNegocio AS BusinessName,B.DescripcionNegocio AS BusinessDescription,DEP.Nombre AS DepartmentName, 
+			select B.Id AS BusinessId, B.NombreNegocio AS BusinessName,(SUBSTRING(B.DescripcionNegocio,1,471)+'...') AS BusinessDescription,DEP.Nombre AS DepartmentName, 
 			CAT.Nombre AS CategoryName, B.LogoNegocio AS BusinessLogo, ISNULL(dbo.fnc_GetStarsBusiness(B.Id),0) AS BusinessStars from bs.Negocio B 
 			INNER JOIN bs.CatCategoria CAT ON CAT.Id=B.IdCategoria
 			INNER JOIN bs.CatDepartamento DEP ON B.IdDepartamento=DEP.Id
@@ -22,7 +22,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		select B.Id AS BusinessId, B.NombreNegocio AS BusinessName,B.DescripcionNegocio AS BusinessDescription,DEP.Nombre AS DepartmentName, 
+		select B.Id AS BusinessId, B.NombreNegocio AS BusinessName,(SUBSTRING(B.DescripcionNegocio,1,471)+'...')  AS BusinessDescription,DEP.Nombre AS DepartmentName, 
 		CAT.Nombre AS CategoryName, B.LogoNegocio AS BusinessLogo, ISNULL(dbo.fnc_GetStarsBusiness(B.Id),0) AS BusinessStars from bs.Negocio B 
 		INNER JOIN bs.CatCategoria CAT ON CAT.Id=B.IdCategoria
 		INNER JOIN bs.CatDepartamento DEP ON B.IdDepartamento=DEP.Id

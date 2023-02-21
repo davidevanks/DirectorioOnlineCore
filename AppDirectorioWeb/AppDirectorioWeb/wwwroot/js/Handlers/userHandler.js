@@ -17,6 +17,8 @@ function loadDataTable() {
             { "data": "email", "width": "15%", "className": "t" },
             { "data": "phoneNumber", "width": "15%", "className": "t" },
             { "data": "role", "width": "15%", "className": "t" },
+            { "data": "subscripcion", "width": "15%", "className": "t" },
+            { "data": "planExpirationDate", "width": "15%", "className": "t" },
             {
                 "data": {
                     id: "id", lockoutEnd:"lockoutEnd"

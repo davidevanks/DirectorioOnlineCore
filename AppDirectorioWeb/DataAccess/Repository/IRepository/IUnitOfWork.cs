@@ -17,6 +17,14 @@ namespace DataAccess.Repository.IRepository
 
         public IUserDetailsRepository UserDetail { get; }
 
+        public IFacturaRepository Factura { get; }
+        public ICuponeraRepository Cuponera { get; }
+        public ICatConfigProdServRepository CatConfigPordServ { get; }
+
+        public ITipoPagoXcatConfigRepository TipoPagoXcatConfig { get;  }
+        public IItemCatalogoRepository ItemCatalogo { get; }
+        public IlogErrorRepository Log { get; }
+
         #endregion Public Properties
 
         #region Public Methods

@@ -12,6 +12,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JDV3BVWQ15"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-JDV3BVWQ15');
+    </script>
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -68,10 +77,10 @@
         <nav class="nav-menuzord navbar-sticky">
             <div class="container clearfix">
                 <div id="menuzord" class="menuzord menuzord-responsive">
-
+                   
                     <a asp-area="Home" asp-controller="Home" asp-action="Index" class="menuzord-brand">
 
-                        <img src="~/img/brands/brujulaPymeLogo.png" />
+                        <img style="height:60px; width:160px;" src="~/img/logo/Logo_Brújula_Pyme_blanco.svg" />
                     </a>
                     @if (SignInManager.IsSignedIn(User))
                     {
@@ -81,7 +90,8 @@
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" data-display="static" aria-expanded="false">
                                     @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
                                     {
-                                        <img class="avatar-img" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                        <img class="avatar-img" src="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                    
                                     }
                                     else
                                     {
@@ -117,7 +127,7 @@
                     @if (!SignInManager.IsSignedIn(User))
                     {
                         <div class="float-right btn-wrapper">
-                            <a class="btn btn-outline-primary" asp-area="Negocios" asp-controller="Negocios" asp-action="AgregarNegocio">+ <span>Agrega tu negocio</span></a>
+                            <a class="btn btn-outline-primary" asp-area="Negocios" asp-controller="Negocios" asp-action="GetPlanScreen">+ <span>Agrega tu negocio</span></a>
                         </div>
                     }
 
@@ -130,6 +140,33 @@
                         <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
 
                     </li>
+                    @if (User.IsInRole(SP.Role_BusinesAdmin))
+                    {
+                        //activar cuandi hayan cursos
+                        @*<li class="">
+                <a href="javascript:0">Aprende</a>
+                <ul class="dropdown">
+
+                    <li>
+                        <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
+
+                    </li>
+
+
+
+                </ul>
+            </li>*@
+
+                    }
+
+
+                    @if (_unitOfWork.Cuponera.GetAll(x => x.Status == true).Count() > 0)
+                    {
+                        @*<li>
+                <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="GetCuponsActive">Descuentos</a>
+
+            </li>*@
+                    }
 
                     @if (User.IsInRole(SP.Role_Admin))
                     {
@@ -137,11 +174,20 @@
                             <a href="javascript:0">Administración</a>
                             <ul class="dropdown">
                                 <li class="">
-                                    <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Adm. Negocios</a>
+                                    <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Admin. Negocios</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Ventas" asp-controller="CatalogoProductServiceController" asp-action="Index">Admin Catálogos Producto/Servicio</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
                                 </li>
 
                                 <li class="">
                                     <a asp-area="Security" asp-controller="User" asp-action="Index">Admin. Usuarios</a>
+                                </li>
+                                <li class="">
+                                    <a asp-area="Ventas" asp-controller="Facturacion" asp-action="Index">Facturación</a>
                                 </li>
                                 <li class="">
                                     <a asp-area="Catalogos" asp-controller="CatCategory" asp-action="Index">Admin Catalogos</a>
@@ -152,14 +198,14 @@
                         <li class="">
                             <a href="javascript:0">Más</a>
                             <ul class="dropdown">
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
+
 
                                 <li class="">
                                     <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                                 </li>
-
+                                <li class="">
+                                    <a href="https://blog.brujulapyme.com">Nuestros servicios</a>
+                                </li>
 
                                 <li class="">
                                     <a href="javascript:0">Categorías</a>
@@ -186,8 +232,26 @@
 
                     @if (User.IsInRole(SP.Role_BusinesAdmin))
                     {
+
+
                         <li class="">
-                            <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mis Negocios</a>
+                            <a href="javascript:0">Administración</a>
+                            <ul class="dropdown">
+                                <li class="">
+                                    <a asp-area="Negocios" asp-controller="Negocios" asp-action="AdminBusiness">Mi Negocio</a>
+                                </li>
+
+                                @*<li class="">
+                        <a asp-area="Cuponera" asp-controller="Cuponera" asp-action="Index">Admin. Cupones</a>
+                    </li>
+                    @if (_unitOfWork.UserDetail.VerifyUserIdPlan(UserManager.FindByNameAsync(User.Identity.Name).Result.Id) != 1)
+                    {
+                        <li class="">
+                            <a asp-area="Ventas" asp-controller="CatalogoProductService" asp-action="Index">Admin Catálogos Producto/Servicio</a>
+                        </li>
+                    }*@
+
+                            </ul>
                         </li>
 
 
@@ -196,11 +260,12 @@
                             <a href="javascript:0">Más</a>
                             <ul class="dropdown">
 
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
+
                                 <li class="">
                                     <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
+                                </li>
+                                <li class="">
+                                    <a href="https://blog.brujulapyme.com">Nuestros servicios</a>
                                 </li>
 
                                 <li class="">
@@ -254,15 +319,15 @@
                         <li class="">
                             <a href="javascript:0">Más</a>
                             <ul class="dropdown">
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
+
 
 
                                 <li class="">
                                     <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                                 </li>
-
+                                <li class="">
+                                    <a href="https://blog.brujulapyme.com">Nuestros servicios</a>
+                                </li>
                                 <li class="">
                                     <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
                                 </li>
@@ -272,20 +337,40 @@
                     }
 
 
+                    <li class="">
+                        <a href="javascript:0">Brujula Academy</a>
+                        <ul class="dropdown">
+                            <li class="">
+                                <a href="http://brujulapymenic.gumroad.com/">Cursos y Herramientas digitales</a>
+                            </li>
+
+
+                         
+
+                            <li class="">
+                                <a href="https://blog.brujulapyme.com/blog/" target="_blank">Blog</a>
+                            </li>
+
+                        </ul>
+                    </li>
 
                     @if (!SignInManager.IsSignedIn(User))
                     {
 
 
 
-                        <li class="">
-                            <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
-                        </li>
+
 
 
                         <li class="">
                             <a href="javascript:0">Más</a>
                             <ul class="dropdown">
+                                <li class="">
+                                    <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
+                                </li>
+                                <li class="">
+                                    <a href="https://blog.brujulapyme.com">Nuestros servicios</a>
+                                </li>
                                 <li class="">
                                     <a href="javascript:0">Categorías</a>
                                     <ul class="dropdown">
@@ -301,9 +386,7 @@
 
                                     </ul>
                                 </li>
-                                <li class="">
-                                    <a href="javascript:0">Blog</a>
-                                </li>
+
                                 <li class="">
                                     <a asp-area="Home" asp-controller="Home" asp-action="ContactUs">Contáctenos</a>
                                 </li>
@@ -315,6 +398,7 @@
 
 
                     }
+
 
 
                     @if (!SignInManager.IsSignedIn(User))
@@ -352,17 +436,19 @@
                         </svg>
                     </a>*@
                     <p class="text-white pt-1 pb-3">
-                        Brújula Pyme es un directorio digital online que tiene como objetivo darte un espacio en internet a través de nuestras fichas digitales para que llegues a más clientes,
-                        asi como también ayudar a nuestros usuarios a contactar y conocer negocios locales.
+                        Brújula Pyme es un directorio digital online que tiene como objetivo darte un espacio en internet a
+                        través de nuestras fichas digitales para que llegues a más clientes, por otro lado brindamos a los emprendedores cursos y herramientas digitales
+                        para que se capaciten y logren empoderar su negocio con nuevas habilidades.
+                        También deseamos ayudar a nuestros usuarios a contactar y conocer negocios locales.
                     </p>
                     <ul class="list-unstyled text-white">
                         <li class="mb-3">
                             <i class="fas fa-phone-alt me-3" aria-hidden="true"></i>
-                            <a class="text-white" href="tel:[88] 657 524 332">[88] 657 524 332</a>
+                            <a class="text-white" href="tel:58634478">58634478</a>
                         </li>
                         <li class="mb-3">
                             <i class="fas fa-envelope me-3" aria-hidden="true"></i>
-                            <a class="text-white" href="mailto:info@listy.com">info@listy.com</a>
+                            <a class="text-white" href="mailto:info@brujulapyme.com">info@brujulapyme.com</a>
                         </li>
                     </ul>
                 </div>
@@ -376,15 +462,28 @@
                             <a asp-area="Home" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
                         @*<li class="mb-3">
-                            <a href="sign-up.html">Crear cuenta</a>
-                        </li>*@
+            <a href="sign-up.html">Crear cuenta</a>
+        </li>*@
                         <li class="mb-3">
                             <a asp-area="Identity" asp-page="/Account/Login">Iniciar sesión</a>
                         </li>
                         <li class="mb-3">
-                            <a asp-area="Negocios" asp-controller="Negocios" asp-action="AgregarNegocio">Agregar negocio</a>
+                            <a asp-area="Negocios" asp-controller="Negocios" asp-action="AgregarNegocio">Agregar negocio gratis</a>
+                        </li>
+                        <li class="mb-3">
+                            <a href="https://blog.brujulapyme.com">Nuestros Servicios</a>
+                        </li>
+                        <li class="mb-3">
+                            <a href="http://brujulapymenic.gumroad.com/">Cursos y herramientas digitales</a>
+                        </li>
+                        <li class="mb-3">
+                            <a href="https://blog.brujulapyme.com/blog/" target="_blank">Blog</a>
                         </li>
 
+                        @*<li>
+            <a asp-area="Home" asp-controller="Home" asp-action="GetCourses">Cursos</a>
+
+        </li>*@
                     </ul>
                 </div>
 
@@ -398,10 +497,17 @@
                         </li>
 
                         <li class="mb-3">
-                            <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Que es Brújula digital?</a>
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetHowItWorks">¿Qué es Brújula Pyme?</a>
                         </li>
                         <li class="mb-3">
-                            <a asp-area="Home" asp-controller="Home" asp-action="GetTermsAndConditions">Terminos y Condiciones de Uso</a>
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetWhoWeAre">Sobre Nosotros</a>
+                        </li>
+                        <li class="mb-3">
+                            <a href=" https://blog.brujulapyme.com/2023/02/18/preguntas-frecuentes/">Preguntas frecuentes</a>
+                        </li>
+                       
+                        <li class="mb-3">
+                            <a asp-area="Home" asp-controller="Home" asp-action="GetTermsAndConditions">Términos y condiciones de uso</a>
                         </li>
                         @*<li class="mb-3">
             <a href="pricing-table.html">Precios planes</a>
@@ -420,22 +526,16 @@
                         Copyright © <span id="copy-year"></span>. Todos los derechos reservados
 
                     </p>
+                    <p>Hecho con cariño &hearts; por <a target="_blank" href="https://www.linkedin.com/in/davidevanks/">KG</a> </p>
+                   
                 </div>
 
                 <div class="col-sm-5 col-xs-12 d-flex align-items-center">
                     <div class="ms-md-auto mx-auto mx-md-0 mt-3 mb-5 my-md-0">
-                        <a class="icon-sm icon-default icon-border hover-bg-primary rounded-circle ms-0" href="#facebook">
-                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        <a target="_blank" class="icon-sm icon-default icon-border hover-bg-primary rounded-circle ms-0" href="https://www.instagram.com/brujulapymenic/">
+                            <i class="fab fa-instagram-square" aria-hidden="true"></i>
                         </a>
-                        <a class="icon-sm icon-default icon-border hover-bg-primary rounded-circle ms-2" href="#twitter">
-                            <i class="fab fa-twitter" aria-hidden="true"></i>
-                        </a>
-                        <a class="icon-sm icon-default icon-border hover-bg-primary rounded-circle ms-2" href="#pinterest">
-                            <i class="fab fa-pinterest-p" aria-hidden="true"></i>
-                        </a>
-                        <a class="icon-sm icon-default icon-border hover-bg-primary rounded-circle ms-2" href="#linkedin">
-                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-                        </a>
+                     
                     </div>
                 </div>
             </div>

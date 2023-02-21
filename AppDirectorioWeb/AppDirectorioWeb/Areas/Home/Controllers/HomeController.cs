@@ -1,4 +1,5 @@
-﻿using DataAccess.Repository.IRepository;
+﻿using DataAccess.Models;
+using DataAccess.Repository.IRepository;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -14,6 +15,7 @@ using System.Linq;
 namespace AppDirectorioWeb.Controllers
 {
     [Area("Home")]
+   
     public class HomeController : Controller
     {
         #region Private Fields
@@ -50,6 +52,19 @@ namespace AppDirectorioWeb.Controllers
 
             }
 
+            //if (exceptionHandlerPathFeature!=null && exceptionHandlerPathFeature.Error!=null)
+            //{
+            //    LogError log = new LogError();
+            //    log.Date = DateTime.Now;
+            //    log.MessageError = exceptionHandlerPathFeature.Error.Message;
+            //    log.Status = true;
+            //    log.Observation = "";
+
+            //    _unitOfWork.Log.Add(log);
+            //    _unitOfWork.Save();
+
+            //}
+
             return View();
         }
 
@@ -80,9 +95,22 @@ namespace AppDirectorioWeb.Controllers
            
             return View();
         }
+        
         public IActionResult GetHowItWorks()
         {
 
+            return View();
+        }
+
+        public IActionResult GetCourses()
+        {
+
+            return View();
+        }
+
+        public IActionResult GetWhoWeAre()
+        {
+          
             return View();
         }
 
@@ -105,11 +133,11 @@ namespace AppDirectorioWeb.Controllers
                 StreamReader str = new StreamReader(FilePath);
                 MailText = str.ReadToEnd();
                 str.Close();
-
+              
                 MailText = MailText.Replace("%asunto%", model.Subject).Replace("%NombreCompania%",model.CompanyName).Replace("%NombreCompleto%", model.PersonName).Replace("%Email%", model.Email).Replace("%NumeroTelefono%", model.Phone).Replace("%Mensaje%", model.Message);
               
-                //cambiar correo cuando tengamos los reales
-               var t= _emailSender.SendEmailAsync("davidevanks@mailinator.com", "Mensaje Desde Formulario Contactos Brujula Pyme", MailText);
+               
+               var t= _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
 
                 return Json(new { success = true, message = "Mensaje Enviado!" });
             }
@@ -118,6 +146,32 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Error Al Enviar Mensaje!" });
             }
         }
-#endregion
+
+        [HttpPost]
+        public IActionResult SendMessageToOwner([FromBody] ContactOwnerViewModel model)
+        {
+            try
+            {
+                string MailText;
+                string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateEmailToOwner.html";
+                StreamReader str = new StreamReader(FilePath);
+                MailText = str.ReadToEnd();
+                str.Close();
+
+                var nameBusiness = _unitOfWork.Business.GetBusinessById(model.BusinessId);
+
+                MailText = MailText.Replace("[NameOwner]", nameBusiness.NombreNegocio).Replace("[NamePerson]", model.PersonName).Replace("[EmailCustomer]", model.Email).Replace("[PhoneCustomer]", model.Phone).Replace("[MessageCustomer]", model.Message);
+
+
+                var t = _emailSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brujula Pyme", MailText);
+
+                return Json(new { success = true, message = "Mensaje Enviado!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error Al Enviar Mensaje!" });
+            }
+        }
+        #endregion
     }
 }

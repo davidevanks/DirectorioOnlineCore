@@ -1,0 +1,141 @@
+﻿@model Models.ViewModels.ConfigCatalogoViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var title = "Crear Config Catalogo";
+}
+
+<section class="py-7 py-md-10 bg-light height100vh">
+    <div class="container">
+        <div class="border p-6 p-lg-9 bg-white">
+            <div class="row">
+                <div class="col-md-6 col-xs-12 pr-md-6 pr-lg-9">
+                    <form  asp-action="AddUpdCatConfig" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="IdNegocio" />
+                        <input type="hidden" asp-for="Id" />
+                        @if (Model.Id != 0)
+                        {
+                            title = "Actualizar Config Catalogo";
+                        }
+                        <h2 class="h3 mb-6">@title</h2>
+                        <input asp-for="IdUsuarioCreacion" type="hidden" />
+                        <input asp-for="IdNegocio" type="hidden" />
+                        <input asp-for="FechaCreacion" type="hidden" />
+                        <input asp-for="IdUsuarioActualizacion" type="hidden" />
+                        <input asp-for="FechaActualizacion" type="hidden" />
+                        <div class="form-group mb-6">
+                            <label asp-for="NombreCatalogo"></label>
+                            <input asp-for="NombreCatalogo" type="text" class="form-control border" placeholder="Nombre Catalogo">
+                            <span asp-validation-for="NombreCatalogo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group mb-6">
+                            <label>Tipo Catalogo</label>
+                            <select id="cboIdTipoCat" class="form-control">
+                                <option>-- Seleccione un tipo --</option>
+                                <option value="1">Productos</option>
+                                <option value="2">Servicios</option>
+
+                            </select>
+                            <span asp-validation-for="IdTipoCatalogo" class="text-danger"></span>
+                            <input asp-for="IdTipoCatalogo" type="hidden" />
+
+                        </div>
+                        <div class="form-group mb-6">
+                            <label>Tipo Móneda</label>
+                            <select id="cboIdMoneda" class="form-control">
+                                <option>-- Seleccione una móneda --</option>
+                                <option value="1">(C$) Córdobas</option>
+                                <option value="2">($) Dólares</option>
+
+                            </select>
+                            <span asp-validation-for="IdMoneda" class="text-danger"></span>
+                            <input asp-for="IdMoneda" type="hidden" />
+
+                        </div>
+                        <div class="form-group mb-6">
+                            <div class="form-check">
+
+                                <input asp-for="DescuentoMasivo" class="form-check-input" type="checkbox" id="chkboxDescMasivo">
+                                <label class="form-check-label" for="gridCheck">
+                                    Aplicar descuento másivo?
+
+                                </label>
+                            </div>
+                        </div>
+                        <div id="divMtoDctoMasivo" class="form-group mb-6">
+                            <label asp-for="PorcentajeDescuentoMasivo"></label>
+                            <input asp-for="PorcentajeDescuentoMasivo" type="text" class="form-control border" placeholder="Porcentaje de descuento">
+                            <span asp-validation-for="PorcentajeDescuentoMasivo" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-6">
+                            <label>Tipo de pagos aceptados</label>
+                            <br />
+                            <div class="form-check">
+
+                                @for (int i = 0; i < Model.lstTipoPagos.Count; i++)
+                                {
+
+                                    <input type="hidden" asp-for="@Model.lstTipoPagos[i].Id" />
+                                    <input type="hidden" asp-for="@Model.lstTipoPagos[i].IdCatConfigProdServ" />
+                                    <input type="hidden" asp-for="@Model.lstTipoPagos[i].IdTipoPago" />
+                                    <input asp-for="@Model.lstTipoPagos[i].Active" type="checkbox" class="form-check-input">
+                                    <label class="form-check-label" for="gridCheck">@Model.lstTipoPagos[i].NombreTipoPago</label><br />
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-6">
+                            <div class="form-check">
+
+                                <input asp-for="Activo" class="form-check-input" type="checkbox" id="chkboxActivo">
+                                <label class="form-check-label" for="gridCheck">
+                                    Activo
+
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-0">
+                            @if (Model.Id != 0)
+                            {
+                                @*if (ViewBag.CuponActive == true && Model.Status == true)
+                {
+                    <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+                }
+                else if (ViewBag.CuponActive == false && Model.Status == false)
+                {
+                    <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary text-uppercase py-2 px-4" disabled>Actualizar</button>
+                }*@
+                                <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Actualizar</button>
+
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary text-uppercase py-2 px-4">Guardar</button>
+                            }
+
+                            <a asp-area="Ventas" asp-action="Index" asp-controller="CatalogoProductService" class="btn btn-warning text-white text-uppercase py-2 px-4">Regresar</a>
+                        </div>
+
+                        <hr class="my-7 d-md-none">
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Handlers/addUptCatConfigHandler.js"></script>
+}

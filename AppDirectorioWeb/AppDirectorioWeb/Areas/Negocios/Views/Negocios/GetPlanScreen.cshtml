@@ -1,0 +1,318 @@
+﻿@using Utiles;
+<!-- ====================================
+———	breadcrumb
+===================================== -->
+<section class="bg-light py-8">
+    <div class="container">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <nav aria-label="breadcrumb">
+                <h2 class="breadcrumb-title text-center mb-4">Planes y precios</h2>
+                <ul class="breadcrumb bg-transparent justify-content-center p-0 m-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Planes y precios</li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- Grid wrapper for ell elements -->
+<div class="element-wrapper">
+
+
+    <!-- ====================================
+    ———	PRICING PLAN
+    ===================================== -->
+    <section class="py-7 py-md-10">
+        <div class="container">
+            <div class="section-title">
+                <p>
+                    Selecciona el plan que se adapte a tus necesidades
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-pricing">
+                        <h2 class="card-title">
+                            Gratis
+                            @*<em>need free support</em>*@
+                        </h2>
+
+                        <div class="pricing">
+                            <span class="price">0</span>
+                            <span class="year">USD/AÑO</span>
+                        </div>
+
+                        <div class="card-body px-7 px-md-3 px-lg-7">
+
+                            <ul class="list-unstyled mt-4">
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Ficha digital (Nombre de negocio, descripción, dirección, botón de contacto,
+                                        información de contacto, whatsApp, redes sociales,  espacio para agregar horarios de atención)
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Hasta 5 imágenes para portada de tu ficha digital
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Logo del negocio
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                      Tu propia url personalizada del negocio
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Tags (Palabras claves de búsqueda)
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Agregar características negocio
+
+
+                                    </span>
+                                </li>
+
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Área cliente para actualizar la información de tu negocio
+
+                                    </span>
+                                </li>
+
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Cuponera digital de promociones para tus clientes
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Descuento exclusivo del %10 en cursos y herramientas digitales para emprendedores y pymes* (En construcción)
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Soporte via email no prioritario
+
+
+                                    </span>
+                                </li>
+                                @*<li class="mb-3">
+            <i class="fa fa-check-square"></i>
+            <span>Top listing placement on:</span>
+
+            <ul class="list-unstyled pl-4">
+                <li>
+                    <i class="fa fa-check-square"></i>
+                    <span>Search results</span>
+                </li>
+                <li>
+                    <i class="fa fa-check-square"></i>
+                    <span>Selected categories</span>
+                </li>
+                <li>
+                    <i class="fa fa-check-square"></i>
+                    <span>Added keywords</span>
+                </li>
+            </ul>
+        </li>*@
+                            </ul>
+
+                            @*<ul class="list-unstyled mb-0">
+                                <li class="mb-3">6 Products</li>
+                                <li class="mb-3">8 Photos</li>
+                                <li class="mb-3">5 Keywords</li>
+                                <li class="mb-3">6 Categories</li>
+                            </ul>*@
+
+                        </div>
+
+                        <div class="card-footer bg-transparent text-center border-top-0 pb-5 pt-4">
+                            <a asp-area="Negocios" asp-route-IdPlan="1" asp-controller="Negocios" asp-action="AgregarNegocio" class="btn btn-outline-secondary">Empezar</a>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-md-4">
+                    <div class="card card-pricing border-primary">
+                        <h2 class="card-title">
+                            Profesional-->
+                            @*<em>need free support</em>*@
+                        <!--</h2>
+
+                        <div class="pricing bg-primary">
+                            <span class="price text-white">@PlanesPrecios.PlanProfesional.ToString()</span>
+                            <span class="year text-white">USD/AÑO</span>
+                        </div>
+                        <div class="card-body px-7 px-md-3 px-lg-7">
+
+                            <ul class="list-unstyled mt-4">
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Ficha digital (Nombre de negocio, descripción, dirección, información de contacto, whatsApp, redes sociales)
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Hasta 30 imágenes para portada de ficha digital
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Logo del negocio
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Botones para compartir
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Formulario de contacto en tu ficha digital
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Posición preferencial por delante de las fichas gratuitas en búsquedas de brujulapyme.com
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Publicidad de tu negocio en las fichas digitales gratuitas de la misma categoría
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Insignia de Negocio destacado
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Se quita publicidad de tu ficha digital
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Tags (Palabras claves de búsqueda)
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Agregar características negocio
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Espacio para agregar horarios de atención
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Área cliente para actualizar la información de tu negocio
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Soporte prioritario vía email y chat por whatsApp
+
+
+
+                                    </span>
+                                </li>
+                                <li class="active mb-3">
+                                    <i class="fa fa-check-square"></i>
+                                    <span class="mb-0">
+                                        Cuponera digital de promociones para usuarios (creación de cupones ilimitados por mes)*
+                                    </span>
+                                </li>-->
+                                @*<li class="active mb-3">
+            <i class="fa fa-check-square"></i>
+            <span>Top listing placement on:</span>
+
+            <ul class="list-unstyled pl-4">
+                <li class="active">
+                    <i class="fa fa-check-square"></i>
+                    <span>Search results</span>
+                </li>
+                <li>
+                    <i class="fa fa-check-square"></i>
+                    <span>Selected categories</span>
+                </li>
+                <li>
+                    <i class="fa fa-check-square"></i>
+                    <span>Added keywords</span>
+                </li>
+            </ul>
+        </li>*@
+                            <!--</ul>-->
+                            @*<p>Below Lifetime <a href="#">Preview</a></p>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-3">25 Products</li>
+                                <li class="mb-3">20 Photos</li>
+                                <li class="mb-3">10 Keywords</li>
+                                <li class="mb-3">10 Categories</li>
+                            </ul>*@
+
+                        <!--</div>
+
+                        <div class="card-footer bg-transparent text-center border-top-0 pb-5 pt-4">
+                            <a asp-area="Negocios" asp-route-IdPlan="2" asp-controller="Negocios" asp-action="AgregarNegocio" class="btn btn-outline-secondary">Empezar</a>
+                        </div>
+                    </div>
+                </div>-->
+           
+            </div>
+
+           
+        </div>
+    </section>
+    </div>

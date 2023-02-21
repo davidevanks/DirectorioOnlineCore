@@ -13,6 +13,10 @@
         text-decoration: none;
         background-color: transparent;
     }
+
+    .textConditionCupon {
+        font-size: smaller;
+    }
 </style>
 <!-- ====================================
 ———	LISTING SINGLE HEADING
@@ -25,12 +29,16 @@
                     <h1 class="single-listing-title">@Model.Business.NombreNegocio</h1>
                     <input id="IBusinessId" type="hidden" asp-for="@Model.Business.Id" />
                     <p class="text-muted mb-1"> <i class="fas fa-map-marker-alt text-primary mr-1"></i> @Model.Business.DireccionNegocio </p>
-                    <p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p>
+                    <strong> <a href='https://wa.me/@Model.Business.TelefonoWhatsApp.Insert(0,"505")'><p class="text-muted mb-1"> <i class="fa fa-whatsapp text-primary mr-1"></i> @Model.Business.TelefonoWhatsApp</p></a></strong>
                     <p class="text-muted mb-1"> <i class="fas fa-phone-alt text-primary mr-1"></i> @Model.Business.TelefonoNegocio1</p>
                     <p class="text-muted mb-1"> <i class="fas fa-mail-bulk text-primary mr-1"></i> @Model.Business.EmailNegocio</p>
                     @if (!string.IsNullOrEmpty(Model.Business.SitioWebNegocio))
                     {
-                       <a target="_blank" href="@Model.Business.SitioWebNegocio"><p class="text-muted mb-1"> <i class="fas fa-globe  text-primary mr-1"></i> @Model.Business.SitioWebNegocio</p></a> 
+                        <a target="_blank" href="@Model.Business.SitioWebNegocio"><p class="text-muted mb-1"> <i class="fas fa-globe  text-primary mr-1"></i> @Model.Business.SitioWebNegocio</p></a>
+                    }
+                    else
+                    {
+                        <a ><p class="text-muted mb-1"> <i class="fas fa-globe  text-primary mr-1"></i> www.brujulapyme.com/@Model.Business.PersonalUrl</p></a>
                     }
 
 
@@ -62,10 +70,23 @@
                 </div>
             </div>
             <div class="col-lg-4 d-lg-flex justify-content-end align-items-end">
-                <a href="#add-review" class="btn btn-primary scrolling">Escribe una reseña</a>
+                @*<a href="#add-review" class="btn btn-primary scrolling">Escribe una reseña</a>*@
+                @*@if (Model.itemCatalogoViewModel != null && Model.itemCatalogoViewModel.Count() > 0)
+        {
+            if (Model.configCatalogoViewModel.IdTipoCatalogo == 1)
+            {
+                <a asp-area="Ventas" asp-route-idConfigCat="@Model.configCatalogoViewModel.Id" asp-action="SeeCatProd" asp-controller="ItemCatalogoProdServ" class="btn btn-primary">Ver productos</a>
+            }
+            else
+            {
+                <a href="#add-review" class="btn btn-primary scrolling">Ver servicios</a>
+            }
+
+        }*@
+                <a id="sendMessageBtn" href="#"  class="btn btn-primary">Contactar</a>
 
             </div>
-           
+
         </div>
 
     </div>
@@ -165,7 +186,7 @@
                             }
                             @if (!String.IsNullOrEmpty(Model.Business.InstagramUrl))
                             {
-                                <li  class="list-inline-item">
+                                <li class="list-inline-item">
                                     <a target="_blank" class="mr-2" href="@Model.Business.InstagramUrl">
                                         <i class="fab  fa-instagram" aria-hidden="true"></i>
                                     </a>
@@ -271,51 +292,48 @@
                             <h5 class="media-heading">@Model.Business.FullName</h5>
                             <div class="d-flex flex-column flex-lg-row align-items-lg-center">
                                 <ul class="list-inline d-flex flex-column flex-lg-row mb-0">-->
+                @*<li class="list-inline-item">
+                        <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                        <span class="ml-2">+55 654 545 122</span>
+                    </li>
+                    <li class="list-inline-item">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <span class="ml-2">example.com</span>
+                    </li>*@
 
-                                    @*<li class="list-inline-item">
-                                            <i class="fas fa-phone-alt" aria-hidden="true"></i>
-                                            <span class="ml-2">+55 654 545 122</span>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                                            <span class="ml-2">example.com</span>
-                                        </li>*@
+                <!--</ul>-->
+                @*<ul class="list-inline list-inline-icon ml-lg-auto">
+                        <li class="list-inline-item">
+                            <a class="mr-2" href="javascript:void(0)">
+                                <i class="fab fa-facebook-square" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="mr-2" href="javascript:void(0)">
+                                <i class="fab fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="mr-2" href="javascript:void(0)">
+                                <i class="fab fa-instagram" aria-hidden="true"></i>
+                            </a>
+                        </li>
 
-                                <!--</ul>-->
+                    </ul>*@
 
-                                @*<ul class="list-inline list-inline-icon ml-lg-auto">
-                                        <li class="list-inline-item">
-                                            <a class="mr-2" href="javascript:void(0)">
-                                                <i class="fab fa-facebook-square" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="mr-2" href="javascript:void(0)">
-                                                <i class="fab fa-twitter" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a class="mr-2" href="javascript:void(0)">
-                                                <i class="fab fa-instagram" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-
-                                    </ul>*@
-
-                            <!--</div>
+                <!--</div>
                         </div>
                     </div>
 
                     <hr>
                 </div>-->
-
                 <!-- Reviews -->
                 <div class="my-6">
                     <h3 id="revContador" class="font-weight-normal mb-6">Reseñas (0)</h3>
                     <span class="more">Ver menos comentarios...</span>
                     <br />
                     <br />
-                  
+
                     <div id="divContentMainReview">
                         <!--<div class="media mb-3">
                             <div class="media-img">
@@ -368,29 +386,29 @@
                     <form id="reviewForm">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                        <div class="form-check form-check-inline mb-6 mr-lg-7">
-                            <input id="iUserId" type="hidden" value="@UserManager.FindByNameAsync(User.Identity.Name).Result.Id" />
-                            <input type="hidden" value="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName" id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" />
-                            <input readonly class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"
-                                   checked>
-                            <input type="hidden" value="-" id="fnEmail" class="form-control" />
-                            <label class="form-check-label" for="inlineRadio1">
-                                <div class="media media-xs align-items-center">
-                                    @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
-                                    {
-                                        <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
-                                    }
-                                    else
-                                    {
-                                        <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/avatar-01.png" alt="Image">
-                                    }
-                                    @*<img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-2 media-object rounded-circle lazyestload" alt="Image User">*@
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb-0">@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName</h5>
+                            <div class="form-check form-check-inline mb-6 mr-lg-7">
+                                <input id="iUserId" type="hidden" value="@UserManager.FindByNameAsync(User.Identity.Name).Result.Id" />
+                                <input type="hidden" value="@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName" id="fnComplete" class="form-control" placeholder="Escribe tu nombre completo" />
+                                <input readonly class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"
+                                       checked>
+                                <input type="hidden" value="-" id="fnEmail" class="form-control" />
+                                <label class="form-check-label" for="inlineRadio1">
+                                    <div class="media media-xs align-items-center">
+                                        @if (!string.IsNullOrEmpty(_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture))
+                                        {
+                                            <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().ProfilePicture" alt="Image">
+                                        }
+                                        else
+                                        {
+                                            <img class="mr-2 media-object rounded-circle" src="/ImagesBusiness/avatar-01.png" alt="Image">
+                                        }
+                                        @*<img src="/img/user/user-xs-3.jpg" data-src="/img/user/user-xs-3.jpg" class="mr-2 media-object rounded-circle lazyestload" alt="Image User">*@
+                                        <div class="media-body">
+                                            <h5 class="media-heading mb-0">@_unitOfWork.UserDetail.GetAUsersDetails(UserManager.FindByNameAsync(User.Identity.Name).Result.Id).FirstOrDefault().FullName</h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </label>
-                        </div>
+                                </label>
+                            </div>
                         }
                         else
                         {
@@ -401,21 +419,21 @@
                             </div>
                             <div class="form-group mb-6">
 
-                                <input type="email" name="email" id="fnEmail" class="form-control" placeholder="Escribe tu correo"  required/>
+                                <input type="email" name="email" id="fnEmail" class="form-control" placeholder="Escribe tu correo" required />
                             </div>
                         }
 
                         @*<div class="form-check form-check-inline mb-6">
-            <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-            <label class="form-check-label" for="inlineRadio2">
-                <div class="media media-xs align-items-center">
-                    <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
-                    <div class="media-body">
-                        <h5 class="media-heading mb-0">Anonymous</h5>
-                    </div>
-                </div>
-            </label>
-        </div>*@
+                                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                <label class="form-check-label" for="inlineRadio2">
+                                    <div class="media media-xs align-items-center">
+                                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
+                                        <div class="media-body">
+                                            <h5 class="media-heading mb-0">Anonymous</h5>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>*@
                         <div class="form-group mb-6">
                             <textarea id="txtAreaComments" name="reviewDescription" class="form-control" rows="6" placeholder="Escribe tu reseña" required></textarea>
                         </div>
@@ -430,18 +448,40 @@
 
             <!--======= Sidebar =======-->
             <div class="col-md-5 col-lg-4 pl-xl-8">
-                <!-- Single listing Map -->
-                @*<div class="map-sidebar border rounded mb-5">
-                        <div id="single-listing-map" data-lat="40.805638" data-lag="-73.965384"></div>
-                        <div class="px-6 py-5">
-                            <ul class="list-unstyled mb-0">
-                                <li class="d-flex align-items-start">
-                                    <i class="fas fa-map-marker-alt mr-3 mt-1" aria-hidden="true"></i>
-                                    <span>2880 Broadway, New York, NY 10025, USA</span>
-                                </li>
-                            </ul>
+                @if (@Model.CuponNegocio != null)
+                {
+                    <div class="map-sidebar border rounded mb-5">
+
+                        <img class="card-img-top" src="@Model.CuponNegocio.ImagenCupon" alt="Card image cap" style="width: 100%; height: 350px;" >
+                        <div class="card-body">
+                            <h5 class="card-title">Cupón de descuento</h5>
+
+                            <p class="card-text">
+                                <strong>@Model.CuponNegocio.NombrePromocion</strong>
+                                <br />
+                                @Model.CuponNegocio.DescripcionPromocion
+                                <br />
+                                Valor: @Model.CuponNegocio.MontoConMonedaDescripcion
+                                <br />
+                                Cupones disponibles: @Model.CuponNegocio.CuponeaDisponibles
+                                <br />
+                                Vence: @Model.CuponNegocio.FechaExpiracionCupon
+                            </p>
+
+                          
+
+                            
+                            <a id="btnDowloandCupon" asp-route-idNegocio="@Model.Business.Id" asp-route-idCupon="@Model.CuponNegocio.Id" asp-area="Cuponera" asp-action="DownloadCupon" asp-controller="Cuponera" class="btn btn-primary">Obtener cupón</a>
+                            @if (!SignInManager.IsSignedIn(User))
+                            {
+                                <br /><br /><span class="text-danger">*Para descargar el cupón debes iniciar sesión</span>
+                            }
+                            <br /><br /><span class="text-danger">*Recuerda solo puedes obtener un cupón por promoción</span>
                         </div>
-                    </div>*@
+
+                    </div>
+                }
+
 
                 <!-- Make Online Reservations -->
                 @*<form class="mb-5" action="#">
@@ -496,7 +536,7 @@
                                     <span>@schedule.HoraDesde - @schedule.HoraHasta</span> }
                                 else
                                 {
-                                    <span><a href="#">Closed</a></span>}
+                                    <span><a href="#">Cerrado</a></span>}
 
 
                             </li>
@@ -588,5 +628,8 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/Handlers/ReviewsHandler.js"></script>
+    <script src="~/js/Handlers/SendMessageToBusinessHandler.js"></script>
+
+
 }
 

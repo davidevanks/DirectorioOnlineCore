@@ -2,6 +2,8 @@
 using Dapper;
 using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
 using Utiles;
 
@@ -36,6 +39,7 @@ namespace AppDirectorioWeb.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DirectorioOnlineCoreContext context;
         private readonly IWebHostEnvironment hostingEnvironment;
+        
 
         #endregion Private Fields
 
@@ -79,14 +83,15 @@ namespace AppDirectorioWeb.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult AgregarNegocio(int? Id)
+        public IActionResult AgregarNegocio(int? Id,int? IdPlan)
         {
             AddUpdBusinessViewModel model = new AddUpdBusinessViewModel();
+            ViewBag.IdPlan = IdPlan;
 
             if (Id != null)
             {
                 model.Business = _unitOfWork.Business.GetBusinessToEditById((int)Id);
-
+                ViewBag.IdPlan = _unitOfWork.UserDetail.GetAUsersDetails(HttpContext.Session.GetString("UserId")).FirstOrDefault().IdPlan;
                 if (model.Business == null)
                 {
                     return NotFound();
@@ -164,127 +169,264 @@ namespace AppDirectorioWeb.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AgregarNegocio(AddUpdBusinessViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                if ((model.Business.Id == 0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
+          
+            
+         
+
+
+                if (ModelState.IsValid)
                 {
+                    if ((model.Business.Id == 0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
+                    {
+                    
+                      ViewBag.IdPlan = model.User.IdPlan;
                     //registro negocio nuevo y usuario nuevo
                     var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
 
-                    var result = await _userManager.CreateAsync(user, model.User.Password);
+                        var userExist = await _userManager.FindByEmailAsync(model.User.Email);
+                        if (userExist != null)
+                        {
+                            //Se agrega cataegorias y departamentos
 
-                    string idUserCreate = "";
-                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                            model.Business.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                            {
+                                Text = i.Nombre,
+                                Value = i.Id.ToString()
+                            });
+
+                            model.Business.Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                            {
+                                Text = i.Nombre,
+                                Value = i.Id.ToString()
+                            });
+                            //Se agrega data de días
+                            var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
+
+                            List<HorarioNegocioViewModel> ScheduleDayList = new List<HorarioNegocioViewModel>();
+                            foreach (var d in Days)
+                            {
+                                HorarioNegocioViewModel ScheduleDay = new HorarioNegocioViewModel();
+                                ScheduleDay.Day = d.Nombre;
+                                ScheduleDay.IdDia = d.Id;
+                                ScheduleDay.CreateDate = DateTime.Now;
+                                ScheduleDay.IdUserCreate = "0";
+                                ScheduleDayList.Add(ScheduleDay);
+                            }
+
+                            model.HorarioNegocios = ScheduleDayList;
+
+                            //Se agrega data para mostrar features
+                            List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
+                            var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20 && x.Activo == true).ToList();
+                            foreach (var fn in Features)
+                            {
+                                FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
+                                feature.IdFeature = fn.Id;
+                                feature.Feature = fn.Nombre;
+                                feature.CreateDate = DateTime.Now;
+                                feature.IdUserCreate = "0";
+                                FeatureNegocios.Add(feature);
+                            }
+
+                            model.FeatureNegocios = FeatureNegocios;
+
+                            ViewBag.MessageUserExist = "Este email ya esta siendo ocupado, intente con otro email!";
+                            return View(model);
+
+                        }
+
+                    var createUserResult = await _userManager.CreateAsync(user, model.User.Password);
+
+                    if (createUserResult.Succeeded)
                     {
-                        idUserCreate = user.Id;
+                        string idUserCreate = "";
+                        if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                        {
+                            idUserCreate = user.Id;
+                        }
+                        else
+                        {
+                            idUserCreate = HttpContext.Session.GetString("UserId");
+                        }
+                        //asignar rol
+                        await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
+
+                        //guardamos el detalle del usuario.
+
+                        var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate, IdPlan = model.User.IdPlan };
+                        _unitOfWork.UserDetail.Add(userDetail);
+
+                        //asignamos el id del usuario a su negocio(idUserCreate)
+                        model.Business.IdUserCreate = idUserCreate;
+                        model.Business.CreateDate = DateTime.Now;
+                        model.Business.IdUserOwner = user.Id;
+                        model.Business.Status = 19;
+
+                        //logica para logo
+                        string uniqueFileName = SaveLogoPicture(model).Result;
+                        model.Business.LogoNegocio = uniqueFileName;
+
+                        var negocio = _mapper.Map<Negocio>(model.Business);
+                        _unitOfWork.Business.Add(negocio);
+                        _unitOfWork.Save();
+
+                        SaveFeaturesBusiness(model, negocio, idUserCreate);
+
+                        SaveSchedulesBusiness(model, negocio, idUserCreate);
+
+                        //logica para galerias de imagenes
+                        await SavePicturesBusiness(model, negocio, idUserCreate);
+
+                        _unitOfWork.Save();
+
+                        //codigo para envio de correo de verificación de cuenta
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        string MailText = "";
+                        if (model.User.IdPlan != 1)
+                        {
+                            MailText = GetEmailActivationUserPlanAdminBusiness(user, code, model.User.IdPlan);
+                            //Guardamos la factura
+                            SaveInvoice(model.User, user.Id);
+
+                        }
+                        else
+                        {
+                            MailText = GetEmailActivationUserAdminBusiness(user, code);
+                        }
+
+
+                        await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
+
+                        //
+                        ViewBag.IdPlan = model.User.IdPlan;
+                        return View(nameof(ConfirmationBusinessRegistration));
                     }
                     else
                     {
-                        idUserCreate = HttpContext.Session.GetString("UserId");
+                        
+                        //Se agrega cataegorias y departamentos
+
+                        model.Business.Categories = _unitOfWork.Category.GetAll().Where(x => x.IdPadre == 1 && x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                        {
+                            Text = i.Nombre,
+                            Value = i.Id.ToString()
+                        });
+
+                        model.Business.Departamentos = _unitOfWork.Departament.GetAll().Where(x => x.Activo == true).Select(x => new { x.Id, x.Nombre }).Select(i => new SelectListItem
+                        {
+                            Text = i.Nombre,
+                            Value = i.Id.ToString()
+                        });
+                        //Se agrega data de días
+                        var Days = _unitOfWork.Category.GetAll(x => x.IdPadre == 25 && x.Activo == true).ToList();
+
+                        List<HorarioNegocioViewModel> ScheduleDayList = new List<HorarioNegocioViewModel>();
+                        foreach (var d in Days)
+                        {
+                            HorarioNegocioViewModel ScheduleDay = new HorarioNegocioViewModel();
+                            ScheduleDay.Day = d.Nombre;
+                            ScheduleDay.IdDia = d.Id;
+                            ScheduleDay.CreateDate = DateTime.Now;
+                            ScheduleDay.IdUserCreate = "0";
+                            ScheduleDayList.Add(ScheduleDay);
+                        }
+
+                        model.HorarioNegocios = ScheduleDayList;
+
+                        //Se agrega data para mostrar features
+                        List<FeatureNegocioViewModel> FeatureNegocios = new List<FeatureNegocioViewModel>();
+                        var Features = _unitOfWork.Category.GetAll(x => x.IdPadre == 20 && x.Activo == true).ToList();
+                        foreach (var fn in Features)
+                        {
+                            FeatureNegocioViewModel feature = new FeatureNegocioViewModel();
+                            feature.IdFeature = fn.Id;
+                            feature.Feature = fn.Nombre;
+                            feature.CreateDate = DateTime.Now;
+                            feature.IdUserCreate = "0";
+                            FeatureNegocios.Add(feature);
+                        }
+
+                        model.FeatureNegocios = FeatureNegocios;
+
+
+                        foreach (var error in createUserResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+
+
+                        return View(model);
                     }
-                    //asignar rol
-                    await _userManager.AddToRoleAsync(user, SP.Role_BusinesAdmin);
+                   
 
-                    //guardamos el detalle del usuario.
+                        
 
-                    var userDetail = new UserDetail { UserId = user.Id, FullName = model.User.FullName, NotificationsPromo = true, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate };
-                    _unitOfWork.UserDetail.Add(userDetail);
-
-                    //asignamos el id del usuario a su negocio(idUserCreate)
-                    model.Business.IdUserCreate = idUserCreate;
-                    model.Business.CreateDate = DateTime.Now;
-                    model.Business.IdUserOwner = user.Id;
-                    model.Business.Status = 19;
-
-                    //logica para logo
-                    string uniqueFileName = SaveLogoPicture(model);
-                    model.Business.LogoNegocio = uniqueFileName;
-
-                    var negocio = _mapper.Map<Negocio>(model.Business);
-                    _unitOfWork.Business.Add(negocio);
-                    _unitOfWork.Save();
-
-                    SaveFeaturesBusiness(model, negocio, idUserCreate);
-
-                    SaveSchedulesBusiness(model, negocio, idUserCreate);
-
-                    //logica para galerias de imagenes
-                    SavePicturesBusiness(model, negocio, idUserCreate);
-
-                    _unitOfWork.Save();
-
-                    //codigo para envio de correo de verificación de cuenta
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    string MailText = GetEmailActivationUserAdminBusiness(user, code);
-                    await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
-
-                    //
-
-                    return RedirectToAction(nameof(ConfirmationBusinessRegistration));
-                }
-                else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
-                {
-                    //actualización negocio
-                    //asignamos el id del usuario a su negocio(idUserCreate)
-
-                    model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
-                    model.Business.UpdateDate = DateTime.Now;
-                    model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
-
-                    //logica para logo
-                    //volvemos a consultar negocio para reeactualizar estado de logo actual
-                    var logB = _unitOfWork.Business.GetBusinessToEditById((int)model.Business.Id);
-                    model.Business.LogoNegocio = logB.LogoNegocio;
-                    if (model.Logo != null)
+              
+                    }
+                    else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
                     {
-                        string uniqueFileName = SaveLogoPicture(model);
-                        model.Business.LogoNegocio = uniqueFileName;
+                        //actualización negocio
+                        //asignamos el id del usuario a su negocio(idUserCreate)
+
+                        model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
+                        model.Business.UpdateDate = DateTime.Now;
+                        model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
+
+                        //logica para logo
+                        //volvemos a consultar negocio para reeactualizar estado de logo actual
+                        var logB = _unitOfWork.Business.GetBusinessToEditById((int)model.Business.Id);
+                        model.Business.LogoNegocio = logB.LogoNegocio;
+                        if (model.Logo != null)
+                        {
+                            string uniqueFileName = SaveLogoPicture(model).Result;
+                            model.Business.LogoNegocio = uniqueFileName;
+                        }
+
+                        var negocio = _mapper.Map<Negocio>(model.Business);
+                        _unitOfWork.Business.Update(negocio);
+
+                        //update features
+                        UpdateFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        //logica para galerias de imagenes
+                        await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+
+                        _unitOfWork.Save();
+                        return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
                     }
+                    else if ((model.Business.Id == 0 || model.Business.Id == null) && _signInManager.IsSignedIn(User))
+                    {
+                        //negocio nuevo pero con usuario ya registrado
+                        //asignamos el id del usuario a su negocio(idUserCreate)
+                        model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
+                        model.Business.UpdateDate = DateTime.Now;
+                        model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
-                    var negocio = _mapper.Map<Negocio>(model.Business);
-                    _unitOfWork.Business.Update(negocio);
+                        //logica para logo
+                        string uniqueFileName = SaveLogoPicture(model).Result;
+                        model.Business.LogoNegocio = uniqueFileName;
 
-                    //update features
-                    UpdateFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                        var negocio = _mapper.Map<Negocio>(model.Business);
+                        _unitOfWork.Business.Add(negocio);
+                        _unitOfWork.Save();
 
-                    UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                        SaveFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
-                    //logica para galerias de imagenes
-                    SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                        SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
-                    _unitOfWork.Save();
-                    return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
+                        //logica para galerias de imagenes
+                        await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                       
+                        _unitOfWork.Save();
+                        return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
+                    }
                 }
-                else if ((model.Business.Id == 0 || model.Business.Id == null) && _signInManager.IsSignedIn(User))
-                {
-                    //negocio nuevo pero con usuario ya registrado
-                    //asignamos el id del usuario a su negocio(idUserCreate)
-                    model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
-                    model.Business.UpdateDate = DateTime.Now;
-                    model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
-                    //logica para logo
-                    string uniqueFileName = SaveLogoPicture(model);
-                    model.Business.LogoNegocio = uniqueFileName;
-
-                    var negocio = _mapper.Map<Negocio>(model.Business);
-                    _unitOfWork.Business.Add(negocio);
-                    _unitOfWork.Save();
-
-                    SaveFeaturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    //logica para galerias de imagenes
-                    SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
-
-                    _unitOfWork.Save();
-                    return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
-                }
-            }
-
-            return View(model);
-        }
+                return View(model);
+     
+}
 
         [AllowAnonymous]
         public IActionResult ConfirmationBusinessRegistration()
@@ -292,22 +434,40 @@ namespace AppDirectorioWeb.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult GetPlanScreen()
+        {
+            return View();
+        }
+
         public IActionResult GetDetailByBussinesId(int id)
         {
+            HttpContext.Session.SetString("idNegocioForDownLoadCupon", id.ToString());
             DetailsBusinessViewModel BusinessDetails = new DetailsBusinessViewModel();
-            BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
+            if (User.IsInRole(SP.Role_Admin))
+            {
+                BusinessDetails.Business = _unitOfWork.Business.GetBusinessByIdAdmin(id);
+            }
+            else
+            {
+                BusinessDetails.Business = _unitOfWork.Business.GetBusinessById(id);
+            }
+
+
+          
+            if (BusinessDetails.Business ==null)
+            {
+                return NotFound();
+            }
             BusinessDetails.FeatureNegocios = _unitOfWork.Feature.GetListFeaturesByBusinessId(id);
             BusinessDetails.HorarioNegocios = _unitOfWork.ScheduleBusiness.GetScheduleListByBusinessId(id);
             BusinessDetails.ImagenesNegocios = _unitOfWork.ImageBusiness.GetImagesByBusinessId(id);
-
-            foreach (var item in BusinessDetails.ImagenesNegocios)
+            BusinessDetails.CuponNegocio = _unitOfWork.Cuponera.GetCuponByIdNegocio(id);
+            BusinessDetails.configCatalogoViewModel = _unitOfWork.CatConfigPordServ.lstConfigCat(id).FirstOrDefault();
+            if (BusinessDetails.configCatalogoViewModel!=null)
             {
-                string uploadsFolder = "/ImagesBusiness/";
-                string uniqueFileNames = item.Image;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-                item.Image = filePath;
+                BusinessDetails.itemCatalogoViewModel = _unitOfWork.ItemCatalogo.GetItemsCatalogoForBueyrs(BusinessDetails.configCatalogoViewModel.Id);
             }
-
             return View(BusinessDetails);
         }
 
@@ -360,7 +520,7 @@ namespace AppDirectorioWeb.Controllers
 
         [HttpGet]
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
-        public IActionResult DeleteLogo(int id)
+        public async Task<IActionResult> DeleteLogo(int id)
         {
             var Business = _unitOfWork.Business.Get(id);
             if (Business == null)
@@ -368,31 +528,53 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Error al borrar" });
             }
 
-            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-            var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, Business.LogoNegocio);
+            //firebase logic
 
-            if (System.IO.File.Exists(path))
+
+            try
             {
-                System.IO.File.Delete(path);
-            }
-            else
-            {
-                Business.LogoNegocio = "";
+                string fileName = Business.LogoNegocio.Replace("https://firebasestorage.googleapis.com/v0/b/brujulapyme-1bb75.appspot.com/o/businessLogo%2F", "");
+
+
+                fileName = fileName.Substring(0, fileName.IndexOf('?'));
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+                //cancellation token
+                var cancellation = new CancellationTokenSource();
+
+                var del = new FirebaseStorage(
+                    FirebaseSetting.Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+
+                    }
+                    ).Child("businessLogo").Child(fileName).DeleteAsync();
+
+
+                //firebaselogic
+
+                 Business.LogoNegocio = "";
                 _unitOfWork.Business.Update(Business);
                 _unitOfWork.Save();
-                return Json(new { success = false, message = "Error al borrar, directorio no existe" });
+
+                return Json(new { success = true, message = "Se borro logo exitosamente" });
             }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+                throw;
+            }
+           
 
-            Business.LogoNegocio = "";
-            _unitOfWork.Business.Update(Business);
-            _unitOfWork.Save();
-
-            return Json(new { success = true, message = "Se borro logo exitosamente" });
+           
         }
 
         [HttpGet]
         [Authorize(Roles = SP.Role_BusinesAdmin + "," + SP.Role_Admin)]
-        public IActionResult DeletePictures(int id)
+        public async Task<IActionResult> DeletePictures(int id)
         {
             var pictures = _unitOfWork.ImageBusiness.GetRangeImagesToDeleteByBusinessId(id);
             if (pictures == null)
@@ -400,25 +582,51 @@ namespace AppDirectorioWeb.Controllers
                 return Json(new { success = false, message = "Error al borrar" });
             }
 
-            foreach (var item in pictures)
-            {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                var path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), uploadsFolder, item.Image);
 
-                if (System.IO.File.Exists(path))
+            try
+            {
+                foreach (var item in pictures)
                 {
-                    System.IO.File.Delete(path);
+                    
+                    
+                       
+                    string fileName = item.Image.Replace("https://firebasestorage.googleapis.com/v0/b/brujulapyme-1bb75.appspot.com/o/businessGallery%2F", "");
+                   
+                    
+                    fileName = fileName.Substring(0, fileName.IndexOf('?'));
+
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                    var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+                    //cancellation token
+                    var cancellation = new CancellationTokenSource();
+
+                    var del = new FirebaseStorage(
+                        FirebaseSetting.Bucket,
+                        new FirebaseStorageOptions
+                        {
+                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                            ThrowOnCancel = true
+
+                        }
+                        ).Child("businessGallery").Child(fileName).DeleteAsync();
+
+
+                    
                 }
-                else
-                {
-                    return Json(new { success = false, message = "Error al borrar, directorio no existe" });
-                }
+
+                _unitOfWork.ImageBusiness.RemoveRange(pictures);
+                _unitOfWork.Save();
+
+                return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+                throw;
             }
 
-            _unitOfWork.ImageBusiness.RemoveRange(pictures);
-            _unitOfWork.Save();
-
-            return Json(new { success = true, message = "Se borraron Imagen(es) exitosamente!" });
+         
         }
 
         [HttpGet]
@@ -506,9 +714,55 @@ namespace AppDirectorioWeb.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult VerifyUrlPersonalExist( string personalUrl)
+                {
+            try
+            {
+               var countValue= _unitOfWork.Business.GetCountBusinessIdByPersonalUrl(personalUrl);
+
+
+                if (countValue>0)
+                {
+                    return Json(new { success = false, message = "Url ya ocupada, seleccione otra!" });
+                }
+                else
+                {
+                    return Json(new { success = true, message = "Exito" });
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error!" });
+            }
+        }
+
         #endregion API_CALLS
 
         #region MetodosAuxiliares
+
+        public void SaveInvoice(InputUserViewModel User,string UserId)
+        {
+            Factura factura = new Factura();
+
+            factura.FacturaEnviada = false;
+            factura.FacturaPagada = false;
+            factura.FechaCreacion = DateTime.Now;
+            factura.IdPlan = (int)User.IdPlan;
+            factura.UserId = UserId;
+            factura.IdUserCreate = "094fa88d-626c-4c0a-ac4e-908d9e4ddedb";
+            if (User.IdPlan==2)
+            {
+                factura.MontoPagado = (decimal)PlanesPrecios.PlanProfesional;
+            }
+           
+
+            _unitOfWork.Factura.Add(factura);
+            _unitOfWork.Save();
+
+        }
 
         public string GetEmailActivationUserAdminBusiness(IdentityUser user, string codeG)
         {
@@ -531,6 +785,34 @@ namespace AppDirectorioWeb.Controllers
             return MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
         }
 
+        public string GetEmailActivationUserPlanAdminBusiness(IdentityUser user, string codeG,int? IdPlan)
+        {
+            string MailText = "";
+            string returnUrl = null;
+            returnUrl ??= Url.Content("~/");
+            var code = codeG;
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                protocol: Request.Scheme);
+
+            string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateConfirmEmailPlanes.html";
+            StreamReader str = new StreamReader(FilePath);
+            MailText = str.ReadToEnd();
+            str.Close();
+
+            string planCosto = "";
+
+            if (IdPlan==1)
+            {
+                planCosto = PlanesPrecios.PlanProfesional.ToString();
+            }
+
+            return MailText = MailText.Replace("[username]", user.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl)).Replace("[planCosto]", planCosto).Replace("[numCuenta]", "365245240").Replace("[nombreCuenta]", "Kenneth David Gaitán Evanks").Replace("[numWhatsApp]","58634478");
+        }
+
         public void SaveFeaturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)
         {
             foreach (var feature in model.FeatureNegocios)
@@ -544,52 +826,120 @@ namespace AppDirectorioWeb.Controllers
             _unitOfWork.Feature.InsertList(features);
         }
 
-        public string SaveLogoPicture(AddUpdBusinessViewModel model)
+        public async Task<string> SaveLogoPicture(AddUpdBusinessViewModel model)
         {
             string uniqueFileName = "";
-            if (model.Logo != null)
+            try
             {
-                string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                uniqueFileName = Guid.NewGuid().ToString() + "_logoBusiness_" + model.Logo.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                FileStream s = new FileStream(filePath, FileMode.Create);
-                model.Logo.CopyTo(s);
 
-                s.Close();
-                s.Dispose();
+                if (model.Logo.Length > 0)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
+                   
+                    Stream stream = model.Logo.OpenReadStream();
+                    //firebase logic to upload file
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                    var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+
+                    //cancellation token
+                    var cancellation = new CancellationTokenSource();
+
+                    var upload = new FirebaseStorage(
+                        FirebaseSetting.Bucket,
+                        new FirebaseStorageOptions
+                        {
+                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                            ThrowOnCancel = true
+                            
+                        }
+                        ).Child("businessLogo")
+                        .Child($"{uniqueFileName}")
+                        .PutAsync(stream, cancellation.Token);
+
+
+
+                    uniqueFileName = await upload;
+                    //s.Close();
+                    //s.Dispose();
+                    //System.IO.File.Delete(filePath);
+                }
+
             }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
+            
+           
+          
             return uniqueFileName;
         }
 
-        public void SavePicturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)
+        public async Task SavePicturesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)
         {
-            string uniqueFileNames = null;
-            List<ImagenesNegocioViewModel> lstPictures = new List<ImagenesNegocioViewModel>();
-            if (model.PicturesBusiness != null && model.PicturesBusiness.Count > 0)
+            try
             {
-                foreach (IFormFile picture in model.PicturesBusiness)
+                List<ImagenesNegocioViewModel> lstPictures = new List<ImagenesNegocioViewModel>();
+                if (model.PicturesBusiness != null && model.PicturesBusiness.Count > 0)
                 {
-                    ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                    uniqueFileNames = Guid.NewGuid().ToString() + "_picturesBusiness_" + picture.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
-                    FileStream s = new FileStream(filePath, FileMode.Create);
-                    picture.CopyTo(s);
+                    foreach (IFormFile picture in model.PicturesBusiness)
+                    {
+                        string uniqueFileNames = "";
+                        ImagenesNegocioViewModel pic = new ImagenesNegocioViewModel();
+                        //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                        uniqueFileNames = Guid.NewGuid().ToString() + "_PB_" + picture.FileName;
+                        //string filePath = Path.Combine(uploadsFolder, uniqueFileNames);
+                        //FileStream s = new FileStream(filePath, FileMode.Create);
+                        //picture.CopyTo(s);
 
-                    pic.IdNegocio = negocio.Id;
-                    pic.IdUserCreate = idUserCreate;
-                    pic.CreateDate = DateTime.Now;
-                    pic.Image = uniqueFileNames;
-                    lstPictures.Add(pic);
 
-                    s.Close();
-                    s.Dispose();
+                        //firebase logic--------------------------
+                        Stream stream = picture.OpenReadStream();
+                        //firebase logic to upload file
+                        var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                        var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+
+
+                        //cancellation token
+                        var cancellation = new CancellationTokenSource();
+
+                        var upload = new FirebaseStorage(
+                            FirebaseSetting.Bucket,
+                            new FirebaseStorageOptions
+                            {
+                                AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                                ThrowOnCancel = true
+
+                            }
+                            ).Child("businessGallery")
+                            .Child($"{uniqueFileNames}")
+                            .PutAsync(stream, cancellation.Token);
+
+                        uniqueFileNames = await upload;
+
+                        //fin firebase logic----------------------
+                        pic.IdNegocio = negocio.Id;
+                        pic.IdUserCreate = idUserCreate;
+                        pic.CreateDate = DateTime.Now;
+                        pic.Image = uniqueFileNames;
+                        lstPictures.Add(pic);
+
+
+                    }
+
+                    var picturesBusiness = _mapper.Map<List<ImagenesNegocio>>(lstPictures);
+                    _unitOfWork.ImageBusiness.InsertList(picturesBusiness);
                 }
-
-                var picturesBusiness = _mapper.Map<List<ImagenesNegocio>>(lstPictures);
-                _unitOfWork.ImageBusiness.InsertList(picturesBusiness);
             }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                throw;
+            }
+          
         }
 
         public void SaveSchedulesBusiness(AddUpdBusinessViewModel model, Negocio negocio, string idUserCreate)

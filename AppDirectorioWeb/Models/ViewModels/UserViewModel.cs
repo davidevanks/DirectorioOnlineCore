@@ -22,6 +22,12 @@ namespace Models.ViewModels
         public bool NotificationsPromo { get; set; }
         public DateTime? UpdateDate { get; set; }
         public string UpdateUser { get; set; }
+        public string Subscripcion { get; set; }
+      
+        public string PlanExpirationDate { get; set; }
+
+        public DateTime? PlanExpirationDateD { get; set; }
+        public int? IdPlan { get; set; }
 
         public ChangePassowrdViewModel ChangePassword { get; set; }
 

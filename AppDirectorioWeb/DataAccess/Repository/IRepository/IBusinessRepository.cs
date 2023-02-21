@@ -10,11 +10,21 @@ namespace DataAccess.Repository.IRepository
 
         BusinessOwnerViewModel GetBusinessById(int id);
 
+        BusinessOwnerViewModel GetBusinessByIdAdmin(int id);
+
+        
+        int? GetBusinessIdByPersonalUrl(string personalUrl);
+
+        int GetCountBusinessIdByPersonalUrl(string personalUrl);
+
         BussinesViewModel GetBusinessToEditById(int id);
 
         List<BusinessOwnerViewModel> GetListBusinessByOwners(string idOwner);
+        Negocio GetBusinessByIdOwner(string idOwner);
 
         void Update(Negocio negocio);
+
+
 
         #endregion Public Methods
     }

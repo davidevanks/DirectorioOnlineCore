@@ -3,6 +3,7 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Utiles
@@ -34,17 +35,20 @@ namespace Utiles
                 MailText = MailText.Replace("[username]", email).Replace("[email]", email);
                 var emailMime = new MimeMessage();
                 emailMime.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+                emailMime.From.Add(new MailboxAddress("Notificaciones Brújula Pyme","notificaciones@brujulapyme.com"));
                 emailMime.To.Add(MailboxAddress.Parse(email));
                 emailMime.Subject = subject;
                 var builder = new BodyBuilder();
                 builder.HtmlBody = MailText;
                 emailMime.Body = builder.ToMessageBody();
+                
+               
 
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
                 using var smtp = new SmtpClient();
                 smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
                 smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-                await smtp.SendAsync(emailMime);
+               var t= await smtp.SendAsync(emailMime);
                 smtp.Disconnect(true);
             }
             catch (System.Exception ex)

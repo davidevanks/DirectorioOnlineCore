@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace DataAccess.Models
 {
     public partial class DirectorioOnlineCoreContext : IdentityDbContext
+
     {
         public DirectorioOnlineCoreContext()
         {
@@ -21,9 +22,17 @@ namespace DataAccess.Models
         public virtual DbSet<CatCategorium> CatCategoria { get; set; }
         public virtual DbSet<CatDepartamento> CatDepartamentos { get; set; }
         public virtual DbSet<CatPai> CatPais { get; set; }
+        public virtual DbSet<CatPlan> CatPlans { get; set; }
+        public virtual DbSet<CatTipoPagoXcatalogoConfig> CatTipoPagoXcatalogoConfigs { get; set; }
+        public virtual DbSet<ConfigCatalogo> ConfigCatalogos { get; set; }
+        public virtual DbSet<CuponNegocio> CuponNegocios { get; set; }
+        public virtual DbSet<CuponRedencionUsuario> CuponRedencionUsuarios { get; set; }
+        public virtual DbSet<Factura> Facturas { get; set; }
         public virtual DbSet<FeatureNegocio> FeatureNegocios { get; set; }
         public virtual DbSet<HorarioNegocio> HorarioNegocios { get; set; }
         public virtual DbSet<ImagenesNegocio> ImagenesNegocios { get; set; }
+        public virtual DbSet<ItemCatalogo> ItemCatalogos { get; set; }
+        public virtual DbSet<LogError> LogErrors { get; set; }
         public virtual DbSet<Negocio> Negocios { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
@@ -103,6 +112,114 @@ namespace DataAccess.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<CatPlan>(entity =>
+            {
+                entity.ToTable("CatPlan", "bs");
+
+                entity.Property(e => e.PlanName)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CatTipoPagoXcatalogoConfig>(entity =>
+            {
+                entity.ToTable("CatTipoPagoXcatalogoConfig", "bs");
+            });
+
+            modelBuilder.Entity<ConfigCatalogo>(entity =>
+            {
+                entity.ToTable("ConfigCatalogo", "bs");
+
+                entity.HasComment("para saber si el catalogo es para prductos o servicios");
+
+                entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuarioActualizacion).HasMaxLength(500);
+
+                entity.Property(e => e.IdUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.NombreCatalogo)
+                    .IsRequired()
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CuponNegocio>(entity =>
+            {
+                entity.ToTable("CuponNegocio", "bs");
+
+                entity.Property(e => e.DescripcionPromocion)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaExpiracionCupon).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaModificacion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(300);
+
+                entity.Property(e => e.IdUsuarioModificacion).HasMaxLength(300);
+
+                entity.Property(e => e.ImagenCupon).IsUnicode(false);
+
+                entity.Property(e => e.NombrePromocion)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ValorCupon).HasColumnType("decimal(18, 2)");
+            });
+
+            modelBuilder.Entity<CuponRedencionUsuario>(entity =>
+            {
+                entity.ToTable("CuponRedencionUsuario", "bs");
+
+                entity.Property(e => e.FechaRedencion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuario)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.HasOne(d => d.IdCuponNavigation)
+                    .WithMany(p => p.CuponRedencionUsuarios)
+                    .HasForeignKey(d => d.IdCupon)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CuponRedencionUsuario_CuponNegocio");
+            });
+
+            modelBuilder.Entity<Factura>(entity =>
+            {
+                entity.ToTable("Factura", "bs");
+
+                entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaPago).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUserCreate)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.MontoPagado).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.NoAutorizacionPago)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+            });
+
             modelBuilder.Entity<FeatureNegocio>(entity =>
             {
                 entity.ToTable("FeatureNegocio", "bs");
@@ -178,6 +295,60 @@ namespace DataAccess.Models
                     .HasConstraintName("FK_ImagenesNegocio_Negocio");
             });
 
+            modelBuilder.Entity<ItemCatalogo>(entity =>
+            {
+                entity.ToTable("ItemCatalogo", "bs");
+
+                entity.Property(e => e.DescripcionItem)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FechaActualizacion).HasColumnType("datetime");
+
+                entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+
+                entity.Property(e => e.IdUsuarioActualizacion).HasMaxLength(500);
+
+                entity.Property(e => e.IdUsuarioCreacion)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(e => e.ImagenItem)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.NombreItem)
+                    .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PrecioUnitario).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.IdCategoriaItemNavigation)
+                    .WithMany(p => p.ItemCatalogos)
+                    .HasForeignKey(d => d.IdCategoriaItem)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ItemCatalogo_CatCategoria");
+
+                entity.HasOne(d => d.IdConfigCatalogoNavigation)
+                    .WithMany(p => p.ItemCatalogos)
+                    .HasForeignKey(d => d.IdConfigCatalogo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ItemCatalogo_ConfigCatalogo");
+            });
+
+            modelBuilder.Entity<LogError>(entity =>
+            {
+                entity.ToTable("LogError", "bs");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.MessageError).IsUnicode(false);
+
+                entity.Property(e => e.Observation).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Negocio>(entity =>
             {
                 entity.ToTable("Negocio", "bs");
@@ -224,6 +395,10 @@ namespace DataAccess.Models
 
                 entity.Property(e => e.NombreNegocio)
                     .IsRequired()
+                    .IsUnicode(false);
+
+                entity.Property(e => e.PersonalUrl)
+                    .HasMaxLength(500)
                     .IsUnicode(false);
 
                 entity.Property(e => e.SitioWebNegocio)
@@ -298,9 +473,13 @@ namespace DataAccess.Models
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.IdPlan).HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.IdUserCreate).HasMaxLength(450);
 
                 entity.Property(e => e.IdUserUpdate).HasMaxLength(450);
+
+                entity.Property(e => e.PlanExpirationDate).HasColumnType("date");
 
                 entity.Property(e => e.RegistrationDate).HasColumnType("datetime");
 
@@ -309,6 +488,11 @@ namespace DataAccess.Models
                 entity.Property(e => e.UserId).HasMaxLength(450);
 
                 entity.Property(e => e.UserPicture).IsUnicode(false);
+
+                entity.HasOne(d => d.IdPlanNavigation)
+                    .WithMany(p => p.UserDetails)
+                    .HasForeignKey(d => d.IdPlan)
+                    .HasConstraintName("FK_UserDetails_CatPlan");
             });
 
             OnModelCreatingPartial(modelBuilder);

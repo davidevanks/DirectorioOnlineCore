@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -37,5 +38,9 @@ namespace Models.ViewModels
         public string ConfirmPassword { get; set; }
 
         public string PictureProfile { get; set; }
+
+        [Required(ErrorMessage = "El tipo de plan es requerido")]
+        [Display(Name = "Subscripción")]
+        public int? IdPlan { get; set; }
     }
 }
