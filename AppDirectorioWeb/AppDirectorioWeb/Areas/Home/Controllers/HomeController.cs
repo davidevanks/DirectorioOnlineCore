@@ -11,6 +11,7 @@ using Models.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -124,7 +125,7 @@ namespace AppDirectorioWeb.Controllers
 
         #region API_CALLS
         [HttpPost]
-        public IActionResult SendMessageContactUs([FromBody] ContactUsViewModel model)
+        public async Task<IActionResult> SendMessageContactUs([FromBody] ContactUsViewModel model)
         {
             try
             {
@@ -137,18 +138,18 @@ namespace AppDirectorioWeb.Controllers
                 MailText = MailText.Replace("%asunto%", model.Subject).Replace("%NombreCompania%",model.CompanyName).Replace("%NombreCompleto%", model.PersonName).Replace("%Email%", model.Email).Replace("%NumeroTelefono%", model.Phone).Replace("%Mensaje%", model.Message);
               
                
-               var t= _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
-
+               await  _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
+             
                 return Json(new { success = true, message = "Mensaje Enviado!" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Error Al Enviar Mensaje!" });
+                return Json(new {error=ex.Message, success = false, message = "Error Al Enviar Mensaje!" });
             }
         }
 
         [HttpPost]
-        public IActionResult SendMessageToOwner([FromBody] ContactOwnerViewModel model)
+        public async Task<IActionResult> SendMessageToOwner([FromBody] ContactOwnerViewModel model)
         {
             try
             {
@@ -163,13 +164,13 @@ namespace AppDirectorioWeb.Controllers
                 MailText = MailText.Replace("[NameOwner]", nameBusiness.NombreNegocio).Replace("[NamePerson]", model.PersonName).Replace("[EmailCustomer]", model.Email).Replace("[PhoneCustomer]", model.Phone).Replace("[MessageCustomer]", model.Message);
 
 
-                var t = _emailSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brujula Pyme", MailText);
+              await _emailSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brujula Pyme", MailText);
 
                 return Json(new { success = true, message = "Mensaje Enviado!" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Error Al Enviar Mensaje!" });
+                return Json(new { error = ex.Message, success = false, message = "Error Al Enviar Mensaje!" });
             }
         }
         #endregion
