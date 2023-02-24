@@ -41,12 +41,16 @@ namespace Utiles
                 var builder = new BodyBuilder();
                 builder.HtmlBody = MailText;
                 emailMime.Body = builder.ToMessageBody();
-                
-               
+
+
 
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
                 using var smtp = new SmtpClient();
-                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.Auto);
+
+                //System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
+                //using var smtp = new SmtpClient();
+                //smtp.Connect(_mailSettings.Host, _mailSettings.Port, true);
                 smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
                var t= await smtp.SendAsync(emailMime);
                 smtp.Disconnect(true);
