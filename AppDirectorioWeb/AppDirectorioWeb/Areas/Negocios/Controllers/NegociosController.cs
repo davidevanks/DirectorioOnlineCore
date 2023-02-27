@@ -831,40 +831,43 @@ namespace AppDirectorioWeb.Controllers
             string uniqueFileName = "";
             try
             {
-
-                if (model.Logo.Length > 0)
+                if (model.Logo!=null && model != null)
                 {
-                    //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
-                   
-                    Stream stream = model.Logo.OpenReadStream();
-                    //firebase logic to upload file
-                    var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
-                    var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
+                    if (model.Logo.Length > 0)
+                    {
+                        //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "ImagesBusiness");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_LB_" + model.Logo.FileName;
+
+                        Stream stream = model.Logo.OpenReadStream();
+                        //firebase logic to upload file
+                        var auth = new FirebaseAuthProvider(new FirebaseConfig(FirebaseSetting.ApiKey));
+                        var a = await auth.SignInWithEmailAndPasswordAsync(FirebaseSetting.AuthEmail, FirebaseSetting.AuthPassword);
 
 
-                    //cancellation token
-                    var cancellation = new CancellationTokenSource();
+                        //cancellation token
+                        var cancellation = new CancellationTokenSource();
 
-                    var upload = new FirebaseStorage(
-                        FirebaseSetting.Bucket,
-                        new FirebaseStorageOptions
-                        {
-                            AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                            ThrowOnCancel = true
-                            
-                        }
-                        ).Child("businessLogo")
-                        .Child($"{uniqueFileName}")
-                        .PutAsync(stream, cancellation.Token);
+                        var upload = new FirebaseStorage(
+                            FirebaseSetting.Bucket,
+                            new FirebaseStorageOptions
+                            {
+                                AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                                ThrowOnCancel = true
+
+                            }
+                            ).Child("businessLogo")
+                            .Child($"{uniqueFileName}")
+                            .PutAsync(stream, cancellation.Token);
 
 
 
-                    uniqueFileName = await upload;
-                    //s.Close();
-                    //s.Dispose();
-                    //System.IO.File.Delete(filePath);
+                        uniqueFileName = await upload;
+                        //s.Close();
+                        //s.Dispose();
+                        //System.IO.File.Delete(filePath);
+                    }
                 }
+       
 
             }
             catch (Exception ex)
