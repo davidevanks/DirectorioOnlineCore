@@ -136,15 +136,16 @@ namespace AppDirectorioWeb.Controllers
                 str.Close();
               
                 MailText = MailText.Replace("%asunto%", model.Subject).Replace("%NombreCompania%",model.CompanyName).Replace("%NombreCompleto%", model.PersonName).Replace("%Email%", model.Email).Replace("%NumeroTelefono%", model.Phone).Replace("%Mensaje%", model.Message);
+
+
+                await  _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
               
-               
-               await  _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
-             
+
                 return Json(new { success = true, message = "Mensaje Enviado!" });
             }
             catch (Exception ex)
             {
-                return Json(new {error=ex.Message, success = false, message = "Error Al Enviar Mensaje!" });
+                return Json(new {error=ex.Message+"-"+ex.StackTrace, success = false, message = "Error Al Enviar Mensaje!" });
             }
         }
 

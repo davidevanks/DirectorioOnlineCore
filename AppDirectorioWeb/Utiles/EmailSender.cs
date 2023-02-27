@@ -35,7 +35,7 @@ namespace Utiles
                 MailText = MailText.Replace("[username]", email).Replace("[email]", email);
                 var emailMime = new MimeMessage();
                 emailMime.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-                emailMime.From.Add(new MailboxAddress("Notificaciones Brújula Pyme","notificaciones@brujulapyme.com"));
+                emailMime.From.Add(new MailboxAddress("Info Brújula Pyme","info@brujulapyme.com"));
                 emailMime.To.Add(MailboxAddress.Parse(email));
                 emailMime.Subject = subject;
                 var builder = new BodyBuilder();
@@ -43,16 +43,18 @@ namespace Utiles
                 emailMime.Body = builder.ToMessageBody();
 
 
-
-                System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
+                //SecureSocketOptions.StartTls
+                //System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
                 using var smtp = new SmtpClient();
-                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.Auto);
+                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.SslOnConnect);
 
                 //System.Net.ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback(RemoteServerCertificateValidationCallback);
                 //using var smtp = new SmtpClient();
                 //smtp.Connect(_mailSettings.Host, _mailSettings.Port, true);
                 smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-               var t= await smtp.SendAsync(emailMime);
+               
+
+                var t= await smtp.SendAsync(emailMime);
                 smtp.Disconnect(true);
             }
             catch (System.Exception ex)
