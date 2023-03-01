@@ -93,7 +93,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             public IEnumerable<SelectListItem> RoleList { get; set; }
             public bool NotificationsPromo { get; set; }
 
-          
+            public int IdPlan { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -184,7 +184,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                 }
                
 
-                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName,NotificationsPromo=Input.NotificationsPromo, RegistrationDate = DateTime.Now,IdUserCreate= idUserCreate };
+                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName,NotificationsPromo=Input.NotificationsPromo, RegistrationDate = DateTime.Now,IdUserCreate= idUserCreate,IdPlan=Input.IdPlan };
                   _unitOfWork.UserDetail.Add(userDetail);
                 if (result.Succeeded)
                 {
