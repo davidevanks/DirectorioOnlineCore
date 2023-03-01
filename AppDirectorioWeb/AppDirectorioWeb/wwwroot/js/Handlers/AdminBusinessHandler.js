@@ -149,9 +149,30 @@ function loadDataTableBusinessAdmin() {
             {
                 "data": "id",
                 "render": function (data) {
-                    return ` <a href="/Negocios/Negocios/AgregarNegocio/${data}" class="btn btn-primary text-white" id="btnAgregar"><i class="fa fa-edit"></i></a>`
+                    return ` <a title="Editar datos de mi negocio" href="/Negocios/Negocios/AgregarNegocio/${data}" class="btn btn-danger text-white" id="btnAgregar"><i class="fa fa-edit"></i></a>`
                         ;
-                }, "width": "40%"
+                }, "width": "10%"
+            },
+            {
+                "data": {
+                  id:"id",  statusName: "statusName", status: "status"
+                },
+                "render": function (data) {
+
+                    if (data.status == 17) {
+
+                        return ` 
+                            <a title="Ver ficha digital" target="_blank" href="/Negocios/Negocios/GetDetailByBussinesId/${data.id}" class="btn btn-primary text-white" id="btnVerDetalle"><i class="fa fa-eye"></i></a>
+                             `
+
+                            ;
+                    } else {
+                        return ` 
+
+                             `
+                    }
+
+                }, "width": "15%"
             }
         ]
 
