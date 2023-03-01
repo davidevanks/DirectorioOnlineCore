@@ -171,7 +171,7 @@ namespace AppDirectorioWeb.Controllers
         {
           
             
-         
+                model.User.IdPlan= model.User.IdPlan==null ? 1 : model.User.IdPlan;
 
 
                 if (ModelState.IsValid)
@@ -265,6 +265,8 @@ namespace AppDirectorioWeb.Controllers
                         //logica para logo
                         string uniqueFileName = SaveLogoPicture(model).Result;
                         model.Business.LogoNegocio = uniqueFileName;
+
+                        
 
                         var negocio = _mapper.Map<Negocio>(model.Business);
                         _unitOfWork.Business.Add(negocio);
