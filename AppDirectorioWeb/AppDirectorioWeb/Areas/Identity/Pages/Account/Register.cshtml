@@ -19,29 +19,29 @@
                     </p>
 
                     <form asp-route-returnUrl="@Model.ReturnUrl" method="post" class="py-7">
- 
+
                         <h3 class="h4 font-weight-normal mb-4">Información de cuenta</h3>
-          
+
                         <div class="form-group mb-8">
 
-
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <label asp-for="Input.Email"></label>
                             <input asp-for="Input.Email" class="form-control" />
                             <span asp-validation-for="Input.Email" class="text-danger"></span>
                             @*@if (!string.IsNullOrEmpty(ViewData["UsuarioExiste"].ToString()))
-                            {
-                                <span  class="text-danger">@ViewData["UsuarioExiste"].ToString()</span>
-                            }*@
+                                {
+                                    <span  class="text-danger">@ViewData["UsuarioExiste"].ToString()</span>
+                                }*@
                         </div>
                         <div class="form-group mb-8">
-                           
+
 
                             <label asp-for="Input.FullName"></label>
                             <input asp-for="Input.FullName" class="form-control" />
                             <span asp-validation-for="Input.FullName" class="text-danger"></span>
                         </div>
                         <div class="form-group mb-8">
-                       
+
 
                             <label asp-for="Input.Telefono"></label>
                             <input asp-for="Input.Telefono" class="form-control" />
@@ -49,15 +49,16 @@
                         </div>
                         <div class="row mb-6">
                             <div class="form-group col-md-6 mb-4">
-                    
+
 
                                 <label asp-for="Input.Password"></label>
                                 <input asp-for="Input.Password" class="form-control" />
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                <span class="text-info">*Tu contraseña debe contener al menos un carácter no alfanumérico.(Como *) y una mayúscula, minímo 8 dígitos de longitud</span>
                             </div>
 
                             <div class="form-group col-md-6 mb-4">
-            
+
 
                                 <label asp-for="Input.ConfirmPassword"></label>
                                 <input asp-for="Input.ConfirmPassword" class="form-control" />
@@ -66,7 +67,7 @@
 
                         </div>
 
-              
+
                         @if (User.IsInRole(SP.Role_Admin))
                         {
                             <div class="form-group mb-8">
@@ -80,11 +81,11 @@
                         }
                         else
                         {
-                            @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, new { @class = "form-control" , @style = "display:none" })
+                            @Html.DropDownListFor(m => m.Input.Role, Model.Input.RoleList, new { @class = "form-control", @style = "display:none" })
                         }
 
 
-                        <input asp-for="Input.IdPlan" value="1" type="hidden"/>
+                        <input asp-for="Input.IdPlan" value="1" type="hidden" />
 
                         <div class="form-group mb-6">
                             <div class="checkbox">
@@ -116,17 +117,19 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-<script>
-    $('#btnCrearCuenta').attr("disabled", true);
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $('#btnCrearCuenta').attr("disabled", true);
 
-  
 
-    $('#chkTerm').click(function () {
-        if (document.getElementById('chkTerm').checked) {
-            $(":submit").removeAttr("disabled");
-        } else {
-            $('#btnCrearCuenta').attr("disabled", true);
-        }
-    });
-</script>
+
+        $('#chkTerm').click(function () {
+            if (document.getElementById('chkTerm').checked) {
+                $(":submit").removeAttr("disabled");
+            } else {
+                $('#btnCrearCuenta').attr("disabled", true);
+            }
+        });
+    </script>
 }

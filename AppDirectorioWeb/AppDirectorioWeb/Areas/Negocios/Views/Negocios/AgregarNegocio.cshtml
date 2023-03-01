@@ -95,7 +95,7 @@
                                 <label asp-for="User.Password"></label>
                                 <input asp-for="User.Password" class="form-control" />
                                 <span asp-validation-for="User.Password" class="text-danger"></span>
-                                <span  class="text-info">*Tu contraseña debe contener al menos un caracter diferente a letra/número y una mayúscula, minímo 8 dígitos de longitud</span>
+                                <span class="text-info">*Tu contraseña debe contener al menos un carácter no alfanumérico.(Como *) y una mayúscula, minímo 8 dígitos de longitud</span>
                                 @if (!string.IsNullOrEmpty(ViewBag.errorPass))
                                 {
                                     <span class="text-danger">@ViewBag.errorPass</span>

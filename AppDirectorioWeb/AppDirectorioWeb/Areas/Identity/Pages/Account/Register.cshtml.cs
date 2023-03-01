@@ -174,21 +174,24 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
                
-                string idUserCreate = "";
-                if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
-                {
-                    idUserCreate = user.Id;
-                }else
-                {
-                    idUserCreate = HttpContext.Session.GetString("UserId");
-                }
-               
-
-                var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName,NotificationsPromo=Input.NotificationsPromo, RegistrationDate = DateTime.Now,IdUserCreate= idUserCreate,IdPlan=Input.IdPlan };
-                  _unitOfWork.UserDetail.Add(userDetail);
+      
                 if (result.Succeeded)
                 {
-                   
+
+                    string idUserCreate = "";
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                    {
+                        idUserCreate = user.Id;
+                    }
+                    else
+                    {
+                        idUserCreate = HttpContext.Session.GetString("UserId");
+                    }
+
+
+                    var userDetail = new UserDetail { UserId = user.Id, FullName = Input.FullName, NotificationsPromo = Input.NotificationsPromo, RegistrationDate = DateTime.Now, IdUserCreate = idUserCreate, IdPlan = Input.IdPlan };
+                    _unitOfWork.UserDetail.Add(userDetail);
+
                     if (! await _roleManager.RoleExistsAsync(SP.Role_Admin))
                     {
                        await _roleManager.CreateAsync(new IdentityRole(SP.Role_Admin));
@@ -243,6 +246,33 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
                        
                     }
                 }
+                else
+                {
+                    if (User.IsInRole(SP.Role_Admin))
+                    {
+
+                        Input.RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                        {
+                            Text = i,
+                            Value = i
+                        }).ToList();
+
+                    }
+                    else
+                    {
+
+                        Input.RoleList = _roleManager.Roles.Where(x => x.Name == SP.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
+                        {
+                            Text = i,
+                            Value = i
+                        }).ToList();
+
+
+
+                    }
+
+                }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
