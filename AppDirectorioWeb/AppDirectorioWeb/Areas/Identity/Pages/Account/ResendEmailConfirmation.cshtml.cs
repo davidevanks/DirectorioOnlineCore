@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Utiles;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -18,12 +19,12 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
     public class ResendEmailConfirmationModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IMailJetSender _mailJetSender;
 
-        public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IMailJetSender mailJetSender)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _mailJetSender = mailJetSender;
         }
 
         [BindProperty]
@@ -71,9 +72,17 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             MailText = MailText.Replace("[username]", Input.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
 
 
-            await _emailSender.SendEmailAsync(Input.Email, "Verificación de Cuenta", MailText);
-
-            ModelState.AddModelError(string.Empty, "Correo de verificación enviado. Favor revisa tu email.");
+          var jetResult=  await _mailJetSender.SendEmailAsync(Input.Email, "Verificación de Cuenta", MailText);
+           
+            if (jetResult.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError(string.Empty, "Correo de verificación enviado. Favor revisa tu email.");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Error enviando correo, contacta a soporte técnico o intenta más tarde.");
+            }
+          
             return Page();
         }
     }

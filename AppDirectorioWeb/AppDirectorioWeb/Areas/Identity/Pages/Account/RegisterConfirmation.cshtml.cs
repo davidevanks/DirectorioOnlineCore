@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Utiles;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -13,12 +14,12 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly IMailJetSender _mailJetSender;
 
-        public RegisterConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<IdentityUser> userManager, IMailJetSender mailJetSender)
         {
             _userManager = userManager;
-            _sender = sender;
+            _mailJetSender = mailJetSender;
         }
 
         public string Email { get; set; }

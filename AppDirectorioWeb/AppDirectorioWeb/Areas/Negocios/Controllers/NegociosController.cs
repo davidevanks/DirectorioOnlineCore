@@ -30,7 +30,7 @@ namespace AppDirectorioWeb.Controllers
     {
         #region Private Fields
 
-        private readonly IEmailSender _emailSender;
+        private readonly IMailJetSender _mailJetSender;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -50,7 +50,7 @@ namespace AppDirectorioWeb.Controllers
             IUnitOfWork unitOfWork,
             IMapper mapper,
             UserManager<IdentityUser> userManager,
-            IEmailSender emailSender,
+            IMailJetSender mailJetSender,
             RoleManager<IdentityRole> roleManager,
             IWebHostEnvironment hostingEnvironment,
             SignInManager<IdentityUser> signInManager)
@@ -58,7 +58,7 @@ namespace AppDirectorioWeb.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
-            _emailSender = emailSender;
+            _mailJetSender = mailJetSender;
             _roleManager = roleManager;
             this.hostingEnvironment = hostingEnvironment;
             _signInManager = signInManager;
@@ -297,10 +297,11 @@ namespace AppDirectorioWeb.Controllers
                         }
 
 
-                        await _emailSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
+                       var result=   await _mailJetSender.SendEmailAsync(user.Email, "Verificación de Cuenta", MailText);
 
                         //
                         ViewBag.IdPlan = model.User.IdPlan;
+                        ViewBag.IsSuccessStatusCode = result.IsSuccessStatusCode;
                         return View(nameof(ConfirmationBusinessRegistration));
                     }
                     else
@@ -694,10 +695,17 @@ namespace AppDirectorioWeb.Controllers
             MailText = MailText.Replace("[username]", emailUser).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
             MailText = MailText.Replace("[negocioName]", business.NombreNegocio);
 
-            _emailSender.SendEmailAsync(emailUser, "Notificación cambio de status negocio", MailText);
+            var result =  _mailJetSender.SendEmailAsync(emailUser, "Notificación cambio de status negocio", MailText).Result;
             //-----------------------------------
-
-            return Json(new { success = true, message = "Negocio" + message });
+            if (result.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Negocio" + message });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Error envio de notificación" });
+            }
+        
         }
 
         [HttpPost]
