@@ -114,6 +114,7 @@ namespace AppDirectorioWeb
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddRazorPages();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<MailJetSettings>(Configuration.GetSection("EmailJetKey"));
 
             services.ConfigureApplicationCookie(options =>
             {
