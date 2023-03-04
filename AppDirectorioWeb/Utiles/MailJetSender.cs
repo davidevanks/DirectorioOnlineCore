@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Utiles
 {
-    public class MailJetSender
+    public class MailJetSender: IMailJetSender
     {
 
         private readonly MailJetSettings _mailJetSettings;
@@ -20,44 +20,43 @@ namespace Utiles
         {
             _mailJetSettings = mailJetSettings.Value;
         }
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task<MailjetResponse> SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            MailjetClient client = new MailjetClient(_mailJetSettings.ApiKey, _mailJetSettings.SecretKey);
-
-
-            MailjetRequest request = new MailjetRequest
+            try
             {
-                Resource = Send.Resource,
-            }
-               .Property(Send.Messages, new JArray {
+                MailjetClient client = new MailjetClient(_mailJetSettings.ApiKey, _mailJetSettings.SecretKey);
+
+
+                MailjetRequest request = new MailjetRequest
+                {
+                    Resource = SendV31.Resource,
+                }.Property(Send.Messages, new JArray {
                 new JObject {
                  {"From", new JObject {
-                  {"Email", "$SENDER_EMAIL"},
-                  {"Name", "Me"}
+                  {"Email", "info@brujulapyme.com"},
+                  {"Name", "Info Brújula Pyme"}
                   }},
                  {"To", new JArray {
                   new JObject {
-                   {"Email", "$RECIPIENT_EMAIL"},
-                   {"Name", "You"}
+                   {"Email", email},
+                   {"Name", ""}
                    }
                   }},
-                 {"Subject", "My first Mailjet Email!"},
-                 {"TextPart", "Greetings from Mailjet!"},
-                 {"HTMLPart", "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"}
+                 {"Subject", subject},
+                 {"TextPart", ""},
+                 {"HTMLPart", htmlMessage}
                  }
-                   });
-            MailjetResponse response = await client.PostAsync(request);
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine(string.Format("Total: {0}, Count: {1}\n", response.GetTotal(), response.GetCount()));
-                Console.WriteLine(response.GetData());
+                       });
+              
+                MailjetResponse response = await client.PostAsync(request);
+                return response;
+
+
             }
-            else
+            catch (System.Exception ex)
             {
-                Console.WriteLine(string.Format("StatusCode: {0}\n", response.StatusCode));
-                Console.WriteLine(string.Format("ErrorInfo: {0}\n", response.GetErrorInfo()));
-                Console.WriteLine(response.GetData());
-                Console.WriteLine(string.Format("ErrorMessage: {0}\n", response.GetErrorMessage()));
+
+                throw;
             }
         }
     }

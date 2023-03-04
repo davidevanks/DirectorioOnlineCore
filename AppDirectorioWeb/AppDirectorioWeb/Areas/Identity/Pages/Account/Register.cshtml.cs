@@ -28,7 +28,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IMailJetSender _mailJetSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -37,14 +37,14 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+             IMailJetSender mailJetSender,
             RoleManager<IdentityRole> roleManager,
             IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _mailJetSender = mailJetSender;
             _roleManager = roleManager;
             _unitOfWork = unitOfWork;
         }
@@ -225,10 +225,11 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
                     MailText = MailText.Replace("[username]", Input.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Verificación de Cuenta", MailText);
+                 var mailResult=   await _mailJetSender.SendEmailAsync(Input.Email, "Verificación de Cuenta", MailText);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else

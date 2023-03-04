@@ -14,11 +14,24 @@
                     <h1>Registro exitoso!</h1>
                     @if (ViewBag.IdPlan == 1)
                     {
-                        <p>
-                            Su registro fue completado con exito, se le envio un correo (Si no le sale en su bandeja de correo, revisar carpeta SPAM) a su usuario admin para verificar la cuenta.
-                            Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar
-                            la información, una vez verificada se le da de alta en Brujula Pyme, revise el status en el menú "Mis Negocios".
-                        </p>
+                        @if (ViewBag.IsSuccessStatusCode)
+                        {
+
+
+                            <p>
+                                Su registro fue completado con exito, se le envio un correo (Si no le sale en su bandeja de correo, revisar carpeta SPAM) a su usuario admin para verificar la cuenta.
+                                Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar
+                                la información, una vez verificada se le da de alta en Brujula Pyme, revise el status en el menú "Mis Negocios".
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                Su registro fue completado con exito, pero hubo un error con el envio de correo para verificar su cuenta, favor
+                                contacte al soporte al cliente, lamentamos los inconvenientes.
+                            </p>
+                        }
+
                     }
                     else
                     {
@@ -30,7 +43,7 @@
                             Su negocio no saldrá aún en el directorio de Brujula Pyme ya que nuestros moderadores deben validar
                             la información y comprobar el pago anual, una vez verificado todo se le da de alta en Brujula Pyme, revise el status en el menú "Mis Negocios".
                         </p>
-                       
+
                     }
 
                     <br />

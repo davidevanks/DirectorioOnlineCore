@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.IO;
+using Utiles;
 
 namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 {
@@ -18,12 +19,12 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IMailJetSender _mailJetSender;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<IdentityUser> userManager, IMailJetSender mailJetSender)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _mailJetSender = mailJetSender;
         }
 
         [BindProperty]
@@ -66,7 +67,7 @@ namespace AppDirectorioWeb.Areas.Identity.Pages.Account
 
                 MailText = MailText.Replace("[username]", Input.Email).Replace("[linkRef]", HtmlEncoder.Default.Encode(callbackUrl));
 
-                await _emailSender.SendEmailAsync(Input.Email, "Reestablecer contraseña", MailText);
+          var jetResult=      await _mailJetSender.SendEmailAsync(Input.Email, "Reestablecer contraseña", MailText);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

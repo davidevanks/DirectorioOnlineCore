@@ -110,6 +110,7 @@ namespace AppDirectorioWeb
 
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IMailJetSender, MailJetSender>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddRazorPages();

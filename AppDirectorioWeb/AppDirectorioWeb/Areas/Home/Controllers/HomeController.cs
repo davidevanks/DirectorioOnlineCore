@@ -12,6 +12,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Utiles;
 
 namespace AppDirectorioWeb.Controllers
 {
@@ -21,18 +22,18 @@ namespace AppDirectorioWeb.Controllers
     {
         #region Private Fields
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEmailSender _emailSender;
         private readonly ILogger<HomeController> _logger;
+        private readonly IMailJetSender _mailJetSender;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IUnitOfWork unitOfWork, IEmailSender emailSender)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IUnitOfWork unitOfWork, IEmailSender emailSender, IMailJetSender mailJetSender)
         {
             _unitOfWork = unitOfWork;
-            _emailSender = emailSender;
             _logger = logger;
+            _mailJetSender = mailJetSender;
         }
 
         #endregion Public Constructors
@@ -138,10 +139,18 @@ namespace AppDirectorioWeb.Controllers
                 MailText = MailText.Replace("%asunto%", model.Subject).Replace("%NombreCompania%",model.CompanyName).Replace("%NombreCompleto%", model.PersonName).Replace("%Email%", model.Email).Replace("%NumeroTelefono%", model.Phone).Replace("%Mensaje%", model.Message);
 
 
-                await  _emailSender.SendEmailAsync("info@brujulapyme.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
-              
+            var response=    await _mailJetSender.SendEmailAsync("brujulapymenic@gmail.com", "Mensaje Formulario Contactos Brujula Pyme", MailText);
 
-                return Json(new { success = true, message = "Mensaje Enviado!" });
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Mensaje Enviado!" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Mensaje No Enviado!" });
+                }
+
+                
             }
             catch (Exception ex)
             {
@@ -165,9 +174,16 @@ namespace AppDirectorioWeb.Controllers
                 MailText = MailText.Replace("[NameOwner]", nameBusiness.NombreNegocio).Replace("[NamePerson]", model.PersonName).Replace("[EmailCustomer]", model.Email).Replace("[PhoneCustomer]", model.Phone).Replace("[MessageCustomer]", model.Message);
 
 
-              await _emailSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brujula Pyme", MailText);
+                var response = await _mailJetSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brújula Pyme", MailText);
 
-                return Json(new { success = true, message = "Mensaje Enviado!" });
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Mensaje Enviado!" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Mensaje No Enviado!" });
+                }
             }
             catch (Exception ex)
             {
