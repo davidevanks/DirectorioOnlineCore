@@ -18,7 +18,7 @@ namespace Models.ViewModels
         [Required(ErrorMessage = "La descripción del negocio es requerida")]
         [Display(Name = "Descripción Negocio", Prompt = "Describe especificamente de que trata tu negocio y que servicios ofreces")]
         public string DescripcionNegocio { get; set; }
-        [Required(ErrorMessage = "Los Tags son requeridos")]
+       
         [Display(Name = "Tags",Prompt ="Ejemplo: Comida rápida, lavado de carro, lavar")]
         public string Tags { get; set; }
         [Required(ErrorMessage = "La categoría es requerida")]
@@ -39,7 +39,7 @@ namespace Models.ViewModels
         [Phone(ErrorMessage = "télefono no valido")]
         [Display(Name = "Número de WhatsApp", Prompt = "7777777")]
         public string TelefonoWhatsApp { get; set; }
-        [Required(ErrorMessage = "El email es requerido")]
+        
         [EmailAddress(ErrorMessage = "Email no valido")]
         [Display(Name = "Email Negocio")]
         public string EmailNegocio { get; set; }
@@ -59,9 +59,9 @@ namespace Models.ViewModels
         [Url(ErrorMessage = "Dirección web no válida")]
         public string TwitterUrl { get; set; }
         public bool HasDelivery { get; set; }
-        public bool PedidosYa { get; set; }
-        public bool Hugo { get; set; }
-        public bool Piki { get; set; }
+        public bool? PedidosYa { get; set; }
+        public bool? Hugo { get; set; }
+        public bool? Piki { get; set; }
         public string LogoNegocio { get; set; }
         public int? Status { get; set; }
         public string IdUserCreate { get; set; }

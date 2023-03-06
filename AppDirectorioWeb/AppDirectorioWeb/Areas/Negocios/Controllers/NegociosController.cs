@@ -91,6 +91,7 @@ namespace AppDirectorioWeb.Controllers
             if (Id != null)
             {
                 model.Business = _unitOfWork.Business.GetBusinessToEditById((int)Id);
+
                 ViewBag.IdPlan = _unitOfWork.UserDetail.GetAUsersDetails(HttpContext.Session.GetString("UserId")).FirstOrDefault().IdPlan;
                 if (model.Business == null)
                 {
@@ -173,8 +174,9 @@ namespace AppDirectorioWeb.Controllers
             
                 model.User.IdPlan= model.User.IdPlan==null ? 1 : model.User.IdPlan;
 
-
-                if (ModelState.IsValid)
+               
+              
+            if (ModelState.IsValid)
                 {
                     if ((model.Business.Id == 0 || model.Business.Id == null) && !_signInManager.IsSignedIn(User))
                     {
@@ -182,8 +184,9 @@ namespace AppDirectorioWeb.Controllers
                       ViewBag.IdPlan = model.User.IdPlan;
                     //registro negocio nuevo y usuario nuevo
                     var user = new IdentityUser { UserName = model.User.Email, Email = model.User.Email, PhoneNumber = model.User.Telefono };
-
-                        var userExist = await _userManager.FindByEmailAsync(model.User.Email);
+                    model.Business.EmailNegocio = model.User.Email;
+                   
+                    var userExist = await _userManager.FindByEmailAsync(model.User.Email);
                         if (userExist != null)
                         {
                             //Se agrega cataegorias y departamentos
@@ -277,7 +280,7 @@ namespace AppDirectorioWeb.Controllers
                         SaveSchedulesBusiness(model, negocio, idUserCreate);
 
                         //logica para galerias de imagenes
-                        await SavePicturesBusiness(model, negocio, idUserCreate);
+                     //   await SavePicturesBusiness(model, negocio, idUserCreate);
 
                         _unitOfWork.Save();
 
@@ -368,7 +371,7 @@ namespace AppDirectorioWeb.Controllers
                     }
                     else if ((model.Business.Id != 0 && model.Business.Id != null) && _signInManager.IsSignedIn(User))
                     {
-                        //actualización negocio
+                        //actualización negocio Edit
                         //asignamos el id del usuario a su negocio(idUserCreate)
 
                         model.Business.IdUserUpdate = HttpContext.Session.GetString("UserId");
@@ -376,9 +379,10 @@ namespace AppDirectorioWeb.Controllers
                         model.Business.Status = 19;//vuelve al estado en aprobación ya que se debe verificar datos actualizados
 
                         //logica para logo
-                        //volvemos a consultar negocio para reeactualizar estado de logo actual
+                        //volvemos a consultar negocio para reeactualizar estado de logo actual y tambien obtener correo
                         var logB = _unitOfWork.Business.GetBusinessToEditById((int)model.Business.Id);
                         model.Business.LogoNegocio = logB.LogoNegocio;
+                        model.Business.EmailNegocio = logB.EmailNegocio;
                         if (model.Logo != null)
                         {
                             string uniqueFileName = SaveLogoPicture(model).Result;
@@ -394,7 +398,7 @@ namespace AppDirectorioWeb.Controllers
                         UpdateSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
                         //logica para galerias de imagenes
-                        await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                       // await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
                         _unitOfWork.Save();
                         return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
@@ -420,7 +424,7 @@ namespace AppDirectorioWeb.Controllers
                         SaveSchedulesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
 
                         //logica para galerias de imagenes
-                        await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
+                        //await SavePicturesBusiness(model, negocio, HttpContext.Session.GetString("UserId"));
                        
                         _unitOfWork.Save();
                         return RedirectToAction(nameof(UpdateSaveBusinessRegistration));
@@ -709,6 +713,7 @@ namespace AppDirectorioWeb.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult SaveReview([FromBody] Review model)
         {
             try

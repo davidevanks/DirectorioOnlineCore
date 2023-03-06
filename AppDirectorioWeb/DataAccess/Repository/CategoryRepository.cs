@@ -42,7 +42,7 @@ namespace DataAccess.Repository
                              CreateDate = c.CreateDate,
                              IdUserUpdate = c.IdUserUpdate,
                              UpdateDate = c.UpdateDate
-                         }).ToList();
+                         }).Distinct().ToList();
 
             return query;
         }

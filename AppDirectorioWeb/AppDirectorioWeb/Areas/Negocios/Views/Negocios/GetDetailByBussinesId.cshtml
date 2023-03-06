@@ -38,7 +38,7 @@
                     }
                     else
                     {
-                        <a ><p class="text-muted mb-1"> <i class="fas fa-globe  text-primary mr-1"></i> www.brujulapyme.com/@Model.Business.PersonalUrl</p></a>
+                        <a><p class="text-muted mb-1"> <i class="fas fa-globe  text-primary mr-1"></i> www.brujulapyme.com/@Model.Business.PersonalUrl</p></a>
                     }
 
 
@@ -46,110 +46,62 @@
                     <div class="d-flex align-items-center">
                         <ul id="mainStarsUl" class="list-inline list-inline-rating mr-2">
                             @*<li class="list-inline-item">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                </li>
-                <li class="list-inline-item">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                </li>
-                <li class="list-inline-item">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                </li>
-                <li class="list-inline-item">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                </li>
-                <li class="list-inline-item">
-                    <i class="fa fa-star" aria-hidden="true"></i>
-                </li>*@
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </li>
+                        <li class="list-inline-item">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </li>*@
                         </ul>
                         <span id="spanReviewCount" class="d-inline-block mr-2">(5 Reseñas)</span>
                         @*<button class="btn-like px-2" data-toggle="tooltip" data-placement="top" title="Favourite this listing">
-                <i class="far fa-heart text-primary" aria-hidden="true"></i>
-                <span>5 k</span>
-            </button>*@
+                        <i class="far fa-heart text-primary" aria-hidden="true"></i>
+                        <span>5 k</span>
+                    </button>*@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 d-lg-flex justify-content-end align-items-end">
-                @*<a href="#add-review" class="btn btn-primary scrolling">Escribe una reseña</a>*@
-                @*@if (Model.itemCatalogoViewModel != null && Model.itemCatalogoViewModel.Count() > 0)
-        {
-            if (Model.configCatalogoViewModel.IdTipoCatalogo == 1)
-            {
-                <a asp-area="Ventas" asp-route-idConfigCat="@Model.configCatalogoViewModel.Id" asp-action="SeeCatProd" asp-controller="ItemCatalogoProdServ" class="btn btn-primary">Ver productos</a>
-            }
-            else
-            {
-                <a href="#add-review" class="btn btn-primary scrolling">Ver servicios</a>
-            }
+            <div class="col-sm-4">
+                @if (!string.IsNullOrEmpty(Model.Business.LogoNegocio))
+                {
+                    <a>
+                        <img width="200" height="200" data-src="@Model.Business.LogoNegocio" src="@Model.Business.LogoNegocio" alt="Image" />
+                    </a>
+                }
+                else
+                {
+                    <a>
+                        <img width="200" height="200" data-src="/img/listing/defaultImage1.png" src="/img/listing/defaultImage1.png" alt="Image" />
+                    </a>
+                }
 
-        }*@
-                <a id="sendMessageBtn" href="#"  class="btn btn-primary">Contactar</a>
 
+                <br />
+                <br />
+                @if (!SignInManager.IsSignedIn(User))
+                {
+                    <span class="text-danger">Inicie sesión para contactar negocio*</span>
+                }
+                <a id="sendMessageBtn" href="#" class="btn btn-primary">Contactar</a>
             </div>
+           
+           
 
         </div>
 
     </div>
 </section>
 
-<!-- ====================================
-———	LISTING DETAILS CAROUSEL
-===================================== -->
-<section>
-    <div class="owl-carousel owl-theme listing-details-carousel nav-light-dark">
-        @if (Model.ImagenesNegocios.Count > 0)
-        {
-            @foreach (var images in Model.ImagenesNegocios)
-            {
-                <div class="single-item">
-                    <a class="overlay" href="@images.Image" data-fancybox="gallery" data-caption="Caption for single image">
-                        <img width="340" height="250" data-src="@images.Image" src="@images.Image" alt="Image" />
-                    </a>
-                </div>}
 
 
-
-        }
-        else
-        {
-            <div class="single-item">
-                <a class="overlay" href="~/img/listing/defaultImage1.png" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img width="340" height="250" data-src="~/img/listing/defaultImage1.png" src="~/img/listing/defaultImage1.png" alt="Image" />
-                </a>
-            </div>
-            <div class="single-item">
-                <a class="overlay" href="~/img/listing/defaultImage1.png" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img width="340" height="250" data-src="~/img/listing/defaultImage1.png" src="~/img/listing/defaultImage1.png" alt="Image" />
-                </a>
-            </div>
-            <div class="single-item">
-                <a class="overlay" href="~/img/listing/defaultImage1.png" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img width="340" height="250" data-src="~/img/listing/defaultImage1.png" src="~/img/listing/defaultImage1.png" alt="Image" />
-                </a>
-            </div>
-            <div class="single-item">
-                <a class="overlay" href="~/img/listing/defaultImage1.png" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img width="340" height="250" data-src="~/img/listing/defaultImage1.png" src="~/img/listing/defaultImage1.png" alt="Image" />
-                </a>
-            </div>
-            <div class="single-item">
-                <a class="overlay" href="~/img/listing/defaultImage1.png" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img width="340" height="250" data-src="~/img/listing/defaultImage1.png" src="~/img/listing/defaultImage1.png" alt="Image" />
-                </a>
-            </div>
-            <div class="single-item">
-                <a class="overlay" href="~/img/listing/defaultImage1.png" data-fancybox="gallery" data-caption="Caption for single image">
-                    <img width="340" height="250" data-src="~/img/listing/defaultImage1.png" src="~/img/listing/defaultImage1.png" alt="Image" />
-                </a>
-            </div>
-
-        }
-
-
-
-
-    </div>
-</section>
 
 <!-- ====================================
 ———	MAIN CONTENT
@@ -382,6 +334,11 @@
                 <div class="my-6" id="add-review">
                     <h3 class="font-weight-normal mb-6">Agregar reseña </h3>
                     <span id="starsToAdd" class="star add-rating-default pl-0 mb-6"></span>
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+                        <span class="text-danger">Inicie sesión para dejar reseña de negocio*</span>
+                    }
+
                     <span id="txtErrorStarsRev" class="text-danger"></span>
                     <form id="reviewForm">
                         @if (SignInManager.IsSignedIn(User))
@@ -424,16 +381,16 @@
                         }
 
                         @*<div class="form-check form-check-inline mb-6">
-                                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                <label class="form-check-label" for="inlineRadio2">
-                                    <div class="media media-xs align-items-center">
-                                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
-                                        <div class="media-body">
-                                            <h5 class="media-heading mb-0">Anonymous</h5>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>*@
+                <input class="form-check-input mr-2" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                <label class="form-check-label" for="inlineRadio2">
+                    <div class="media media-xs align-items-center">
+                        <img src="/img/user/avatar-01.png" data-src="/img/user/avatar-01.png" class="mr-2 media-object rounded-circle border lazyestload" alt="Image User">
+                        <div class="media-body">
+                            <h5 class="media-heading mb-0">Anonymous</h5>
+                        </div>
+                    </div>
+                </label>
+            </div>*@
                         <div class="form-group mb-6">
                             <textarea id="txtAreaComments" name="reviewDescription" class="form-control" rows="6" placeholder="Escribe tu reseña" required></textarea>
                         </div>

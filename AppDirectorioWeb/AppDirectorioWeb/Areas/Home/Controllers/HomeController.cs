@@ -1,7 +1,9 @@
 ﻿using DataAccess.Models;
 using DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -24,16 +26,24 @@ namespace AppDirectorioWeb.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<HomeController> _logger;
         private readonly IMailJetSender _mailJetSender;
+        private readonly UserManager<IdentityUser> _userManager;
 
         #endregion Private Fields
 
         #region Public Constructors
 
-        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor, IConfiguration configuration, IUnitOfWork unitOfWork, IEmailSender emailSender, IMailJetSender mailJetSender)
+        public HomeController(ILogger<HomeController> logger,
+            IHttpContextAccessor httpContextAccessor, 
+            IConfiguration configuration, 
+            IUnitOfWork unitOfWork, 
+            IEmailSender emailSender, 
+            IMailJetSender mailJetSender,
+            UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
             _mailJetSender = mailJetSender;
+            _userManager = userManager;
         }
 
         #endregion Public Constructors
@@ -159,10 +169,15 @@ namespace AppDirectorioWeb.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> SendMessageToOwner([FromBody] ContactOwnerViewModel model)
         {
             try
             {
+               var userId= _userManager.FindByNameAsync(User.Identity.Name).Result.Id;
+
+                var userDetail = _unitOfWork.UserDetail.GetAUsersDetails(userId).FirstOrDefault() ;
+
                 string MailText;
                 string FilePath = Directory.GetCurrentDirectory() + "\\wwwroot\\EmailTemplates\\TemplateEmailToOwner.html";
                 StreamReader str = new StreamReader(FilePath);
@@ -171,7 +186,7 @@ namespace AppDirectorioWeb.Controllers
 
                 var nameBusiness = _unitOfWork.Business.GetBusinessById(model.BusinessId);
 
-                MailText = MailText.Replace("[NameOwner]", nameBusiness.NombreNegocio).Replace("[NamePerson]", model.PersonName).Replace("[EmailCustomer]", model.Email).Replace("[PhoneCustomer]", model.Phone).Replace("[MessageCustomer]", model.Message);
+                MailText = MailText.Replace("[NameOwner]", nameBusiness.NombreNegocio).Replace("[NamePerson]", userDetail.FullName).Replace("[EmailCustomer]", userDetail.Email).Replace("[PhoneCustomer]", userDetail.PhoneNumber).Replace("[MessageCustomer]", model.Message);
 
 
                 var response = await _mailJetSender.SendEmailAsync(nameBusiness.EmailNegocio, "Mensaje Formulario Contactos Brújula Pyme", MailText);
