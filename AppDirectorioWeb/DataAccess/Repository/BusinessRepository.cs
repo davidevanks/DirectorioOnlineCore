@@ -49,9 +49,9 @@ namespace DataAccess.Repository
                              LinkedInUrl = b.LinkedInUrl,
                              SitioWebNegocio = b.SitioWebNegocio,
                              HasDelivery = (bool)b.HasDelivery,
-                             PedidosYa = (bool)b.PedidosYa,
-                             Piki = (bool)b.Piki,
-                             Hugo = (bool)b.Hugo,
+                             //PedidosYa = (bool)b.PedidosYa,
+                             //Piki = (bool)b.Piki,
+                             //Hugo = (bool)b.Hugo,
                              EmailNegocio = b.EmailNegocio,
                              Email = u.UserName,
                              NombreNegocio = b.NombreNegocio,
@@ -67,7 +67,8 @@ namespace DataAccess.Repository
                              departmentName = dep.Nombre,
                              CreateDateString = b.CreateDate.ToShortDateString(),
                              IdUserOwner = b.IdUserOwner,
-                             PersonalUrl = b.PersonalUrl
+                             PersonalUrl = b.PersonalUrl,
+                             LogoNegocio = b.LogoNegocio
                          }).FirstOrDefault();
 
             return query;
@@ -101,9 +102,9 @@ namespace DataAccess.Repository
                              LinkedInUrl = b.LinkedInUrl,
                              SitioWebNegocio=b.SitioWebNegocio,
                              HasDelivery = (bool)b.HasDelivery,
-                             PedidosYa = (bool)b.PedidosYa,
-                             Piki = (bool)b.Piki,
-                             Hugo = (bool)b.Hugo,
+                             //PedidosYa = (bool)b.PedidosYa,
+                             //Piki = (bool)b.Piki,
+                             //Hugo = (bool)b.Hugo,
                              EmailNegocio = b.EmailNegocio,
                              Email = u.UserName,
                              NombreNegocio = b.NombreNegocio,
@@ -119,7 +120,8 @@ namespace DataAccess.Repository
                              departmentName = dep.Nombre,
                              CreateDateString = b.CreateDate.ToShortDateString(),
                              IdUserOwner = b.IdUserOwner,
-                             PersonalUrl=b.PersonalUrl
+                             PersonalUrl=b.PersonalUrl,
+                             LogoNegocio=b.LogoNegocio
                          }).FirstOrDefault();
 
             return query;

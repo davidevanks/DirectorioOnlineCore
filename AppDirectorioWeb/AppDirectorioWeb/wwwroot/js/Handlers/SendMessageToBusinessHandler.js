@@ -4,16 +4,8 @@ $('#sendMessageBtn').click(function () {
     const el = document.createElement('div')
     el.innerHTML = "<h3 class='mb - 3 font - weight - normal'>Contactar a propietario</h3>"+
         "<form id='frmSendMessageToBusiness' class='mb-6' >"+
-        "<div class='form-group mb-6'>"+
-        "<input id='nameInputSender' type='text' class='form-control' placeholder='Tu nombre' required>"+
-        " </div>"+
-      
-            "<div class='form-group mb-6'>"+
-            "<input id='celInputSender' type='tel' class='form-control' placeholder='Tu celular' required>"+
-        "</div>" +
-        "<div class='form-group mb-6'>" +
-        "<input id='EmailInputSender' type='email' class='form-control' placeholder='Tu correo' required>" +
-        "</div>" +
+       
+       
             " <div class='form-group mb-6'>"+
                         "<textarea id='messageInputSender' class='form-control' rows='3' placeholder='Tu mensaje' required></textarea>"+
                         " </div>"+
@@ -45,7 +37,7 @@ $('#sendMessageBtn').click(function () {
 
                     } else {
 
-                        swal({ title: data.message, icon: "info" });
+                        swal({ title: "No se pudo enviar mensaje!", icon: "info" });
                     }
                 }
             });

@@ -50,14 +50,20 @@
                             </div>
                         </div>
                         <h3 class="h4 mb-4">Información  del propietario del negocio</h3>
-                        <p class="mb-5">Con esta información se le creará un usuario administrador para su negocio</p>
+                        <p class="mb-5">
+                            <span class="text-danger">
+                                <strong>
+                                    Con esta información se le creará un usuario administrador para su negocio, el correo será el mismo que se usará como contacto principal para su negocio
+                                </strong>
+                            </span>
+                        </p>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="row">
 
 
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Email"></label>
                                 <input asp-for="User.Email" class="form-control" />
@@ -70,7 +76,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.FullName"></label>
                                 <input asp-for="User.FullName" class="form-control" />
@@ -79,7 +85,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Telefono"></label>
                                 <input asp-for="User.Telefono" class="form-control" />
@@ -90,7 +96,7 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-        <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.Password"></label>
                                 <input asp-for="User.Password" class="form-control" />
@@ -104,7 +110,7 @@
 
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.ConfirmPassword"></label>
                                 <input asp-for="User.ConfirmPassword" class="form-control" />
@@ -129,8 +135,19 @@
 
                 </div>
             }
+            else
+            {
+
+                <input type="hidden" asp-for="User.Email" value="example@email.com" class="form-control" />
+                <input type="hidden" asp-for="User.Password" value="Example1234*" class="form-control" />
+                <input type="hidden" asp-for="User.ConfirmPassword" value="Example1234*" class="form-control" />
+
+                <input type="hidden" asp-for="User.FullName" value="example user" class="form-control" />
+                <input type="hidden" asp-for="User.Telefono" value="88888888" class="form-control" />
+            }
+          
             <input type="hidden" id="inputTypeUserMode" value="e" />
-            <input id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
+            <input asp-for="User.IdPlan" id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
             <div class="card  p-5 mb-8 rounded">
                 <h3 class="h4 font-weight-normal mb-4">Url personalizada para tu negocio (Comparte este link con tus clientes o redes sociales)</h3>
                 <div class="row ">
@@ -180,11 +197,11 @@
                             <span asp-validation-for="Business.DescripcionNegocio" class="text-danger"></span>
                         </div>
 
-                        <div class="form-group col-md-12 mb-6">
-                            <label for="addTags">Tags (Los tags son como palabras claves con las cuales el usuario te puede buscar)</label>
-                            <input asp-for="Business.Tags" class="form-control" />
-                            <span asp-validation-for="Business.Tags" class="text-danger"></span>
-                        </div>
+                        @*<div class="form-group col-md-12 mb-6">
+                        <label for="addTags">Tags (Los tags son como palabras claves con las cuales el usuario te puede buscar)</label>
+                        <input asp-for="Business.Tags" class="form-control" />
+                        <span asp-validation-for="Business.Tags" class="text-danger"></span>
+                    </div>*@
                     </div>
 
 
@@ -201,13 +218,13 @@
                         <div class="col-md-6">
 
                             @*<div class="form-group mb-6">
-                                    <label for="exampleFormControlSelect1">Pais</label>
-                                    <div class="select-default bg-white">
-                                        <select class="form-control" id="IdPais" required>
-                                            <option value="">Eliga una opción</option>
-                                        </select>
-                                    </div>
-                                </div>*@
+                            <label for="exampleFormControlSelect1">Pais</label>
+                            <div class="select-default bg-white">
+                                <select class="form-control" id="IdPais" required>
+                                    <option value="">Eliga una opción</option>
+                                </select>
+                            </div>
+                        </div>*@
 
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Departamento</label>
@@ -230,11 +247,11 @@
                             </div>
 
 
-                            <div class="form-group mb-6">
-                                <label for="listingPhone">Correo electronico</label>
-                                <input asp-for="Business.EmailNegocio" class="form-control" />
-                                <span asp-validation-for="Business.EmailNegocio" class="text-danger"></span>
-                            </div>
+                            @*<div class="form-group mb-6">
+                            <label for="listingPhone">Correo electronico</label>
+                            <input asp-for="Business.EmailNegocio" class="form-control" />
+                            <span asp-validation-for="Business.EmailNegocio" class="text-danger"></span>
+                        </div>*@
 
 
 
@@ -242,27 +259,27 @@
 
 
                         @*<div class="col-md-6 map-place-search-wrapper">
-                                <div class="form-group mb-0 ">
-                                    <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
+                        <div class="form-group mb-0 ">
+                            <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
 
-                                </div>
-                                <div style=" height: 90%; " class="map-container" id="mapholder"></div>
-                                <div>
+                        </div>
+                        <div style=" height: 90%; " class="map-container" id="mapholder"></div>
+                        <div>
 
-                                    <div class="form-group col-md-6">
+                            <div class="form-group col-md-6">
 
-                                        <input id="inputlat" style="visibility:hidden;" type="text" class="form-control" />
+                                <input id="inputlat" style="visibility:hidden;" type="text" class="form-control" />
 
-                                    </div>
-                                    <div class="form-group col-md-6">
+                            </div>
+                            <div class="form-group col-md-6">
 
-                                        <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" />
+                                <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" />
 
-                                    </div>
+                            </div>
 
-                                </div>
+                        </div>
 
-                            </div>*@
+                    </div>*@
 
                     </div>
                 </div>
@@ -328,20 +345,20 @@
                                 <div class="row align-items-center form-check-readonly">
                                     <div class="col-5">
                                         <input asp-for="Business.HasDelivery" class="form-check-input" type="checkbox">
-                                        <label class="form-check-label" for="monday">Servicio a domicilio/Delivery</label>
+                                        <label class="form-check-label" for="monday">Servicio a domicilio</label>
                                     </div>
-                                    <div class="col-3">
-                                        <input asp-for="Business.Hugo" class="form-check-input" type="checkbox">
-                                        <label class="form-check-label" for="monday">Hugo</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <input asp-for="Business.PedidosYa" class="form-check-input" type="checkbox">
-                                        <label class="form-check-label" for="monday">Pedidos Ya</label>
-                                    </div>
-                                    <div class="col-3">
-                                        <input asp-for="Business.Piki" class="form-check-input" type="checkbox">
-                                        <label class="form-check-label" for="monday">Piki</label>
-                                    </div>
+                                    @*<div class="col-3">
+                                    <input asp-for="Business.Hugo" class="form-check-input" type="checkbox">
+                                    <label class="form-check-label" for="monday">Hugo</label>
+                                </div>
+                                <div class="col-3">
+                                    <input asp-for="Business.PedidosYa" class="form-check-input" type="checkbox">
+                                    <label class="form-check-label" for="monday">Pedidos Ya</label>
+                                </div>
+                                <div class="col-3">
+                                    <input asp-for="Business.Piki" class="form-check-input" type="checkbox">
+                                    <label class="form-check-label" for="monday">Piki</label>
+                                </div>*@
                                 </div>
                             </div>
                         </div>
@@ -386,7 +403,7 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Horario de atención</h3>
-                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer check en cada día, los días que no tengan el check saldrán como cerrados)</p>
+                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer click en cada check del día, los días que no tengan el check (✓) saldrán como cerrados)</p>
 
                     <div class="row">
                         @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
@@ -423,37 +440,37 @@
 
 
             @*Gallery*@
-            <div class="card">
-                <div class="card-body p-6">
-                    <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
-                    <input asp-for="@Model.Business.LogoNegocio" type="hidden" />
+            @*<div class="card">
+            <div class="card-body p-6">
+                <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
+                <input asp-for="@Model.Business.LogoNegocio" type="hidden" />
 
 
-                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && (Model.ImagenesNegocios != null && Model.ImagenesNegocios.Count > 0))
-                    {
-                        <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
+                @if ((Model.Business.Id != 0 || Model.Business.Id != null) && (Model.ImagenesNegocios != null && Model.ImagenesNegocios.Count > 0))
+                {
+                    <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
 
-                        <div class="form-group col-md-5">
+                    <div class="form-group col-md-5">
 
-                            <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PicturesBusiness" multiple />
-                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
-                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
-                        </div>
+                        <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PicturesBusiness" multiple />
+                        <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                        <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                    </div>
 
-                    }
-                    else
-                    {
-                        <div class="form-group col-md-5">
+                }
+                else
+                {
+                    <div class="form-group col-md-5">
 
-                            <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
-                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
-                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
-                        </div>
-                    }
+                        <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
+                        <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                        <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                    </div>
+                }
 
 
-                </div>
             </div>
+        </div>*@
 
             <div class="card">
                 <div class="card-body p-6">
