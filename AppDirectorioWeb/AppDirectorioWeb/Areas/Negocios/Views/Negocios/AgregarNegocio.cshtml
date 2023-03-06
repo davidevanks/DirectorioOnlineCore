@@ -403,30 +403,36 @@
             <div class="card">
                 <div class="card-body p-6">
                     <h3 class="h4 mb-4">Horario de atención</h3>
-                    <p class="mb-5">Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer click en cada check del día, los días que no tengan el check (✓) saldrán como cerrados)</p>
-
+                    <p class="mb-5">
+                        <span class="text-danger">
+                            <strong>
+                                Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer click en cada check del día, los días que no tengan el check (✓) saldrán como cerrados)
+                            </strong>
+                        </span>
+                    </p>
+                
                     <div class="row">
                         @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
                         {
-                            <div class="col-md-6">
-                                <div class="form-group form-check mb-6 ">
-                                    <div class="row align-items-center form-check-readonly">
-                                        <div class="col-3">
-                                            <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
-                                            <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
-                                            <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
-                                            <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
-                                        </div>
-                                        <div class="col-3 pr-0">
-                                            <input asp-for="@Model.HorarioNegocios[i].HoraDesde" class="form-control form-control-sm timepicker" placeholder="10:00am">
-                                        </div>
-                                        <div class="col-1 text-center px-0">-</div>
-                                        <div class="col-3 pl-0">
-                                            <input asp-for="@Model.HorarioNegocios[i].HoraHasta" class="form-control form-control-sm timepicker" placeholder="05:00pm">
-                                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-check mb-6 ">
+                                <div class="row align-items-center form-check-readonly">
+                                    <div class="col-3">
+                                        <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
+                                        <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
+                                        <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
+                                        <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
+                                    </div>
+                                    <div class="col-3 pr-0">
+                                        <input asp-for="@Model.HorarioNegocios[i].HoraDesde" class="form-control form-control-sm timepicker" >
+                                    </div>
+                                    <div class="col-1 text-center px-0">-</div>
+                                    <div class="col-3 pl-0">
+                                        <input asp-for="@Model.HorarioNegocios[i].HoraHasta" class="form-control form-control-sm timepicker" >
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         }
 
 
