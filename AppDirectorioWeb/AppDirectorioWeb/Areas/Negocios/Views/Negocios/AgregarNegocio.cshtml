@@ -172,7 +172,7 @@
             <div class="card">
                 <div class="card-body px-6 pt-6 pb-1">
                     <h3 class="h4 mb-4">Información del negocio</h3>
-                    <p class="mb-5">No somos responsables de ningún daño causado por el uso de este sitio web o por publicar listados de negocios aquí. Utilice nuestro sitio a su propia discreción y ejerza el buen juicio, así como el sentido común al anunciar negocios aquí.</p>
+                    <p class="mb-5"><strong>No somos responsables de ningún daño causado por el uso de este sitio web o por publicar listados de negocios aquí. Utilice nuestro sitio a su propia discreción y ejerza el buen juicio, así como el sentido común al anunciar negocios aquí.</strong></p>
                     <input asp-for="Business.Id" type="hidden" />
                     <input asp-for="Business.IdUserOwner" type="hidden" />
                     <div class="row">
@@ -188,6 +188,7 @@
                             <div class="select-default bg-white">
                                 @Html.DropDownListFor(m => m.Business.IdCategoria, Model.Business.Categories, "- SELECCIONA UNA CATEGORÍA -", new { @class = "form-control" })
                                 <span asp-validation-for="Business.IdCategoria" class="text-danger"></span>
+                                <span  class="text-danger">Si no existe la categoría que busca, contactenos para agregarla.</span>
                             </div>
                         </div>
 
