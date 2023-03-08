@@ -33,7 +33,7 @@ function loadReviews() {
                 $("#divContentMainReview").append(
                     ' <div class="media mb-3">' +
                     '<div class="media-img">' +
-                    '<img style="width: 50px;" src="/ImagesBusiness/' + this.pictureUser + '" data-src="/ImagesBusiness/' + this.pictureUser + '" class="mr-3 media-object rounded-circle " alt="Image User">' +
+                    '<img width="35" height="35" src="' + this.pictureUser + '" data-src="' + this.pictureUser + '" class="mr-3 media-object rounded-circle " alt="Image User">' +
                     '   </div>' +
                     '<div class="media-body">' +
                     ' <h5 class="media-heading">' + this.userNameComments + '</h5>' +
