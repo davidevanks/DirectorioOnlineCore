@@ -407,40 +407,70 @@
                     <p class="mb-5">
                         <span class="text-danger">
                             <strong>
-                                Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer click en cada check del día, los días que no tengan el check (✓) saldrán como cerrados)
+                                Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer click en cada check del día, los días que no tengan el check (✓) saldrán como cerrados, puede editar los horarios sugeridos y cambiarlos.)
                             </strong>
                         </span>
                     </p>
-                
-                    <div class="row">
-                        @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
-                        {
-                        <div class="col-md-6">
-                            <div class="form-group form-check mb-6 ">
-                                <div class="row align-items-center form-check-readonly">
-                                    <div class="col-3">
-                                        <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
-                                        <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
-                                        <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
-                                        <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
-                                    </div>
-                                    <div class="col-3 pr-0">
-                                        <input asp-for="@Model.HorarioNegocios[i].HoraDesde" class="form-control form-control-sm timepicker" >
-                                    </div>
-                                    <div class="col-1 text-center px-0">-</div>
-                                    <div class="col-3 pl-0">
-                                        <input asp-for="@Model.HorarioNegocios[i].HoraHasta" class="form-control form-control-sm timepicker" >
+
+                    @if (Model.Business.Id == null || Model.Business.Id == 0)
+                    {
+                        <div class="row">
+                            @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group form-check mb-6 ">
+                                        <div class="row align-items-center form-check-readonly">
+                                            <div class="col-3">
+                                                <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
+                                                <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
+                                                <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
+                                                <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
+                                            </div>
+                                            <div class="col-3 pr-0">
+                                                <input value="08:00 AM" asp-for="@Model.HorarioNegocios[i].HoraDesde" class="form-control form-control-sm timepicker">
+                                            </div>
+                                            <div class="col-1 text-center px-0">-</div>
+                                            <div class="col-3 pl-0">
+                                                <input value="05:00 PM" asp-for="@Model.HorarioNegocios[i].HoraHasta" class="form-control form-control-sm timepicker">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
+
+
                         </div>
-                        }
+                    }
+                    else
+                    {
+                        <div class="row">
+                            @for (int i = 0; i < Model.HorarioNegocios.Count; i++)
+                            {
+                                <div class="col-md-6">
+                                    <div class="form-group form-check mb-6 ">
+                                        <div class="row align-items-center form-check-readonly">
+                                            <div class="col-3">
+                                                <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
+                                                <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
+                                                <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
+                                                <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
+                                            </div>
+                                            <div class="col-3 pr-0">
+                                                <input asp-for="@Model.HorarioNegocios[i].HoraDesde" class="form-control form-control-sm timepicker">
+                                            </div>
+                                            <div class="col-1 text-center px-0">-</div>
+                                            <div class="col-3 pl-0">
+                                                <input asp-for="@Model.HorarioNegocios[i].HoraHasta" class="form-control form-control-sm timepicker">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
 
 
+                        </div>
+                    }
 
-
-
-                    </div>
                 </div>
             </div>
 
