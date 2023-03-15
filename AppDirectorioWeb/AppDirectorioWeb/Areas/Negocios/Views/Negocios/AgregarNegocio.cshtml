@@ -9,14 +9,15 @@
 <section class="bg-light py-5 height100vh">
     <div class="container">
         <nav class="bg-transparent breadcrumb breadcrumb-2 px-0 mb-5" aria-label="breadcrumb">
-            <h2 class="font-weight-normal mb-4 mb-md-0">Agregar un negocio</h2>
-            @*<ul class="list-unstyled d-flex p-0 m-0">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                    <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
-                </ul>*@
-        </nav>
+            <h2 class="font-weight-normal mb-4 mb-md-0">Agregar un negocio </h2>
 
+            @*<ul class="list-unstyled d-flex p-0 m-0">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="dashboard-list-admin.html">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Submit Listings</li>
+            </ul>*@
+        </nav>
+        <h6><span class="text-danger">Los campos con asterisco ( * ) en rojo son requeridos</span></h6>
         <form enctype="multipart/form-data" id="form_atencion" asp-controller="Negocios" asp-antiforgery="true" method="post">
             @if (!SignInManager.IsSignedIn(User))
             {
@@ -63,9 +64,11 @@
 
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Email"></label>
+
+                                <span class="text-danger">*</span>
                                 <input asp-for="User.Email" class="form-control" />
                                 <span asp-validation-for="User.Email" class="text-danger"></span>
                                 @if (!string.IsNullOrEmpty(ViewBag.MessageUserExist))
@@ -76,18 +79,21 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.FullName"></label>
+                                <span class="text-danger">*</span>
                                 <input asp-for="User.FullName" class="form-control" />
                                 <span asp-validation-for="User.FullName" class="text-danger"></span>
                             </div>
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-6 mb-4">
                                 @*<label for="inputAddress">Dirección Email*</label>
-                            <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
+                                <input type="email" class="form-control" placeholder="Ej: peter@email.com" required>*@
 
                                 <label asp-for="User.Telefono"></label>
+
+                                <span class="text-danger">*</span>
                                 <input asp-for="User.Telefono" class="form-control" />
                                 <span asp-validation-for="User.Telefono" class="text-danger"></span>
                             </div>
@@ -96,9 +102,10 @@
                             <div class="form-group col-md-6 mb-4"></div>
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.Password"></label>
+                                <span class="text-danger">*</span>
                                 <input asp-for="User.Password" class="form-control" />
                                 <span asp-validation-for="User.Password" class="text-danger"></span>
                                 <span class="text-info">*Tu contraseña debe contener al menos un carácter no alfanumérico.(Como *) y una mayúscula, minímo 8 dígitos de longitud</span>
@@ -110,9 +117,10 @@
 
                             <div class="form-group col-md-4 mb-4">
                                 @*<label for="inputPassword">Contraseña*</label>
-                            <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
+                                <input type="password" class="form-control" placeholder="Al menos 6 caracteres" required>*@
 
                                 <label asp-for="User.ConfirmPassword"></label>
+                                <span class="text-danger">*</span>
                                 <input asp-for="User.ConfirmPassword" class="form-control" />
                                 <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
                             </div>
@@ -145,11 +153,12 @@
                 <input type="hidden" asp-for="User.FullName" value="example user" class="form-control" />
                 <input type="hidden" asp-for="User.Telefono" value="88888888" class="form-control" />
             }
-          
+
             <input type="hidden" id="inputTypeUserMode" value="e" />
             <input asp-for="User.IdPlan" id="inputPlanType" type="hidden" value="@ViewBag.IdPlan" />
             <div class="card  p-5 mb-8 rounded">
-                <h3 class="h4 font-weight-normal mb-4">Url personalizada para tu negocio (Comparte este link con tus clientes o redes sociales)</h3>
+                <h3 class="h4 font-weight-normal mb-4">  <span class="text-danger">*</span>Url personalizada para tu negocio (Comparte este link con tus clientes o redes sociales)</h3>
+
                 <div class="row ">
                     <div class="col-md-2">
                         <div class="d-flex ">
@@ -178,6 +187,7 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="listingTitle">Nombre del negocio</label>
+                            <span class="text-danger">*</span>
                             <input asp-for="Business.NombreNegocio" class="form-control" />
                             <span asp-validation-for="Business.NombreNegocio" class="text-danger"></span>
                         </div>
@@ -185,24 +195,26 @@
 
                         <div class="form-group col-md-6 mb-6">
                             <label for="exampleFormControlSelect1">Categoria</label>
+                            <span class="text-danger">*</span>
                             <div class="select-default bg-white">
                                 @Html.DropDownListFor(m => m.Business.IdCategoria, Model.Business.Categories, "- SELECCIONA UNA CATEGORÍA -", new { @class = "form-control" })
                                 <span asp-validation-for="Business.IdCategoria" class="text-danger"></span>
-                                <span  class="text-danger">Si no existe la categoría que busca, contactenos para agregarla.</span>
+                                <span class="text-danger">Si no existe la categoría que busca, contactenos para agregarla.</span>
                             </div>
                         </div>
 
                         <div class="form-group col-md-12 mb-6">
                             <label for="discribeTheListing">Descripción del negocio</label>
+                            <span class="text-danger">*</span>
                             <textarea asp-for="Business.DescripcionNegocio" class="form-control" rows="6" required></textarea>
                             <span asp-validation-for="Business.DescripcionNegocio" class="text-danger"></span>
                         </div>
 
                         @*<div class="form-group col-md-12 mb-6">
-                        <label for="addTags">Tags (Los tags son como palabras claves con las cuales el usuario te puede buscar)</label>
-                        <input asp-for="Business.Tags" class="form-control" />
-                        <span asp-validation-for="Business.Tags" class="text-danger"></span>
-                    </div>*@
+                            <label for="addTags">Tags (Los tags son como palabras claves con las cuales el usuario te puede buscar)</label>
+                            <input asp-for="Business.Tags" class="form-control" />
+                            <span asp-validation-for="Business.Tags" class="text-danger"></span>
+                        </div>*@
                     </div>
 
 
@@ -219,16 +231,17 @@
                         <div class="col-md-6">
 
                             @*<div class="form-group mb-6">
-                            <label for="exampleFormControlSelect1">Pais</label>
-                            <div class="select-default bg-white">
-                                <select class="form-control" id="IdPais" required>
-                                    <option value="">Eliga una opción</option>
-                                </select>
-                            </div>
-                        </div>*@
+                                <label for="exampleFormControlSelect1">Pais</label>
+                                <div class="select-default bg-white">
+                                    <select class="form-control" id="IdPais" required>
+                                        <option value="">Eliga una opción</option>
+                                    </select>
+                                </div>
+                            </div>*@
 
                             <div class="form-group mb-6">
                                 <label for="exampleFormControlSelect1">Departamento</label>
+                                <span class="text-danger">*</span>
                                 <div class="select-default bg-white">
                                     @Html.DropDownListFor(m => m.Business.IdDepartamento, Model.Business.Departamentos, "- SELECCIONA UN DEPARTAMENTO -", new { @class = "form-control " })
                                     <span asp-validation-for="Business.IdDepartamento" class="text-danger"></span>
@@ -237,22 +250,24 @@
 
                             <div class="form-group mb-6">
                                 <label for="discribeTheListing">Dirección del negocio</label>
+                                <span class="text-danger">*</span>
                                 <textarea asp-for="Business.DireccionNegocio" class="form-control" rows="3" required></textarea>
                                 <span asp-validation-for="Business.DireccionNegocio" class="text-danger"></span>
                             </div>
 
                             <div class="form-group mb-6">
                                 <label for="listingPhone">Telefono</label>
+                                <span class="text-danger">*</span>
                                 <input asp-for="Business.TelefonoNegocio1" placeholder="88888888" class="form-control" />
                                 <span asp-validation-for="Business.TelefonoNegocio1" class="text-danger"></span>
                             </div>
 
 
                             @*<div class="form-group mb-6">
-                            <label for="listingPhone">Correo electronico</label>
-                            <input asp-for="Business.EmailNegocio" class="form-control" />
-                            <span asp-validation-for="Business.EmailNegocio" class="text-danger"></span>
-                        </div>*@
+                                <label for="listingPhone">Correo electronico</label>
+                                <input asp-for="Business.EmailNegocio" class="form-control" />
+                                <span asp-validation-for="Business.EmailNegocio" class="text-danger"></span>
+                            </div>*@
 
 
 
@@ -260,27 +275,27 @@
 
 
                         @*<div class="col-md-6 map-place-search-wrapper">
-                        <div class="form-group mb-0 ">
-                            <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
-
-                        </div>
-                        <div style=" height: 90%; " class="map-container" id="mapholder"></div>
-                        <div>
-
-                            <div class="form-group col-md-6">
-
-                                <input id="inputlat" style="visibility:hidden;" type="text" class="form-control" />
+                            <div class="form-group mb-0 ">
+                                <label for="listingAddress">Selecciona la ubicación de tu negocio, este paso es muy importante</label>
 
                             </div>
-                            <div class="form-group col-md-6">
+                            <div style=" height: 90%; " class="map-container" id="mapholder"></div>
+                            <div>
 
-                                <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" />
+                                <div class="form-group col-md-6">
+
+                                    <input id="inputlat" style="visibility:hidden;" type="text" class="form-control" />
+
+                                </div>
+                                <div class="form-group col-md-6">
+
+                                    <input id="inputlon" style="visibility:hidden;" type="text" class="form-control" />
+
+                                </div>
 
                             </div>
 
-                        </div>
-
-                    </div>*@
+                        </div>*@
 
                     </div>
                 </div>
@@ -295,6 +310,7 @@
                     <div class="row">
                         <div class="form-group col-md-6 mb-6">
                             <label for="youtubeUrl">WhatsApp</label>
+                            <span class="text-danger">*</span>
                             <input asp-for="Business.TelefonoWhatsApp" class="form-control" />
                             <span asp-validation-for="Business.TelefonoWhatsApp" class="text-danger"></span>
                         </div>
@@ -349,17 +365,17 @@
                                         <label class="form-check-label" for="monday">Servicio a domicilio</label>
                                     </div>
                                     @*<div class="col-3">
-                                    <input asp-for="Business.Hugo" class="form-check-input" type="checkbox">
-                                    <label class="form-check-label" for="monday">Hugo</label>
-                                </div>
-                                <div class="col-3">
-                                    <input asp-for="Business.PedidosYa" class="form-check-input" type="checkbox">
-                                    <label class="form-check-label" for="monday">Pedidos Ya</label>
-                                </div>
-                                <div class="col-3">
-                                    <input asp-for="Business.Piki" class="form-check-input" type="checkbox">
-                                    <label class="form-check-label" for="monday">Piki</label>
-                                </div>*@
+                                        <input asp-for="Business.Hugo" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label" for="monday">Hugo</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input asp-for="Business.PedidosYa" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label" for="monday">Pedidos Ya</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <input asp-for="Business.Piki" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label" for="monday">Piki</label>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -407,7 +423,7 @@
                     <p class="mb-5">
                         <span class="text-danger">
                             <strong>
-                                Ejemplo: 10:00am - 5:00pm (Para habilitar los horarios por favor hacer click en cada check del día, los días que no tengan el check (✓) saldrán como cerrados, puede editar los horarios sugeridos y cambiarlos.)
+                                Los días que no tengan el check (✓) saldrán como cerrados, puede editar los horarios sugeridos y cambiarlos.
                             </strong>
                         </span>
                     </p>
@@ -422,7 +438,15 @@
                                         <div class="row align-items-center form-check-readonly">
                                             <div class="col-3">
                                                 <input asp-for="@Model.HorarioNegocios[i].Id" type="hidden">
-                                                <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
+                                                @if (Model.HorarioNegocios[i].Day == "Domingo" || Model.HorarioNegocios[i].Day == "Sábado")
+                                                {
+                                                    <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input">
+                                                }
+                                                else
+                                                {
+                                                    <input asp-for="@Model.HorarioNegocios[i].Active" type="checkbox" class="form-check-input" checked>
+                                                }
+
                                                 <label class="form-check-label">@Model.HorarioNegocios[i].Day</label>
                                                 <input type="hidden" asp-for="@Model.HorarioNegocios[i].IdDia" />
                                             </div>
@@ -478,36 +502,36 @@
 
             @*Gallery*@
             @*<div class="card">
-            <div class="card-body p-6">
-                <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
-                <input asp-for="@Model.Business.LogoNegocio" type="hidden" />
+                <div class="card-body p-6">
+                    <h3 class="h4 mb-4">Galeria de fotos Productos/Servicios</h3>
+                    <input asp-for="@Model.Business.LogoNegocio" type="hidden" />
 
 
-                @if ((Model.Business.Id != 0 || Model.Business.Id != null) && (Model.ImagenesNegocios != null && Model.ImagenesNegocios.Count > 0))
-                {
-                    <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
+                    @if ((Model.Business.Id != 0 || Model.Business.Id != null) && (Model.ImagenesNegocios != null && Model.ImagenesNegocios.Count > 0))
+                    {
+                        <a id="adelpictures" onclick="DeletePictures(@Model.Business.Id)" class="text-danger">@Model.ImagenesNegocios.Count Imagen(es) cargadas...     Eliminar <span class="fa fa-close"></span></a>
 
-                    <div class="form-group col-md-5">
+                        <div class="form-group col-md-5">
 
-                        <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PicturesBusiness" multiple />
-                        <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
-                        <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
-                    </div>
+                            <input accept="image/*" class="form-control custom-file-input cfis cfisinvisible" asp-for="PicturesBusiness" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        </div>
 
-                }
-                else
-                {
-                    <div class="form-group col-md-5">
+                    }
+                    else
+                    {
+                        <div class="form-group col-md-5">
 
-                        <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
-                        <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
-                        <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
-                    </div>
-                }
+                            <input accept="image/*" class="form-control custom-file-input cfis" asp-for="PicturesBusiness" multiple />
+                            <label class="custom-file-label cfls">Selecciona fotos de tus productos/servicios...</label>
+                            <span class="text-danger field-validation-error"><span id="galVal" class=""></span></span>
+                        </div>
+                    }
 
 
-            </div>
-        </div>*@
+                </div>
+            </div>*@
 
             <div class="card">
                 <div class="card-body p-6">
