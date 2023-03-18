@@ -544,16 +544,18 @@
                             <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi cfiinvisible">
                             <label class="custom-file-label cfl ">Selecciona el logo de tu negocio...</label>
                             <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
+                            <span class="text-danger field-validation-error">Te sugerimos que uses una imágen 200X200</span>
                         </div>
 
                     }
                     else
                     {
-                        <div class="form-group col-md-5">
-                            <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
-                            <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
-                            <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
-                        </div>
+                <div class="form-group col-md-5">
+                    <input accept="image/*" asp-for="Logo" class="form-control custom-file-input cfi">
+                    <label class="custom-file-label cfl">Selecciona el logo de tu negocio...</label>
+                    <span class="text-danger field-validation-error"><span id="logoVal" class=""></span></span>
+                    <span class="text-danger field-validation-error">Te sugerimos que uses una imágen 200X200</span>
+                </div>
                     }
 
 
